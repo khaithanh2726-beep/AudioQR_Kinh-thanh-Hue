@@ -6,8 +6,8 @@
 
 - Repository: [AudioQR_Kinh-thanh-Hue](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue); Project 21 và mapping #1–#11 tại [roadmap mục 6](roadmap.md#github-checklist-review).
 - Ba commit/push T10 và T01 ngày 07–08/11 trước lần tạo lại repository đã được đối chiếu qua đầu ra Terminal. SHA, nhánh, metadata và giới hạn tại [handoff mục 2.2](handoff.md#bootstrap-result). Chưa có bằng chứng các SHA này trên repository vừa tạo lại hoặc PR/merge mới.
-- Nền T10 tại repository hiện tại đã commit/push `d61a8698cae3652dec01185a282f88d536b2169c`, SHA local/remote khớp theo [handoff mục 2.11](handoff.md#current-t10-commit-result). Tài liệu T01 đã commit/push `65807af9884b6f959808368ab39974ccc1ffb23d`, SHA local/remote khớp theo [handoff mục 2.13](handoff.md#current-t01-docs-result). Nhóm tiếp theo là khung backend T01 và hai tài liệu cập nhật bàn giao.
-- Nhóm tài liệu gồm 33 file tính cả README gốc, nguồn Draw.io và tài sản; commit-plan đã được khôi phục sau khi bị xóa nhầm. Các nhóm backend theo mục 2 và 4. Đích chính thức tại [handoff mục 2.4](handoff.md#new-target-pending), trạng thái Git mới nhất theo mục 2.11 và các mốc tiếp theo.
+- Nền T10 tại repository hiện tại đã commit/push `d61a8698cae3652dec01185a282f88d536b2169c`, SHA local/remote khớp theo [handoff mục 2.11](handoff.md#current-t10-commit-result). Tài liệu T01 đã commit/push `65807af9884b6f959808368ab39974ccc1ffb23d`, SHA local/remote khớp theo [handoff mục 2.13](handoff.md#current-t01-docs-result). Nền backend T01, API T03/T05 và dữ liệu T02 đã commit cục bộ theo [handoff mục 2.14](handoff.md#local-commit-batch-20261109), còn chờ push và tích hợp.
+- Nhóm tài liệu gồm 33 file tính cả README gốc, nguồn Draw.io và tài sản; commit-plan đã được khôi phục sau khi bị xóa nhầm. Các nhóm backend theo mục 2 và 4. Đích chính thức tại [handoff mục 2.4](handoff.md#new-target-pending), trạng thái Git mới nhất theo mục 2.14.
 - Mỗi nhóm commit/push dùng tài khoản GitHub theo G02. Metadata author/committer, người nhập lệnh và tài khoản xác thực là các thông tin riêng; cấu hình user.name/user.email không chọn tài khoản đăng nhập GitHub. Metadata cần có căn cứ, không tự suy email từ username.
 - Nhánh task là T01–T11; thông điệp tiếng Việt dạng `Txx: Những việc đã thực hiện`. Phân công duy nhất tại [G02](../02-nghiep-vu/decisions.md#g02).
 - Không stage toàn repository, tạo thông tin tác giả không có căn cứ, reset/clean hoặc ghi đè sửa đổi để hợp thức hóa kết quả. Bản ghi kiểm tra phải phân biệt đã code/test, đã commit, đã push và đã merge.
@@ -45,7 +45,7 @@ Thứ tự tích hợp vào main là T01 → T02 → T03 → T05. Tài liệu v�
 | Máy Hòa | Hòa | T02/T09/T10 và phần T08 | Khởi tạo main; nhận nền T01 đã merge để làm T02. Bàn giao dữ liệu trước T03; tổng hợp kiểm thử và vận hành theo sản phẩm thực tế |
 | Máy Nghĩa | Nghĩa | T04/T06 và phần T08 | Nhận nền và hợp đồng API; làm nhánh giao diện, PR/merge theo chức năng; không gộp nguồn backend vào commit giao diện |
 
-Mỗi máy có clone/thư mục làm việc và cấu hình tài khoản theo phần việc G02. Tài khoản dùng để xác thực push được chọn riêng với metadata commit. Các máy trao đổi commit qua origin; người nhận chỉ nhận được nội dung đã commit/push. File untracked không được truyền qua clone/fetch/pull. Bộ nguồn được phân theo danh sách task trước khi bàn giao cho từng máy. Trạng thái hiện tại theo handoff mục 2.11; các commit trước lần tạo lại repository giữ riêng ở mục 2.2.
+Mỗi máy có clone/thư mục làm việc và cấu hình tài khoản theo phần việc G02. Tài khoản dùng để xác thực push được chọn riêng với metadata commit. Các máy trao đổi commit qua origin; người nhận chỉ nhận được nội dung đã commit/push. File untracked không được truyền qua clone/fetch/pull. Bộ nguồn được phân theo danh sách task trước khi bàn giao cho từng máy. Trạng thái hiện tại theo handoff mục 2.14; các commit trước lần tạo lại repository giữ riêng ở mục 2.2.
 
 Sau PR được rà soát và merge, thành viên nhận task phụ thuộc cập nhật nền main. Nếu nhánh có sửa đổi riêng, phải kiểm trạng thái/diff và chọn cách tích hợp phù hợp; không chạy khối lệnh cập nhật nền khi chưa rõ trạng thái hoặc tự reset để bỏ sửa đổi.
 
@@ -53,7 +53,7 @@ Sau PR được rà soát và merge, thành viên nhận task phụ thuộc cậ
 
 ## 3. Điểm dừng và quy trình tiếp tục commit
 
-Đích repository và GitHub Project chính thức đã được xác nhận theo handoff mục 2.4. Đã tạo và đọc lại issue #1–#11, người vận hành xác nhận đã thêm đủ vào Project và đặt Status. Tài liệu T01 đã push, trạng thái cuối T01...origin/T01 và backend/ còn untracked theo mục 2.13. Tiếp theo commit phần hiện có của Thành: nền T01 → T03 → T05, rồi chuyển sang Hòa làm T02; thứ tự tích hợp vẫn theo mục 2. Hai tài liệu commit-plan/handoff cập nhật trạng thái và thứ tự bàn giao được stage cùng nhóm nền T01, dự kiến 12 file backend mới và hai tài liệu sửa. Chỉ chuyển tài khoản/nhánh khi tới nhóm tương ứng; không suy các bước dự kiến đã thực hiện.
+Đích repository và GitHub Project chính thức đã được xác nhận theo handoff mục 2.4. Đã tạo và đọc lại issue #1–#11, người vận hành xác nhận đã thêm đủ vào Project và đặt Status. Tài liệu T01 đã push; các nhóm hiện có của Thành T01/T03/T05 rồi dữ liệu T02 của Hòa đã commit cục bộ theo mục 2.14. Bảng SHA và kiểm chứng commit lấy từ handoff mục 2.14, không duy trì bản sao tại đây. Còn chờ push các nhánh, PR, nhận đủ phụ thuộc và kiểm chứng/tích hợp theo mục 2. Thư mục chính vẫn ở T01, nguồn các task khác được giữ đầy đủ dưới dạng untracked tại đây dù đã được lưu trên các nhánh task; không add chúng vào T01 hoặc xóa để làm sạch status.
 
 ### 3.1. Điều kiện và chuẩn bị
 
@@ -206,7 +206,7 @@ $adminAuthFiles = @(
 )
 ```
 
-V3/V4 và mapping thuộc T02 được tích hợp trước phần quản trị T05. Thay đổi dependency/cookie trong file dùng chung được bàn giao cùng phạm vi T05 theo diff thực tế. Các nhóm có thể bàn giao nhiều commit/PR theo sản phẩm đã kiểm, không suy cả nhóm hoặc toàn issue đã hoàn thành. Danh sách là kế hoạch, chưa có kết quả commit mới từ yêu cầu tiếp tục tại handoff mục 2.10.
+V3/V4 và mapping thuộc T02 được tích hợp trước phần quản trị T05. Thay đổi dependency/cookie trong file dùng chung được bàn giao cùng phạm vi T05 theo diff thực tế. Các nhóm có thể bàn giao nhiều commit/PR theo sản phẩm đã kiểm, không suy cả nhóm hoặc toàn issue đã hoàn thành. Danh sách là phân nhóm bàn giao; kết quả đã commit cục bộ và phần còn chờ được ghi tại handoff mục 2.14.
 
 Backend/HELP.md đang được ignore; target, log chạy, dependency/image tải về, file IDE, secret thật/database/audio thực không thuộc nhóm commit này. PNG/SVG/JSON/GeoJSON trong nhóm tài liệu là tài sản có hồ sơ nguồn và giới hạn, không mặc định là ranh giới hoặc dữ liệu ứng dụng đã được duyệt.
 

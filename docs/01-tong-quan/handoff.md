@@ -11,7 +11,7 @@
 | Xác thực Admin | A01–A05, session/CSRF, Q3 30 phút, mã Hash mật khẩu, đổi session id và logout. Header cookie và vòng đời đã kiểm qua HTTP localhost thật | Q2/Q3 trên frontend, tài khoản cấp cho môi trường phục vụ và HTTPS/proxy/browser thực |
 | Lệnh Admin và địa điểm | A31/A06/A08, cửa sổ 24 giờ, receipt cùng giao dịch, tạo điểm ẩn, đọc dữ liệu cơ bản A07 và sửa tên A09/If-Match | Điều kiện bật hiện/mức đầy đủ A07, vùng/cặp, ẩn/hiện/xóa, frontend Q2 và worker dọn metadata |
 | Hồi quy backend | 168 test, 0 lỗi, 0 bỏ qua, BUILD SUCCESS, mã thoát 0 lúc 08/11/2026 20:16:49 +07, đối chiếu 19 báo cáo Surefire. Kết quả 64/88/104/122/147 test trước giữ theo thời điểm | Mỗi commit trung gian, toàn bộ tiêu chí nghiệm thu và CI/CD |
-| Git | T10 nền đã commit/push theo mục 2.11; tài liệu T01 đã commit/push, SHA local/remote cùng 65807af9884b6f959808368ab39974ccc1ffb23d theo mục 2.13. Ba commit cũ giữ riêng ở mục 2.2 | Nền backend T01, T02/T03/T05 mới, PR/merge và liên kết tài khoản trên trang commit GitHub chưa được xác nhận |
+| Git | T10 nền và tài liệu T01 đã push theo mục 2.11/2.13; nền backend T01, T03/T05 và dữ liệu T02 đã commit cục bộ theo mục 2.14. Ba commit cũ giữ riêng ở mục 2.2 | Push các commit mới, PR/merge, kiểm chứng từng nhánh và liên kết tài khoản trên trang commit GitHub |
 | Backlog | Issue #1–#11 đã đối chiếu với T01–T11: 89 ô/18 dấu tích | Commit hoặc tạo issue không đồng nghĩa hoàn thành task |
 
 [Bằng chứng kiểm chứng](../03-ky-thuat/practice-01-start-session.md#practice-results) lưu thời điểm, kết quả và giới hạn. Metadata Git không chứng minh tài khoản dùng để xác thực GitHub hoặc ai đã thực hiện phần việc. Phân công và tài khoản theo G02 được đối chiếu riêng với bằng chứng.
@@ -22,7 +22,7 @@
 
 Repository: [AudioQR_Kinh-thanh-Hue](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue). Bảng công việc: [Project 21](https://github.com/users/khaithanh2726-beep/projects/21/views/1). Thư mục làm việc đã ghi nhận: `C:\Study\Code\VS Code\AudioQR_Kinh-thanh-Hue`.
 
-**Đọc để tiếp tục:** [mục 2.14](#local-commit-batch-20261109) ghi phạm vi đợt commit cục bộ được giao; [mục 2.13](#current-t01-docs-result) ghi kết quả push tài liệu T01; [mục 2.12](#document-review-result) ghi kết quả rà tài liệu; [mục 7](#guidance-protocol) quy định quyền và các mốc thao tác. Các mục trước giữ sản phẩm và diễn biến bàn giao theo thời điểm, không thay trạng thái mới nhất. [Roadmap](roadmap.md) là nguồn checklist; phần này ghi bằng chứng và điểm tiếp tục.
+**Đọc để tiếp tục:** [mục 2.14](#local-commit-batch-20261109) ghi kết quả commit cục bộ và điểm dừng trước push; [mục 2.13](#current-t01-docs-result) ghi kết quả push tài liệu T01; [mục 2.12](#document-review-result) ghi kết quả rà tài liệu; [mục 7](#guidance-protocol) quy định quyền và các mốc thao tác. Các mục trước giữ sản phẩm và diễn biến bàn giao theo thời điểm, không thay trạng thái mới nhất. [Roadmap](roadmap.md) là nguồn checklist; phần này ghi bằng chứng và điểm tiếp tục.
 
 <a id="issue-recreation"></a>
 
@@ -229,7 +229,20 @@ Thứ tự tạo commit tiếp theo theo thành viên là phần hiện có củ
 
 Kiểm đầu vào xác nhận T01 ở 65807af, theo dõi origin/T01, index trống, hai tài liệu commit-plan/handoff có sửa đổi và backend/ còn untracked. Author/committer hiện là KhaiThanh <khaithanh2726@gmail.com>, cấu hình username HTTPS là khaithanh2726-beep. Kiểm kê đủ 86 file backend theo các nhóm 12/23/30/21, không trùng hoặc sót; đã lưu bản sao 120 file được Git theo dõi hoặc chưa bị ignore trước thao tác.
 
-Kế hoạch thực hiện là commit nền T01 trong thư mục chính, dùng worktree tạm để tạo T03 từ T01, T05 từ T03 và T02 từ T01. Cách này giữ đầy đủ các file đang mở trong thư mục chính; file thuộc task khác có thể vẫn hiện untracked trên T01 dù đã được lưu trong commit của nhánh tương ứng. Không tự tích hợp các nhánh để làm sạch trạng thái. Kết quả commit được ghi sau khi từng nhóm thực hiện thành công; chưa có bằng chứng mới về push/merge hoặc kiểm thử nhánh riêng.
+Đã commit nền T01 trong thư mục chính, dùng worktree tạm để tạo T03 từ nền T01 ở 2f8707a, T05 từ T03 và T02 từ nền T01 ở 2f8707a. Thứ tự tạo commit theo phần Thành trước rồi Hòa; không đổi thứ tự tích hợp main T01 → T02 → T03 → T05. Hai tài liệu bàn giao được cập nhật trên T01 sau các commit nguồn.
+
+| Nhánh | SHA commit nguồn | Phạm vi | Metadata author và committer |
+| --- | --- | --- | --- |
+| T01 | `2f8707ad47ce3d06d59e7ef373a02b3211daff85` | 12 file nền backend và hai tài liệu sửa, 767 dòng thêm/7 dòng xóa | KhaiThanh <khaithanh2726@gmail.com> |
+| T03 | `3dc4521030582a0daa7927f28b95966957a115ab` | 23 file phiên khách | KhaiThanh <khaithanh2726@gmail.com> |
+| T05 | `d6097e19b306f0e455bb8d6964914d81860ade5c` | 30 file quản trị, 2.400 dòng thêm | KhaiThanh <khaithanh2726@gmail.com> |
+| T02 | `d6e27cc70305ccb301654b5d90b366265ee4d1a2` | 21 file dữ liệu, 1.401 dòng thêm | gingpham <gingpham13052006@gmail.com> |
+
+Mỗi nhóm được kiểm đúng danh sách staged, metadata, cha của commit và nội dung blob sau commit. Đủ 86 file backend khớp nội dung Git chuẩn hóa của các file gốc trên nhánh được phân công; 118 file ngoài hai tài liệu được phép biên tập giữ nguyên từng byte so với bản sao trước thao tác. Index trống và không có sửa đổi tracked sau bốn commit nguồn; worktree tạm đã được gỡ sau khi kiểm sạch. Nhánh/thư mục IDE vẫn ở T01, các file T02/T03/T05 còn hiện untracked tại đây nhưng đã được lưu trong commit của nhánh tương ứng. Không xóa hoặc add lại các file này vào T01 chỉ để làm sạch status.
+
+Kiểm khoảng trắng T01/T05/T02 đạt; T03 có 14 cảnh báo dòng trống cuối file đã tồn tại nguyên trạng trong bản sao trước thao tác. Đã ghi nhận đúng 14 ngoại lệ này, kiểm các lỗi khoảng trắng còn lại đạt và không sửa nguồn để xóa cảnh báo. Không chạy build/test/app hoặc thay cấu hình, migration và dữ liệu. Kết quả 168 test trước đó tiếp tục thuộc toàn cây ở đúng thời điểm đã ghi, không phải kết quả test các nhánh mới.
+
+Main vẫn ở d61a869; các ref origin theo dõi tại máy chưa đổi, origin/T01 vẫn ở 65807af. Không push, PR/merge hoặc sửa issue/Project; checklist giữ 89 ô/18 dấu tích. Cấu hình danh tính/username HTTPS trong repository chính vẫn của Thành; metadata Hòa được đặt riêng cho lệnh commit T02, không chọn tài khoản xác thực push. Điểm tiếp tục là push từng nhánh bằng tài khoản G02, sau đó nhận đủ phụ thuộc, kiểm chứng và tích hợp theo kế hoạch; chưa đóng issue từ việc đã commit.
 
 ## 3. Tài liệu bàn giao
 
