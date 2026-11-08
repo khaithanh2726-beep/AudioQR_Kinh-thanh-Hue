@@ -1,12 +1,12 @@
 # Kế hoạch commit — nền tài liệu, dữ liệu và API
 
-**Cập nhật:** 08/11/2026. Kế hoạch tổ chức bàn giao cho Thành, Hòa và Nghĩa trên ba máy riêng, tích hợp qua repository chung. Bảng phân công là trách nhiệm dự kiến; trạng thái hoàn thành phải căn cứ sản phẩm và bằng chứng. Quy trình Git chung tại [handoff 7.2](handoff.md#issue-git-handoff).
+**Cập nhật:** 09/11/2026. Kế hoạch tổ chức bàn giao cho Thành, Hòa và Nghĩa trên ba máy riêng, tích hợp qua repository chung. Bảng phân công là trách nhiệm dự kiến; trạng thái hoàn thành phải căn cứ sản phẩm và bằng chứng. Quy trình Git chung tại [handoff 7.2](handoff.md#issue-git-handoff).
 
 ## 1. Điều kiện và trạng thái đầu vào
 
 - Repository: [AudioQR_Kinh-thanh-Hue](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue); Project 21 và mapping #1–#11 tại [roadmap mục 6](roadmap.md#github-checklist-review).
 - Ba commit/push T10 và T01 ngày 07–08/11 trước lần tạo lại repository đã được đối chiếu qua đầu ra Terminal. SHA, nhánh, metadata và giới hạn tại [handoff mục 2.2](handoff.md#bootstrap-result). Chưa có bằng chứng các SHA này trên repository vừa tạo lại hoặc PR/merge mới.
-- Nền T10 tại repository hiện tại đã commit/push `d61a8698cae3652dec01185a282f88d536b2169c`, SHA local/remote khớp theo [handoff mục 2.11](handoff.md#current-t10-commit-result). Nhóm tiếp theo là tài liệu T01 của Thành, chưa stage/commit T01.
+- Nền T10 tại repository hiện tại đã commit/push `d61a8698cae3652dec01185a282f88d536b2169c`, SHA local/remote khớp theo [handoff mục 2.11](handoff.md#current-t10-commit-result). Tài liệu T01 đã commit/push `65807af9884b6f959808368ab39974ccc1ffb23d`, SHA local/remote khớp theo [handoff mục 2.13](handoff.md#current-t01-docs-result). Nhóm tiếp theo là khung backend T01 và hai tài liệu cập nhật bàn giao.
 - Nhóm tài liệu gồm 33 file tính cả README gốc, nguồn Draw.io và tài sản; commit-plan đã được khôi phục sau khi bị xóa nhầm. Các nhóm backend theo mục 2 và 4. Đích chính thức tại [handoff mục 2.4](handoff.md#new-target-pending), trạng thái Git mới nhất theo mục 2.11 và các mốc tiếp theo.
 - Mỗi nhóm commit/push dùng tài khoản GitHub theo G02. Metadata author/committer, người nhập lệnh và tài khoản xác thực là các thông tin riêng; cấu hình user.name/user.email không chọn tài khoản đăng nhập GitHub. Metadata cần có căn cứ, không tự suy email từ username.
 - Nhánh task là T01–T11; thông điệp tiếng Việt dạng `Txx: Những việc đã thực hiện`. Phân công duy nhất tại [G02](../02-nghiep-vu/decisions.md#g02).
@@ -31,7 +31,9 @@ Nhóm tài liệu hiện gồm 33 file tính cả README gốc, nguồn Draw.io 
 
 Mốc 0 đã tạo commit nền main chỉ gồm .gitignore gốc để có chung gốc lịch sử và mở Pull Request cho các nhánh task. Hòa phụ trách mốc này trong T10. Các thay đổi T10 sau mốc khởi tạo được thực hiện trên nhánh T10. Ignore hiện mới là mẫu Java; commit nền không hoàn thành mục ignore/cấu hình/secret hoặc toàn T10.
 
-Sau mốc 0, tài liệu và khung backend T01 được rà soát, push, PR và merge vào main. T02 nhận nền đã tích hợp trước khi bàn giao dữ liệu; T03 nhận phần dữ liệu cần thiết trước khi đưa vé/API vào nhánh. Một PR có thể chỉ bàn giao phần nền đã kiểm, chưa đóng cả issue. Cách merge dự kiến là Create a merge commit.
+Thứ tự tích hợp vào main là T01 → T02 → T03 → T05. Tài liệu và khung backend T01 được rà soát, push, PR và merge làm nền; T02 nhận nền này trước khi bàn giao dữ liệu. Một PR có thể chỉ bàn giao phần nền đã kiểm, chưa đóng cả issue. Cách merge dự kiến là Create a merge commit.
+
+**Thứ tự tạo commit theo thành viên.** Phần sản phẩm hiện có của Thành được commit/push trước: hoàn tất nền T01, tạo T03 từ đầu nhánh T01 đã bàn giao, rồi tạo T05 từ đầu nhánh T03 đã bàn giao. T05 cần cấu hình và hỗ trợ test thuộc T03. Sau đó Hòa tạo T02 từ nền T01, không lấy T03/T05 làm nền dữ liệu. T03/T05 lúc chưa nhận T02 là các nhánh bàn giao còn thiếu phụ thuộc, chưa sẵn sàng build/test độc lập hoặc merge vào main; PR nếu mở chỉ ở trạng thái Draft. Khi T02 được kiểm và tích hợp, nhận T02 vào T03, kiểm chứng và tích hợp T03, rồi cập nhật T05 từ T03 đã đủ phụ thuộc trước khi kiểm chứng và tích hợp T05. Không chuyển file T02 sang commit của Thành để làm đầy nhánh.
 
 **File dùng chung.** pom.xml thêm starter-security theo BOM Boot 4.1.2, application.properties có cấu hình cookie Admin và ánh xạ khóa/epoch khách. Hai cập nhật này phục vụ T05 trên các file khung T01, khi tiếp tục Git cần đối chiếu diff để bàn giao đúng phụ thuộc. DisplayNamePolicy được đặt trong nền T01 vì cả T03 và T05 dùng, tránh tạo phụ thuộc T03 → T05; giới hạn tên khách vẫn 50 và địa điểm vẫn 100. TestcontainersConfiguration giữ MySQL và fixture công khai. Các kết quả kiểm thử toàn cây tại [thực hành phiên khách](../03-ky-thuat/practice-01-start-session.md#practice-results), [địa điểm/vùng](../03-ky-thuat/data-model.md#place-region-test-result), [xác thực Admin](../03-ky-thuat/api-transactions.md#admin-auth-test-result) và [cửa sổ lệnh](../03-ky-thuat/api-transactions.md#admin-command-test-result) giữ theo thời điểm, chưa chứng minh từng commit trung gian build/test đạt.
 
@@ -51,7 +53,7 @@ Sau PR được rà soát và merge, thành viên nhận task phụ thuộc cậ
 
 ## 3. Điểm dừng và quy trình tiếp tục commit
 
-Đích repository và GitHub Project chính thức đã được xác nhận theo handoff mục 2.4. Đã tạo và đọc lại issue #1–#11, người vận hành xác nhận đã thêm đủ vào Project và đặt Status. Nền T10 đã push trên main, trạng thái cuối còn README.md/backend/docs untracked theo mục 2.11. Commit-plan đã được khôi phục và đang rà tài liệu trước T01. Tiếp theo là tài liệu T01 → khung backend T01 → PR/tích hợp nền → dữ liệu T02 → API T03/T05 theo phụ thuộc. Chỉ chuyển tài khoản/nhánh khi tới nhóm tương ứng; không suy các bước dự kiến đã thực hiện.
+Đích repository và GitHub Project chính thức đã được xác nhận theo handoff mục 2.4. Đã tạo và đọc lại issue #1–#11, người vận hành xác nhận đã thêm đủ vào Project và đặt Status. Tài liệu T01 đã push, trạng thái cuối T01...origin/T01 và backend/ còn untracked theo mục 2.13. Tiếp theo commit phần hiện có của Thành: nền T01 → T03 → T05, rồi chuyển sang Hòa làm T02; thứ tự tích hợp vẫn theo mục 2. Hai tài liệu commit-plan/handoff cập nhật trạng thái và thứ tự bàn giao được stage cùng nhóm nền T01, dự kiến 12 file backend mới và hai tài liệu sửa. Chỉ chuyển tài khoản/nhánh khi tới nhóm tương ứng; không suy các bước dự kiến đã thực hiện.
 
 ### 3.1. Điều kiện và chuẩn bị
 
@@ -66,6 +68,8 @@ Hướng dẫn trọn một nhóm với danh sách file, mục đích, lệnh xe
 Chỉ hướng dẫn bước phụ thuộc khi mốc trước đủ căn cứ, giữ thông điệp Txx tiếng Việt theo bảng nhóm. Mốc B đối chiếu commit, SHA local/remote, trạng thái nhánh và liên kết tài khoản trên GitHub. PR nhận đúng nền phụ thuộc, được rà soát trước tích hợp; cách merge dự kiến là Create a merge commit. Các thành viên nhận nền đã tích hợp qua repository chung trước task phụ thuộc.
 
 Khi kết quả khác kỳ vọng hoặc có lỗi, dừng trước bước phụ thuộc và gửi nguyên kết quả. Người vận hành gửi đầu ra tại các mốc đối chiếu, giữ quyền trực tiếp thực hiện mọi lệnh Git và thao tác GitHub trừ hành động cụ thể được giao thêm.
+
+**Đợt được giao ngày 09/11/2026:** công cụ hỗ trợ trực tiếp kiểm/stage/commit các nhóm hiện có theo thứ tự Thành trước, Hòa sau và tự đối chiếu mốc A/B. Phạm vi, cách bảo vệ nguồn bằng worktree tạm và kết quả được lưu tại [handoff mục 2.14](handoff.md#local-commit-batch-20261109). Chỉ commit cục bộ, chưa push/PR/merge; đây là quyền cho đợt hiện tại, không thay quyền Git/GitHub chung cho các đợt sau.
 
 ## 4. Danh sách backend cho các mốc sau
 

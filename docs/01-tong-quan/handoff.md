@@ -1,6 +1,6 @@
 # Bàn giao — trạng thái và quy trình dự án
 
-**Cập nhật:** 08/11/2026. Tài liệu ghi nhận sản phẩm hiện có, phạm vi kiểm chứng, công việc tiếp theo và quy trình phối hợp. Phê duyệt yêu cầu hoặc thiết kế không thay thế bằng chứng kiểm thử và nghiệm thu.
+**Cập nhật:** 09/11/2026. Tài liệu ghi nhận sản phẩm hiện có, phạm vi kiểm chứng, công việc tiếp theo và quy trình phối hợp. Phê duyệt yêu cầu hoặc thiết kế không thay thế bằng chứng kiểm thử và nghiệm thu.
 
 ## 1. Sản phẩm và bằng chứng hiện có
 
@@ -11,7 +11,7 @@
 | Xác thực Admin | A01–A05, session/CSRF, Q3 30 phút, mã Hash mật khẩu, đổi session id và logout. Header cookie và vòng đời đã kiểm qua HTTP localhost thật | Q2/Q3 trên frontend, tài khoản cấp cho môi trường phục vụ và HTTPS/proxy/browser thực |
 | Lệnh Admin và địa điểm | A31/A06/A08, cửa sổ 24 giờ, receipt cùng giao dịch, tạo điểm ẩn, đọc dữ liệu cơ bản A07 và sửa tên A09/If-Match | Điều kiện bật hiện/mức đầy đủ A07, vùng/cặp, ẩn/hiện/xóa, frontend Q2 và worker dọn metadata |
 | Hồi quy backend | 168 test, 0 lỗi, 0 bỏ qua, BUILD SUCCESS, mã thoát 0 lúc 08/11/2026 20:16:49 +07, đối chiếu 19 báo cáo Surefire. Kết quả 64/88/104/122/147 test trước giữ theo thời điểm | Mỗi commit trung gian, toàn bộ tiêu chí nghiệm thu và CI/CD |
-| Git | T10 nền tại repository hiện tại đã commit/push, SHA local/remote cùng d61a8698cae3652dec01185a282f88d536b2169c theo mục 2.11. Ba commit cũ giữ riêng ở mục 2.2 | T01/T02/T03/T05 mới, PR/merge và liên kết tài khoản trên trang commit GitHub chưa được xác nhận |
+| Git | T10 nền đã commit/push theo mục 2.11; tài liệu T01 đã commit/push, SHA local/remote cùng 65807af9884b6f959808368ab39974ccc1ffb23d theo mục 2.13. Ba commit cũ giữ riêng ở mục 2.2 | Nền backend T01, T02/T03/T05 mới, PR/merge và liên kết tài khoản trên trang commit GitHub chưa được xác nhận |
 | Backlog | Issue #1–#11 đã đối chiếu với T01–T11: 89 ô/18 dấu tích | Commit hoặc tạo issue không đồng nghĩa hoàn thành task |
 
 [Bằng chứng kiểm chứng](../03-ky-thuat/practice-01-start-session.md#practice-results) lưu thời điểm, kết quả và giới hạn. Metadata Git không chứng minh tài khoản dùng để xác thực GitHub hoặc ai đã thực hiện phần việc. Phân công và tài khoản theo G02 được đối chiếu riêng với bằng chứng.
@@ -22,7 +22,7 @@
 
 Repository: [AudioQR_Kinh-thanh-Hue](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue). Bảng công việc: [Project 21](https://github.com/users/khaithanh2726-beep/projects/21/views/1). Thư mục làm việc đã ghi nhận: `C:\Study\Code\VS Code\AudioQR_Kinh-thanh-Hue`.
 
-**Đọc để tiếp tục:** [mục 2.12](#document-review-result) ghi điểm rà tài liệu trước T01; [mục 2.11](#current-t10-commit-result) là kết quả Git gần nhất; [mục 7](#guidance-protocol) quy định quyền và các mốc thao tác. Các mục 2.1–2.10 giữ sản phẩm và diễn biến bàn giao theo thời điểm, không thay trạng thái mới nhất. [Roadmap](roadmap.md) là nguồn checklist; phần này ghi bằng chứng và điểm tiếp tục.
+**Đọc để tiếp tục:** [mục 2.14](#local-commit-batch-20261109) ghi phạm vi đợt commit cục bộ được giao; [mục 2.13](#current-t01-docs-result) ghi kết quả push tài liệu T01; [mục 2.12](#document-review-result) ghi kết quả rà tài liệu; [mục 7](#guidance-protocol) quy định quyền và các mốc thao tác. Các mục trước giữ sản phẩm và diễn biến bàn giao theo thời điểm, không thay trạng thái mới nhất. [Roadmap](roadmap.md) là nguồn checklist; phần này ghi bằng chứng và điểm tiếp tục.
 
 <a id="issue-recreation"></a>
 
@@ -208,6 +208,28 @@ Checklist mục 3 roadmap và dấu tích được giữ nguyên. Hai câu trong
 Kiểm tra tĩnh toàn bộ 33 file ghi nhận 15 Markdown được biên tập, 1.222 dẫn chiếu nội bộ hợp lệ, bảng/khối mã hợp lệ. Đối chiếu bản trước/sau giữ nguyên toàn bộ bảy file lưu trữ, tám tài sản, các khối mã và 15 Mermaid; giữ bảng G02, quy ước 7.1, nguyên mục 3 roadmap và nội dung yêu cầu/AC. FR-K05 chỉ đổi số dẫn chiếu TDD từ 14 sang 10 theo bố cục mới. Danh sách commit backend đủ 86 file không trùng; 87 file nguồn/cấu hình gồm backend và .gitignore gốc khớp mã Hash của đợt kiểm kê comment trước đó. Không kiểm lại nguồn ngoài hoặc bản in sơ đồ trong đợt biên tập này.
 
 Điểm dừng là nhóm rà kết quả biên tập trước mốc A của commit tài liệu T01. Khi tiếp tục Git, chuyển metadata và tài khoản HTTPS sang Thành theo G02 rồi chọn nhánh T01 và stage đúng nhóm tài liệu; không chạy lại bootstrap T10. Chưa có bằng chứng stage/commit/push T01 mới từ đợt rà tài liệu này.
+
+<a id="current-t01-docs-result"></a>
+
+### 2.13. Commit/push tài liệu T01 và thứ tự bàn giao theo thành viên
+
+Đầu ra Terminal xác nhận commit `65807af9884b6f959808368ab39974ccc1ffb23d` trên T01 lúc 09/11/2026 00:13:53 +07, thông điệp `T01: Bổ sung tài liệu nghiệp vụ, thiết kế và hướng dẫn bàn giao`. Phạm vi 33 file tài liệu/tài sản, 12.703 dòng thêm; author và committer đều là KhaiThanh <khaithanh2726@gmail.com>. GCM liệt kê khaithanh2726-beep và gingpham; đầu ra này không kèm giá trị cấu hình chọn username HTTPS. Các cảnh báo khoảng trắng tương ứng định dạng Markdown và hồ sơ lịch sử đã được rà, không sửa lại các bản lưu chỉ để xóa cảnh báo.
+
+Push T01 thành công tới repository chính thức; HEAD và refs/heads/T01 trên origin cùng SHA trên. Trạng thái cuối T01...origin/T01, backend/ còn untracked. Chưa có URL PR/bằng chứng merge hoặc xác nhận liên kết tài khoản trên trang commit GitHub; không suy đăng nhập dùng để push chỉ từ metadata commit hay danh sách tài khoản GCM.
+
+Thứ tự tạo commit tiếp theo theo thành viên là phần hiện có của Thành trên T01 → T03 → T05, sau đó Hòa bàn giao T02. [Commit-plan mục 2](commit-plan-2026-11-05.md#commit-groups) là nguồn chính cho cách tạo nhánh và nhận phụ thuộc; thứ tự tích hợp main vẫn T01 → T02 → T03 → T05. Không đưa dữ liệu T02 vào commit Thành, không coi nhánh thiếu phụ thuộc là đã build/test đạt. T07/T11 chưa có nhóm nguồn độc lập đủ căn cứ; không tạo commit rỗng để đủ các task được phân công.
+
+Điểm tiếp tục là 12 file nền backend T01 và hai tài liệu commit-plan/handoff vừa cập nhật. Mốc A kiểm metadata, username HTTPS và staged đúng 14 file; mốc B kiểm commit/push/SHA và trạng thái. Các nhóm T03/T05 chưa stage/commit, T02 còn chờ bàn giao. Checklist giữ 89 ô/18 dấu tích; kết quả 168 test chỉ thuộc toàn cây ở thời điểm đã ghi, không thay cho kiểm chứng các nhánh trung gian. Mọi lệnh Git và thao tác GitHub tiếp tục do người vận hành thực hiện.
+
+<a id="local-commit-batch-20261109"></a>
+
+### 2.14. Đợt commit cục bộ ngày 09/11/2026
+
+Đã giao công cụ hỗ trợ trực tiếp kiểm Git, stage và commit toàn bộ sản phẩm hiện có theo các nhóm T01/T03/T05 của Thành rồi T02 của Hòa. Quyền này áp dụng cho đợt commit hiện tại, gồm kiểm nhánh/index/diff, tạo nhánh task và worktree tạm, kiểm metadata và kết quả commit. Các mốc A/B được công cụ hỗ trợ tự đối chiếu; không cần xác nhận sau từng nhóm đạt kiểm tra. Push, PR/merge và cập nhật issue/Project không thuộc phạm vi đợt này; quyền chung ở mục 7 tiếp tục áp dụng ngoài phạm vi được giao.
+
+Kiểm đầu vào xác nhận T01 ở 65807af, theo dõi origin/T01, index trống, hai tài liệu commit-plan/handoff có sửa đổi và backend/ còn untracked. Author/committer hiện là KhaiThanh <khaithanh2726@gmail.com>, cấu hình username HTTPS là khaithanh2726-beep. Kiểm kê đủ 86 file backend theo các nhóm 12/23/30/21, không trùng hoặc sót; đã lưu bản sao 120 file được Git theo dõi hoặc chưa bị ignore trước thao tác.
+
+Kế hoạch thực hiện là commit nền T01 trong thư mục chính, dùng worktree tạm để tạo T03 từ T01, T05 từ T03 và T02 từ T01. Cách này giữ đầy đủ các file đang mở trong thư mục chính; file thuộc task khác có thể vẫn hiện untracked trên T01 dù đã được lưu trong commit của nhánh tương ứng. Không tự tích hợp các nhánh để làm sạch trạng thái. Kết quả commit được ghi sau khi từng nhóm thực hiện thành công; chưa có bằng chứng mới về push/merge hoặc kiểm thử nhánh riêng.
 
 ## 3. Tài liệu bàn giao
 
