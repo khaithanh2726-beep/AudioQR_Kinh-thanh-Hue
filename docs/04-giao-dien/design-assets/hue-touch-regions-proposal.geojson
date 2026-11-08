@@ -1,0 +1,327 @@
+{
+  "type": "FeatureCollection",
+  "name": "Hue proposed touch regions v0.2",
+  "status": "DRAFT NOT APPROVED",
+  "source": "Archived OSM excerpt plus external reference way/285990343 not contained in the saved excerpt; proposed design only, not application configuration",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MAP-Z01",
+        "number": 1,
+        "name": "Cổng Ngọ Môn",
+        "source_ids": [
+          "way/172657562"
+        ],
+        "anchor": [
+          107.5791834,
+          16.46768245
+        ],
+        "method": "OSM building convex hull, expanded approximately 12 m for proposed tap target; not heritage boundary."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.57880059087942,
+              16.467501302659002
+            ],
+            [
+              107.57891379087943,
+              16.467354402659
+            ],
+            [
+              107.57913860912058,
+              16.467354402659
+            ],
+            [
+              107.57945950912058,
+              16.467569502659
+            ],
+            [
+              107.57956620912057,
+              16.467645002659
+            ],
+            [
+              107.57956620912057,
+              16.467860597340998
+            ],
+            [
+              107.57945070912058,
+              16.468010497340998
+            ],
+            [
+              107.57922589087943,
+              16.468010497340998
+            ],
+            [
+              107.57915039087942,
+              16.468008997341
+            ],
+            [
+              107.57904449087943,
+              16.467933997341
+            ],
+            [
+              107.57883179087942,
+              16.467783297340997
+            ],
+            [
+              107.57880059087942,
+              16.467716897341
+            ],
+            [
+              107.57880059087942,
+              16.467501302659002
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MAP-Z02",
+        "number": 2,
+        "name": "Điện Thái Hòa",
+        "source_ids": [
+          "way/531031566"
+        ],
+        "anchor": [
+          107.5783867,
+          16.46874345
+        ],
+        "method": "OSM building convex hull, expanded approximately 14 m for proposed tap target; not heritage boundary."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.57799635602598,
+              16.468614636435504
+            ],
+            [
+              107.57817865602598,
+              16.4683812364355
+            ],
+            [
+              107.57844094397402,
+              16.4683812364355
+            ],
+            [
+              107.57877704397401,
+              16.468622736435503
+            ],
+            [
+              107.57877704397401,
+              16.468874263564498
+            ],
+            [
+              107.57859624397402,
+              16.4691056635645
+            ],
+            [
+              107.57833395602599,
+              16.4691056635645
+            ],
+            [
+              107.57829365602598,
+              16.469093663564497
+            ],
+            [
+              107.57802105602599,
+              16.4688977635645
+            ],
+            [
+              107.57799635602598,
+              16.4688661635645
+            ],
+            [
+              107.57799635602598,
+              16.468614636435504
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MAP-Z03",
+        "number": 3,
+        "name": "Tử Cấm Thành",
+        "source_ids": [
+          "node/2899189013",
+          "way/285990343",
+          "way/285990348"
+        ],
+        "source_provenance": {
+          "checked_against_local_excerpt_on": "2026-11-01",
+          "archived_source_file": "hue-osm-source.json",
+          "archived_source_timestamp_osm_base": "2026-10-31T15:46:50Z",
+          "source_ids_present_in_archive": ["node/2899189013", "way/285990348"],
+          "external_source_references": [
+            {
+              "source_id": "way/285990343",
+              "url": "https://www.openstreetmap.org/way/285990343",
+              "availability": "not_present_in_saved_excerpt; external_reference_only",
+              "retrieval_in_this_update": "not_retrieved_or_reverified",
+              "retrieved_at": null
+            }
+          ],
+          "note": "No new source snapshot; do not infer the external object shares the archive timestamp. Existing anchors, geometry, source_ids and approval status are unchanged; heritage boundaries remain unverified."
+        },
+        "anchor": [
+          107.577755,
+          16.4694914
+        ],
+        "method": "Manually proposed overview selection area around central compound using OSM landmarks; not a full historic or legal perimeter."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.57868,
+              16.469525
+            ],
+            [
+              107.57718,
+              16.471485
+            ],
+            [
+              107.57582,
+              16.470515
+            ],
+            [
+              107.57732,
+              16.468555
+            ],
+            [
+              107.57868,
+              16.469525
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MAP-Z04",
+        "number": 4,
+        "name": "Cửu Đỉnh",
+        "source_ids": [
+          "node/6533792057",
+          "node/6533792058",
+          "node/6533792064",
+          "way/172657564"
+        ],
+        "anchor": [
+          107.5769794,
+          16.4668321
+        ],
+        "method": "Proposed court strip around urn POIs near Hien Lam pavilion; not nine verified object footprints."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.57659,
+              16.46665
+            ],
+            [
+              107.57688,
+              16.46643
+            ],
+            [
+              107.57738,
+              16.46706
+            ],
+            [
+              107.57709,
+              16.46728
+            ],
+            [
+              107.57659,
+              16.46665
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MAP-Z05",
+        "number": 5,
+        "name": "Cung Diên Thọ",
+        "source_ids": [
+          "way/172763420"
+        ],
+        "anchor": [
+          107.5754008,
+          16.46889155
+        ],
+        "method": "OSM named main building expanded approximately 22 m; proposed representative target, not the whole palace complex."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              107.57498121661226,
+              16.468694071541503
+            ],
+            [
+              107.57501901661226,
+              16.4686437715415
+            ],
+            [
+              107.57512981661226,
+              16.468498671541504
+            ],
+            [
+              107.57554198338774,
+              16.468498671541504
+            ],
+            [
+              107.57582038338774,
+              16.4686936715415
+            ],
+            [
+              107.57582038338774,
+              16.469088928458497
+            ],
+            [
+              107.57568108338774,
+              16.4692730284585
+            ],
+            [
+              107.57567238338774,
+              16.469284428458497
+            ],
+            [
+              107.57526021661226,
+              16.469284428458497
+            ],
+            [
+              107.57498121661226,
+              16.469089328458498
+            ],
+            [
+              107.57498121661226,
+              16.468694071541503
+            ]
+          ]
+        ]
+      }
+    }
+  ],
+  "license": "ODbL-1.0",
+  "attribution": "OpenStreetMap contributors; proposed touch-region shapes by project documentation author",
+  "license_url": "https://www.openstreetmap.org/copyright"
+}
