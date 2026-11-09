@@ -11,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 import vn.hueqr.backend.entity.Place;
 
 public interface PlaceRepository extends JpaRepository<Place, UUID> {
+	java.util.List<Place> findAllByVisibleTrueOrderByIdAsc();
+
 	// Q1 bỏ phân biệt hoa thường nhưng vẫn phân biệt dấu, khác collation mặc định của bảng
 	@Query(value = "SELECT COUNT(*) FROM place WHERE display_name COLLATE utf8mb4_0900_as_ci = :name", nativeQuery = true)
 	long countWithEquivalentName(@Param("name") String name);

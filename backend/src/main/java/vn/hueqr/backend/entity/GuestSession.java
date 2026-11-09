@@ -66,6 +66,21 @@ public class GuestSession {
 	@Column(name = "ended_at", columnDefinition = "DATETIME(6)")
 	private Instant endedAt; // Thời điểm kết thúc chủ động, null khi chưa kết thúc chủ động
 
+	@JdbcTypeCode(Types.CHAR)
+	@Column(name = "current_language", length = 2)
+	private String currentLanguage; // Ngôn ngữ đang chọn, không sửa ngôn ngữ bắt đầu
+
+	@JdbcTypeCode(Types.BINARY)
+	@Column(name = "document_nonce", length = 16)
+	private UUID documentNonce; // Mã document đang sở hữu lựa chọn sau khi khôi phục
+
+	@Column(name = "selection_seq", nullable = false)
+	private long selectionSeq; // Thứ tự lựa chọn đã nhận trong document hiện tại
+
+	@JdbcTypeCode(Types.BINARY)
+	@Column(name = "current_opening_id", length = 16)
+	private UUID currentOpeningId; // Khóa lần mở hiện tại, database kiểm lần mở thuộc phiên này
+
 	protected GuestSession() {
 	}
 
@@ -83,6 +98,7 @@ public class GuestSession {
 		this.startTicketDigest = startTicketDigest.clone();
 		this.displayName = displayName;
 		this.initialLanguage = initialLanguage;
+		this.currentLanguage = initialLanguage;
 		this.startedAt = startedAt;
 		this.expiresAt = expiresAt;
 	}
@@ -141,5 +157,36 @@ public class GuestSession {
 
 	public void endAt(Instant endedAt) {
 		this.endedAt = endedAt;
+		this.currentOpeningId = null;
+		this.currentLanguage = null;
+	}
+
+	public String getCurrentLanguage() {
+		return currentLanguage;
+	}
+
+	public UUID getDocumentNonce() {
+		return documentNonce;
+	}
+
+	public long getSelectionSeq() {
+		return selectionSeq;
+	}
+
+	public UUID getCurrentOpeningId() {
+		return currentOpeningId;
+	}
+
+	public void resumeDocument(UUID nonce) {
+		if (!nonce.equals(documentNonce)) {
+			documentNonce = nonce;
+			selectionSeq = 0;
+		}
+	}
+
+	public void select(UUID openingId, String language, long seq) {
+		currentOpeningId = openingId;
+		currentLanguage = language;
+		selectionSeq = seq;
 	}
 }
