@@ -379,6 +379,26 @@ Bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-apply-pair-sa9jc86n\backend`,
 
 Đã dọn 7 container MySQL Testcontainers đã dừng từ lượt kiểm bị ngắt, cùng session kiểm thử `68822daa-5774-4cf1-bf3f-a91a04049f16`. Giữ container `hue-qr-dev-mysql-1` đang dừng, không kết nối database đó, xóa image hoặc volume. `container-cleanup.json` trong thư mục kiểm giữ Id/trạng thái và kiểm kê sau dọn.
 
+<a id="commit-push-20261109"></a>
+
+### 2.25. Bàn giao commit/push phần Thành và Hòa ngày 09/11/2026
+
+Bộ nguồn bàn giao được chốt riêng trước khi commit: 194 file backend khớp bản hồi quy 397 test đạt tại mục 2.24 và 11 tài liệu thay đổi. Các file mới hoặc chỉnh sửa phát sinh sau mốc chốt thuộc lượt triển khai tiếp theo, không tự nhập vào nhóm này. Mỗi task giữ phân công G02, metadata và tài khoản xác thực tương ứng; kết quả commit/push không xác nhận hoàn thành toàn issue.
+
+| Task / tài khoản | Commit sản phẩm | Nội dung |
+| --- | --- | --- |
+| T01 / `khaithanh2726-beep` | `f8f1c9a` | Thiết kế, bằng chứng kiểm thử và phân nhóm bàn giao |
+| T02 / `gingpham` | `b6d39fc` | V5–V10, Entity/Repository, seed riêng và kiểm dữ liệu |
+| T05 / `khaithanh2726-beep` | `462d94b` | Quản trị vùng, văn bản, hồ sơ/cặp áp dụng, bật-ẩn và thống kê |
+| T07 / `khaithanh2726-beep` | `a676989` | Hàng đợi TTS, worker WAV, provider và phục hồi tác vụ |
+| T03 / `khaithanh2726-beep` | `671c3b5` | K03/K05–K10, snapshot/grant/ACK, tải audio và thu hồi khi kết thúc |
+
+T02 nhận nền `origin/main` đã merge T01/T02 và thiết kế T01 mới; T05 nhận nền dữ liệu/API phiên và T07; T03 nhận cặp áp dụng/TTS trước khi bổ sung nội dung khách. Đây là các lần nhận phụ thuộc trên nhánh task, không phải merge PR vào main. Từng commit trung gian chưa được build độc lập; cây backend đầy đủ tại T03 được đối chiếu với nguồn đã kiểm, không suy từ tên nhánh thành phạm vi diff của một PR.
+
+Kết quả push và các đầu nhánh đã đối chiếu được ghi tại [commit-plan mục 4.12](commit-plan-2026-11-05.md#commit-push-result-20261109). Bảng trên ghi commit sản phẩm, không cố định HEAD sau các commit nhận phụ thuộc hoặc cập nhật tài liệu. Thư mục IDE giữ nhánh T01 để bảo vệ công việc triển khai song song; backend hiện thành untracked tại T01 vẫn có thể đã được lưu trên T02/T03/T05/T07. Không stage lại toàn thư mục chỉ dựa vào trạng thái untracked trên T01.
+
+**Điểm dừng:** chưa commit/push 14 file frontend T04 và chưa thao tác T06; chờ đăng nhập tài khoản Nghĩa theo yêu cầu. Chưa merge PR mới, đổi main/Project hoặc tích issue. Trước lượt Git tiếp theo, kiểm lại nhánh/index, phần việc mới và phụ thuộc; không chạy lại kế hoạch khởi tạo repository.
+
 ## 3. Tài liệu bàn giao
 
 | Nội dung | Nguồn chính |

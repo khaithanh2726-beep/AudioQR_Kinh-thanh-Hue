@@ -6,6 +6,8 @@
 
 **Tổ chức dự án:** Thành, Hòa và Nghĩa phụ trách theo [G02](02-nghiep-vu/decisions.md#g02), làm việc trên ba máy riêng và bàn giao qua repository chung. Quy trình phối hợp và kiểm chứng tại [handoff mục 7](01-tong-quan/handoff.md#guidance-protocol).
 
+**Bàn giao Git ngày 09/11:** bộ nguồn đã kiểm của Thành/Hòa được chốt và commit theo task; kết quả push, phụ thuộc và điểm dừng trước phần Nghĩa tại [handoff 2.25](01-tong-quan/handoff.md#commit-push-20261109) và [commit-plan 4.12](01-tong-quan/commit-plan-2026-11-05.md#commit-push-result-20261109). File phát sinh sau mốc chốt thuộc lượt tiếp theo; commit không tự hoàn thành issue.
+
 
 **Mốc nội dung khách và frontend ngày 09/11:** V10/K03/K05–K10, grant/ACK/tải MP3/READ claim và kết quả kiểm tại [API 11.9](03-ky-thuat/api-transactions.md#guest-content-test-result). [Frontend khách](../frontend/README.md) có nguồn Vue, 13 ca logic Playback V8 đạt, chưa resolve/lockfile/build hoặc browser. Điểm tiếp tục tại [handoff 2.24](01-tong-quan/handoff.md#guest-content-frontend-result); không coi source có sẵn là hoàn tất T03/T04.
 
