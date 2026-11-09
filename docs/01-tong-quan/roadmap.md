@@ -1,6 +1,7 @@
 # Roadmap — Backlog 11 issue và tiến độ theo bằng chứng
 
 **Phiên bản nội dung:** 0.11, rà soát bàn giao 08/11/2026. **Trạng thái:** backlog 11 issue/89 ô/18 dấu tích đã được duyệt theo G02. Issue #1–#11 được tạo và đọc lại ngày 08/11. Project có đủ 11 issue, 6 In Progress/5 Todo/0 Done theo xác nhận vận hành ngày 08/11, chưa có lần kiểm trực tiếp mới. Phân công không chứng minh thành viên đã thực hiện hoặc hoàn thành task.
+**Checklist local ngày 09/11:** 89 ô/20 dấu tích, giữ nguyên bản lưu đầu lượt; mốc GitHub đã đối chiếu là 18 dấu tích, chưa kiểm lại. Chi tiết tại [mục 6.5](#local-checklist-20261109).
 **Mục đích:** tra phạm vi, phân công, phụ thuộc và lịch dự kiến. Bảng tổng quan cập nhật theo bằng chứng backend và xác nhận Project ngày 08/11/2026, các snapshot cũ giữ theo thời điểm. Điểm dừng và bằng chứng mới nhất ở [handoff](handoff.md#next-step).
 **Giới hạn:** checklist và thiết kế không thay bằng chứng phần mềm. Quy trình phối hợp, quyền thao tác và mốc bàn giao tại [handoff mục 7](handoff.md#guidance-protocol). Trạng thái Git và sản phẩm được cập nhật theo kết quả thực tế, không theo kế hoạch dự kiến.
 
@@ -18,7 +19,7 @@ Dự án đã có nhiều kết quả phân tích và tài liệu trước khi t
 | Cây làm việc và Git | Ba commit/push T10/T01 tại repository hiện có đã được đối chiếu qua đầu ra Terminal; nguồn và giới hạn tại [handoff mục 2.2](handoff.md#bootstrap-result). Comment và hình Use Case đã được bổ sung ngày 08/11; đích chính thức đã nhận, trạng thái Git/issue cần được đối chiếu trước hướng dẫn tiếp theo. |
 | Sản phẩm kỹ thuật và hướng dẫn vận hành | TDD/model/API/operations theo DATA-05, V1–V4, K11/K01/K02/K04, xác thực Admin, A31/A06/tạo điểm ẩn A08 và phần đọc/sửa tên A07/A09 đã có kiểm chứng trong bộ 168 test. [Bằng chứng ngày 08/11](../03-ky-thuat/api-transactions.md#admin-place-test-result). Chưa toàn TDD/schema/T03/T05 hoặc môi trường phục vụ |
 | [D06 — năm nháp vi](../02-nghiep-vu/decisions.md#d06) | Đã có báo cáo về năm bản nháp tiếng Việt; chưa xác nhận bản lưu trong repo, chưa có bằng chứng rà soát/duyệt. Không tự dựng lại hoặc tích hoàn tất T08. |
-| TTS, URL demo và bằng chứng phần mềm | Đã khảo sát chính thức, chọn model/Charon/WAV-MP3/Linux; chọn thử ngrok, chưa URL thật/usage/quota tài khoản hoặc pipeline/test. Không dùng sáu MP3 demo làm bằng chứng hệ thống chính. |
+| TTS, URL demo và bằng chứng phần mềm | Đã khảo sát chính thức, chọn model/Charon/WAV-MP3/Linux; chọn thử ngrok, chưa URL thật/usage/quota tài khoản hoặc pipeline/provider thật. Worker/WAV/Check/Retry có bằng chứng backend riêng; chưa provider/quota thật hoặc FFmpeg/MP3/audio hoàn chỉnh. Không dùng sáu MP3 demo làm bằng chứng hệ thống chính. |
 
 Nguồn FR/UC/AC/NFR vẫn ở PRD. Bằng chứng checklist GitHub ở mục 6 được ghi theo ngày đối chiếu, không mặc định đã được kiểm lại. Phân công và người commit theo G02; tiến độ xác định bằng sản phẩm và bằng chứng.
 
@@ -31,12 +32,12 @@ Nguồn FR/UC/AC/NFR vẫn ở PRD. Bằng chứng checklist GitHub ở mục 6 
 | Mã task | Người phụ trách theo G02 | Người commit theo kế hoạch nhóm | Tiến độ công việc theo bằng chứng | Căn cứ ngắn |
 | --- | --- | --- | --- | --- |
 | [T01](#t01) | Thành | Thành | Đang thực hiện | Nghiệp vụ/PRD/hướng UI và công nghệ nền đã chốt; tương thích/môi trường/TDD/roadmap triển khai chưa hoàn tất. |
-| [T02](#t02) | Hòa | Hòa | Đang thực hiện | V1–V4 gồm phiên khách, địa điểm/vùng, tài khoản và window/receipt; FK/UK/mapping và nâng V1 có dữ liệu lên V2 đã kiểm. Toàn schema/FK/seeds chưa hoàn tất, xem handoff mục 2.6–2.8 |
-| [T03](#t03) | Thành | Thành | Đang thực hiện | K11/K01/K02 và phần kết thúc K04 đã kiểm, tiếp tục có hồi quy trong bộ backend mới. Còn grant/nội dung/audio/lượt xem và các ca tích hợp |
-| [T04](#t04) | Nghĩa | Nghĩa | Chưa bắt đầu | Có thiết kế tại T01, chưa có giao diện ứng dụng hoạt động. |
-| [T05](#t05) | Thành | Thành | Đang thực hiện | Đã kiểm xác thực/CSRF/Q3, window/receipt, tạo điểm ẩn, đọc cơ bản và sửa tên/If-Match. Còn Q2 frontend, điều kiện bật hiện, vùng/cặp, ẩn/hiện/xóa và nghiệp vụ quản trị khác |
+| [T02](#t02) | Hòa | Hòa | Đang thực hiện | V1–V10 gồm phiên, nội dung/audio/cặp, opening/grant/READ claim; seed riêng 5 điểm/20 ngăn trống đã kiểm. Còn dọn vòng đời/nội dung được duyệt, xem [handoff 2.24](handoff.md#guest-content-frontend-result) |
+| [T03](#t03) | Thành | Thành | Đang thực hiện | K03/K05–K10, grant/ACK/tải MP3 và thu hồi quyền đã kiểm cùng nền phiên. Còn browser/Blob/owner, dọn metadata/D08 và tích hợp theo [bằng chứng](../03-ky-thuat/api-transactions.md#guest-content-test-result) |
+| [T04](#t04) | Nghĩa | Nghĩa | Đang triển khai nguồn, chưa build/kiểm browser | Có [nguồn Vue khách](../../frontend/README.md); 13 ca Playback V8 đạt, chưa Node/npm/lockfile/build hoặc giao diện hoạt động được kiểm chứng. |
+| [T05](#t05) | Thành | Thành | Đang thực hiện | Đã kiểm xác thực/CSRF/Q3, window/receipt, địa điểm/vùng/nháp/hồ sơ, áp dụng cặp/bật-ẩn/mức đầy đủ và báo cáo. Còn Q2/frontend, MP3/preview/nội dung thật, xóa/dọn và nghiệp vụ quản trị khác; [bằng chứng](../03-ky-thuat/api-transactions.md#admin-pair-visibility-test-result) |
 | [T06](#t06) | Nghĩa | Nghĩa | Chưa bắt đầu | Hướng thiết kế đã chốt, chưa có UI Admin hoạt động. |
-| [T07](#t07) | Thành | Thành | Đang thực hiện | Đã chọn model/giọng và khảo sát chính thức; tích hợp/thử thật/quota và bốn ngôn ngữ chưa kiểm chứng. |
+| [T07](#t07) | Thành | Thành | Đang thực hiện | Đã chọn model/giọng; worker/WAV/Check/Retry được kiểm theo [bằng chứng 09/11](../03-ky-thuat/api-transactions.md#worker-report-test-result). Provider/MP3/pipeline/quota và bốn ngôn ngữ thật chưa kiểm chứng. |
 | [T08](#t08) | Thành, Nghĩa, Hòa | Thành, Nghĩa, Hòa theo phần phụ trách | Đang thực hiện | Đã có báo cáo về năm bản nháp vi; chưa xác minh bản lưu trong repo hoặc rà soát/duyệt; chưa tích hoàn tất nội dung. |
 | [T09](#t09) | Hòa | Hòa | Chưa bắt đầu nghiệm thu toàn hệ thống | Có bằng chứng kiểm thử nền/backend; chưa phải bộ nghiệm thu FR/UC/AC toàn hệ thống của T09. |
 | [T10](#t10) | Hòa | Hòa | Đang thực hiện | Đã có quy ước Txx/commit tiếng Việt và commit/push khởi tạo main theo handoff mục 2.2. Còn chờ xác nhận liên kết tài khoản trên GitHub; CI/CD và demo chưa có bằng chứng đạt. |
@@ -50,7 +51,7 @@ Nguồn FR/UC/AC/NFR vẫn ở PRD. Bằng chứng checklist GitHub ở mục 6 
 
 ## 3. Nội dung 11 issue — kế thừa bản đã duyệt, thay đổi local ghi rõ
 
-Mỗi issue gồm **Description và một Checklist**. Giữ nguyên 11 task/89 ô/18 dấu tích và phân công đã duyệt; không tách thành từng file/class/hàm. Các dấu tích chỉ ghi nhận kết quả trong phạm vi có căn cứ, không xác nhận tích hợp/vận hành toàn hệ thống và không biểu thị phần trăm hoàn thành đồ án. Phần checklist giữ nguyên văn đã đối chiếu với issue; hai cách gọi bàn giao cũ trong T01/T08 được giữ để không thay nội dung issue trong đợt biên tập này.
+Mỗi issue gồm **Description và một Checklist**. Giữ nguyên 11 task/89 ô và phân công đã duyệt; mốc đối chiếu GitHub có 18 dấu tích, bản local hiện có 20 theo mục 6.5. Không tách thành từng file/class/hàm hoặc tự sửa các dấu tích. Các dấu tích chỉ ghi nhận kết quả trong phạm vi có căn cứ, không xác nhận tích hợp/vận hành toàn hệ thống và không biểu thị phần trăm hoàn thành đồ án. Phần checklist giữ nguyên văn đã đối chiếu với issue; hai cách gọi bàn giao cũ trong T01/T08 được giữ để không thay nội dung issue trong đợt biên tập này.
 
 <a id="t01"></a>
 
@@ -92,7 +93,7 @@ Thiết kế và xây dựng cấu trúc dữ liệu theo T01/TDD, cung cấp đ
 #### Checklist
 
 - [ ] Thiết kế bảng/quan hệ cho địa điểm, vùng, văn bản, audio/cặp, hồ sơ, yêu cầu tạo, phiên và lượt xem; đã có ERD logic dự thảo tại data-model hiện hành, chờ rà soát/mapping.
-- [ ] Giữ định danh độc lập tên và thông tin nhận biết lịch sử địa điểm đã xóa, không gộp điểm trùng tên.
+- [x] Giữ định danh độc lập tên và thông tin nhận biết lịch sử địa điểm đã xóa, không gộp điểm trùng tên.
 - [ ] Thiết lập ràng buộc và khóa ngoại chặn xóa trực tiếp khi còn tham chiếu ở quan hệ cần chặn; không dùng ON DELETE CASCADE tại đó.
 - [ ] Viết migrations và dữ liệu khởi tạo tái tạo được cho năm điểm/bốn ngôn ngữ; không phục vụ nội dung chưa duyệt hoặc đưa secret vào repo.
 - [ ] Kiểm tra migrations, khởi tạo và ràng buộc; lưu bằng chứng phù hợp TDD, bàn giao cho Backend và T09.
@@ -237,7 +238,7 @@ Hòa phụ trách quy trình cộng tác, CI/CD và môi trường demo, cung c�
 #### Checklist
 
 - [x] Ghi nhận nền repo cục bộ có .git và .gitignore gốc; chỉ xác minh sự hiện diện.
-- [ ] Kiểm tra hiện trạng Git/remote/nhánh và thống nhất quy trình cộng tác khi được giao; chưa suy ra từ tên người hoặc file hiện có.
+- [x] Kiểm tra hiện trạng Git/remote/nhánh và thống nhất quy trình cộng tác khi được giao; chưa suy ra từ tên người hoặc file hiện có.
 - [x] Ghi phương án thử ngrok Free/TECH-03 và nguồn domain-quota-trang trung gian tại technical-inputs mục 5; không đăng ký/cài/triển khai.
 - [x] Ghi TECH-05/DATA-03: CD-L01 Tailscale riêng + OpenSSH Windows/PowerShell và phạm vi-nhịp backup đã chọn, chưa kiểm.
 - [ ] Kiểm SSH và quyền/context Docker Desktop của tài khoản triển khai trước triển khai đầy đủ; kiểm ngrok/URL/HTTPS/QR khác mạng/quota/persistence.
@@ -295,12 +296,12 @@ Cổng 07/11 hoặc 10/11 trễ: báo thiếu sản phẩm nào, phụ thuộc v
 
 ### 6.1. Bản đã duyệt và dấu tích có căn cứ
 
-Nguồn của tiêu đề, Description và Checklist là **mục 3**. Backlog 89 ô/18 dấu tích được duyệt ngày 06/11/2026; trạng thái kiểm chứng được ghi theo từng task.
+Nguồn của tiêu đề, Description và Checklist là **mục 3**. Backlog 89 ô/18 dấu tích được duyệt ngày 06/11/2026; bảng dưới giữ số đếm tại mốc đó. Hai dấu tích local bổ sung ngày 09/11 được ghi riêng tại mục 6.5, chưa suy thành GitHub đã cập nhật.
 
 | Task | Tổng ô | Đã tích | Phạm vi của dấu tích |
 | --- | --- | --- | --- |
 | T01 | 18 | 12 | Bảy kết quả phân tích/tài liệu cũ và năm mục ghi công nghệ, đầu vào, khảo sát, mốc phiên bản, chính sách đã chọn; chưa toàn TDD/môi trường/roadmap triển khai |
-| T02 | 5 | 0 | V1/V2 phiên khách và địa điểm/vùng đã kiểm, chưa đủ toàn mô hình/FK/migrations/seeds |
+| T02 | 5 | 0 | V1–V9/audio/cặp và seed riêng đã kiểm, bằng chứng tại data-model 7.5; các dấu tích giữ nguyên bản đã đối chiếu, chưa toàn mô hình/quyền hoặc dữ liệu duyệt |
 | T03 | 6 | 0 | K11/K01/K02 và phần kết thúc K04 đã kiểm backend, còn grant/nội dung/audio/lượt xem và điều kiện toàn ô |
 | T04 | 7 | 0 | Chưa frontend khách được kiểm |
 | T05 | 9 | 0 | Xác thực/Q3, window/receipt, tạo/đọc/sửa tên có bằng chứng; chưa đủ Q2 tích hợp hoặc toàn ô nghiệp vụ quản trị |
@@ -361,6 +362,23 @@ Phân loại này được đề xuất theo bằng chứng sản phẩm và đ�
 Sau khi nền xác thực Admin có kết quả tại [handoff mục 2.7](handoff.md#admin-auth-result), đề xuất chuyển riêng T05/#5 từ Todo sang In Progress. Nếu được cập nhật, Project sẽ có 7 In Progress và 4 Todo. Chưa có xác nhận thao tác này, bảng trên tiếp tục giữ trạng thái thực tế được báo cáo gần nhất.
 
 Issue #1–#11 đã được tạo và đối chiếu theo hai URL chính thức, đã thêm vào Project theo xác nhận vận hành. Mọi thao tác sửa/tích/đóng issue tiếp tục do người vận hành thực hiện trừ hành động cụ thể được giao thêm. Nguồn phát hành tiếp tục là mục 3, giữ nguyên 89 ô/18 dấu tích.
+
+<a id="local-checklist-20261109"></a>
+
+### 6.5. Checklist local ngày 09/11/2026
+
+Bản lưu được đọc đầu đợt V9 đã có 89 ô/20 dấu tích: T01 12, T02 1, T07 3, T10 4; các task khác 0. Hai ô bổ sung so với mốc đối chiếu GitHub là T02 ô 2 (định danh/lịch sử địa điểm) và T10 ô 2 (kiểm Git/remote/nhánh và quy trình cộng tác), đúng hai kết quả đã được rà trước đó. Giữ nguyên toàn bộ tiêu đề, Description, Checklist và dấu tích của bản lưu; đợt V9 không tự tích thêm ô.
+
+V9/audio/cặp và seed năm điểm/20 ngăn có bằng chứng tại [data-model 7.5](../03-ky-thuat/data-model.md#model-audio-pair-result); không tự coi toàn T02 hoàn tất. Bảng 6.1 và các kết quả 06–08/11 giữ mốc 18 dấu tích. Chưa đọc lại nội dung issue/Project trong lượt này, không khẳng định GitHub cũng đã có 20 dấu tích hoặc đổi Status. Không quy đổi số ô thành phần trăm hoàn thành đồ án.
+
+
+<a id="guest-content-progress"></a>
+
+### 6.6. Mốc backend nội dung khách và nguồn frontend ngày 09/11
+
+[Handoff 2.24](handoff.md#guest-content-frontend-result) và [bằng chứng API](../03-ky-thuat/api-transactions.md#guest-content-test-result) ghi V10/K03/K05–K10, kiểm backend và nguồn Vue khách chưa build. Giữ nguyên toàn mục 3 và 89 ô/20 dấu tích; chưa coi các ca backend hoặc nguồn frontend là đủ nghiệm thu một ô T03/T04. Không cập nhật GitHub trong đợt này.
+
+Theo sản phẩm hiện có, đề xuất thêm T04/#4 vào In Progress cùng đề xuất T05/#5 trước đó. Nếu cả hai được đặt thì có 8 In Progress/3 Todo/0 Done. Đây là đề xuất; trạng thái được xác nhận gần nhất ở mục 6.4 vẫn 6 In Progress/5 Todo/0 Done, không ghi kế hoạch thành thao tác đã làm.
 
 ## 7. Nhật ký và snapshot theo thời điểm
 

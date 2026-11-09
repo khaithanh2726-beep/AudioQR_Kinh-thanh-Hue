@@ -1096,6 +1096,15 @@ Bảng này tổng hợp [PRD mục 9](../02-nghiep-vu/PRD.md#prd-open-classific
 
 Hiện có TDD hiện hành/API 0.4/model 0.3/operations 0.3, roadmap 0.11/đầu vào 0.7. DATA-05 chốt vé Bắt đầu ký 24 giờ xử lý ở nền, không context/generation hoặc bước/màn hình/đồng hồ mới. Vé hết trước gửi đầu chuẩn bị mới nền/giữ form; pending giữ vé/key/quyền, không tự S2; lookup đã tạo vẫn kiểm đủ dù vé hết hạn. DATA-04/REC/backup và các hướng UI khác giữ, không JWT Admin. Backend đã có mã và kiểm thử theo [handoff](../01-tong-quan/handoff.md#next-step). UI ứng dụng, browser/audio và đồ họa cụ thể chưa có bằng chứng tích hợp hoặc được duyệt theo gói; ảnh thiết kế không thay kiểm thử giao diện.
 
+
+<a id="ui-guest-source-result"></a>
+
+### 12.4. Nguồn giao diện khách ngày 09/11/2026
+
+[Frontend Vue khách](../../frontend/README.md) đã có nguồn form bắt đầu, phiên/owner document, vùng từ API/chọn ứng viên, bài đọc/audio, cảnh báo và box hết hạn/kết thúc. Không lấy tài sản vùng đề xuất tại mục 7 làm ranh giới phục vụ, chưa nền bản đồ được duyệt. 13 ca logic Playback đạt với đối tượng audio/clock giả và script qua kiểm cú pháp; chưa resolve dependency, lockfile, build Vue, compile template/CSS/DOM, browser, điện thoại hoặc duyệt các nhãn dịch trong source.
+
+Các hướng UI-01–UI-05, mã màn hình và điều kiện nghiệm thu giữ nguyên. Đây là mốc nguồn triển khai T04, không hình đã duyệt hoặc phần mềm đã được kiểm trên thiết bị; T06/Admin chưa triển khai giao diện. Tiếp tục kiểm build/API/owner/audio/expiry và phần lỗi chưa rõ/version, khả năng tiếp cận theo [handoff 2.24](../01-tong-quan/handoff.md#guest-content-frontend-result).
+
 <a id="ui-history"></a>
 
 ## 13. Nhật ký và dấu vết thay thế

@@ -8,9 +8,9 @@ Nhóm thực hiện gồm **Thành, Hòa và Nghĩa**. Phân công trách nhiệ
 - **Quản lý công việc:** [Project 21](https://github.com/users/khaithanh2726-beep/projects/21/views/1).
 - **Tài liệu:** bắt đầu tại [mục lục](docs/README.md), tra yêu cầu tại [PRD](docs/02-nghiep-vu/PRD.md) và trạng thái bàn giao tại [handoff](docs/01-tong-quan/handoff.md).
 
-**Trạng thái ngày 08/11/2026.** Nghiệp vụ và phạm vi yêu cầu đã rõ được phê duyệt, các hướng UI/công nghệ được xác nhận theo từng phần. Tài liệu kỹ thuật còn các nội dung dự thảo. Backend đã có V1–V4, K11/K01/K02/K04, xác thực Admin A01–A05, cửa sổ lệnh/receipt/tạo điểm ẩn A31/A06/A08 và phần đọc/sửa tên A07/A09, đạt 168 test hồi quy với MySQL tạm và HTTP localhost. Toàn T02/T03/T05, điều kiện bật hiện/vùng/cặp/xóa, grant/nội dung/audio, frontend, CI/CD và triển khai/backup/restore thực tế còn cần kiểm chứng. [Bằng chứng ngày 08/11](docs/03-ky-thuat/api-transactions.md#admin-place-test-result)
+**Trạng thái ngày 09/11/2026.** Backend có V1–V10, nền quản trị/worker WAV, cặp áp dụng và nội dung khách qua opening/grant/ACK/tải trọn MP3/READ claim. 397 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0, 09/11/2026 22:26:24 +07; [bằng chứng và giới hạn](docs/03-ky-thuat/api-transactions.md#guest-content-test-result). [Frontend Vue khách](frontend/README.md) đã có nguồn, 13 ca logic Playback V8 đạt, chưa resolve/build hoặc kiểm browser. Còn frontend Admin, owner/Blob/clock trên thiết bị, FFmpeg/MP3/provider thật, bộ nội dung/vùng được duyệt, xóa/dọn, CI/CD và triển khai/backup/restore. Nguồn có sẵn và test backend không tự hoàn tất issue.
 
-Backlog hiện hành gồm **11 task, 89 ô checklist và 18 dấu tích có căn cứ** tại [roadmap](docs/01-tong-quan/roadmap.md). Các dấu tích không biểu thị phần trăm hoàn thành đồ án. Trạng thái Git và các mốc chưa có bằng chứng được theo dõi tại handoff.
+Backlog hiện hành gồm **11 task, 89 ô checklist; bản local có 20 dấu tích, mốc GitHub đã đối chiếu có 18** tại [roadmap](docs/01-tong-quan/roadmap.md). Các dấu tích không biểu thị phần trăm hoàn thành đồ án. Trạng thái Git và các mốc chưa có bằng chứng được theo dõi tại handoff.
 
 ## Cấu trúc thực tế
 
@@ -19,7 +19,8 @@ AudioQR_Kinh-thanh-Hue/
 ├── README.md
 ├── .gitignore
 ├── .git/                         # chỉ ghi nhận hiện diện, không thao tác
-├── backend/                      # khung Spring Boot, guest_session và vé/API Bắt đầu đã có test
+├── frontend/                     # nguồn Vue khách; chưa resolve/build/kiểm browser
+├── backend/                      # Spring Boot ba lớp, V1–V10 và API đã có kiểm thử
 │   ├── pom.xml
 │   ├── mvnw / mvnw.cmd
 │   ├── .mvn/wrapper/
@@ -39,7 +40,7 @@ AudioQR_Kinh-thanh-Hue/
 
 ## Khung định hướng — chưa tạo hoặc triển khai
 
-- frontend/ dự kiến có README, src, public, tests và mẫu môi trường theo công nghệ đã chọn. Backend hiện có V1 guest_session, V2 place/region_revision, V3 admin_account, V4 admin_command_window/operation_receipt, API khách và phần quản trị đã nêu ở trạng thái, theo [package chia lớp](docs/03-ky-thuat/TDD.md#tdd-packages). Toàn schema, dữ liệu khởi tạo và các API khác vẫn chưa hoàn tất.
+- Frontend Admin và đóng gói Vue cùng backend còn phải triển khai/kiểm. Frontend khách hiện có README/src/tests/package.json theo bộ phiên bản đã chọn; backend theo [package chia lớp](docs/03-ky-thuat/TDD.md#tdd-packages). Toàn schema/vòng đời, dữ liệu được duyệt và các API còn lại chưa hoàn tất.
 - docs/05-noi-dung/: bài thuyết minh, bản dịch, nguồn và hồ sơ duyệt; docs/06-kiem-thu/: kết quả/bằng chứng, mã kiểm thử đặt cùng frontend/backend; docs/07-van-hanh/: hướng dẫn chạy và triển khai.
 - deploy/ và .github/workflows/ dành cho cấu hình thực thi khi được giao. Mẫu .env.example chỉ tạo khi cần; không chứa secret. Không tạo hàng loạt thư mục/file trống để đủ cây.
 - Vị trí audio/file tải lên/dữ liệu thực, đường dẫn backup và chi tiết thực thi tiếp tục ở TDD; không mặc định đưa vào Git. .gitignore gốc có phạm vi toàn repo.
