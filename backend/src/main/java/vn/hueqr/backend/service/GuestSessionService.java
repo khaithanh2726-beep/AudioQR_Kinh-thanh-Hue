@@ -143,6 +143,8 @@ public class GuestSessionService {
 			// Cắt đến micro giây để endedAt trả về khớp DATETIME(6) khi đọc lại
 			session.endAt(now.truncatedTo(ChronoUnit.MICROS));
 			sessions.saveAndFlush(session);
+			sessions.revokeGrants(id, session.getEndedAt());
+			sessions.closeOpenings(id, session.getEndedAt());
 			return response(session, false, false);
 		});
 	}
@@ -152,7 +154,7 @@ public class GuestSessionService {
 		String state = session.getEndedAt() != null ? "ENDED"
 				: !now.isBefore(session.getExpiresAt()) ? "EXPIRED" : "ACTIVE";
 		return new SessionResponse(session.getId(), state, session.getDisplayName(), session.getInitialLanguage(),
-				"ACTIVE".equals(state) ? session.getInitialLanguage() : null, session.getStartedAt(),
+				"ACTIVE".equals(state) ? session.getCurrentLanguage() : null, session.getStartedAt(),
 				session.getExpiresAt(), session.getEndedAt(), now, created, replayed);
 	}
 }
