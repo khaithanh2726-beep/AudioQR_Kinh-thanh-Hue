@@ -6,13 +6,15 @@
 
 | Hạng mục | Bằng chứng gần nhất | Phạm vi chưa được chứng minh |
 | --- | --- | --- |
-| Nền backend | Java 21.0.12.1, Maven Wrapper 3.9.12, Boot 4.1.2, Security 7.1.2, MySQL 8.4.13 Testcontainers. V1–V4 và mapping đã kiểm, nâng V1 có dữ liệu lên V2 vẫn đạt | Toàn schema/seeds, tài khoản thật và môi trường phục vụ bền vững |
-| API phiên khách | K11 cấp vé ký 24 giờ, K01 tạo/replay phiên 8 giờ, K02 kiểm trạng thái, K04 ghi kết thúc một lần và replay. Đã kiểm ba lớp, binding/ledger/expiry và concurrent | Grant/nội dung/audio, frontend/owner tab, runtime thật/restart với ledger bền, D08 và backup/restore |
+| Nền backend | Java 21.0.12.1, Maven Wrapper 3.9.12, Boot 4.1.2, Security 7.1.2, MySQL 8.4.13 Testcontainers. V1–V10/audio/cặp/grant/claim và seed riêng đã kiểm, nâng V1 có dữ liệu lên V2 vẫn đạt | Dọn opening/grant/claims, nội dung được duyệt, tài khoản thật và môi trường phục vụ bền vững |
+| API phiên khách | K11 cấp vé ký 24 giờ, K01 tạo/replay phiên 8 giờ, K02 kiểm trạng thái, K04 ghi kết thúc một lần và replay. Đã kiểm ba lớp, binding/ledger/expiry và concurrent | K03/K05–K10 và grant/ACK/tải MP3 đã bổ sung ở mục 2.24; frontend/owner tab, runtime thật/restart, D08/dọn metadata và backup/restore chưa kiểm trọn |
 | Xác thực Admin | A01–A05, session/CSRF, Q3 30 phút, mã Hash mật khẩu, đổi session id và logout. Header cookie và vòng đời đã kiểm qua HTTP localhost thật | Q2/Q3 trên frontend, tài khoản cấp cho môi trường phục vụ và HTTPS/proxy/browser thực |
-| Lệnh Admin và địa điểm | A31/A06/A08, cửa sổ 24 giờ, receipt cùng giao dịch, tạo điểm ẩn, đọc dữ liệu cơ bản A07 và sửa tên A09/If-Match | Điều kiện bật hiện/mức đầy đủ A07, vùng/cặp, ẩn/hiện/xóa, frontend Q2 và worker dọn metadata |
-| Hồi quy backend | 168 test, 0 lỗi, 0 bỏ qua, BUILD SUCCESS, mã thoát 0 lúc 08/11/2026 20:16:49 +07, đối chiếu 19 báo cáo Surefire. Kết quả 64/88/104/122/147 test trước giữ theo thời điểm | Mỗi commit trung gian, toàn bộ tiêu chí nghiệm thu và CI/CD |
-| Git | T10 nền đã commit/push theo mục 2.11; tài liệu T01 đã commit/push, SHA local/remote cùng 65807af9884b6f959808368ab39974ccc1ffb23d theo mục 2.13. Ba commit cũ giữ riêng ở mục 2.2 | Nền backend T01, T02/T03/T05 mới, PR/merge và liên kết tài khoản trên trang commit GitHub chưa được xác nhận |
-| Backlog | Issue #1–#11 đã đối chiếu với T01–T11: 89 ô/18 dấu tích | Commit hoặc tạo issue không đồng nghĩa hoàn thành task |
+| Lệnh Admin và địa điểm | A31/A06/A08, receipt cùng giao dịch, đọc/sửa tên, vùng A12–A14, nháp/hồ sơ A15–A17; A23 hồ sơ audio/A24 cặp, A10 bật-ẩn có gate và A25 mức đầy đủ | Frontend Q2/xem trước, ranh giới/hồ sơ thực, nghe thử MP3, xóa và worker dọn metadata/file |
+| Job TTS | Worker/adapter unary, WAV/manifest/READY, Check phục hồi local, Retry lỗi xác định và A15 đọc job đúng nháp; mặc định tắt provider/scheduler | Provider/quota thật, FFmpeg/MP3/audio, local retry/terminal audio, phục hồi crash thực và toàn T07 |
+| Đọc dữ liệu Admin | A26–A28, ngày Asia/Saigon, state/D08, snapshot địa điểm cũ, hai tổng/hai nhóm | Frontend, luồng khách grant/ACK ghi lượt thật, tự xóa D08 vật lý và toàn T05 |
+| Hồi quy backend | 397 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0, 09/11/2026 22:26:24 +07; đối chiếu 39 XML Surefire theo mục 2.24. Mốc 366 test tại mục 2.23 giữ nguyên. Các mốc 64/88/104/122/147/168/204/240/267/318/336 giữ đúng thời điểm | Mỗi commit/nhánh trung gian, toàn bộ tiêu chí nghiệm thu và CI/CD |
+| Git | Bốn nhánh T01/T02/T03/T05 đã push; PR #12 T01 và PR #13 T02 đã merge vào main theo mục 2.16–2.17. Ba commit cũ giữ riêng ở mục 2.2 | Kiểm chứng nền sau T02 và tích hợp T03/T05, cập nhật nền local và CI/CD |
+| Backlog | Mốc issue #1–#11 đã đối chiếu: 89 ô/18 dấu tích; bản local hiện có 20 theo roadmap 6.5, giữ nguyên từ đầu lượt | Commit hoặc tạo issue không đồng nghĩa hoàn thành task |
 
 [Bằng chứng kiểm chứng](../03-ky-thuat/practice-01-start-session.md#practice-results) lưu thời điểm, kết quả và giới hạn. Metadata Git không chứng minh tài khoản dùng để xác thực GitHub hoặc ai đã thực hiện phần việc. Phân công và tài khoản theo G02 được đối chiếu riêng với bằng chứng.
 
@@ -22,13 +24,14 @@
 
 Repository: [AudioQR_Kinh-thanh-Hue](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue). Bảng công việc: [Project 21](https://github.com/users/khaithanh2726-beep/projects/21/views/1). Thư mục làm việc đã ghi nhận: `C:\Study\Code\VS Code\AudioQR_Kinh-thanh-Hue`.
 
-**Đọc để tiếp tục:** [mục 2.14](#local-commit-batch-20261109) ghi phạm vi đợt commit cục bộ được giao; [mục 2.13](#current-t01-docs-result) ghi kết quả push tài liệu T01; [mục 2.12](#document-review-result) ghi kết quả rà tài liệu; [mục 7](#guidance-protocol) quy định quyền và các mốc thao tác. Các mục trước giữ sản phẩm và diễn biến bàn giao theo thời điểm, không thay trạng thái mới nhất. [Roadmap](roadmap.md) là nguồn checklist; phần này ghi bằng chứng và điểm tiếp tục.
+**Đọc để tiếp tục:** [mục 2.24](#guest-content-frontend-result) ghi backend nội dung khách và nguồn frontend/giới hạn công cụ; [mục 2.23](#pair-visibility-result) ghi hồ sơ audio/áp dụng cặp/bật-ẩn/mức đầy đủ và bước tiếp theo; [mục 2.22](#audio-pair-data-result) giữ nền audio/cặp/seed; [mục 2.21](#worker-report-result) giữ worker WAV/Check/Retry, đọc dữ liệu Admin và các phụ thuộc công cụ; commit/PR vẫn tạm dừng; [mục 2.17](#pr13-merged-result) ghi kết quả merge T02; [mục 7](#guidance-protocol) quy định quyền và các mốc thao tác. Các mục trước giữ sản phẩm và diễn biến bàn giao theo thời điểm, không thay trạng thái mới nhất. [Roadmap](roadmap.md) là nguồn checklist; phần này ghi bằng chứng và điểm tiếp tục.
 
 <a id="issue-recreation"></a>
 
+
 ### 2.1. Issue và Project hiện có
 
-- Nguồn duy nhất của tiêu đề, Description và Checklist là [roadmap mục 3](roadmap.md#t01). Giữ 11 task/89 ô/18 dấu tích và phân công G02.
+- Nguồn duy nhất của tiêu đề, Description và Checklist là [roadmap mục 3](roadmap.md#t01). Giữ 11 task/89 ô và phân công G02; bản local hiện có 20 dấu tích, mốc đối chiếu GitHub trước đó có 18. Không tự đổi dấu tích hoặc suy trạng thái GitHub từ bản local.
 - Ngày 08/11 đã tạo và đọc lại đủ issue #1–#11 tại repository chính thức, đối chiếu khớp tiêu đề, Description và Checklist với mục 3 roadmap. [Mapping](roadmap.md#github-checklist-review) ghi URL thực.
 - Người vận hành xác nhận ngày 08/11 đã thêm đủ 11 issue vào Project 21 và đặt Status theo roadmap mục 6.4, gồm 6 In Progress và 5 Todo, chưa có Done. Đây là xác nhận vận hành, chưa có lần kiểm trực tiếp mới bằng công cụ. Bằng chứng ngày 06/11 giữ riêng theo thời điểm.
 - Nhóm tài liệu đã commit/push trong d00bb03 gồm 31 file tính cả README gốc và tài sản. Hiện có 33 file sau khi bổ sung nguồn Draw.io và SVG Use Case; các cập nhật sau commit được theo dõi riêng ở mục 2.3 và 2.5.
@@ -229,7 +232,152 @@ Thứ tự tạo commit tiếp theo theo thành viên là phần hiện có củ
 
 Kiểm đầu vào xác nhận T01 ở 65807af, theo dõi origin/T01, index trống, hai tài liệu commit-plan/handoff có sửa đổi và backend/ còn untracked. Author/committer hiện là KhaiThanh <khaithanh2726@gmail.com>, cấu hình username HTTPS là khaithanh2726-beep. Kiểm kê đủ 86 file backend theo các nhóm 12/23/30/21, không trùng hoặc sót; đã lưu bản sao 120 file được Git theo dõi hoặc chưa bị ignore trước thao tác.
 
-Kế hoạch thực hiện là commit nền T01 trong thư mục chính, dùng worktree tạm để tạo T03 từ T01, T05 từ T03 và T02 từ T01. Cách này giữ đầy đủ các file đang mở trong thư mục chính; file thuộc task khác có thể vẫn hiện untracked trên T01 dù đã được lưu trong commit của nhánh tương ứng. Không tự tích hợp các nhánh để làm sạch trạng thái. Kết quả commit được ghi sau khi từng nhóm thực hiện thành công; chưa có bằng chứng mới về push/merge hoặc kiểm thử nhánh riêng.
+Đã commit nền T01 trong thư mục chính, dùng worktree tạm để tạo T03 từ nền T01 ở 2f8707a, T05 từ T03 và T02 từ nền T01 ở 2f8707a. Thứ tự tạo commit theo phần Thành trước rồi Hòa; không đổi thứ tự tích hợp main T01 → T02 → T03 → T05. Hai tài liệu bàn giao được cập nhật trên T01 sau các commit nguồn.
+
+| Nhánh | SHA commit nguồn | Phạm vi | Metadata author và committer |
+| --- | --- | --- | --- |
+| T01 | `2f8707ad47ce3d06d59e7ef373a02b3211daff85` | 12 file nền backend và hai tài liệu sửa, 767 dòng thêm/7 dòng xóa | KhaiThanh <khaithanh2726@gmail.com> |
+| T03 | `3dc4521030582a0daa7927f28b95966957a115ab` | 23 file phiên khách | KhaiThanh <khaithanh2726@gmail.com> |
+| T05 | `d6097e19b306f0e455bb8d6964914d81860ade5c` | 30 file quản trị, 2.400 dòng thêm | KhaiThanh <khaithanh2726@gmail.com> |
+| T02 | `d6e27cc70305ccb301654b5d90b366265ee4d1a2` | 21 file dữ liệu, 1.401 dòng thêm | gingpham <gingpham13052006@gmail.com> |
+
+Mỗi nhóm được kiểm đúng danh sách staged, metadata, cha của commit và nội dung blob sau commit. Đủ 86 file backend khớp nội dung Git chuẩn hóa của các file gốc trên nhánh được phân công; 118 file ngoài hai tài liệu được phép biên tập giữ nguyên từng byte so với bản sao trước thao tác. Index trống và không có sửa đổi tracked sau bốn commit nguồn; worktree tạm đã được gỡ sau khi kiểm sạch. Nhánh/thư mục IDE vẫn ở T01, các file T02/T03/T05 còn hiện untracked tại đây nhưng đã được lưu trong commit của nhánh tương ứng. Không xóa hoặc add lại các file này vào T01 chỉ để làm sạch status.
+
+Kiểm khoảng trắng T01/T05/T02 đạt; T03 có 14 cảnh báo dòng trống cuối file đã tồn tại nguyên trạng trong bản sao trước thao tác. Đã ghi nhận đúng 14 ngoại lệ này, kiểm các lỗi khoảng trắng còn lại đạt và không sửa nguồn để xóa cảnh báo. Không chạy build/test/app hoặc thay cấu hình, migration và dữ liệu. Kết quả 168 test trước đó tiếp tục thuộc toàn cây ở đúng thời điểm đã ghi, không phải kết quả test các nhánh mới.
+
+Main vẫn ở d61a869; các ref origin theo dõi tại máy chưa đổi, origin/T01 vẫn ở 65807af. Không push, PR/merge hoặc sửa issue/Project; checklist giữ 89 ô/18 dấu tích. Cấu hình danh tính/username HTTPS trong repository chính vẫn của Thành; metadata Hòa được đặt riêng cho lệnh commit T02, không chọn tài khoản xác thực push. Điểm tiếp tục là push từng nhánh bằng tài khoản G02, sau đó nhận đủ phụ thuộc, kiểm chứng và tích hợp theo kế hoạch; chưa đóng issue từ việc đã commit.
+
+<a id="pr12-review-result"></a>
+
+### 2.15. Push các nhánh và rà PR #12 ngày 09/11/2026
+
+Đầu ra Terminal do người vận hành cung cấp xác nhận push T01/T03/T05 với cấu hình chọn username khaithanh2726-beep và T02 với cấu hình chọn username gingpham. SHA local và refs/heads tương ứng trên origin khớp đầy đủ: T01 ở `0063ce0802bd5bfa85b68c5d79535c5e88e0468f`, T03/T05/T02 ở các SHA ghi tại mục 2.14. Bốn nhánh đã thiết lập theo dõi origin; thư mục IDE vẫn ở T01. Các file task khác còn untracked trên T01 được giữ nguyên theo cách bàn giao ở mục 2.14.
+
+Đã đọc [PR #12 — T01: Bổ sung tài liệu thiết kế và nền backend dùng chung](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/pull/12) qua trang GitHub công khai và API chỉ đọc do connector không khả dụng. PR do khaithanh2726-beep mở, từ T01 ở 0063ce0 vào main ở d61a869; đúng ba commit 65807af/2f8707a/0063ce0 và 45 file gồm 33 tài liệu/tài sản cùng 12 file nền backend. Description liệt kê từng commit và giải thích vai trò nền cho T02/T03/T05 theo quy ước mục 7.2. Tại thời điểm kiểm, PR đang mở, không phải Draft, chưa merge; API trả mergeable=true, mergeable_state=clean. Trang Checks chưa có CI check.
+
+Đã tải bản nguồn đúng SHA đầy đủ 0063ce0 vào thư mục tạm tách biệt và chạy `mvnw.cmd --offline test` bằng Java 21.0.12.1, Docker Linux Engine và MySQL 8.4.13 Testcontainers. Kết quả lúc 09/11/2026 00:59:58 +07: một test BackendApplicationTests.contextLoads đạt, không lỗi/không bỏ qua, BUILD SUCCESS và mã thoát 0; đã đối chiếu một báo cáo Surefire XML. Đủ 46 file nguồn trong bản tải giữ nguyên sau kiểm thử. Đây là kiểm khởi động nền T01 riêng, không thay thế bộ 168 test toàn cây hoặc chứng minh nghiệp vụ T02/T03/T05 đã chạy trên nhánh riêng.
+
+Bản nguồn, t01-test.log, báo cáo Surefire, pr-metadata.json và verification.json được lưu tại `C:\Users\khait\AppData\Local\Temp\hueqr-pr12-review-szstfmmp`. Không chạy Git, thay đổi GitHub, database phục vụ hoặc nguồn ứng dụng trong lượt rà PR. Các cập nhật quy ước Description và kết quả bàn giao trong handoff/commit-plan là sửa đổi tài liệu cục bộ, chưa nằm trong head 0063ce0 của PR.
+
+Điểm tiếp tục là người vận hành tích hợp PR #12 bằng Create a merge commit nếu head/base và trạng thái kiểm vẫn khớp, sau đó gửi URL/kết quả merge để đối chiếu trước PR T02. Chưa có bằng chứng merge và không đóng issue #1 hoặc tích thêm checklist từ kết quả này. Giữ nhánh T01 để tiếp tục phần việc còn lại; thứ tự tích hợp tiếp theo T02 → T03 → T05, có nhận đủ phụ thuộc và kiểm chứng tương ứng.
+
+<a id="pr12-merged-result"></a>
+
+### 2.16. Xác nhận merge PR #12 vào main
+
+Đã kiểm trang PR và API GitHub chỉ đọc sau khi người vận hành báo merge. [PR #12](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/pull/12) có state=closed, merged=true, do khaithanh2726-beep merge lúc 09/11/2026 01:11:51 +07. [Commit merge](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/commit/056ed236bee9f28ac9745a5a7f8fe6492532861d) là `056ed236bee9f28ac9745a5a7f8fe6492532861d`, tiêu đề `T01: Tích hợp tài liệu thiết kế và nền backend dùng chung`; phần mô tả gồm năm gạch đầu dòng các việc chính đã thống nhất.
+
+Commit có đúng hai parent: main cũ `d61a8698cae3652dec01185a282f88d536b2169c` và đầu T01 `0063ce0802bd5bfa85b68c5d79535c5e88e0468f`, xác nhận dùng Create a merge commit. Ref main trên GitHub ở đúng SHA merge khi kiểm. Tree của commit merge và đầu T01 cùng `420774f204722c6bcac80f67d303991ca8f28b40`, nên nội dung tích hợp trùng nguồn đã đạt một test khởi động ở mục 2.15. Không chạy lại test chỉ vì tạo commit merge có cùng nội dung.
+
+Kết quả API lưu tại merge-verification.json trong thư mục tạm đã ghi ở mục 2.15. Chỉ đọc GitHub và sửa hai tài liệu handoff/commit-plan; không chạy Git, đổi nhánh/thư mục IDE, sửa code hoặc thay đổi GitHub. Chưa có bằng chứng mới rằng main local đã nhận commit merge. Giữ các file untracked và các cập nhật tài liệu cục bộ; không pull/switch/reset để ép làm sạch trạng thái. Những cập nhật này chưa commit/push và chưa nằm trong main trên GitHub.
+
+Điểm tiếp tục là chuẩn bị PR dữ liệu T02 của Hòa vào main, kiểm đúng phạm vi/phụ thuộc và kiểm chứng trước merge, sau đó T03 rồi T05. PR #12 chỉ tích hợp tài liệu và nền dùng chung; không đóng issue #1 hoặc đổi 89 ô/18 dấu tích từ việc merge. Các mốc Git/GitHub tiếp theo do người vận hành thực hiện theo quyền hiện hành.
+
+<a id="pr13-merged-result"></a>
+
+### 2.17. Xác nhận merge T02 và chuẩn bị PR T03
+
+API GitHub chỉ đọc xác nhận [PR #13 T02 → main](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/pull/13) đã đóng và có merged_at lúc 09/11/2026 01:30:31 +07. Commit merge là `6042508629f480c6d78eb80b2dd04b9395c6e83e`, head T02 là d6e27cc; ref main trên GitHub ở đúng SHA merge này khi kiểm. Đây là kết quả tích hợp đã có, không suy toàn issue T02 đã hoàn thành hoặc nhánh riêng đã chạy test đạt.
+
+So sánh main...T03 hiện có một commit 3dc4521 và 23 file của API khách, không có PR T03 trong kết quả đọc tại thời điểm này. T03 có một commit riêng và thiếu bốn commit so với main; cần nhận/kiểm chứng nền đã có T02 trước khi tích hợp, không coi các file untracked trong thư mục IDE là phụ thuộc đã được lưu trên nhánh. Điểm tiếp tục là Thành tạo PR T03 → main theo Description tại mục 7.2, gửi URL để rà phạm vi và chạy kiểm tra tách biệt trước merge.
+
+Lượt đối chiếu này chỉ đọc API/tệp và cập nhật tài liệu, không chạy Git, build/test hoặc thay đổi GitHub. Chưa có kết quả test riêng main sau T02 hoặc phần tích hợp T03; bộ 168 test và test khởi động nền T01 giữ đúng phạm vi cũ. Tài liệu cục bộ và nguồn chưa theo dõi trên T01 được bảo toàn, không tự checkout/pull/clean. Checklist giữ 89 ô/18 dấu tích; T05 tiếp tục sau T03 theo phụ thuộc.
+
+<a id="region-api-result"></a>
+
+### 2.18. Tạm dừng commit/PR và tiếp tục backend vùng — T05
+
+Đã có yêu cầu tạm ngừng quy trình commit để tiếp tục hoàn thiện sản phẩm. Giữ nguyên các commit, nhánh, remote và kết quả merge đã ghi ở mục 2.14–2.17; chưa có PR/merge T03 mới được xác nhận. Không tiếp tục stage/commit/push/PR/merge khi chưa có yêu cầu nối lại. Quyền trực tiếp commit ở mục 2.14 chỉ dành cho đợt đã kết thúc, không áp dụng sang đợt triển khai mới này.
+
+Phạm vi tiếp tục là backend A12–A14: lưu, đọc và áp dụng bản vùng theo UI-AP01/UI-AP02, giữ tách Lưu bản sửa với Áp dụng. Một đa giác kín đơn giản, chưa có lỗ hoặc nhiều mảnh; kiểm mã Hash, không gian tọa độ, phiên bản và giao dịch/receipt. Không tự bật hiện địa điểm, không cung cấp ranh giới thật hoặc tự coi hình thử đã được duyệt. Triển khai và kiểm thử trong bản sao backend tách biệt, đối chiếu nguồn trước khi bàn giao về thư mục chính.
+
+Đã hoàn tất mục backend A12–A14 theo [hợp đồng và sản phẩm vùng](../03-ky-thuat/api-transactions.md#admin-region-implementation). Thêm chín Java gồm Controller/Service, policy hình học, helper UUID/version, ba DTO và hai lớp test; sửa AdminErrorHandler, AdminPlaceService và RegionRevisionRepository. Hiện có 95 file backend/84 Java; SHA-256 đủ 95 file trong thư mục chính khớp bản sao đã kiểm. Entity, cấu hình, pom.xml, Wrapper, V1–V4 và các test cũ giữ nguyên. Truy vấn Repository thuộc T02 của Hòa, nghiệp vụ/DTO/test thuộc T05 của Thành theo G02; đây là phân công, không suy tác giả từ task.
+
+Kiểm thử trên bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-region-api-cw9bw7u1\backend` bằng `mvnw.cmd --offline test`: **204 test đạt, không lỗi/bỏ qua, BUILD SUCCESS, exit 0 lúc 09/11/2026 01:59:57 +07**. Đã đối chiếu 21 XML Surefire, gồm 168 ca cũ, 14 unit hình học và 22 API/MySQL mới. [Bằng chứng chính](../03-ky-thuat/api-transactions.md#admin-region-test-result) ghi các ca hình học, key/replay, version, concurrent, rollback và Q3; log và manifest lưu trong thư mục tạm. Không chạy Git/GitHub, không áp migration lên database phục vụ, không gọi TTS/API ngoài hoặc thay công cụ trong đợt này.
+
+Điểm dừng là nhóm rà backend vùng vừa hoàn tất; chưa có frontend vẽ/xem trước/giữ tạm Q2, bản đồ/ranh giới thật, nội dung/cặp hoặc gate bật hiện. Do đó chưa đủ toàn ô quản lý địa điểm/vùng của T05, giữ 89 ô/18 dấu tích và không đổi issue/Project. Commit/PR vẫn tạm dừng. Mục kế tiếp dự kiến là nền văn bản theo địa điểm/ngôn ngữ và revision nháp A15–A17 sau khi rà mốc vùng, tiếp tục theo nguồn yêu cầu đã chốt.
+
+<a id="content-api-result"></a>
+
+### 2.19. Nền văn bản nháp và tham chiếu hồ sơ ngày 09/11/2026
+
+Đã triển khai phần nháp A15, lưu revision A16 và ghi/đọc tham chiếu hồ sơ A17 theo [hợp đồng 9.9](../03-ky-thuat/api-transactions.md#api-text-contract). Đọc không tự tạo ngăn hoặc bản dịch; mỗi lệnh lưu mới tạo văn bản bất biến đúng địa điểm/ngôn ngữ, giữ T1 và hồ sơ khi sinh T2. ETag có loại đối tượng bảo vệ lần tạo ngăn đầu tiên và phiên bản hồ sơ độc lập; replay cùng key giữ kết quả cũ. Tham chiếu chỉ ghi vị trí/giới hạn hồ sơ, không tự thẩm định/phê duyệt hoặc áp dụng.
+
+Thêm 17 file (16 Java, một V5), sửa AdminErrorHandler và assertion danh sách migration của PlaceRegionSchemaTests để kiểm chính xác V1–V5; các assertion khác giữ nguyên. Backend có 112 file/100 Java, SHA-256 đủ 112 file khớp bản đã kiểm. Giữ nguyên V1–V4, cấu hình, pom.xml, Wrapper và các nguồn cũ khác. Schema/Entity/Repository/test schema thuộc T02 của Hòa; nghiệp vụ/DTO/HTTP/test API và policy thuộc T05 của Thành theo G02. Không suy người thực hiện từ phân công.
+
+Bản sao kiểm thử: `C:\Users\khait\AppData\Local\Temp\hueqr-content-api-sfviid2y\backend`; `mvnw.cmd --offline test` kết thúc **09/11/2026 10:48:18 +07**, **240 test đạt, không lỗi/bỏ qua, BUILD SUCCESS, exit 0**, đã đối chiếu 24 XML Surefire. [Bằng chứng chính](../03-ky-thuat/api-transactions.md#admin-content-test-result) gồm 204 ca trước và 36 ca mới: 7 policy, 23 API/MySQL, 6 schema/nâng V4. Log và manifest ở thư mục tạm cha, không đưa vào nguồn.
+
+Điểm dừng là nhóm rà nền văn bản và hồ sơ vừa hoàn tất. A15 chưa có phần cặp đang phục vụ/job; chưa frontend soạn/Q2, nội dung thật được duyệt, TTS/audio/cặp/gate bật hiện hoặc nội dung khách. Mốc sau tiếp tục nền job/audio theo thiết kế; lời gọi dịch vụ TTS thật vẫn cần quyền và đầu vào/quota đã xác định. Chưa đủ toàn ô T02/T05, giữ 89 ô/18 dấu tích và Project. Commit/PR vẫn tạm dừng; không Git/GitHub, database phục vụ, TTS/API ngoài hoặc cài công cụ trong đợt này.
+
+
+<a id="tts-queue-result"></a>
+
+### 2.20. Nền tiếp nhận và theo dõi job TTS ngày 09/11/2026
+
+Đã triển khai nền A18/A19: tạo job bền vững với snapshot đúng văn bản/ngôn ngữ/model/Charon, receipt 202 cùng giao dịch; key mới reuse job đang QUEUED/DISPATCHING/UNCERTAIN và cùng key replay receipt. A15 bổ sung job gần nhất của đúng bản nháp. Marker nội bộ giành quyền một lần, commit DISPATCHING trước khi trả lease; token/version đúng mới ghi UNCERTAIN, không tự gửi lại. [Hợp đồng và giới hạn](../03-ky-thuat/api-transactions.md#api-tts-queue-contract) là nguồn chính.
+
+Thêm 10 file/9 Java/một V6, sửa bảy nguồn hiện có; backend có 122 file/109 Java, đã đối chiếu mã Hash khớp bản đã kiểm. V1–V5, cấu hình, pom.xml và Wrapper giữ nguyên. Theo G02: T02/Hòa phụ trách schema/Entity/Repository/test schema; T05/Thành giữ nền quyền Admin, nối lỗi và A15; T07/Thành phụ trách Controller tạo/theo dõi TTS, nghiệp vụ/marker, DTO và test API TTS. Phân công không thay bằng chứng người thực hiện.
+
+Bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-tts-queue-648ygbvo\backend`, `mvnw.cmd --offline test` kết thúc **09/11/2026 11:15:57 +07**, **267 test đạt, không lỗi/bỏ qua, BUILD SUCCESS, exit 0**; đã đối chiếu 26 XML Surefire. Gồm 240 ca cũ và 27 ca mới: 21 API/marker, 6 schema/nâng V5. [Bằng chứng chính](../03-ky-thuat/api-transactions.md#admin-tts-queue-test-result) ghi phạm vi concurrency/rollback/session/target; log và manifest ở thư mục tạm cha.
+
+Điểm dừng: rà nền hàng đợi vừa hoàn tất. **Chưa nối scheduler/provider**, job nhận từ API nằm QUEUED cho tới khi có worker được triển khai và phép gọi dịch vụ phù hợp. Các ca chuyển marker/UNCERTAIN gọi Service nội bộ trong kiểm thử, không phải đã gửi Gemini hoặc phục hồi crash thật. Chưa WAV/file/audio, chặng kết quả/terminal, A20/A21, nghe duyệt, cặp áp dụng/khách hoặc frontend. Tiếp theo hoàn thiện adapter/worker và nền WAV/file theo thiết kế; gọi TTS thật/quota/công cụ môi trường vẫn cần đầu vào và quyền riêng. Giữ 89 ô/18 dấu tích, Project, phân công và trạng thái tạm dừng commit/PR; không Git/GitHub, database phục vụ, API ngoài hoặc cài công cụ trong đợt này.
+
+
+<a id="worker-report-result"></a>
+
+### 2.21. Worker WAV, kiểm tra/thử lại và đọc dữ liệu Admin ngày 09/11/2026
+
+Đã mở rộng nền TTS: adapter REST unary theo nguồn chính thức, WAV/manifest bất biến, file_asset READY và con trỏ WAV trong job, lỗi có căn cứ/unknown, Check phục hồi bằng chứng local và Retry chủ động có version. V7 chỉ tới RESULT_STAGED/FAILED/DISCARDED, chưa MP3/audio success. Worker/scheduler mặc định tắt, không cấp khóa hoặc gọi provider thật trong đợt này. Các test dùng HTTP localhost/provider giả lập, WAV tổng hợp và MySQL/file tạm. [Hợp đồng](../03-ky-thuat/api-transactions.md#api-tts-worker-contract) phân biệt rõ các trạng thái.
+
+Đã bổ sung V8/place_view cùng A26–A28: đọc phiên/lượt đã tính/thống kê, lọc ngày Asia/Saigon và loại dữ liệu quá hạn D08 khỏi kết quả. Kho lượt giữ snapshot đúng Id địa điểm; chưa nối ACK/grant của khách hoặc tự dọn vật lý D08. [Hợp đồng đọc](../03-ky-thuat/api-transactions.md#api-admin-report-contract) ghi DTO và giới hạn.
+
+Backend có 155 file/140 Java; thêm 33 file, sửa 10 nguồn từ mốc 2.20. Giữ V1–V6, pom.xml, Wrapper và cấu hình đang dùng. Nguồn chính khớp SHA-256 bản sao đã kiểm. Schema/Entity/Repository/test schema thuộc T02 của Hòa; HTTP/Service/DTO/test đọc phiên và thống kê thuộc T05 của Thành; tạo/theo dõi/worker/adapter/WAV/retry thuộc T07 của Thành theo G02. Không suy tác giả từ phân công.
+
+Bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-tts-worker-kdjaz1ll\backend`, `mvnw.cmd --offline test`: **318 test đạt, 0 lỗi/bỏ qua, BUILD SUCCESS, exit 0**, kết thúc **09/11/2026 12:08:13 +07**, đối chiếu 33 XML Surefire. [Bằng chứng chính](../03-ky-thuat/api-transactions.md#worker-report-test-result) ghi các ca mới/hồi quy và giới hạn. Log/manifest ở thư mục tạm cha, không đưa vào nguồn.
+
+**Nhịp triển khai hiện hành:** tiếp tục các phần độc lập không cần cài công cụ, không dừng chỉ vì vừa xong một mốc nhỏ. Lưu bằng chứng theo mốc và dừng khi cần quyết định/quyền/thao tác môi trường hoặc cần nhóm cùng kiểm chứng phần phụ thuộc. Commit/PR vẫn tạm hoãn. Giữ 89 ô/18 dấu tích và trạng thái Project; chưa đủ toàn T02/T05/T07 hoặc đồ án.
+
+**Phụ thuộc tạm gác:** FFmpeg/ffprobe chưa tìm thấy trong PATH; thiết kế chọn runtime Linux. node/npm chưa tìm thấy qua Get-Command nên frontend chưa build/test. Chưa cài hoặc nâng công cụ trong lượt này. Cần nhóm cùng chuẩn bị môi trường rồi tiếp tục MP3/preview/hồ sơ/cặp/guest audio; provider/quota/nội dung thật/URL/HTTPS/CI-CD/backup vẫn cần quyền và đầu vào riêng. Không tự bật `hueqr.tts.enabled`, lấy khóa từ kho khác hoặc gọi Gemini để kiểm. Worker crash/restart thật, file claims/dọn, D08 vật lý, grant/ACK và các tiêu chí nghiệm thu còn mở tiếp tục theo tài liệu nguồn.
+
+
+<a id="audio-pair-data-result"></a>
+
+### 2.22. Nền dữ liệu audio/cặp và dữ liệu khởi tạo ngày 09/11/2026
+
+Đã bổ sung V9, ba Entity/Repository AudioRevision/AudioReviewReference/ContentPair, active_pair_id trong ContentSlot và metadata FileAsset cho WAV/MP3. FK tổ hợp giữ đúng text/ngăn/job/WAV và định dạng file, UNIQUE chống trùng; các quan hệ cần chặn dùng RESTRICT. Lưu nháp và cặp áp dụng tách con trỏ; có dữ liệu hoặc tham chiếu hồ sơ không tự duyệt/áp dụng/bật hiện. [Mô hình và bằng chứng chính](../03-ky-thuat/data-model.md#model-audio-pair-result) ghi phạm vi và ràng buộc vật lý.
+
+Script five-places.sql chạy riêng, không tự chạy khi ứng dụng khởi động: năm điểm D06 ẩn và 20 ngăn ngôn ngữ trống, không vùng/bài/audio/tài khoản/secret/hồ sơ. Chạy lại không gộp theo tên hoặc đặt lại dữ liệu đã sửa. Đã kiểm trong MySQL tạm; chưa chạy migration hoặc seed trên database phục vụ.
+
+Bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-audio-data-ft4lchr0\backend`, `mvnw.cmd --offline test`: **336 test đạt, không lỗi/bỏ qua, BUILD SUCCESS, exit 0**, kết thúc **09/11/2026 13:27:28 +07**, đối chiếu 36 XML. Backend 167 file/150 Java, thêm 12 file, sửa 4 nguồn; giữ V1–V8/cấu hình/pom/Wrapper, bảo vệ sửa đổi trước bằng SHA-256 và đối chiếu nguồn chính với bản đã kiểm. Schema/Entity/Repository/test dữ liệu thuộc T02/Hòa theo G02; chưa có commit mới hoặc suy tác giả từ phân công.
+
+**Điểm tiếp tục:** bước 2 là nghiệp vụ T05: hồ sơ audio, kiểm điều kiện và áp dụng cả cặp trong giao dịch, giữ cặp cũ khi lỗi, sau đó gate bật hiện. Nền này chưa thêm endpoint áp dụng, chưa chuyển MP3/TTS thật hoặc có bộ nội dung đã duyệt. Opening/grant/ACK, tự xóa D08 và dọn file vẫn cần triển khai. Các phụ thuộc FFmpeg/Node/provider và nhịp làm phần độc lập ở mục 2.21/7.3 vẫn giữ. Commit/PR tạm dừng, không tự sửa checklist/Project. Bản local đầu lượt đã có 89 ô/20 dấu tích, gồm T02 ô 2 và T10 ô 2 được tích thêm; giữ nguyên các dấu tích. Mốc GitHub đã đối chiếu trước đó có 18 dấu tích, chưa được kiểm lại. [Roadmap 6.5](roadmap.md#local-checklist-20261109) phân biệt hai nguồn.
+
+
+<a id="pair-visibility-result"></a>
+
+### 2.23. Hồ sơ audio, áp dụng cặp và bật/ẩn ngày 09/11/2026
+
+Đã bổ sung A23 đọc/ghi hồ sơ audio, A24 áp dụng đúng cả cặp cùng receipt/version, A10 bật/ẩn với gate vùng/cặp vi; A15 trả cặp hiện hành riêng nháp, A07 trả missingConditions và A25 trả ma trận bốn tiếng/điểm. Không tự duyệt, lưu nháp, gọi TTS, bật hiện từ Apply hoặc xóa file trong giao dịch. File dùng chung chỉ ghi last_unapplied_at khi bỏ tham chiếu áp dụng cuối cùng; ẩn giữ cặp và mốc. [Hợp đồng và bằng chứng chính](../03-ky-thuat/api-transactions.md#admin-pair-visibility-implementation) ghi chi tiết và giới hạn.
+
+Backend 178 file/161 Java; thêm 11 file và sửa 17 nguồn từ mốc 2.22. Giữ V1–V9/seed/cấu hình/pom.xml/Wrapper. T05/Thành phụ trách HTTP/nghiệp vụ/DTO/test API; T02/Hòa giữ Entity/Repository theo [phân nhóm commit](commit-plan-2026-11-05.md), chưa có commit mới. Nguồn chính khớp mã Hash bản kiểm, bảo vệ mọi sửa đổi có trước.
+
+Bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-apply-pair-sa9jc86n\backend`, `mvnw.cmd --offline test`: **366 test đạt, không lỗi/bỏ qua, BUILD SUCCESS, exit 0**, kết thúc **09/11/2026 14:54:36 +07**, 37 XML. Ca mới dùng database/file tạm, MP3 fixture chỉ kiểm stat/metadata, không codec hoặc nội dung được duyệt. Không áp schema/seed lên database phục vụ, gọi provider thật hoặc cài công cụ.
+
+**Điểm tiếp tục:** nối T03 nội dung được phép phục vụ, opening/grant/ACK và quyền hết hạn theo hợp đồng; song song tiếp tục phần xóa/dọn độc lập theo phụ thuộc. MP3/preview thực, frontend và nghiệm thu qua browser chờ môi trường/đầu vào. Giữ quyền và nhịp chủ động tại mục 7/7.3; commit/PR vẫn tạm dừng. Checklist local 89 ô/20 dấu tích và các nguồn GitHub/Project theo roadmap 6.5 giữ nguyên, không tự đóng issue hoặc đánh dấu hoàn thành cả T05.
+
+
+
+<a id="guest-content-frontend-result"></a>
+
+### 2.24. Nội dung khách, grant/ACK và giao diện khách ngày 09/11/2026
+
+Đã có V10, K03/K05–K10, currentLanguage và thu hồi grant khi kết thúc; kiểm nonce/sequence/key/version, cặp áp dụng, snapshot lượt, tải trọn MP3/READ claim. [Nguồn bằng chứng chính](../03-ky-thuat/api-transactions.md#guest-content-test-result) ghi cả lần kiểm thất bại do danh sách migration cũ và lần hồi quy sau sửa. Backend 194 file/176 Java, V1–V9/seed/cấu hình/Wrapper giữ nguyên; nguồn chính được đối chiếu mã Hash trước/sau bàn giao. 397 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0, 09/11/2026 22:26:24 +07.
+
+Đã tạo 14 file frontend Vue khách theo T04: form/phiên, vùng API/chồng lấn, đọc/audio/Blob, owner document và box hết hạn/kết thúc; [frontend/README](../../frontend/README.md) ghi cách chuẩn bị và giới hạn. 13 ca Playback đạt trong V8 và 8 script qua kiểm cú pháp, chưa chạy Node/npm/build Vue hoặc browser. Get-Command chưa tìm thấy node/npm/ffmpeg/ffprobe trong PATH; không tự cài hoặc đổi phiên bản, không khẳng định công cụ không tồn tại ở mọi vị trí trên máy.
+
+**Điểm tiếp tục:** commit/push phần backend và tài liệu theo T01/T02/T03/T05/T07; nhóm đã giao công cụ trực tiếp thực hiện sau mỗi mục lớn có kiểm chứng. Dừng trước T04/T06 để thành viên phụ trách đăng nhập. Khi môi trường frontend sẵn sàng, resolve đúng bộ đã chọn, chạy Node test/build rồi kiểm cùng API tạm. Tiếp tục xóa/dọn metadata/claims/D08 và frontend Admin theo phụ thuộc; FFmpeg/provider/nội dung/vùng thật chờ công cụ/đầu vào. Chưa kiểm quyền owner/audio/clock/background trên điện thoại hoặc hoàn thành toàn issue. Checklist 89 ô/20 dấu tích, mapping/Project và phân công G02 giữ nguyên; chưa tự merge PR hoặc cập nhật issue.
+
+Đã dọn 7 container MySQL Testcontainers đã dừng từ lượt kiểm bị ngắt, cùng session kiểm thử `68822daa-5774-4cf1-bf3f-a91a04049f16`. Giữ container `hue-qr-dev-mysql-1` đang dừng, không kết nối database đó, xóa image hoặc volume. `container-cleanup.json` trong thư mục kiểm giữ Id/trạng thái và kiểm kê sau dọn.
 
 ## 3. Tài liệu bàn giao
 
@@ -263,7 +411,7 @@ Trách nhiệm và người commit theo [G02](../02-nghiep-vu/decisions.md#g02).
 
 ## 6. Thông tin chuyển giao
 
-Đã lưu bằng chứng commit/push trước lần tạo lại repository ở mục 2.2 và kết quả chỉnh comment ở mục 2.3. Đích chính thức tại mục 2.4. Nguồn Draw.io cùng SVG Use Case đã kiểm ảnh theo mục 2.5, chờ nhóm rà soát trong VS Code. Issue #1–#11 giữ 89 ô/18 dấu tích. Project có 6 In Progress/5 Todo theo xác nhận vận hành gần nhất, đề xuất chuyển T05 tại roadmap mục 6.4 chưa được xác nhận. Backend dừng ở API đọc/sửa tên địa điểm tại mục 2.9, 168 test đạt. Nền T10 đã commit/push theo mục 2.11; commit-plan đã khôi phục, nhóm tài liệu đủ 33 file và đang rà trước T01 theo mục 2.12.
+Đã lưu bằng chứng commit/push trước lần tạo lại repository ở mục 2.2 và kết quả chỉnh comment ở mục 2.3. Đích chính thức tại mục 2.4. Nguồn Draw.io cùng SVG Use Case đã kiểm ảnh theo mục 2.5, chờ nhóm rà soát trong VS Code. Mốc issue #1–#11 đã đối chiếu có 89 ô/18 dấu tích; bản local có 20 theo roadmap 6.5. Project có 6 In Progress/5 Todo theo xác nhận vận hành gần nhất, đề xuất chuyển T05 tại roadmap mục 6.4 chưa được xác nhận. Backend có nền V10, nội dung khách/grant/ACK/tải MP3 và READ claim cùng nền quản trị/worker WAV; bằng chứng hiện tại ở mục 2.24. Frontend khách đã có nguồn nhưng chưa build/browser; chưa provider/quota thật, FFmpeg/MP3 thực, frontend Admin hoặc dọn vòng đời. Bốn nhánh đã push; PR #12 và #13 đã merge nền T01/T02 vào main, nguồn vùng/văn bản/job và tài liệu mới còn cục bộ. Quy trình commit/PR đang tạm dừng để tiếp tục hoàn thiện sản phẩm; chưa có kiểm chứng nhánh Git riêng mới từ bộ test toàn cây này.
 
 <a id="guidance-protocol"></a>
 
@@ -273,10 +421,12 @@ Trách nhiệm và người commit theo [G02](../02-nghiep-vu/decisions.md#g02).
 2. **Triển khai:** đọc nguồn hiện có, bảo vệ sửa đổi đang có; thực hiện trong phạm vi mục checklist đã chọn. Tránh tạo file/lớp trống hoặc thay nghiệp vụ để thuận tiện triển khai.
 3. **Kiểm chứng:** chạy kiểm tra liên quan và full suite khi có lý do; dùng môi trường/database tạm tách biệt. Không làm yếu assertion hoặc dùng dữ liệu đang phục vụ thay cho fixture.
 4. **Rà soát:** báo sản phẩm, thay đổi chính, kết quả và giới hạn. Hoàn thành một phần phải ghi rõ phần còn thiếu.
-5. **Mốc bàn giao:** dừng sau toàn mục checklist hoặc issue có bằng chứng để rà soát, kiểm thử tích hợp phù hợp và chuẩn bị commit. Không coi từng file/hàm/test là một mục checklist mới.
+5. **Mốc bàn giao:** lưu sản phẩm và bằng chứng theo mục checklist hoặc issue, tiếp tục các phần độc lập theo nhịp tại mục 7.3. Dừng khi cần quyết định, thao tác môi trường hoặc kiểm chứng cùng nhóm; chuẩn bị commit khi có yêu cầu nối lại. Không coi từng file/hàm/test là một mục checklist mới.
 6. **Checklist:** đối chiếu đúng issue và nguyên văn ô trước khi ghi nhận hoàn thành. Người vận hành trực tiếp tích/sửa/đóng issue; chưa đủ toàn ô thì không tích.
 
-**Thao tác do người vận hành thực hiện:** mọi lệnh Git, kể cả chỉ đọc, thay đổi GitHub, database đang dùng và migration trên đó, TTS/API bên ngoài, CI/CD, khởi động môi trường phục vụ và triển khai. Hành động GitHub cụ thể được giao thêm, như tạo issue và thêm vào Project ngày 08/11, được thực hiện trong đúng phạm vi ủy quyền khi công cụ hỗ trợ. Công cụ hỗ trợ được đọc tệp, biên tập tài liệu và triển khai/kiểm thử tách biệt khi được giao. Việc đọc issue chỉ đọc được thực hiện trong phạm vi đã cho phép.
+**Quyền Git hiện hành:** công cụ được trực tiếp kiểm tra Git, stage/commit/push theo từng task sau mỗi mục lớn đã kiểm chứng; hiện thực hiện phần Thành và Hòa, dừng trước phần Nghĩa để đăng nhập. Giữ tài khoản/metadata có căn cứ theo G02, không tự force-push, viết lại lịch sử hoặc ghi đè sửa đổi. Quyền này không tự bao gồm merge PR, tích/đóng issue hoặc đổi Project.
+
+**Thao tác do người vận hành thực hiện:** database đang dùng và migration trên đó, TTS/API bên ngoài, CI/CD, khởi động môi trường phục vụ và triển khai. Thay đổi GitHub khác chỉ thực hiện khi được giao cụ thể; việc tạo issue/thêm Project ngày 08/11 và dọn container kiểm thử ngày 09/11 giữ đúng phạm vi đã giao. Công cụ hỗ trợ được đọc tệp, biên tập tài liệu, triển khai/kiểm thử tách biệt và đọc issue trong quyền đã xác nhận.
 
 Không tự cài công cụ hệ thống, đổi nguồn tải, bật billing hoặc thay tài khoản/dịch vụ. Không sửa/xóa/di chuyển các dự án tham khảo, sao chép secret/database/audio/lịch sử Git hoặc đưa dữ liệu nhạy cảm vào tài liệu.
 
@@ -310,7 +460,7 @@ Quy tắc áp dụng cho mã nguồn do nhóm quản lý và cấu hình có h�
 
 ### 7.2. Nhánh, commit và bàn giao Git
 
-- Trạng thái tiếp tục/hoãn commit theo điểm bàn giao hiện hành. Đã có yêu cầu tiếp tục phần Thành/Hòa tại mục 2.10; giữ phân công G02 và các mốc kiểm bên dưới, chỉ hướng dẫn thao tác phụ thuộc sau khi đủ bằng chứng đầu vào.
+- Sau mỗi mục lớn đã kiểm chứng, thực hiện commit/push trực tiếp trong phạm vi được giao tại mục 7 và 2.24. Hiện làm phần Thành/Hòa; dừng trước T04/T06 để đăng nhập tài khoản Nghĩa. Giữ phân công G02, các mốc kiểm và bằng chứng; PR/merge/issue không tự mở rộng từ quyền commit/push.
 - Nhánh task: T01–T11. Thông điệp tiếng Việt: `Txx: Những việc đã thực hiện`. Một issue có thể có nhiều commit theo sản phẩm; commit không tự hoàn thành hoặc đóng issue.
 - Thành, Hòa và Nghĩa phối hợp trên ba máy riêng theo G02. Mỗi nhóm commit/push sử dụng tài khoản GitHub của thành viên phụ trách task; nguồn ánh xạ và quy tắc metadata ở G02. Phân công, người nhập lệnh, metadata author/committer và tài khoản xác thực là các thông tin cần đối chiếu riêng; không suy kết quả thực hiện từ việc chọn tài khoản.
 - Trình bày gọn toàn bộ quy trình của một nhóm commit: điều kiện/chuẩn bị → stage và xem staged diff → commit/push/kiểm kết quả. Mỗi khối có lệnh, kết quả mong đợi và điều kiện dừng; bước phụ thuộc chưa đủ điều kiện phải được ghi rõ.
@@ -318,6 +468,7 @@ Quy tắc áp dụng cho mã nguồn do nhóm quản lý và cấu hình có h�
 - **Mốc A:** đối chiếu task/tài khoản theo G02, metadata Git, bằng chứng xác thực phù hợp và danh sách/nội dung staged trước commit. Không stage toàn repository khi chưa kiểm phạm vi.
 - **Mốc B:** sau commit/push, đối chiếu commit, SHA local/remote, trạng thái nhánh và tài khoản hiển thị trên GitHub. Không yêu cầu gửi sau từng lệnh thành công; lỗi hoặc kết quả khác kỳ vọng thì dừng trước bước phụ thuộc.
 - PR/merge được thực hiện sau rà soát. Nhánh phụ thuộc nhận nền đã tích hợp, có kiểm trạng thái trước cập nhật; không tự stash/reset/clean hoặc ghi đè sửa đổi.
+- **Description của PR:** liệt kê từng commit bằng mã SHA ngắn và tiêu đề, kèm các gạch đầu dòng giải thích sản phẩm thay đổi và mục đích. Viết theo góc nhìn dự án nhóm, dùng nội dung cụ thể có căn cứ; không biến kế hoạch thành kết quả đã thực hiện. Câu cuối dẫn issue liên quan và nêu rõ vai trò của sản phẩm trong PR đối với chức năng hoặc task tiếp theo, thay cho câu kết chung chung. Kết quả kiểm chứng và giới hạn ảnh hưởng đến việc rà soát/tích hợp vẫn phải được nêu rõ khi có.
 
 <a id="execution-mode"></a>
 
@@ -325,7 +476,7 @@ Quy tắc áp dụng cho mã nguồn do nhóm quản lý và cấu hình có h�
 
 Triển khai từng mục checklist khả thi theo phụ thuộc, thực hiện liền mạch từ viết code đến kiểm thử trong môi trường tách biệt. Việc tạm hoãn commit không chặn công việc này. Kế hoạch bàn giao qua nhánh task, PR và tích hợp vẫn giữ trong commit-plan để thực hiện khi tiếp tục Git.
 
-Khi hoàn thành mục triển khai đã chọn hoặc toàn mục checklist có bằng chứng, dừng để nhóm rà soát sản phẩm và kiểm thử nhẹ phù hợp. Trong thời gian hoãn commit, lưu kết quả và điểm tiếp tục trong tài liệu bàn giao. Kiểm thử nhẹ hỗ trợ kiểm tra tích hợp tại mốc bàn giao. Chỉ đánh dấu hoàn thành khi đủ toàn điều kiện của ô checklist, tiếp tục xử lý các thay đổi nhỏ thuộc cùng mục khi không có trở ngại.
+Tiếp tục liền mạch các phần khả thi, lưu sản phẩm và bằng chứng theo mốc; không mặc định dừng sau từng mục nhỏ để chờ xác nhận. Phần thiếu công cụ chưa cài tạm gác đúng phụ thuộc, triển khai và kiểm thử các phần độc lập trước để nhóm cùng rà. Ghi rõ mục nào chưa được kiểm và công cụ/đầu vào cần bổ sung; nhóm cùng chuẩn bị môi trường rồi hoàn thiện phần còn thiếu. Chỉ đánh dấu hoàn thành khi đủ toàn điều kiện của ô checklist; việc hoãn commit hoặc một công cụ chưa có không tự chặn toàn dự án.
 
 Tạm dừng sớm khi thiếu quyết định quan trọng, gặp lỗi chặn hoặc cần thao tác thuộc quyền người vận hành. Việc tiếp tục phải dựa trên kết quả mốc kiểm, không dựa riêng vào việc đã có code hoặc commit.
 

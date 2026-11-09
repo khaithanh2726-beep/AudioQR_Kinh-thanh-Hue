@@ -123,6 +123,12 @@ stateDiagram-v2
 
 **Chưa tạo** là không có job phù hợp; QUEUED/DISPATCHING/RESULT_STAGED/CONVERTING hiển thị đang tạo. UNCERTAIN hiển thị chưa xác định kết quả và hướng kiểm tra, không gán thành lỗi xác định để mở nút gửi lại. Một lần Retry tạo job/attempt mới, không reset job cũ hoặc tráo text T1 thành T2.
 
+**Phần đã triển khai ngày 09/11/2026:** nền job/receipt và marker QUEUED → DISPATCHING → UNCERTAIN có [hợp đồng](api-transactions.md#api-tts-queue-contract) và [267 test hồi quy](api-transactions.md#admin-tts-queue-test-result). Marker commit trước khi Service trả lease; token/version bảo vệ callback cũ, unknown tiếp tục chặn job/dispatch mới cho cùng text. Chưa nối scheduler/provider, phục hồi sau restart thật, WAV/file/convert, terminal hoặc check/retry. Các bước và state machine đầy đủ dưới đây tiếp tục là thiết kế cho phần còn lại, không phải kết quả pipeline đã chạy.
+
+
+**Cập nhật phần thực thi:** worker unary, lưu WAV/manifest, đăng ký file READY, A20 kiểm bằng chứng local và A21 retry lỗi xác định có [hợp đồng 9.11](api-transactions.md#api-tts-worker-contract), [bằng chứng 318 test](api-transactions.md#worker-report-test-result). Mặc định không tạo scheduler/provider; chỉ cấu hình bật riêng mới xử lý job thật. Adapter đã kiểm với HTTP localhost, không dùng khóa thật. WAV tổng hợp không phải thuyết minh được duyệt. FFmpeg/ffprobe-Linux/MP3, local retry sau convert, crash recovery có bằng chứng dừng tiến trình, claims/cleaner/backup vẫn chưa được kiểm hoặc triển khai đầy đủ. Các chặng còn lại dưới đây giữ thiết kế hiện hành.
+
+
 1. **Accept:** Service khóa text/active job và operation window; persist snapshot + job + receipt 202. Marker chưa commit không được dispatch.
 2. **Dispatch:** worker giành owner_token/phase_version, ghi DISPATCHING trước gọi. Crash sau marker nhưng không rõ đã gửi hay chưa → UNCERTAIN, không tự gửi Gemini lần hai. QUEUED chắc chưa dispatch có thể xử lý lần đầu theo tác vụ đã tiếp nhận, không phải retry provider.
 3. **Stage:** WAV hoàn chỉnh có manifest kỹ thuật jobId/hash/checksum; không prompt/key. Khi WAV đã kiểm đủ, đăng ký FILE_ASSET READY và TTS_JOB.source_wav_file_id trong TX trước convert; FK này giữ WAV cho local retry/backup, không để chỉ một path trong RAM. Có bằng chứng kết quả gốc thì tiếp tục convert local, không gọi TTS lại. Nếu chỉ còn bytes không đủ đối chiếu thì cách ly/kiểm, không tự gắn audio.
@@ -136,6 +142,12 @@ Server không tự thẩm định hồ sơ D09: success → nghe thử/nghe tr�
 **File và race:** mọi download tạo claim trước stream; cleaner đánh dấu DELETING dưới khóa và chỉ khi không refs/claim + đủ hạn. Bên thêm ref/download không nhận asset DELETING. File delete ngoài TX, finalize kết quả thật hoặc retry. Kết quả unlink chưa rõ giữ DELETING, không READY cho tải/ref mới tới khi kiểm tồn tại/checksum; file thật đã absent mới finalize DELETED. FILE_ASSET.ever_applied/last_unapplied_at giữ đúng mốc tham chiếu áp dụng cuối của cả WAV/MP3. Service xóa điểm chỉ tháo refs, không unlink file trong TX.
 
 <a id="ops-backup"></a>
+
+### 2.1. Áp dụng cặp và mốc file đã triển khai
+
+A24 đã cập nhật ever_applied của WAV/MP3 khi áp dụng và last_unapplied_at khi bỏ tham chiếu áp dụng cuối, không đặt mốc khi file còn dùng chung hoặc chỉ ẩn điểm. Khóa FILE theo Id tăng dần giữ xuyên kiểm READY/stat/đổi pointer/receipt; lỗi rollback giữ cả cặp/mốc. [Hợp đồng](api-transactions.md#api-pair-visibility-contract) và [bằng chứng 366 test](api-transactions.md#admin-pair-visibility-test-result) là nguồn chi tiết.
+
+Phần này chưa có cleaner/unlink hoặc read-claim tự chạy; các chặng DELETING/DELETED/claim trong thiết kế vẫn phải triển khai cùng protocol trước cho dọn file thật. Chưa kiểm codec MP3 hoặc bytes thay thủ công ngoài protocol. Mốc thời gian được giữ theo nguồn, không biến trạng thái chờ dọn thành đã xóa.
 
 ## 3. BKP-P02 — Backup lúc tạm ngừng phục vụ — HƯỚNG ĐÃ CHỌN
 
@@ -266,6 +278,15 @@ Hiện chưa phát hiện trở ngại cần đổi hành vi LIFE-P01 đã chố
 
 TDD/ERD/API còn dự thảo, chưa đủ toàn checklist T01/T02/T07/T10. Trạng thái issue phải được đối chiếu trước khi ghi nhận hoàn thành; không tích theo snapshot cũ.
 
+
+
+<a id="ops-guest-grant-read-result"></a>
+
+### 6.1. Phạm vi grant/claim đã triển khai và phần còn mở ngày 09/11
+
+V10 và K03/K05–K10 có [bằng chứng riêng](api-transactions.md#guest-content-test-result). End thu hồi grant/đóng opening/xóa current pointer cùng giao dịch; expiry chặn quyền theo đồng hồ server, không chờ worker. K09 ghi READ claim dưới khóa FILE, commit trước truyền bytes và chỉ release khi stream đóng. Không tự dùng TTL/thiếu heartbeat để nhả claim; cleaner sau này phải kiểm claim dưới cùng protocol.
+
+Chưa có purge opening/grant/request-result tới end/expiry hoặc D08 vật lý, file cleaner, xử lý claim rò sau process chết và backup/restore. File còn pin sau hạn không là quyền tải, nhưng cần hoàn thiện tháo pin/dọn metadata theo chính sách, không giữ vô hạn như sản phẩm cuối. Source frontend có owner/Blob/memento và kiểm logic tách biệt, chưa chứng minh vòng đời browser/clock/background hoặc hệ thống phục vụ.
 
 ### Nhật ký biên tập
 
