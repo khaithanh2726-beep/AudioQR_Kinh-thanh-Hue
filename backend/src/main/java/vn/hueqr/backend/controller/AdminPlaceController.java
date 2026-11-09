@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -17,18 +18,22 @@ import vn.hueqr.backend.dto.AdminOperationResponse;
 import vn.hueqr.backend.dto.AdminPlaceResponse;
 import vn.hueqr.backend.dto.CreatePlaceRequest;
 import vn.hueqr.backend.dto.UpdatePlaceRequest;
+import vn.hueqr.backend.dto.SetPlaceVisibilityRequest;
 import vn.hueqr.backend.service.AdminPlaceService;
 import vn.hueqr.backend.service.AdminSessionService;
+import vn.hueqr.backend.service.AdminVisibilityService;
 
 @RestController
 @RequestMapping("/api/v1/admin/places")
 public class AdminPlaceController {
 	private final AdminPlaceService places;
 	private final AdminSessionService sessions;
+	private final AdminVisibilityService visibility;
 
-	public AdminPlaceController(AdminPlaceService places, AdminSessionService sessions) {
+	public AdminPlaceController(AdminPlaceService places, AdminSessionService sessions, AdminVisibilityService visibility) {
 		this.places = places;
 		this.sessions = sessions;
+		this.visibility = visibility;
 	}
 
 	@GetMapping
@@ -51,6 +56,15 @@ public class AdminPlaceController {
 		var account = sessions.activity(request, "SAVE");
 		var result = places.create(account.accountId(), key, input);
 		return ResponseEntity.status(result.httpStatus()).cacheControl(CacheControl.noStore()).body(result);
+	}
+
+	@PutMapping("/{placeId}/visibility")
+	public ResponseEntity<AdminOperationResponse> visibility(@PathVariable String placeId, @RequestBody SetPlaceVisibilityRequest input,
+			@RequestHeader(value = "Idempotency-Key", required = false) String key, @RequestHeader(value = "If-Match", required = false) String ifMatch,
+			HttpServletRequest request) {
+		var account = sessions.activity(request, "VISIBILITY");
+		var result = visibility.set(account.accountId(), key, placeId, ifMatch, input);
+		return ResponseEntity.status(result.httpStatus()).cacheControl(CacheControl.noStore()).eTag("\"" + result.result().get("version") + "\"").body(result);
 	}
 
 	@PatchMapping("/{placeId}")

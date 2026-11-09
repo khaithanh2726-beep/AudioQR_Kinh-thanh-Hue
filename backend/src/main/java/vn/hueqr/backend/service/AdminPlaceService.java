@@ -24,12 +24,14 @@ public class AdminPlaceService {
 	private final AdminCommandService commands;
 	private final ObjectMapper json;
 	private final Clock clock;
+	private final AdminVisibilityService visibility;
 
-	public AdminPlaceService(PlaceRepository places, AdminCommandService commands, ObjectMapper json, Clock clock) {
+	public AdminPlaceService(PlaceRepository places, AdminCommandService commands, ObjectMapper json, Clock clock, AdminVisibilityService visibility) {
 		this.places = places;
 		this.commands = commands;
 		this.json = json;
 		this.clock = clock;
+		this.visibility = visibility;
 	}
 
 	@Transactional(readOnly = true)
@@ -39,7 +41,7 @@ public class AdminPlaceService {
 
 	@Transactional(readOnly = true)
 	public AdminPlaceResponse detail(String placeId) {
-		return response(places.findById(id(placeId))
+		return response(places.findById(AdminPlacePreconditions.placeId(placeId))
 				.orElseThrow(() -> new AdminCommandException(404, "LOCATION_NOT_FOUND")));
 	}
 
@@ -57,12 +59,12 @@ public class AdminPlaceService {
 	}
 
 	public AdminOperationResponse rename(UUID accountId, String key, String placeId, String ifMatch, UpdatePlaceRequest input) {
-		UUID id = id(placeId);
+		UUID id = AdminPlacePreconditions.placeId(placeId);
 		Command command = new Command("PATCH", "/api/v1/admin/places/" + id, json.writeValueAsString(input), ifMatch,
 				"RENAME_PLACE", 200, "PLACE_UPDATED");
 		return commands.execute(accountId, key, command, () -> {
 			// Chỉ kiểm điều kiện mới sau nhánh replay, If-Match gốc có thể đã cũ sau lần commit đầu
-			long expected = version(ifMatch);
+			long expected = AdminPlacePreconditions.version(ifMatch);
 			Place place = places.findByIdForUpdate(id)
 					.orElseThrow(() -> new AdminCommandException(404, "LOCATION_NOT_FOUND"));
 			if (place.getVersion() != expected)
@@ -87,34 +89,9 @@ public class AdminPlaceService {
 		}
 	}
 
-	private UUID id(String value) {
-		try {
-			UUID id = UUID.fromString(value);
-			if (!id.toString().equals(value))
-				throw new IllegalArgumentException();
-			return id;
-		}
-		catch (IllegalArgumentException error) {
-			throw new AdminCommandException(422, "VALIDATION_FAILED", Map.of("placeId", "Cần mã địa điểm UUID chuẩn chữ thường."));
-		}
-	}
-
-	private long version(String ifMatch) {
-		if (ifMatch == null || ifMatch.isBlank())
-			throw new AdminCommandException(400, "PRECONDITION_REQUIRED", Map.of("If-Match", "Cần phiên bản địa điểm đang chỉnh."));
-		try {
-			// Một ETag mạnh dạng số, không nhận wildcard hoặc danh sách để tránh cập nhật không đối chiếu
-			if (!ifMatch.matches("\"(0|[1-9][0-9]*)\""))
-				throw new IllegalArgumentException();
-			return Long.parseLong(ifMatch.substring(1, ifMatch.length() - 1));
-		}
-		catch (IllegalArgumentException error) {
-			throw new AdminCommandException(400, "VALIDATION_FAILED", Map.of("If-Match", "Cần một ETag mạnh dạng số trong dấu ngoặc kép."));
-		}
-	}
-
 	private AdminPlaceResponse response(Place place) {
+		var missing = visibility.conditions(place, false);
 		return new AdminPlaceResponse(place.getId(), place.getDisplayName(), place.isVisible(), place.getActiveRegionRevisionId(),
-				place.getVersion(), place.getCreatedAt(), place.getUpdatedAt());
+				place.getVersion(), place.getCreatedAt(), place.getUpdatedAt(), missing.isEmpty(), missing);
 	}
 }

@@ -13,7 +13,9 @@ import vn.hueqr.backend.dto.AdminErrorResponse;
 import vn.hueqr.backend.service.AdminSessionException;
 import vn.hueqr.backend.service.AdminCommandException;
 
-@RestControllerAdvice(assignableTypes = {AdminAuthController.class, AdminCommandController.class, AdminPlaceController.class})
+@RestControllerAdvice(assignableTypes = {AdminAuthController.class, AdminCommandController.class, AdminPlaceController.class,
+		AdminRegionController.class, AdminContentController.class, AdminTtsController.class, AdminGuestSessionController.class,
+		AdminStatisticsController.class, AdminPairController.class})
 public class AdminErrorHandler {
 	@ExceptionHandler(AuthenticationException.class)
 	ResponseEntity<AdminErrorResponse> authentication() {
@@ -34,7 +36,8 @@ public class AdminErrorHandler {
 
 	@ExceptionHandler(AdminCommandException.class)
 	ResponseEntity<AdminErrorResponse> command(AdminCommandException error) {
-		return response(error.status(), error.code(), error.fields());
+		return ResponseEntity.status(error.status()).cacheControl(CacheControl.noStore()).body(new AdminErrorResponse(
+				error.code(), "Yêu cầu không thể thực hiện.", error.fields(), false, UUID.randomUUID().toString(), error.missingConditions()));
 	}
 
 	@ExceptionHandler(Exception.class)
