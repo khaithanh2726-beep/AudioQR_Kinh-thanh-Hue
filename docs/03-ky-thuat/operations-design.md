@@ -256,7 +256,7 @@ Dùng clock điều khiển trong môi trường kiểm thử; không đổi gi�
 | V-START01.06 — tra sau expiry vé | Đã tạo trước expiry, tra cùng yêu cầu sau 24 giờ; kiểm session còn ACTIVE (bắt đầu gần cuối cửa sổ), ENDED và EXPIRED | Vé hết hạn vẫn tra được sau signature/quyền/epoch/fingerprint; cùng ID/mốc/state gốc, không hồi sinh hoặc mở nội dung trái hạn | A.14 kiểm replay/status, ENDED dùng fixture. A.15 bổ sung K04 qua API rồi replay K01 sau hạn vé, giữ mốc endedAt gốc |
 | V-START01.07 — restart/backup thường | Giữ ledger/runtime key/epoch, restart hoặc backup stop phục vụ rồi mở | Vé chưa dùng còn hạn có thể tạo theo quy tắc; vé đã dùng vẫn lookup gốc kể cả đã hết hạn. Không xoay epoch/khóa ký mù hoặc reset hạn; Admin window khác cơ chế này | Có kiểm dựng lại context cùng cấu hình; chưa restart ứng dụng với ledger bền hoặc backup thật |
 | V-START01.08 — restore thật | Restore snapshot B đã lọc quá hạn, thu hồi quyền/epoch cũ theo REC-P01 | Vé/credential cũ bị chặn trước public, kể cả chữ ký đúng; khách xác nhận phiên mới, không endedAt giả hoặc tự tạo, lịch sử còn hạn giữ | Có ca từ chối epoch khác; chưa restore snapshot/lọc/thu hồi quyền và mở phục vụ thực |
-| V-START01.09 — request sau purge | Session kết thúc hoặc tự hết hạn rồi tới đúng hạn D08; purge ledger và lượt; replay nguyên vé/key | Bản ghi/lượt thực đã xóa, vé chắc đã quá 24 giờ, không session mới. Không start_generation/gate/tombstone còn dùng; mốc purge không đổi | Có fixture bỏ ledger rồi từ chối vé cũ; chưa cleaner D08 xóa phiên/lượt theo mốc thật |
+| V-START01.09 — request sau purge | Session kết thúc hoặc tự hết hạn rồi tới đúng hạn D08; purge ledger và lượt; replay nguyên vé/key | Bản ghi/lượt thực đã xóa, vé chắc đã quá 24 giờ, không session mới. Không start_generation/gate/tombstone còn dùng; mốc purge không đổi | Đã kiểm purge vật lý bằng clock và từ chối vé cũ sau purge tại mục 6.2; chưa restore/vận hành thực |
 | V-START01.10 — giả mạo/đua expiry | Sửa requestId/issuedAt/ticketExpiresAt/epoch/signature, thiếu/sai credential; request valid cạnh thời điểm expiry | Không tin field client/ID; không insert mới từ vé sai hoặc hết hạn khi kiểm điều kiện. Phân nhánh đã có ledger và chưa có phải kiểm riêng; lỗi không lộ secret/data khác | Có ca sai chữ ký/quyền/epoch/time và deadline server; chưa suy toàn bộ đua thời gian/browser đã kiểm |
 
 Phép kiểm chưa thể kết luận từ bảng: MySQL thật UNIQUE/rollback/visibility, Browser owner theo tab, khóa runtime còn sau restart, epoch sau restore và clock/expiry. Thiết kế/AC được duyệt không chứng minh phần mềm đáp ứng. Chưa có lần chạy kiểm chứng mới; bằng chứng backend từ lần clean test 64 ca được dẫn ở thực hành, không đánh đạt toàn bộ ma trận.
@@ -287,6 +287,39 @@ TDD/ERD/API còn dự thảo, chưa đủ toàn checklist T01/T02/T07/T10. Trạ
 V10 và K03/K05–K10 có [bằng chứng riêng](api-transactions.md#guest-content-test-result). End thu hồi grant/đóng opening/xóa current pointer cùng giao dịch; expiry chặn quyền theo đồng hồ server, không chờ worker. K09 ghi READ claim dưới khóa FILE, commit trước truyền bytes và chỉ release khi stream đóng. Không tự dùng TTL/thiếu heartbeat để nhả claim; cleaner sau này phải kiểm claim dưới cùng protocol.
 
 Chưa có purge opening/grant/request-result tới end/expiry hoặc D08 vật lý, file cleaner, xử lý claim rò sau process chết và backup/restore. File còn pin sau hạn không là quyền tải, nhưng cần hoàn thiện tháo pin/dọn metadata theo chính sách, không giữ vô hạn như sản phẩm cuối. Source frontend có owner/Blob/memento và kiểm logic tách biệt, chưa chứng minh vòng đời browser/clock/background hoặc hệ thống phục vụ.
+
+<a id="ops-guest-retention-result"></a>
+
+### 6.2. Dọn metadata và phiên/lượt D08 — kết quả ngày 10/11/2026
+
+Phạm vi thực thi gồm một Repository T02 và policy/Service/runner/hai lớp test T05. Không đổi V1–V10, cấu hình JPA, API hoặc mốc nghiệp vụ. Các kết luận “chưa purge” ở mục 6.1 giữ mốc ngày 09/11; mục này là kết quả triển khai tiếp theo.
+
+- Khi tới endedAt hợp lệ hoặc expiresAt gốc, bỏ request-result/grant/opening và current pointer/nonce/sequence/currentLanguage; giữ start ledger, ngôn ngữ ban đầu và các lượt snapshot tới D08
+- Khi anchor gốc + đúng 30 ngày đã đến hạn, xóa lượt và phiên cùng các bản ghi phụ thuộc trong một giao dịch. endedAt trước startedAt, sau expiresAt hoặc còn ở tương lai không thay anchor expiresAt gốc; không tạo endedAt giả, TTL mới hoặc tombstone PII
+- Mỗi phiên dùng giao dịch REQUIRES_NEW/READ_COMMITTED, khóa phiên cùng thứ tự với K09, rồi kiểm lại đồng hồ và READ claim. Claim còn tồn tại chặn dọn phiên đó; bộ chọn ứng viên bỏ qua phiên đang có claim để không chặn các phiên khác trong batch nhỏ
+- Tháo current_opening_id trước xóa con; lỗi ở cuối hoàn tác cả con trỏ, grant/file pin, opening, lượt và ledger. Không xóa FILE_ASSET hoặc unlink bytes; dọn quyền tham chiếu không đồng nghĩa dọn file
+- JDBC đọc DATETIME(6) qua LocalDateTime và gán UTC rõ ràng, bind tham số cũng UTC như cấu hình JPA. Clock cắt micro giây để so deadline; không dựa múi giờ mặc định JVM
+
+**Scheduler có điều kiện:** chỉ tạo GuestRetentionRunner khi `hueqr.retention.enabled=true`. `hueqr.retention.batch-size` mặc định 100; `hueqr.retention.poll-delay-ms` mặc định 60000, dùng cho initial delay và fixed delay giữa các lượt. Đây là cấu hình kỹ thuật, không thay thời hạn quyền/30 ngày và không cam kết độ trễ xử lý toàn backlog. Mặc định chưa bật để việc nhận nguồn không tự chạy xóa trên database vận hành; người vận hành đối chiếu backup/môi trường và bật khi sẵn sàng. Không thêm endpoint HTTP xóa dữ liệu hoặc bật trong cấu hình dùng chung.
+
+**Bằng chứng:** 24/24 ca mới đạt (7 policy, 17 tích hợp). Hồi quy toàn backend: **421 test, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**, hoàn tất 2026-11-10T00:32:58+07:00 trên MySQL 8.4.13 Testcontainers, Java 21.0.12.1/Maven 3.9.12/Boot 4.1.2. Backend có 200 file nguồn, 182 Java; sáu Java mới, không sửa nguồn cũ. Mã Hash cây bàn giao được đối chiếu với bản kiểm tách biệt.
+
+| Nhóm phép kiểm | Kết quả đã quan sát |
+| --- | --- |
+| Trước/đúng expiry, kết thúc sớm | Phiên còn hiệu lực giữ metadata; đến mốc chỉ bỏ context, không xóa lượt/ledger/file hoặc sửa timestamp gốc |
+| Trước deadline D08 một micro giây/đúng deadline | Không xóa sớm; tới hạn xóa thực các bản ghi phiên/lượt, chạy lại không tạo kết quả mới |
+| endedAt lỗi, kết thúc sớm, qua tháng | Không dùng mốc lỗi để xóa sớm/kéo hạn; tính đủ 720 giờ từ anchor gốc |
+| Phiên do JPA tạo và đọc qua JDBC | Giữ phiên ngay trước expiry, dọn context đúng expiry; cùng UTC, không lệch 7 giờ |
+| READ claim và tranh chấp giao dịch tải | Không dùng tuổi claim làm TTL; cleaner chờ khóa và thấy claim đã commit, release rồi mới dọn; phiên bị giữ không làm batch bỏ đói phiên khác |
+| Rollback và hai cleaner đồng thời | Lỗi sau DELETE thật cuối cùng khôi phục toàn bộ dữ liệu trong TX; hai cleaner chỉ một lần purge, lần còn lại nhận NOT_FOUND |
+| Start ledger sau purge/thống kê | Vé cũ không tạo lại phiên đã purge; thống kê loại dữ liệu đến hạn và giữ kết quả đúng sau xóa vật lý |
+| Runner | Mặc định không tạo bean; gọi tick xử lý batch thật; từ chối batch không dương |
+
+Lần kiểm đầu 22 ca có một failure do fixture thời gian JDBC lệch UTC và một error do MySQL tạm không cho tạo trigger. Lần thứ hai 16 ca còn một failure, xác định lệch +7 giờ khi JPA đọc fixture JDBC. Đã đổi cách gây lỗi rollback thành lỗi sau DELETE thật qua spy, sửa UTC của Repository mới/fixture và giữ các assertion; không sửa cấu hình database đang dùng hoặc nới tiêu chí. Các XML/log thất bại được giữ trong thư mục kiểm cùng kết quả sau sửa.
+
+**Giới hạn:** chưa bật/đo scheduler trên môi trường vận hành, chưa kiểm tải lớn/độ trễ hoặc restore thật. Claim rò sau process chết phải được đối chiếu owner trước khi giải phóng; hiện có thể giữ lại phiên/lượt đang có claim, không coi đây là quyền gia hạn D08 hoặc là cơ chế retention đã nghiệm thu đầy đủ. Chưa dọn window/receipt/job/file, chưa unlink hoặc xử lý backup/restore. Chưa đủ toàn ô tự động xóa/nghiệm thu T05, không tích thêm checklist.
+
+Bằng chứng kỹ thuật nằm trong thư mục kiểm `hueqr-retention-3nr6bkvi`: baseline, mã Hash nguồn đã kiểm, XML/log từng lần và kết quả bàn giao; không chứa dữ liệu database đang phục vụ.
 
 ### Nhật ký biên tập
 

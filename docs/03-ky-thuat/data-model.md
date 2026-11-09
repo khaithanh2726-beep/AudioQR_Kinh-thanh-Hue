@@ -463,6 +463,14 @@ Không thay schema V1–V9 hoặc seed sau mốc 7.5. Place thêm thao tác đ�
 
 [Bằng chứng và giới hạn](api-transactions.md#guest-content-test-result) ghi 26 ca API/5 ca schema mới cùng hồi quy; snapshot/claim độc lập dữ liệu phục vụ. Quyền hết hạn bị chặn ngay nhưng metadata/grant pin hiện còn tới khi dọn được triển khai. Thu hồi khi end đã có, purge kỹ thuật/D08/claim sau crash và backup/restore chưa có; không coi toàn schema/vòng đời hoàn tất.
 
+<a id="model-guest-retention-result"></a>
+
+### 7.8. Dọn context và D08 ngày 10/11/2026
+
+Không thêm hoặc sửa migration. GuestRetentionRepository dùng các quan hệ V1/V8/V10, tháo current_opening_id trước xóa request-result/grant/opening; tới hạn D08 mới xóa PLACE_VIEW rồi GUEST_SESSION. READ claim còn giữ grant chặn dọn; FILE_ASSET/bytes không bị xóa. Một TX/phiên giữ các lần tháo/xóa cùng rollback, không ON DELETE CASCADE hoặc tombstone mới. UTC đọc/ghi đồng nhất JPA và DATETIME(6).
+
+[Operations 6.2](operations-design.md#ops-guest-retention-result) giữ thuật toán, 24 ca mới, hồi quy toàn cây và giới hạn scheduler/claim rò. Repository thuộc T02; policy/Service/runner và test thuộc T05. Chưa đủ toàn mô hình/vòng đời hoặc tiêu chí nghiệm thu retention vận hành.
+
 ### Nhật ký biên tập
 
 
