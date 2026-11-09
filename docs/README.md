@@ -1,8 +1,13 @@
 # Mục lục tài liệu dự án
 
-**Biên tập:** 08/11/2026. Nghiệp vụ/phạm vi PRD và các hướng UI/công nghệ được xác nhận đúng phần; toàn TDD, ranh giới, nội dung và bằng chứng phần mềm chưa được duyệt theo gói. Áp dụng [quy trình phối hợp tại handoff](01-tong-quan/handoff.md#guidance-protocol).
+**Biên tập:** 09/11/2026. Nghiệp vụ/phạm vi PRD và các hướng UI/công nghệ được xác nhận đúng phần; toàn TDD, ranh giới, nội dung và bằng chứng phần mềm chưa được duyệt theo gói. Áp dụng [quy trình phối hợp tại handoff](01-tong-quan/handoff.md#guidance-protocol).
+
+**Checklist local ngày 09/11:** 89 ô/20 dấu tích theo [roadmap 6.5](01-tong-quan/roadmap.md#local-checklist-20261109). Mốc issue đã đối chiếu có 18 dấu tích; chưa kiểm lại GitHub. Các bản ghi theo ngày giữ nguyên phạm vi và số đếm cũ.
 
 **Tổ chức dự án:** Thành, Hòa và Nghĩa phụ trách theo [G02](02-nghiep-vu/decisions.md#g02), làm việc trên ba máy riêng và bàn giao qua repository chung. Quy trình phối hợp và kiểm chứng tại [handoff mục 7](01-tong-quan/handoff.md#guidance-protocol).
+
+
+**Mốc nội dung khách và frontend ngày 09/11:** V10/K03/K05–K10, grant/ACK/tải MP3/READ claim và kết quả kiểm tại [API 11.9](03-ky-thuat/api-transactions.md#guest-content-test-result). [Frontend khách](../frontend/README.md) có nguồn Vue, 13 ca logic Playback V8 đạt, chưa resolve/lockfile/build hoặc browser. Điểm tiếp tục tại [handoff 2.24](01-tong-quan/handoff.md#guest-content-frontend-result); không coi source có sẵn là hoàn tất T03/T04.
 
 **Thứ tự đọc từ tổng quan đến triển khai:** README gốc → Business Flow → PRD và các quyết định liên quan → UI → TDD → mô hình dữ liệu/API/vận hành. Sau đó dùng roadmap để chọn công việc, handoff để xác định trạng thái và quyền thao tác, commit-plan để bàn giao qua nhánh/PR. Mục 1 phục vụ tìm nhanh; mục 2 xác định nguồn chính; mục 3 kiểm kê sơ đồ. Lịch sử chỉ tra khi cần đối chiếu căn cứ, không thay nguồn hiện hành.
 
@@ -41,17 +46,17 @@ Phiên bản dưới đây là **mốc nội dung**, không coi đợt biên t�
 | [01-tong-quan/roadmap.md](01-tong-quan/roadmap.md) | T01–T11, phân công G02, checkbox có căn cứ, phụ thuộc/lịch và snapshot issue | Lập kế hoạch/ghi tiến độ. 0.11; đã tạo và đối chiếu đủ 11 issue #1–#11, khớp 89 ô/18 dấu tích; mapping tại mục 6, người dùng xác nhận Project đủ 11 issue và đã đặt Status: 6 In Progress, 5 Todo, 0 Done; chưa có lần kiểm tra trực tiếp mới. |
 | [01-tong-quan/technical-inputs.md](01-tong-quan/technical-inputs.md) | Đầu vào đã xác nhận, khảo sát TTS/ngrok có ngày, bộ phiên bản, chính sách và đầu vào TDD | Trước thiết kế/cấu hình phần tương ứng. 0.7; đã chọn khác đã chạy thử; khảo sát dịch vụ giữ mốc 03/11, chưa có lần kiểm chứng nguồn mới. |
 | [01-tong-quan/handoff.md](01-tong-quan/handoff.md) | Đường đọc, trạng thái, quyết định chính, bằng chứng và điểm dừng backend | Khi bàn giao hoặc tiếp tục công việc; file sống được cập nhật cùng mốc triển khai. |
-| [01-tong-quan/commit-plan-2026-11-05.md](01-tong-quan/commit-plan-2026-11-05.md) | Phân nhóm 33 file tài liệu/86 file backend, nhánh Txx, tài khoản theo G02 và các mốc bàn giao | Đã khôi phục file và rà lại. T10 nền đã push, nhóm tiếp theo là tài liệu T01; chưa stage/commit T01. |
+| [01-tong-quan/commit-plan-2026-11-05.md](01-tong-quan/commit-plan-2026-11-05.md) | Phân nhóm sản phẩm theo task, nhánh Txx, tài khoản G02 và các mốc bàn giao | Đã merge nền T01/T02; tiếp tục commit/push phần Thành/Hòa theo quyền tại handoff mục 7, dừng trước phần Nghĩa. Trạng thái nguồn tại handoff mục 2.24; PR/merge cần được giao riêng. |
 | [02-nghiep-vu/business-flow.md](02-nghiep-vu/business-flow.md) | Luồng khách/Admin, ngoại lệ và liên quan hai vai trò | Hiểu hệ thống; nghiệp vụ đã duyệt đúng phạm vi BF và bổ sung riêng. |
 | [02-nghiep-vu/decisions.md](02-nghiep-vu/decisions.md) | Quyết định hiện hành G/BF/PRD/D/BS/P/A/Q/UI/TECH/DATA và phần mở | Xác định căn cứ/giải quyết khác biệt; lịch sử và nguồn dài dẫn sang lưu trữ. |
 | [02-nghiep-vu/PRD.md](02-nghiep-vu/PRD.md) | BR/DR, 23 FR, 14 UC dạng mô tả và hình tổng quan, 6 NFR, 50 AC và truy vết | Triển khai/đánh giá một hành vi. 0.8.8; kế thừa PRD-01 và xác nhận riêng, phần mở loại trừ. |
 | [02-nghiep-vu/prd-review.md](02-nghiep-vu/prd-review.md) | Phát hiện R/S, kết luận, bao phủ và phụ thuộc hiện hành | Rà soát yêu cầu, tra R06; R01–R05/R07/S01/S02 đã xử lý tài liệu, R06 còn mở một phần. |
 | [03-ky-thuat/TDD.md](03-ky-thuat/TDD.md) | Kiến trúc, module/ba lớp, xác thực, tab/audio, môi trường/CI-CD, đường đọc chi tiết | Học nền và nối yêu cầu với cách làm. 0.7 dự thảo. |
-| [03-ky-thuat/data-model.md](03-ky-thuat/data-model.md) | Ba ERD logic, định danh/quan hệ/khóa/xóa, bằng chứng V2 và dẫn tới V3/V4 | 0.3 còn dự thảo toàn mô hình, V1–V4 và mapping có bằng chứng theo từng mốc, chưa toàn schema/seeds. |
-| [03-ky-thuat/api-transactions.md](03-ky-thuat/api-transactions.md) | API/DTO/quyền/giao dịch, xác thực, địa điểm và bằng chứng | 0.4 hợp đồng tổng thể còn dự thảo, đã kiểm K11/K01/K02/K04, A01–A05, A31/A06/tạo điểm ẩn A08 và phần đọc/sửa tên A07/A09. |
-| [03-ky-thuat/operations-design.md](03-ky-thuat/operations-design.md) | Vòng đời, trạng thái TTS, file, backup/restore và V-* | 0.3 dự thảo; phần backend Bắt đầu có bằng chứng thực hành riêng, chưa toàn vận hành. |
+| [03-ky-thuat/data-model.md](03-ky-thuat/data-model.md) | Ba ERD logic, định danh/quan hệ/khóa/xóa, bằng chứng V2 và dẫn tới V3–V9 | 0.4 còn dự thảo toàn mô hình; V9/audio/cặp/seed có bằng chứng riêng, chưa toàn schema/quyền hoặc nội dung được duyệt. |
+| [03-ky-thuat/api-transactions.md](03-ky-thuat/api-transactions.md) | API/DTO/quyền/giao dịch, xác thực, địa điểm/vùng và bằng chứng | 0.4 hợp đồng tổng thể còn dự thảo; đã kiểm các API phiên khách/xác thực/cửa sổ/địa điểm nêu ở handoff cùng A12–A14 và phần nháp/hồ sơ A15–A17. Mục 9.8–9.14 giữ hợp đồng vùng/văn bản/worker/Admin/cặp và nội dung khách; 11.9 là nguồn kết quả mới nhất ngày 09/11, mốc 366 test ở 11.8 và các mốc trước giữ riêng. |
+| [03-ky-thuat/operations-design.md](03-ky-thuat/operations-design.md) | Vòng đời, trạng thái TTS, file, backup/restore và V-* | 0.3 dự thảo; phần Bắt đầu/hàng đợi có bằng chứng riêng, chưa toàn vận hành. |
 | [03-ky-thuat/dfd.md](03-ky-thuat/dfd.md) | Năm DFD và từ điển/cân bằng cha–con | Học dữ liệu vào/ra hoặc đưa báo cáo; 0.3 dự thảo. SVG mức 1 xuất cùng nguồn, giữ giới hạn khổ giấy. |
-| [03-ky-thuat/practice-01-start-session.md](03-ky-thuat/practice-01-start-session.md) | Các chặng nhỏ, bằng chứng, lỗi/ôn tập và dẫn tới điểm dừng hiện hành | Giữ các mốc kiểm phiên khách/K04, dẫn tới bằng chứng 168 test và handoff mục 2.9; chưa toàn T03/T05. |
+| [03-ky-thuat/practice-01-start-session.md](03-ky-thuat/practice-01-start-session.md) | Các chặng nhỏ, bằng chứng, lỗi/ôn tập và dẫn tới điểm dừng hiện hành | Giữ các mốc phiên khách/K04 và dẫn tới bằng chứng mới nhất ở API mục 11.9/handoff mục 2.24; chưa toàn T03/T05. |
 | [04-giao-dien/ui-design.md](04-giao-dien/ui-design.md) | UI khách/Admin, sơ đồ chữ/trạng thái/truy vết và phần còn thiết kế | Triển khai giao diện/đối chiếu thao tác. 0.7.8, hướng đã chốt đúng phần; toàn bộ UI đứng trước nhật ký. |
 | [04-giao-dien/design-assets/README.md](04-giao-dien/design-assets/README.md) | Nguồn, phương pháp và giới hạn PNG/SVG/OSM/GeoJSON | Trước dùng/đánh giá nền-vùng. Tài sản 0.2 đề xuất, chưa duyệt nền/vị trí/ranh giới. |
 | [99-luu-tru/README.md](99-luu-tru/README.md) và các file được liệt kê | Bản UI/mô hình cũ, dấu vết quyết định/khảo sát/rà soát/nhật ký | Chỉ khi cần căn cứ hoặc lịch sử; không là nguồn triển khai song song. |
@@ -100,18 +105,20 @@ Nguồn .drawio là bản chỉnh sửa chính của hình Use Case, SVG đượ
 
 ## 5. Hiện trạng và phần chưa được chứng minh
 
-Mốc hồi quy backend gần nhất là **168 test đạt**, 0 lỗi/bỏ qua, lúc 20:16:49+07 ngày 08/11/2026 trên MySQL tạm và HTTP localhost. [Bằng chứng và giới hạn](03-ky-thuat/api-transactions.md#admin-place-test-result) là nguồn chính; các mốc 64/88/104/122/147 test giữ nguyên theo thời điểm tại từng hồ sơ.
+Mốc hồi quy backend gần nhất: **397 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**, 09/11/2026 22:26:24 +07, trên MySQL tạm. [Bằng chứng và giới hạn](03-ky-thuat/api-transactions.md#guest-content-test-result) là nguồn chính; các mốc 64/88/104/122/147/168/204/240/267/318/336 giữ nguyên theo thời điểm tại từng hồ sơ.
 
 | Sản phẩm hiện có | Phạm vi chưa hoàn tất |
 | --- | --- |
-| V1–V4, Entity/Repository và ràng buộc dữ liệu đã kiểm | Toàn schema/seeds, dữ liệu phục vụ và migration trên môi trường vận hành |
+| V1–V9, audio/cặp, seed riêng 5 điểm/20 ngăn và ràng buộc đã kiểm | Opening/grant/claims, nội dung được duyệt và migration/seed trên môi trường vận hành |
 | K11/K01/K02/K04, binding/ledger/replay/expiry và đồng thời | Grant/nội dung/audio/lượt xem, owner/browser, runtime bền vững, D08 và restore |
-| A01–A05, window/receipt, tạo điểm ẩn, đọc cơ bản và sửa tên/If-Match | Q2 frontend, điều kiện bật hiện, vùng/cặp, ẩn/hiện/xóa và phần quản trị còn lại |
+| A01–A05, window/receipt, địa điểm/vùng/nháp/hồ sơ; hồ sơ audio/áp dụng cặp/bật-ẩn/mức đầy đủ A10/A15/A23–A25 | Q2/frontend, ranh giới/hồ sơ thật, MP3/preview, xóa/dọn và phần quản trị còn lại |
+| Worker/adapter WAV, READY/manifest, Check local/Retry lỗi xác định và job của nháp | Provider/quota thật, FFmpeg/MP3/audio, crash thật/file claims/dọn và toàn T07 |
+| Đọc phiên/lượt đã tính/thống kê A26–A28 | Frontend, ACK/grant ghi lượt thật, job xóa vật lý D08 và toàn T05 |
 | Use Case Draw.io/SVG, Mermaid và tài sản bản đồ theo danh mục | Rà bản in, UI ứng dụng, nền/vị trí/ranh giới thật chưa được duyệt |
 
 Bộ nghiệm thu **20 văn bản/20 audio** vẫn giữ nguyên. Năm nháp vi đã được báo cáo là có, còn cần xác minh bản lưu, nguồn, bản dịch, nghe trọn và hồ sơ duyệt. Không dùng kết quả backend để đóng R06, toàn T01/T02/T03/T05 hoặc các mục UI/nội dung/CI-CD/vận hành.
 
-Trạng thái Git, Project và điểm tiếp tục có nguồn chính tại [handoff](01-tong-quan/handoff.md#next-step); phân nhóm bàn giao tại [commit-plan](01-tong-quan/commit-plan-2026-11-05.md). Nền T10 đã push, tài liệu T01 đang được rà trước stage/commit. Phần còn mở theo [decisions](02-nghiep-vu/decisions.md#dec-6), [R06](02-nghiep-vu/prd-review.md#review-open-final) và [TDD](03-ky-thuat/TDD.md#tdd-open).
+Trạng thái Git, Project và điểm tiếp tục có nguồn chính tại [handoff](01-tong-quan/handoff.md#next-step); phân nhóm bàn giao tại [commit-plan](01-tong-quan/commit-plan-2026-11-05.md). Nền T01/T02 đã tích hợp qua PR #12/#13; nguồn vùng/văn bản/job mới còn cục bộ và commit/PR đang tạm dừng. Phần còn mở theo [decisions](02-nghiep-vu/decisions.md#dec-6), [R06](02-nghiep-vu/prd-review.md#review-open-final) và [TDD](03-ky-thuat/TDD.md#tdd-open).
 
 <a id="structure"></a>
 
