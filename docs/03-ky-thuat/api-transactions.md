@@ -1,6 +1,6 @@
 # TDD — API và giao dịch
 
-**Phiên bản nội dung:** 0.4, biên tập 08/11/2026. **Trạng thái:** hợp đồng tổng thể còn dự thảo. K11/K01/K02/K04, nền xác thực Admin A01–A05, cửa sổ lệnh/receipt/tạo địa điểm ẩn A31/A06/A08 và phần đọc/sửa tên A07/A09 có sản phẩm và bằng chứng riêng, chưa toàn API/OpenAPI thực thi.
+**Phiên bản nội dung:** 0.4, biên tập 09/11/2026. **Trạng thái:** hợp đồng tổng thể còn dự thảo. K11/K01/K02/K04, xác thực Admin A01–A05, cửa sổ lệnh/receipt/tạo điểm ẩn A31/A06/A08, đọc/sửa tên A07/A09 và lưu/đọc/áp dụng bản vùng A12–A14 có sản phẩm backend và bằng chứng riêng, chưa toàn API/OpenAPI thực thi.
 **Mục đích:** tra quyền, điều kiện, hợp đồng khách/Admin, thao tác lặp, giao dịch, đồng thời và lỗi. LIFE-P01 dùng vé ký 24 giờ theo DATA-05; LIFE-P02/P03/REC/BKP-P02 theo DATA-04.
 **Nguồn:** [PRD](../02-nghiep-vu/PRD.md), [decisions](../02-nghiep-vu/decisions.md), [TDD](TDD.md), [mô hình hiện hành](data-model.md), [vòng đời/kiểm chứng](operations-design.md). Không lấy thiết kế làm kết quả triển khai.
 
@@ -41,7 +41,7 @@ GET phục vụ xem chủ động và GET do tự tải có cùng URL nhưng kh�
 
 ## 3. Hợp đồng khách — phân biệt bắt đầu, khôi phục, chọn và nghe
 
-**Triển khai hiện có:** K11 (mục 9.1), K01/K02 qua Controller → Service → Repository đã kiểm trong [64 test ngày 05/11](practice-01-start-session.md#practice-start-api-result). Ngày 08/11 bổ sung phần kết thúc phiên K04, [88 test toàn bộ đạt](practice-01-start-session.md#practice-end-session-result) với MySQL 8.4.13 tạm. K03, grant và các API nội dung chưa triển khai. Trạng thái và giới hạn từng phần nằm tại bằng chứng thực hành.
+**Triển khai hiện có:** K11 (mục 9.1), K01/K02 qua Controller → Service → Repository đã kiểm trong [64 test ngày 05/11](practice-01-start-session.md#practice-start-api-result). Ngày 08/11 bổ sung phần kết thúc phiên K04, [88 test toàn bộ đạt](practice-01-start-session.md#practice-end-session-result) với MySQL 8.4.13 tạm. K03/K05–K10 và thu hồi grant khi kết thúc đã có nguồn và kiểm chứng tại [mục 11.9](#guest-content-implementation); giới hạn frontend/vòng đời ghi riêng, không suy toàn T03 đã đạt.
 
 | Mã | Method/path sau /api/v1 | Input/quyền | Kết quả / điều kiện |
 | --- | --- | --- | --- |
@@ -56,7 +56,7 @@ GET phục vụ xem chủ động và GET do tự tải có cùng URL nhưng kh�
 | API-K09 | GET /guest/sessions/{sid}/content-grants/{gid}/audio | Guest còn hiệu lực; grant thuộc sid, có audio MP3 được phép | 200 toàn bộ MP3 đúng immutable file, Content-Type/length/checksum metadata; không nhận WAV/đường lưu do client chọn. Frontend tải đủ Blob rồi kiểm generation/quyền trước phát. Hết hạn từ chối, không “resume server” A1. |
 | API-K10 | POST /guest/sessions/{sid}/openings/{oid}/leave | Guest còn hiệu lực; documentNonce/selectionSeq, oid hiện tại; key | Ghi việc quay lại bản đồ theo luồng đã có, kết thúc ngữ cảnh lần mở hiện tại; không ghi lượt hoặc phiên mới. Lần chủ động mở điểm sau là opening mới, kể cả cùng điểm. Request cũ không được xóa lựa chọn mới hơn. |
 
-Chi tiết K04 đã triển khai ngày 08/11 nhận body rỗng và key UUID chuẩn chữ thường. Khóa bản ghi trước khi xét hạn và ghi endedAt, kiểm credential/epoch trước khi replay. Kết quả kết thúc được xác định theo phiên, key hợp lệ khác trên cùng phiên đã ended cũng trả mốc cũ với `replayed=true`. Cách này dùng ended_at hiện có, chưa thêm receipt riêng. Các quy tắc grant/D08 trong TX-K04 còn chờ triển khai theo dữ liệu tương ứng.
+Chi tiết K04 đã triển khai ngày 08/11 nhận body rỗng và key UUID chuẩn chữ thường. Khóa bản ghi trước khi xét hạn và ghi endedAt, kiểm credential/epoch trước khi replay. Kết quả kết thúc được xác định theo phiên, key hợp lệ khác trên cùng phiên đã ended cũng trả mốc cũ với `replayed=true`. Cách này dùng ended_at hiện có, chưa thêm receipt riêng. Thu hồi grant/đóng opening đã bổ sung theo [mục 9.14](#api-guest-content-implementation-contract); dọn metadata/D08 vật lý còn mở.
 
 ### 3.1. DTO kết quả chọn/đổi tiếng, thiếu nội dung và tải audio
 
@@ -369,7 +369,154 @@ Window hết hạn trả 409 COMMAND_WINDOW_EXPIRED; window không có/sai chủ
 
 
 
+<a id="api-region-contract"></a>
+
+### 9.8. Lưu, đọc và áp dụng vùng — A12–A14
+
+Hồ sơ dữ liệu cho bước triển khai backend vùng, căn cứ UI-AP01/UI-AP02 và A02.4–A02.6. Trạng thái triển khai/kiểm chứng theo [handoff mục 2.18](../01-tong-quan/handoff.md#region-api-result); chưa có frontend xem trước hoặc ranh giới thật được duyệt từ hợp đồng này.
+
+| DTO / header | Nội dung và điều kiện |
+| --- | --- |
+| SaveRegionRequest A12 | `polygon`, `mapSpaceKey`, `geometryHash`; Admin + CSRF + Idempotency-Key + If-Match của Place. `polygon` là đối tượng GeoJSON có đúng `type: "Polygon"` và `coordinates`, một vòng kín ngoài gồm ít nhất ba đỉnh khác nhau và đỉnh đóng trùng đỉnh đầu |
+| Không gian tọa độ | `mapSpaceKey = "WGS84_LON_LAT"`; mỗi điểm đúng hai số `[kinh độ, vĩ độ]`, đơn vị độ, trong [-180,180] và [-90,90]. Đây là lựa chọn biểu diễn theo [GeoJSON/RFC 7946](https://www.rfc-editor.org/rfc/rfc7946), không phải phê duyệt nền bản đồ hoặc giới hạn ranh giới di tích |
+| Hình hợp lệ | Một đa giác đơn giản, diện tích khác không; không tự cắt/tự chạm, không đỉnh trùng hoặc cạnh quay ngược chồng nhau. Chưa nhận lỗ, MultiPolygon, Feature hoặc tọa độ độ cao. Không thêm ngưỡng diện tích tối thiểu, không tự khép hình/sửa đỉnh/đổi chiều vòng, không cấm các vùng của địa điểm khác chồng lấn |
+| geometryHash | 64 ký tự hex chữ thường. Server tính lại SHA-256 từ UTF-8 của `mapSpaceKey + "\n" + canonicalPolygon`, so với mã Hash hình đã xem trước do client gửi. Sai hình hợp lệ nhưng khác mã Hash trả 409 GEOMETRY_HASH_MISMATCH, không lưu revision |
+| Canonical polygon | JSON không khoảng trắng, khóa cố định `type` rồi `coordinates`; giữ nguyên thứ tự đỉnh, chuẩn hóa các số đã đọc bằng `BigDecimal.stripTrailingZeros().toPlainString()`, gồm -0 thành 0. Không tự xoay điểm đầu hoặc đảo chiều vòng để coi hình khác cách biểu diễn là cùng bản đã xem |
+| Kết quả A12 | 201 AdminOperationResponse, result gồm placeId,regionRevisionId,version,geometryHash,mapSpaceKey,savedAt; ETag là version Place đang đối chiếu. Lưu revision riêng không đổi con trỏ vùng hiện hành, version/updatedAt hoặc visible của Place |
+| AdminRegionRevisionResponse A13 | GET theo pid/rid trả revisionId,placeId,polygon,mapSpaceKey,geometryHash,savedAt, no-store. Chỉ lấy bản vùng thuộc đúng địa điểm; không tạo bản sửa, áp dụng hoặc gia hạn Q3 vì GET |
+| ApplyRegionRequest A14 | `savedRevisionId`, `previewedGeometryHash`; Admin + CSRF + Idempotency-Key + If-Match của Place. Chỉ tham chiếu bản đã lưu của chính địa điểm và đúng không gian/mã Hash; không nhận hình đang sửa để âm thầm lưu |
+| Kết quả A14 | 200 AdminOperationResponse, result gồm placeId,regionRevisionId,version,visible,geometryHash,updatedAt. Đổi con trỏ thì cập nhật mốc micro giây và flush @Version; áp dụng đúng vùng đang dùng là không đổi dữ liệu, vẫn có receipt cho key mới. Không tự bật hiện hoặc đẩy thay đổi vào tab khách |
+
+Mã Hash không chứng minh con người đã xem xét hoặc duyệt ranh giới. UI còn phải thực hiện Vẽ/sửa → Xem trước → Lưu → Áp dụng đúng bản đã xem, bảo vệ Q2 và phân biệt bản sửa với vùng đang dùng. Lưu không đổi hình đã xem thì không bắt gọi GET/xem trước lại chỉ vì vừa lưu. Xác thực/CSRF và hoạt động SAVE theo Q3 áp dụng như API địa điểm; đọc không gia hạn, lệnh hợp lệ đã vào Controller vẫn ghi nhận SAVE kể cả dữ liệu cần sửa.
+
+Thứ tự xử lý lệnh là WINDOW → receipt/fingerprint/replay → If-Match → khóa PLACE → kiểm hình/bản vùng → ghi dữ liệu và receipt cùng giao dịch. Fingerprint của yêu cầu vùng sắp khóa đối tượng JSON và chuẩn hóa số, giữ thứ tự mảng và nguyên giá trị chuỗi; đổi cách trình bày JSON không tạo lệnh mới. Replay trả kết quả/version gốc kể cả con trỏ đã đổi sau đó, không khẳng định bản gốc vẫn đang phục vụ. If-Match thiếu/sai/cũ giữ mã 400 PRECONDITION_REQUIRED / 400 VALIDATION_FAILED / 412 VERSION_CONFLICT như A09. Bản vùng không thuộc địa điểm hoặc không còn trả 404 REGION_REVISION_NOT_FOUND; bản lưu khác không gian trả 409 MAP_SPACE_MISMATCH.
+
+**Vector mã Hash dùng cho test, không phải vùng di tích:** canonical polygon `{"type":"Polygon","coordinates":[[[0,0],[2,0],[2,2],[0,2],[0,0]]]}` với WGS84_LON_LAT có SHA-256 `6c56d973f986ec5a9721110a9eca5448a0e1787fc7f4dbccd7eda891d882a501`. Frontend cần kiểm cùng vector khi triển khai xem trước; không lấy fixture này làm dữ liệu khách.
+
 <a id="api-trace"></a>
+
+<a id="api-text-contract"></a>
+
+### 9.9. Bản nháp văn bản và tham chiếu hồ sơ — A15–A17
+
+Hồ sơ HTTP cho phần văn bản đã lưu theo UI mục 10.3–10.5. Văn bản thuần được giữ nguyên, không tự dịch, không có fallback tiếng Việt và không tự tạo audio/áp dụng. Giới hạn của bài TTS chưa được chọn nên không đặt thêm giới hạn ký tự tại đây.
+
+| Thao tác | DTO và kết quả |
+| --- | --- |
+| GET `/api/v1/admin/places/{placeId}/content/{language}` | `language` đúng `vi/en/fr/ru`. Trả `placeId,language,slotId,version,etag,draftText`; ngăn chưa tồn tại trả ba trường slot/version/draft là null, không INSERT. `draftText` gồm `textRevisionId,body,contentHash,savedAt,reviewReference`. Đây là phần nháp của A15; dữ liệu cặp đang phục vụ và job sẽ được bổ sung cùng các module tương ứng |
+| POST `.../content/{language}/text-revisions` | `{body,baseTextId}`; lần đầu base null, lần sau đúng Id nháp đã đọc. Admin+CSRF+Idempotency-Key+If-Match; trả 201 `TEXT_SAVED`, receipt với Id/slot/language/version/etag/mã Hash/mốc lưu. Mỗi lệnh mới thành công tạo revision mới, kể cả body giống bản cũ; replay cùng key không tạo thêm |
+| GET `/api/v1/admin/text-revisions/{textId}/review-reference` | Phép đọc hỗ trợ A17, cho phép đối chiếu cả văn bản đã rời con trỏ nháp. Trả `textRevisionId,contentHash,etag,locator,limitations,recordedBy,recordedAt,version`; chưa ghi hồ sơ thì các trường hồ sơ/version null. Không tạo hồ sơ khi đọc |
+| PUT cùng đường dẫn review-reference | `{locator,limitations}`; locator không được trống, limitations nullable. Admin+CSRF+key+If-Match; trả 200 `TEXT_REVIEW_REFERENCE_RECORDED`. Chỉ ghi tham chiếu đúng văn bản đã lưu, không lưu body đang gõ, không đọc tài liệu qua mạng và không kết luận đã duyệt |
+
+`contentHash` là SHA-256 của đúng byte UTF-8 của body, 64 ký tự hex thường. Không trim, chuẩn hóa Unicode hoặc xuống dòng; từ chối chuỗi rỗng/toàn khoảng trắng và surrogate lẻ. Tham chiếu gắn với Id văn bản bất biến nên luôn đối chiếu đúng mã Hash của văn bản đó. `recordedBy/recordedAt` là tài khoản và thời điểm ghi tham chiếu, không thay cho người/ngày phê duyệt trong hồ sơ bên ngoài. Bản T2 không kế thừa hồ sơ T1.
+
+**ETag mạnh có loại đối tượng.** Ngăn chưa tạo dùng `"place:<placeId>:<placeVersion>"`; ngăn đã có dùng `"slot:<slotId>:<slotVersion>"`. Tham chiếu chưa ghi dùng `"review:<textId>:none"`, sau ghi dùng `"review:<textId>:<reviewVersion>"`. Phân biệt absent với version 0 để lần ghi đầu không bị ghi đè. Header và `etag` trong DTO/receipt khớp nhau; client gửi nguyên ETag đã nhận. Không dùng ETag số của API đổi tên địa điểm cho các API này. Thiếu If-Match trả 400 `PRECONDITION_REQUIRED`, sai định dạng/weak/wildcard/danh sách trả 400 `VALIDATION_FAILED`, sai đối tượng hoặc version cũ trả 412 `VERSION_CONFLICT`. `baseTextId` hợp lệ nhưng khác nháp hiện tại trả 409 `BASE_TEXT_CONFLICT`; UUID/ngôn ngữ/dữ liệu sai trả 422 kèm fields. Đích không có trả 404 `LOCATION_NOT_FOUND` hoặc `TEXT_REVISION_NOT_FOUND`.
+
+**Giao dịch.** Cửa sổ lệnh kiểm owner/epoch/hạn và replay trước điều kiện hiện tại. Khóa WINDOW → PLACE, sau đó đọc ngăn/hồ sơ trong READ_COMMITTED; khóa Place bảo vệ cả ngăn chưa tồn tại khi hai cửa sổ cùng lưu lần đầu. Body và base của DTO có thứ tự tuần tự hóa ổn định để tính fingerprint cùng method/resource/If-Match. Tạo revision, đổi draft pointer và receipt cùng giao dịch; lỗi ghi receipt hoàn tác cả ngăn/văn bản/con trỏ/hồ sơ. Lưu nháp không đổi version, vùng áp dụng hoặc visible của Place; ghi hồ sơ có version riêng và không đổi slot version. Receipt chỉ giữ kết quả tối thiểu, không sao chép body/locator/limitations. GET không gia hạn Q3; thao tác SAVE hợp lệ về HTTP/CSRF được tính tương tác kể cả bị từ chối nghiệp vụ, theo quy tắc Q3 hiện hành.
+
+
+<a id="api-tts-queue-contract"></a>
+
+### 9.10. Tiếp nhận và đọc hàng đợi TTS — nền A18/A19
+
+Đã triển khai phần tiếp nhận/xem tác vụ bền vững, chưa có adapter Gemini hoặc worker tự chạy. Tiếp nhận 202 là job đã commit, không phải đã có audio. Model `gemini-3.8-flash-tts` và giọng `Charon` được lấy từ lựa chọn TTS-01, không phải bằng chứng dịch vụ/quota hiện tại đã được kiểm lại.
+
+| Thao tác | Hợp đồng của nền hiện tại |
+| --- | --- |
+| POST `/api/v1/admin/text-revisions/{textId}/tts-jobs` | Admin+CSRF+Idempotency-Key, body `{expectedTextHash}` đúng 64 hex thường. Server tra bản đã lưu/ngôn ngữ, cố định model/giọng; không nhận phần đang gõ hoặc tự lưu. Trả 202 receipt `TTS_JOB_ACCEPTED`, result gồm `jobId,textRevisionId,phase,reused,acceptedAt` |
+| GET `/api/v1/admin/tts-jobs/{jobId}` | Admin, no-store, không gia hạn Q3. Trả `jobId,textRevisionId,textHash,language,model,voice,state,phase,targetValid,outcomeUncertain,acceptedAt,updatedAt,phaseVersion`. Không trả body/prompt/token worker; result/failure/audio/terminalAt sẽ được bổ sung cùng các chặng xử lý tương ứng |
+| GET nội dung A15 | `draftText.latestTtsJob` null hoặc cùng DTO trạng thái của job gần nhất của đúng bản nháp đã lưu. Chuyển sang T2 không đưa job T1 sang T2; phần cặp đang phục vụ vẫn chờ triển khai |
+
+Không cần hồ sơ phê duyệt để yêu cầu tạo audio; tạo xong và nghe/duyệt/áp dụng tiếp tục là các bước riêng. Mã Hash khác trả 409 `WRONG_REVISION`; hash/UUID sai định dạng trả 422 kèm fieldErrors, không có văn bản/job trả 404 `TEXT_REVISION_NOT_FOUND`/`TTS_JOB_NOT_FOUND`. Không đặt thêm giới hạn bài TTS hoặc cho client đổi model/giọng.
+
+**Chống lặp.** WINDOW → PLACE → TEXT → JOB trong READ_COMMITTED. Tra Id địa điểm bằng projection trước khóa, nạp Entity text sau khóa để không giữ con trỏ cũ trong persistence context. Job + hai con trỏ active/latest + receipt 202 cùng giao dịch; ghi receipt lỗi hoàn tác toàn bộ. Cùng key trả receipt cũ sau kiểm owner/epoch/hạn; receipt mô tả thời điểm tiếp nhận, GET phản ánh trạng thái mới nhất. Key mới khi text đang QUEUED/DISPATCHING/UNCERTAIN trả lại job cũ với reused=true, không đổi mốc tiếp nhận hoặc tạo thêm job. Reused không đồng nghĩa replay: lệnh key mới có receipt riêng. Không đổi nội dung/hash văn bản, slot/place version hoặc visible.
+
+**Marker worker nội bộ.** `TtsDispatchService.claim` khóa PLACE → TEXT → JOB, chỉ giành QUEUED đang là active job của text còn hợp lệ. Ghi worker_instance/token, DISPATCHING và phase_version rồi commit trước khi trả lease chứa đúng văn bản đã lưu. Không giữ giao dịch cho lời gọi provider. Một worker khác không giành lại DISPATCHING; `markUncertain` chỉ nhận đúng token/version của marker, giữ active pointer và không mở lại QUEUED. Các hàm này chưa được nối với scheduler/provider, không là endpoint công khai. Không dùng timeout/heartbeat riêng lẻ để tự kết luận tiến trình cũ đã dừng; tự phục hồi sau restart còn cần triển khai theo operations/REC.
+
+V6 chỉ có ba chặng QUEUED/DISPATCHING/UNCERTAIN; state lần lượt PROCESSING/PROCESSING/UNCERTAIN. Chưa nhận kết quả/WAV, convert, terminal, A20/A21 check/retry, preview hoặc file/audio. Cần mở rộng schema và xử lý các chặng còn lại theo state machine đầy đủ; không suy mọi tác vụ đã chạy từ nền hàng đợi này.
+
+
+<a id="api-tts-worker-contract"></a>
+
+### 9.11. Worker WAV, kiểm tra và thử lại — A18–A21
+
+Nền hàng đợi ở mục 9.10 đã được mở rộng bằng V7 và các Service dưới đây. Worker/scheduler chỉ được tạo khi `hueqr.tts.enabled=true`; mặc định tắt. Khi bật cần `HUEQR_TTS_API_KEY` và `HUEQR_AUDIO_ROOT` tuyệt đối được người vận hành cấp ngoài repo. Không bật để trình diễn toàn pipeline khi MP3 chưa hoàn tất. Nền test dùng provider giả lập/HTTP localhost, không bật gọi dịch vụ thật.
+
+- Adapter REST unary gửi nguyên văn bản đã lưu qua `input[].content[].text`, model/Charon tách riêng trong cấu hình giọng; yêu cầu audio/wav. Không thêm style/prompt chưa duyệt hoặc tự chọn model khác. Đọc một audio block từ response hoàn tất; không thêm RIFF vào WAV đã có header. Căn cứ kiểm ngày 09/11/2026: [hướng dẫn Gemini TTS](https://ai.google.dev/gemini-api/docs/speech-generation), hiện chuyển đến AI Studio; mẫu REST dùng `/v1beta/interactions`. Khả năng tài khoản/quota/kết quả thật chưa được kiểm bằng adapter này.
+- Một lần gọi, không tự retry 429/timeout/5xx, không đi theo redirect mang khóa API. 400/404/422 được phân loại `PROVIDER_REQUEST_INVALID`, 401/403 `PROVIDER_AUTH_FAILED`, 429 `PROVIDER_QUOTA`; lỗi mạng/response chưa rõ/malformed/5xx giữ UNCERTAIN. Lỗi/receipt không chép provider body, transcript hoặc khóa API. Thời gian chờ HTTP là giới hạn chờ kỹ thuật, không chứng minh provider đã hủy hoặc không tính phí.
+- WAV kiểm RIFF/container/chunk đầy đủ, PCM 16-bit mono 24 kHz, byte rate/block align, data không rỗng và frame đầy đủ. Tính checksum/số byte/thời lượng theo frame; không áp ngưỡng byte/thời lượng bài mới, không thay nghe trọn/phê duyệt nội dung. Bytes viết vào key UUID mới, force file rồi manifest kỹ thuật qua rename nguyên tử; manifest không có transcript/key. Lỗi không tự xóa file hoàn chỉnh hoặc đặt lại hạn vòng đời.
+- Job giữ `source_wav_file_id` FK tới file READY, phase RESULT_STAGED và mốc đăng ký trong cùng TX PLACE → TEXT → JOB → FILE. Đây là PROCESSING, không phải SUCCEEDED/audio được phép nghe hoặc áp dụng. Target mất cho kết quả muộn DISCARDED, không tạo lại Place/Text. Đăng ký DB lỗi giữ manifest và UNCERTAIN, không gọi provider lại.
+- `TtsJobResponse` thêm `terminalAt,sourceWavFileId,failureCode,retryAction`. FAILED/DISCARDED có terminalAt; UNCERTAIN không có terminal giả. Lỗi xác định trả CREATE_PROVIDER_ATTEMPT, unknown INSPECT_ONLY. File WAV là đầu vào local, chưa có audio revision/MP3 hoặc endpoint tải công khai.
+
+| Thao tác | Hợp đồng đã triển khai |
+| --- | --- |
+| POST `/api/v1/admin/tts-jobs/{jobId}/check` | Admin+CSRF+key; không gửi tạo TTS mới. Đọc/kiểm manifest cũ ngoài TX, đối chiếu job/token/textHash/storage key/checksum/size/duration. Nếu có bằng chứng đúng thì gắn WAV và receipt trong cùng TX. Trả 200 `TTS_JOB_CHECKED`, result gồm jobId/phase/phaseVersion/outcomeUncertain/inspection. `NO_LOCAL_EVIDENCE` hoặc `LOCAL_EVIDENCE_INVALID` không biến unknown thành failed. Chưa truy hồi provider theo ID |
+| POST `.../{jobId}/retry` | Admin+CSRF+key, `{expectedPhaseVersion}`. Chỉ FAILED có lỗi xác định, target còn, đúng latest job và không có active job. Thiếu version 422, version cũ 412, không đúng bản 409 WRONG_REVISION, không được retry 409 TTS_RETRY_NOT_ALLOWED. Tạo job mới với retryOfJobId và snapshot cũ; receipt/pointer/job cùng TX. Không reset job cũ, không retry unknown hoặc WAV đang RESULT_STAGED |
+
+Tạo lại A18 khi đã có latest job terminal chỉ trả job đó, không ngầm gọi provider; Admin phải dùng A21. Check/Retry là tương tác Q3, polling vẫn không tính. Hai key Retry đồng thời chỉ một attempt mới; Check/recovery đồng thời chỉ một file metadata. Cùng key dùng receipt cũ sau kiểm window/epoch/owner. Thay payload/version cùng key trả KEY_REUSED.
+
+**Phần còn thiếu:** FFmpeg/ffprobe-Linux, MP3/local convert/finalize/audio preview/review/cặp; local retry khi đã có WAV; phục hồi worker sau restart thật có bằng chứng tiến trình cũ đã dừng; file claims/cleaner/backup. Chưa có công cụ thì tạm gác đúng phần phụ thuộc, không báo hoàn thành pipeline hoặc tự cài/bật dịch vụ.
+
+<a id="api-admin-report-contract"></a>
+
+### 9.12. Đọc phiên, lượt đã tính và thống kê — A26–A28
+
+Admin có session hợp lệ; các GET no-store và không gia hạn Q3. Không thêm quyền sửa/xóa/kết thúc/gia hạn thay khách. fromDate/toDate mặc định hôm nay Asia/Saigon, ngày ISO hợp lệ, khoảng trọn ngày `[đầu Từ, đầu ngày sau Đến)`. Không thêm giới hạn khoảng ngày. Sai ngày/thứ tự/status/UUID trả 422, không sửa dữ liệu.
+
+- A26 trả `{fromDate,toDate,timezone,sessions}`. Mỗi hàng gồm sessionId/displayName/initialLanguage/startedAt/expiresAt/endedAt/state; views=null vì đây là hàng danh sách, chi tiết tải riêng. Bộ lọc status ALL/ACTIVE/ENDED/EXPIRED; tìm chuỗi tên hoặc mã phiên, tên trùng vẫn riêng. Ký tự `%`, `_`, `\` được tìm theo nghĩa đen, không biến thành wildcard của người nhập. Sắp ổn định startedAt rồi id. Không trả credential, mã Hash, vé hoặc fingerprint.
+- A27 trả cùng thông tin phiên và `views[]` đã ghi: viewId/placeId/placeName/placeDeleted/language/viewedAt, thứ tự viewedAt/id. Id/tên địa điểm là snapshot tại lúc tính lượt; điểm xóa còn nhận biết được, không gộp với điểm mới trùng tên. Không còn dữ liệu trả 404 DATA_NOT_RETAINED, không bịa thời điểm đóng tab.
+- A28 trả hai tổng `sessionTotal/viewTotal` và hai nhóm `sessionsByDay[]` (date/sessions), `viewsByPlaceLanguageDay[]` (date/placeId/placeName/placeDeleted/language/views), kèm khoảng ngày/múi giờ. Phiên lọc theo startedAt, lượt lọc theo viewedAt độc lập; nhóm lượt theo ngày/Id snapshot/tiếng, không theo tên. Khi tên snapshot khác nhau trong một nhóm, dùng tên của lượt mới nhất làm nhãn. Hai tổng và hai nhóm đọc trong cùng snapshot REPEATABLE_READ. Không thống kê quét/nghe/người duy nhất hoặc thêm filter điểm/tiếng/export.
+
+Trước mọi kết quả đọc, bỏ phiên và lượt liên quan nếu `now >= (endedAt nếu có, ngược lại expiresAt) +30 ngày`, kể cả job dọn vật lý chưa chạy. Đây là chặn đọc dữ liệu quá hạn D08, chưa chứng minh tự xóa đã hoạt động. V8 chỉ thêm kho PLACE_VIEW, UNIQUE(session,openingKey), session FK RESTRICT và live_place FK SET NULL; không FK đến opening/grant/audio/text. **Chưa nối ACK/grant của khách để ghi lượt thật**, mọi lượt trong kiểm thử là fixture. Bảng trống ở môi trường mới được thống kê đúng là 0, không dùng để suy chưa từng có khách.
+
+
+<a id="api-pair-visibility-contract"></a>
+
+### 9.13. Hồ sơ audio, cặp áp dụng và bật hiện — A10/A15/A23–A25
+
+Phần này cụ thể hóa hợp đồng ở 4.2/4.3/9.5 trên nền V9. Không thêm bước duyệt tự động, trạng thái phê duyệt từ locator hoặc API áp dụng riêng một nửa cặp. Admin phải đối chiếu đúng hồ sơ bên ngoài theo D09 trước thao tác Áp dụng; backend kiểm đối tượng, version và điều kiện có thể kiểm bằng phần mềm.
+
+| API | Hợp đồng triển khai |
+| --- | --- |
+| GET /admin/audio-revisions/{aid}/review-reference | A23 đọc: audioRevisionId/textRevisionId/language/textHash/mp3Checksum, locator/limitations/recordedBy/recordedAt/version và etag. Chưa có ref trả trường tương ứng null, ETag `"audio-review:<aid>:none"`; đã có dùng version số, 0 khác none. Audio không tồn tại trả 404 AUDIO_REVISION_NOT_FOUND. Đọc không gia hạn Q3 |
+| PUT /admin/audio-revisions/{aid}/review-reference | A23 ghi: `{locator,limitations}`, Admin/CSRF/Idempotency-Key và If-Match từ lần đọc đúng audio. Giữ nguyên Unicode; locator không rỗng, limitations có thể null. Kiểm file WAV/MP3 READY/còn tồn tại/đúng số byte. Chỉ ghi ref của audio, không sửa text/cặp/nháp hoặc tự duyệt/áp dụng; version cũ trả 412 |
+| PUT /admin/places/{pid}/content/{lang}/active-pair | A24: `{textRevisionId,audioRevisionId,expectedTextHash,expectedMp3Checksum,textReviewVersion,audioReviewVersion}` và ETag slot. Hai version không âm; hashes SHA-256 hex chữ thường. Text phải thuộc slot pid/lang, audio thuộc đúng text; không bắt text là nháp mới nhất, nên chỉ đổi audio vẫn được dùng text đang áp dụng |
+| PUT /admin/places/{pid}/visibility | A10: `{visible:true/false}`, If-Match mạnh dạng số của Place và operation key. Bật kiểm thông tin tên, vùng đang áp dụng còn hợp lệ, cặp vi đang áp dụng đủ hồ sơ/file. Không bắt đủ en/fr/ru. Ẩn không đòi các điều kiện bật, giữ vùng/cặp và mốc áp dụng file |
+| GET /admin/places ; GET /admin/places/{pid} | A07 bổ sung canShow và missingConditions. Đây là kết quả kiểm tại lần đọc, không thay precondition/gate được kiểm lại trong lệnh bật hiện. Không tự thay visible khi chỉ đọc |
+| GET /admin/places/{pid}/content/{lang} | A15 giữ draftText riêng, thêm appliedPair nullable: pairId/textRevisionId/body/textHash/audioRevisionId/mp3Checksum/pairCreatedAt/hai review refs/missingConditions. Nội dung đang dùng chỉ đọc, nháp mới không thay nó; pairCreatedAt là mốc tạo cặp, không suy thành lần áp dụng gần nhất |
+| GET /admin/content-completeness | A25 trả mảng mỗi điểm × vi/en/fr/ru theo thứ tự cố định. Mỗi dòng `{placeId,displayName,language,content,draftAudios,draftMissingConditions}`; content theo A15. draftAudios chỉ là audio của đúng bản nháp đã lưu: audioRevisionId/textRevisionId/textHash/mp3Checksum/reviewReference/missingConditions. Audio của cặp cũ vẫn ở appliedPair. Không tự INSERT slot hoặc fallback vi; không tự đánh dấu approved vì có hồ sơ/file |
+
+Lệnh A23 dùng activity SAVE, A24 dùng APPLY, A10 dùng VISIBILITY trong phiên còn hạn; đọc A07/A15/A23/A25 không gia hạn Q3. Mọi phản hồi no-store. Session/CSRF và window/account/epoch/hạn vẫn theo nền Admin. ETag sai/thiếu trả 400 hoặc 412 như hợp đồng trước; UUID/hash/version/payload sai trả 422. Error DTO bổ sung `missingConditions:[]`; trường hợp gate không đạt trả 409 REQUIREMENTS_NOT_MET với các mã cụ thể, giữ dữ liệu đã áp dụng.
+
+Các điều kiện cặp: PAIR_REVISION_MISMATCH, TEXT_REVIEW_REFERENCE_MISSING, AUDIO_REVIEW_REFERENCE_MISSING, AUDIO_FILE_NOT_READY, TEXT_HASH_MISMATCH, MP3_CHECKSUM_MISMATCH. Có ref nhưng version đã đổi trả 412, không áp dụng hồ sơ vừa bị sửa bằng dữ liệu cũ trên form. Gate bật hiện có PLACE_INFORMATION_INVALID/REGION_NOT_APPLIED/REGION_INVALID/VI_PAIR_NOT_APPLIED và tiền tố VI_ cho điều kiện cặp vi. Mức đầy đủ nháp phân biệt DRAFT_TEXT_MISSING/TEXT_REVIEW_REFERENCE_MISSING/AUDIO_NOT_CREATED/NO_APPLICABLE_DRAFT_AUDIO với chi tiết của từng audio, không gộp thành đã duyệt.
+
+#### Giao dịch, replay và vòng đời file
+
+- A23 lấy projection Id chủ sở hữu rồi WINDOW→PLACE trước khi nạp audio/ref, khóa FILE theo Id tăng dần. A24 lấy WINDOW→PLACE→SLOT, đọc đúng text/audio/hồ sơ; khóa tập hợp file của cặp mới và cặp cũ theo cùng thứ tự. A10 khóa WINDOW→PLACE→SLOT vi→FILE khi bật. Các mutator hiện có của văn bản/hồ sơ/vùng cũng khóa PLACE nên version/ref không đổi giữa kiểm và commit trong protocol này.
+- File phải có metadata READY, đúng WAV/MP3, số byte/thời lượng dương; `HUEQR_AUDIO_ROOT` tuyệt đối do người vận hành cấp, file một cấp dưới root, không symlink, còn tồn tại và đúng byte_size. Thiếu root/file hoặc stat lỗi → chưa sẵn sàng. Chỉ stat file dưới khóa FILE, không đọc/chuyển/stream bytes dài hoặc gọi provider trong giao dịch. Cleaner sau này phải giữ cùng protocol FILE/state/claim khi thêm hoặc bỏ tham chiếu; chưa có cleaner tự chạy trong đợt này.
+- Expected hashes được đối chiếu với metadata của bản text/file bất biến. Đây không phải hash lại toàn file trong mỗi lệnh hoặc kiểm codec/nghe duyệt MP3. Việc tạo/kiểm bytes trước đăng ký metadata thuộc T07; thay file thủ công ngoài protocol, đặc biệt đổi cùng số byte, chưa được bộ kiểm này chứng minh phát hiện.
+- Tạo/reuse CONTENT_PAIR và đổi active_pair_id cùng receipt trong một TX READ_COMMITTED. Không đổi draft_text_id, không đổi visible hoặc vùng; lỗi ghi receipt hoàn tác pointer/cặp/mốc file. Cùng key/payload/If-Match gốc replay sự kiện đã commit dù ETag nay đã cũ. Cùng key đổi payload/tag trả KEY_REUSED. GET hiện hành vẫn cần đọc lại vì receipt không chứng minh cặp vẫn đang được dùng.
+- Khi đổi sang cặp khác, đánh dấu cả WAV/MP3 mới ever_applied=true, bỏ orphan_eligible_since. File cũ chỉ ghi last_unapplied_at=serverNow UTC micro giây sau khi không còn bất kỳ active_pair nào tham chiếu, kể cả ở điểm khác. File giữ qua một nửa cặp mới không bị tính là ngừng áp dụng. Mốc cũ không được đặt lại khi còn dùng chung. Áp dụng lại đúng cặp đang dùng với key mới kiểm lại hồ sơ/file nhưng không tăng slot version hoặc đặt lại mốc; kết quả changed=false.
+- A10 chỉ đổi visible/Place version/updatedAt khi giá trị thay đổi, đổi cặp không tự thay Place version. Ẩn không ghi last_unapplied_at vì cặp vẫn được áp dụng. Blob/quyền khách đã cấp không bị endpoint này chủ động thu hồi; luồng khách thực tế còn cần T03/T04.
+
+Lệnh A24 trả envelope AdminOperationResponse theo nền chung, trong result có placeId/language/slotId/previousPairId nullable/appliedPair{id,textRevisionId,audioRevisionId}/slotVersion/etag/appliedAt/changed; operationId/committedAt/replayed ở envelope. Cấu trúc này không sao chép body văn bản/locator/file path vào receipt. A23 trả Id/hash/version/etag/mốc ghi tối thiểu; A10 trả Id/visible/version/changed/updatedAt. Bảng A25 dùng snapshot DB REPEATABLE_READ; kết quả stat file là quan sát tại thời điểm đọc, lệnh ghi luôn kiểm lại dưới khóa.
+
+
+
+<a id="api-guest-content-implementation-contract"></a>
+
+### 9.14. Chi tiết giao thức khách đã triển khai — K03/K05–K10
+
+Giữ hợp đồng mục 9.2–9.3. Các DTO Java có tiền tố Guest để tách khỏi Admin, không đổi path hoặc vai trò. K06 trả 200 ContentResponse kèm ETag `"opening:<id>:<version>"`; K07 cần đúng ETag đó. Nonce là UUID, selectionSeq là số nguyên dương trong miền BIGINT, tăng trong document; không thay credential hoặc thứ tự server. K03 nhận previousDocumentNonce nullable, đổi nonce bằng CAS dưới khóa phiên và reset seq về 0; gửi lại cùng nonce không reset seq hoặc tạo opening/lượt.
+
+- Mọi lệnh/đọc nội dung kiểm credential/epoch và phiên còn hạn trước replay. SESSION được khóa trước PLACE; request key và fingerprint cùng giao dịch với opening/grant/con trỏ. K06/K07/K10 cùng key khác action/body/tag trả KEY_REUSED; seq cũ, document sai hoặc opening không còn hiện tại trả STALE_SELECTION. Replay trả đúng opening version/grant gốc, không đưa con trỏ hiện tại trở lại lựa chọn cũ.
+- Chỉ đọc active_pair của đúng slot/tiếng, khớp text/audio và có hồ sơ đúng bản; nháp không được phục vụ. Thiếu bản dịch trả TEXT_NOT_AVAILABLE, text/audio/grant null và chỉ các tiếng có văn bản được phép. Không tự dịch hoặc chuyển tiếng. File runtime thiếu vẫn trả văn bản của cặp có hồ sơ, audio NOT_READY; hồ sơ đủ không tự chứng minh nội dung đã được con người duyệt.
+- Grant lưu khóa logical của text/pair/audio và snapshot điểm/tên/tiếng/mã Hash, không body trùng hoặc hồ sơ. File MP3 READY được pin bằng FK sau locking read FILE; đã cấp không tráo bản khi Admin áp dụng cặp khác/ẩn/xóa. Replay mất text gốc trả CONTENT_UNAVAILABLE. RESTORE lấy cặp hiện hành được phép, luôn viewEligible=false, không ACK/lượt mới.
+- K08 chỉ nhận Id grant; kiểm owner/opening/quyền/expiry, lấy snapshot server và UNIQUE(session,opening). ACK cũ có thể đến sau đổi điểm/ẩn/xóa khi phiên còn hạn; khóa PLACE còn sống, live FK null khi đã xóa. 201 lượt đầu, 200 cùng viewId/ngôn ngữ/viewedAt gốc khi lặp. viewEligible của SELECT/LANGUAGE biểu thị nguồn chọn chủ động, không hứa opening chắc chưa được tính; UNIQUE mới quyết định lượt. RESTORE bị từ chối ACK. Client không có hàng chờ ACK gửi bù offline.
+- K09 kiểm session/grant, khóa FILE và tạo READ claim rồi mở stream đúng storage key nội bộ. Commit trước truyền bytes, không giữ giao dịch suốt download; claim chỉ xóa khi stream thực đóng. 200 audio/mpeg, Content-Length, X-Audio-Checksum và no-store; Range bị 400 FULL_DOWNLOAD_REQUIRED, file mất/sai size/không READY là 503 MEDIA_NOT_READY. Không trả WAV/path. Kết thúc phiên thu hồi grant, đóng opening và xóa con trỏ trong cùng giao dịch, giữ PLACE_VIEW.
+- Mã lỗi bổ sung: 403 GRANT_FORBIDDEN, 404 PLACE_UNAVAILABLE, 409 DOCUMENT_CONFLICT/STALE_SELECTION/SESSION_ENDED/CONTENT_UNAVAILABLE, 412 VERSION_CONFLICT, 422 VALIDATION_FAILED. MEDIA_NOT_READY có retryable=true; thử tải lại từ đầu chỉ khi phiên còn hiệu lực. Lỗi và thành công đều no-store.
+
+Storage phải do backend quản lý, không sửa bytes ngoài protocol. Server kiểm READY/format/path không symlink/số byte trước mở, truyền checksum metadata; frontend kiểm toàn bytes trước phát. Chưa chứng minh codec, chống can thiệp thủ công cùng kích thước, cleaner thu hồi file/claim bị rò khi process chết hoặc toàn quyền browser sau expiry.
 
 ## 10. Truy vết, phần còn mở và cách đọc
 
@@ -505,6 +652,175 @@ Gồm 147 ca hồi quy trước và 21 ca bổ sung: AdminPlaceApiTests có 20 c
 Đã kiểm If-Match thiếu/sai/weak/wildcard/danh sách/tràn số, version cũ trả 412 không ghi, CSRF/JSON sai không gia hạn Q3, SAVE lỗi version vẫn tính hoạt động. Hai request đồng thời cùng key chỉ ghi một receipt/một lần đổi version; hai cửa sổ và session độc lập cùng version chỉ một thành công, một trả 412. Replay sau lần sửa khác giữ kết quả/ETag gốc, key đổi body/pid/If-Match bị chặn. Lỗi chèn receipt cố ý hoàn tác cả tên, version và updatedAt đã flush; lỗi SQL trong ca âm này là dữ liệu kiểm thử có chủ đích.
 
 Migration V1–V4, cấu hình, Entity, nguồn khách và hồ sơ lịch sử không đổi trong nhóm này. Không chạy trên database phục vụ, không tạo tài khoản thật, chưa kiểm UI Q2 hoặc browser/HTTPS/proxy thực. Điều kiện bật hiện/mức đầy đủ A07, vùng/cặp, ẩn/hiện/xóa và toàn T05 vẫn còn. Checklist giữ 89 ô/18 dấu tích, commit tạm hoãn.
+
+<a id="admin-region-implementation"></a>
+
+### 11.4. Lưu, đọc và áp dụng bản vùng — A12–A14
+
+Backend tiếp tục theo [hợp đồng vùng mục 9.8](#api-region-contract), UI-AP01/UI-AP02 và A02.4–A02.6. Thành phụ trách nghiệp vụ/API/test T05; truy vấn Repository thuộc T02 của Hòa theo G02. Đã đưa nguồn từ bản sao đã kiểm về thư mục chính sau khi đối chiếu mã Hash và bảo vệ sửa đổi hiện có; chưa commit/push các cập nhật này.
+
+| Sản phẩm | Trách nhiệm |
+| --- | --- |
+| [AdminRegionController](../../backend/src/main/java/vn/hueqr/backend/controller/AdminRegionController.java) / [AdminRegionService](../../backend/src/main/java/vn/hueqr/backend/service/AdminRegionService.java) | Admin/CSRF/Q3, DTO, lưu revision riêng, đọc đúng chủ và đổi con trỏ áp dụng trong giao dịch của cửa sổ lệnh |
+| [RegionGeometryPolicy](../../backend/src/main/java/vn/hueqr/backend/service/RegionGeometryPolicy.java) | Kiểm Polygon theo hồ sơ hiện hành, chuẩn hóa cách biểu diễn số, tính lại mã Hash và canonical JSON cho fingerprint |
+| [SaveRegionRequest](../../backend/src/main/java/vn/hueqr/backend/dto/SaveRegionRequest.java), [ApplyRegionRequest](../../backend/src/main/java/vn/hueqr/backend/dto/ApplyRegionRequest.java), [AdminRegionRevisionResponse](../../backend/src/main/java/vn/hueqr/backend/dto/AdminRegionRevisionResponse.java) | Tách dữ liệu gửi/lấy bản sửa và áp dụng, không trả Entity hoặc nhận polygon để save ngầm khi Apply |
+| [AdminPlacePreconditions](../../backend/src/main/java/vn/hueqr/backend/service/AdminPlacePreconditions.java) | Dùng chung kiểm UUID/If-Match cho địa điểm và vùng; giữ mã lỗi và thông báo A09 khi tách helper |
+| [RegionRevisionRepository](../../backend/src/main/java/vn/hueqr/backend/repository/RegionRevisionRepository.java) | Đọc revision bằng cả id và place.id; không dùng id vùng của địa điểm khác |
+| [AdminRegionApiTests](../../backend/src/test/java/vn/hueqr/backend/controller/AdminRegionApiTests.java) / [RegionGeometryPolicyTests](../../backend/src/test/java/vn/hueqr/backend/service/RegionGeometryPolicyTests.java) | Kiểm HTTP/MySQL/giao dịch và các trường hợp hình học độc lập |
+
+Đã thêm chín file Java, sửa ba file hiện có: AdminErrorHandler nhận lỗi của Controller vùng; AdminPlaceService dùng chung helper UUID/version; RegionRevisionRepository bổ sung truy vấn theo địa điểm. Backend hiện có 95 file, trong đó 84 Java; toàn bộ các file test cũ, Entity, cấu hình, pom.xml, Wrapper và V1–V4 giữ nguyên. Lưu revision không đổi version/con trỏ của Place; Apply đổi con trỏ thì tăng version, giữ visible và các bản vùng đã lưu. Lặp lại cùng key dùng receipt trước khi xét If-Match/đích hiện tại, không tạo thêm revision hoặc đổi con trỏ lần hai.
+
+<a id="admin-region-test-result"></a>
+
+#### Kiểm chứng backend vùng ngày 09/11/2026
+
+Chạy `mvnw.cmd --offline test` trên bản sao tách biệt tại `C:\Users\khait\AppData\Local\Temp\hueqr-region-api-cw9bw7u1\backend`, Java 21.0.12.1, Maven Wrapper 3.9.12, Boot 4.1.2, Security 7.1.2, Docker Linux Engine và MySQL 8.4.13 Testcontainers. Kết thúc **01:59:57 +07 ngày 09/11/2026**, **204 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**. Đã đối chiếu đủ 21 XML Surefire. Gồm 168 ca cũ, 14 ca RegionGeometryPolicyTests và 22 ca AdminRegionApiTests; lần kiểm unit trước đó đạt 14 ca lúc 01:51:02 +07.
+
+- Hình học: vector mã Hash cố định; chuẩn hóa thứ tự khóa/số/-0; hình chưa khép, thiếu đỉnh, lỗ/nhiều mảnh, sai tọa độ, đỉnh trùng, tự cắt/tự chạm, cạnh kề quay ngược và hình thẳng hàng. Chấp nhận vùng lõm, chiều vòng ngược, đỉnh thẳng hàng đi tiếp và diện tích rất nhỏ khác không mà không tự sửa hình.
+- API/dữ liệu: lưu/đọc hash và mốc micro giây, revision thuộc đúng địa điểm, If-Match thiếu/sai/cũ, lưu không áp dụng và Apply không bật hiện. Lưu vùng chồng lấn của hai điểm không bị cấm; lưu bản tiếp theo giữ vùng đang dùng; áp dụng lại vùng hiện hành không đổi version.
+- Lặp/đồng thời/hoàn tác: JSON tương đương replay đúng receipt; key đổi hình bị chặn; replay sau xóa đích không tái tạo dữ liệu. Apply replay sau thay vùng trả version gốc. Hai request cùng key chỉ tạo một revision; hai cửa sổ tranh cùng version chỉ một được Apply. Dùng spy cố ý gây lỗi ghi receipt sau flush để kiểm rollback revision hoặc con trỏ/version, không làm yếu assertion.
+- Quyền/vòng đời: CSRF và JSON sai không đổi dữ liệu/gia hạn Q3; GET không gia hạn và phiên hết hạn không ghi vùng. Window hết hạn sau đăng nhập lại vẫn chặn replay, không kéo dài cửa sổ.
+
+Log tại `..\full-tests.log`; báo cáo ở `target/surefire-reports`; baseline.json, tested-source-hashes.json và verification.json ở thư mục tạm cha. Đã đối chiếu SHA-256 đủ 95 file backend sau bàn giao, khớp nguồn đã kiểm. Không dùng database phục vụ, tài khoản thật hoặc API TTS; không chạy Git/GitHub trong đợt này. Tệp sinh/log/database tạm không đưa vào nguồn.
+
+Chưa có frontend vẽ/xem trước/giữ tạm Q2, ranh giới thật, gate bật hiện/cặp vi, nội dung/audio hoặc toàn nghiệm thu T05. Mã Hash và kiểm hình học không chứng minh phê duyệt bản đồ ngoài hệ thống. Dừng tại mục backend vùng để rà; checklist giữ nguyên 89 ô/18 dấu tích và commit/PR tiếp tục tạm dừng.
+
+<a id="admin-content-implementation"></a>
+
+### 11.5. Văn bản nháp và tham chiếu hồ sơ — phần nền A15–A17
+
+Đã có [AdminContentController](../../backend/src/main/java/vn/hueqr/backend/controller/AdminContentController.java), [AdminContentService](../../backend/src/main/java/vn/hueqr/backend/service/AdminContentService.java), [ContentTextPolicy](../../backend/src/main/java/vn/hueqr/backend/service/ContentTextPolicy.java), bốn DTO và nền dữ liệu [V5](../../backend/src/main/resources/db/migration/V5__create_content_slot_and_text_revision.sql). Hợp đồng cụ thể tại [mục 9.9](#api-text-contract), mapping/ràng buộc tại [model 7.2](data-model.md#model-text-result). Đã có đọc nháp không tạo dữ liệu, lưu revision bất biến và ghi/đọc hồ sơ đúng văn bản; chưa toàn phản hồi A15 vì phần cặp phục vụ và job chưa triển khai.
+
+Thêm 17 file gồm 16 Java và một migration; sửa AdminErrorHandler để nhận lỗi Controller mới và cập nhật assertion danh sách migration của PlaceRegionSchemaTests từ V1–V4 thành chính xác V1–V5. Không bỏ assertion hoặc hạ yêu cầu test cũ. Backend có 112 file nguồn/100 Java; giữ nguyên byte V1–V4, cấu hình, pom.xml, Wrapper và các nguồn cũ khác. Nền dữ liệu/mapping và test schema thuộc T02 của Hòa; nghiệp vụ/HTTP/DTO/test API và policy thuộc T05 của Thành theo G02. Đây là phân công, không dùng để suy người đã thực hiện.
+
+<a id="admin-content-test-result"></a>
+
+#### Kiểm chứng backend văn bản ngày 09/11/2026
+
+Chạy `mvnw.cmd --offline test` trên bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-content-api-sfviid2y\backend` với Java 21.0.12.1, Maven Wrapper 3.9.12, Boot 4.1.2, Security 7.1.2, Docker Linux Engine 29.8.1 và MySQL 8.4.13 Testcontainers. Kết thúc **10:48:18 +07 ngày 09/11/2026**, **240 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**; đã đối chiếu 24 XML Surefire. Gồm 204 ca trước, 7 ContentTextPolicyTests, 23 AdminContentApiTests và 6 ContentSchemaTests.
+
+- Văn bản Unicode/emoji/xuống dòng giữ nguyên, mã Hash đúng UTF-8; từ chối rỗng/toàn khoảng trắng/surrogate lẻ, không đặt giới hạn bài TTS mới. Đọc bốn tiếng không tạo ngăn hoặc nội dung fallback; các ngăn độc lập.
+- Bản T1 và hồ sơ T1 được giữ khi lưu T2; cùng body vẫn có revision riêng; không tự gán hồ sơ cho T2. Ghi hồ sơ đúng hash, tài khoản/mốc ghi, version riêng; locator chỉ là tham chiếu, không gọi mạng hay ghi nhận phê duyệt.
+- If-Match/baseTextId, key reuse theo body/target/If-Match/loại lệnh; replay kết quả cũ sau khi có nháp/hồ sơ mới không ghi đè hiện trạng. Receipt không chứa văn bản hoặc vị trí/giới hạn hồ sơ. Kiểm owner/hạn cửa sổ trước replay.
+- Giao dịch thật trên MySQL: hai cửa sổ lưu lần đầu/lưu tiếp/ghi hồ sơ cùng base chỉ một lệnh thành công và một 412; cùng key chỉ một revision/receipt. Gây lỗi ghi receipt sau flush để kiểm rollback ngăn mới, text mới, con trỏ và cả tạo/cập nhật hồ sơ.
+- Khóa UNIQUE(place,language), bốn ngôn ngữ, con trỏ nháp đúng ngăn, FK hồ sơ/văn bản/tài khoản và RESTRICT; nâng V4 có dữ liệu lên V5 giữ các checksum V1–V4, địa điểm/vùng/tài khoản/window/receipt, ba bảng mới rỗng. Toàn bộ schema mới chỉ áp trong database tạm.
+- Session/CSRF, malformed JSON, GET không gia hạn Q3, SAVE lỗi nghiệp vụ được tính tương tác và hết phiên đúng hạn; hồi quy các API cũ, HTTP cookie/session và hình học.
+
+Log tại `..\full-tests.log`, báo cáo `target/surefire-reports`; baseline.json, tested-source-hashes.json và verification.json ở thư mục tạm cha. Đã bảo vệ sửa đổi hiện có bằng đối chiếu SHA-256 trước bàn giao và xác nhận đủ 112 file nguồn khớp bản đã kiểm. Tệp sinh/log/database tạm không đưa vào nguồn; không Git/GitHub, migration trên database phục vụ hoặc gọi TTS/API ngoài.
+
+**Giới hạn và điểm tiếp tục:** chưa có frontend soạn/Q2/đối chiếu hồ sơ, bộ 20 văn bản/audio đã duyệt, job/file/TTS, cặp áp dụng/A24, gate bật hiện hoặc nội dung phục vụ khách. Không coi có locator là đã phê duyệt theo D09. Chưa đủ toàn ô T02/T05 hoặc thay dấu tích 89/18. Mốc sau cần tiếp tục nền job/audio theo hợp đồng và phần còn mở về dịch vụ/quota trước mọi lời gọi TTS thật; commit/PR vẫn tạm dừng.
+
+
+<a id="admin-tts-queue-implementation"></a>
+
+### 11.6. Hàng đợi TTS bền vững — nền A18/A19
+
+Đã có [AdminTtsController](../../backend/src/main/java/vn/hueqr/backend/controller/AdminTtsController.java), [TtsJobService](../../backend/src/main/java/vn/hueqr/backend/service/TtsJobService.java), [TtsDispatchService](../../backend/src/main/java/vn/hueqr/backend/service/TtsDispatchService.java), hai DTO và [V6](../../backend/src/main/resources/db/migration/V6__create_tts_job_queue.sql)/Entity/Repository. Hợp đồng và giới hạn tại [mục 9.10](#api-tts-queue-contract); ràng buộc tại [model 7.3](data-model.md#model-tts-queue-result). A15 bổ sung job gần nhất của đúng bản nháp. Chưa có worker tự chạy, adapter/provider, file hoặc audio success.
+
+Thêm 10 file (9 Java, một migration), sửa bảy file: TextRevision có hai con trỏ, Repository có projection/khóa, DTO và Service nội dung thêm latestTtsJob, advice nhận lỗi Controller mới; PlaceRegionSchemaTests kiểm chính xác V1–V6, ContentSchemaTests giữ phép nâng V4→V5 bằng target 5 rõ ràng. Không bỏ hoặc làm yếu assertion cũ. Backend có 122 file/109 Java. V1–V5, cấu hình, pom.xml, Wrapper và các nguồn khác giữ nguyên. Theo G02, dữ liệu/mapping/test schema thuộc T02 của Hòa; nối lỗi/quyền Admin và A15 thuộc T05 của Thành; Controller tạo/theo dõi TTS, nghiệp vụ/marker, DTO và test API TTS thuộc T07 của Thành. Đây là phân công, không xác nhận người đã thực hiện từ metadata.
+
+<a id="admin-tts-queue-test-result"></a>
+
+#### Kiểm chứng nền hàng đợi ngày 09/11/2026
+
+Chạy `mvnw.cmd --offline test` trên bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-tts-queue-648ygbvo\backend`, Java 21.0.12.1, Maven Wrapper 3.9.12, Boot 4.1.2, Security 7.1.2, Docker Linux Engine 29.8.1 và MySQL 8.4.13 Testcontainers. Kết thúc **11:15:57 +07 ngày 09/11/2026**, **267 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**; đã đối chiếu 26 XML Surefire, gồm 240 ca trước và 27 ca mới: 21 AdminTtsApiTests, 6 TtsJobSchemaTests.
+
+- Snapshot đúng text/hash/ngôn ngữ/model/giọng/mốc micro giây; QUEUED chưa có owner/marker. Không cần hồ sơ để tạo job, không tự ghi duyệt/audio/visible; receipt không sao chép body/prompt/token.
+- Key/window/epoch/hash/đích, key reuse/replay, key mới reuse job ở cả ba chặng, receipt cũ giữ phase tại lúc tiếp nhận và GET phản ánh phase mới. A15 hiển thị đúng job của T1; lưu T2 không đổi nguồn lease T1.
+- Hai cửa sổ đồng thời tạo cùng text: một job/hai receipt, một reused; cùng key: một receipt và một replay. Ghi receipt lỗi sau flush hoàn tác job và hai con trỏ; lỗi khi reuse không đổi job cũ.
+- Hai worker tranh chấp chỉ một lease; marker đã commit khi lease trả về. Token/version cũ hoặc sai không được ghi UNCERTAIN; unknown giữ active job và chặn claim/tạo trùng. Đích bị tháo/xóa trong fixture không được hồi sinh từ snapshot; không coi ca này là API xóa đã triển khai.
+- UNIQUE khóa tiếp nhận, FK active job đúng text, FK/RESTRICT, CHECK marker/ngôn ngữ/phase/đích. Nâng V5 có văn bản/hồ sơ/con trỏ nháp lên V6 giữ checksum V1–V5 và dữ liệu, job mới rỗng và hai con trỏ mới null.
+- Session/CSRF, Q3 cho thao tác TTS_CREATE và polling; hết phiên không hủy job đã nhận, đăng nhập lại chỉ đọc trạng thái. Hồi quy toàn bộ API/session/HTTP/schema/hình học trước đó.
+
+Log tại `..\full-tests.log`; XML/TXT ở `target/surefire-reports`; baseline.json, tested-source-hashes.json và verification.json ở thư mục tạm cha. Đối chiếu SHA-256 trước bàn giao để bảo vệ sửa đổi hiện có, xác nhận đủ 122 file nguồn trong thư mục chính khớp bản đã kiểm. Không Git/GitHub, cài công cụ, database phục vụ hoặc TTS/API ngoài. Tệp sinh/log/database tạm không đưa vào nguồn.
+
+**Điểm dừng:** rà nền tiếp nhận/polling/marker. Chưa đủ toàn A19/T07/T05/T02 hoặc ô checklist; giữ 89 ô/18 dấu tích. Mốc tiếp theo là adapter/worker và đăng ký WAV/file, xử lý kết quả/local convert/unknown/check/retry theo thiết kế. Lời gọi Gemini thật, quota và thao tác môi trường vẫn cần quyền và đầu vào riêng; không tự retry hoặc hứa đã tạo được audio từ bộ test này. Commit/PR vẫn tạm dừng.
+
+
+<a id="admin-tts-worker-implementation"></a>
+
+### 11.7. Worker WAV, A20/A21 và nền đọc phiên/thống kê
+
+Đã mở rộng hàng đợi bằng V7/file_asset, xử lý unary qua adapter REST, WAV validator/store/manifest, đăng ký file có FK, lỗi xác định/unknown, A20 Check bằng chứng local và A21 Retry chủ động có version. Worker/scheduler mặc định tắt; chỉ tạo khi cấu hình bật riêng và cấp đủ đầu vào. Không tự gọi API ngoài từ các test hoặc thay cấu hình môi trường phục vụ. [Hợp đồng 9.11](#api-tts-worker-contract) giữ hành vi và phần chưa nối.
+
+Đã thêm V8/place_view và A26–A28 để đọc phiên/lượt đã tính/thống kê theo ngày. Bảo vệ dữ liệu quá hạn D08 ở truy vấn; chưa có ACK/grant ghi lượt thật hoặc job tự xóa. [Hợp đồng 9.12](#api-admin-report-contract) là nguồn DTO/phạm vi. Hai tổng khác nhau về mốc ngày; không gộp điểm trùng tên hoặc coi phiên là người duy nhất.
+
+Kiểm kê hiện có **155 file backend/140 Java**, thêm 33 file, sửa 10 nguồn từ mốc 267 test; không thay V1–V6, pom.xml, Wrapper, cấu hình đang dùng hoặc giấy phép. PlaceRegionSchemaTests cập nhật chính xác danh sách đến V8; các ca nâng version cũ được đặt target rõ đúng phiên bản mà ca kiểm chứng, giữ assertion bảo toàn dữ liệu/checksum. Phân nhóm T02/T05/T07 theo [commit-plan](../01-tong-quan/commit-plan-2026-11-05.md), chưa có commit mới hoặc thay đổi issue.
+
+<a id="worker-report-test-result"></a>
+
+#### Kiểm chứng worker và báo cáo ngày 09/11/2026
+
+Chạy `mvnw.cmd --offline test` trên bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-tts-worker-kdjaz1ll\backend`, cùng Java 21.0.12.1/Maven Wrapper 3.9.12/Boot 4.1.2/Security 7.1.2, Docker Linux Engine 29.8.1 và MySQL 8.4.13 Testcontainers. Kết thúc **12:08:13 +07 ngày 09/11/2026**, **318 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**, đối chiếu 33 XML Surefire. Provider HTTP dùng server localhost và khóa fixture; worker tích hợp dùng sóng WAV tổng hợp, file/database tạm. Không có lời gọi Google/TTS thật, audio được nghe duyệt hoặc pipeline MP3 từ bộ kiểm này.
+
+- Adapter gửi nguyên transcript, tách model/voice, nhận WAV không thêm header; phân loại status/JSON/encoding, không redirect hoặc tự retry, không chép raw lỗi/key vào exception. WAV/container/chunk/profile/frame/checksum/duration, manifest đúng job/token/hash, từ chối path lạ/bytes thiếu/sửa/file mất, đọc lại bằng store instance mới.
+- Worker ghi marker trước provider và provider nằm ngoài TX; một worker/tác vụ chỉ gọi một lần. WAV READY + pointer/job cùng TX; lỗi đăng ký giữ manifest/unknown; Check phục hồi không gọi provider, idempotent và hai Check đồng thời chỉ một file. Receipt lỗi hoàn tác recovery/attempt mới/pointer.
+- Lỗi xác định có terminal thật, Tạo không ngầm retry; A21 tạo attempt mới đúng bản/giọng/tiếng/quan hệ retry, version cũ/sai trạng thái bị chặn. Unknown không retry; token cũ không finalize/fail. Target xóa loại kết quả muộn, không hồi sinh bản ghi. Hết phiên không hủy worker, Check/Retry cần session/CSRF.
+- Schema V7/FK WAV/RESTRICT/CHECK, nâng V6 có QUEUED/DISPATCHING/UNCERTAIN lên V7 giữ marker/owner/version/checksum và không tạo file/result/terminal giả. V8 UNIQUE từng opening/session, snapshot giữ sau xóa điểm, session không xóa trước lượt, bốn tiếng và FK đúng.
+- Ngày theo Asia/Saigon, cận trọn ngày/micro giây, năm mới/leap day/ngày sai; tên trùng/chuỗi wildcard/mã phiên; state đúng endedAt/expiresAt; dữ liệu D08 đúng 30 ngày bị loại khỏi list/detail/hai nhóm thống kê. Ngày phiên/lượt độc lập, điểm trùng tên tách theo Id và đổi tên không tách nhóm; session/CSRF/Q3 và không lộ secret. Hồi quy toàn bộ bộ kiểm trước đó.
+
+Log `..\full-tests.log`, báo cáo `target/surefire-reports`, baseline.json/tested-source-hashes.json/verification.json ở thư mục tạm cha. Đã bảo vệ sửa đổi hiện có bằng SHA-256 trước bàn giao; đủ 155 file trong thư mục chính khớp bản đã kiểm. File sinh/database/log/WAV fixture không đưa vào nguồn.
+
+**Phần tạm gác do công cụ/đầu vào:** máy chưa có FFmpeg/ffprobe trong PATH; môi trường frontend chưa tìm thấy node/npm bằng Get-Command. Không tự cài công cụ. Chưa chạy adapter với tài khoản/quota thật, chưa Node/Vue build/browser, chưa MP3/file claims/cleaner/audio/cặp/guest grant/ACK, bộ nội dung thật, tự xóa D08 hoặc backup/deploy. Tiếp tục phần độc lập khi đủ yêu cầu, giữ các phụ thuộc này trong bàn giao; không tự hạ phạm vi hoặc đánh dấu hoàn thành issue. Commit/PR vẫn tạm dừng.
+
+
+<a id="admin-pair-visibility-implementation"></a>
+
+### 11.8. Hồ sơ audio, áp dụng cả cặp, mức đầy đủ và bật/ẩn địa điểm
+
+Đã triển khai A23 đọc/ghi tham chiếu hồ sơ audio, A24 áp dụng cặp trong giao dịch cùng receipt, A10 bật/ẩn với gate vi/vùng và A25 mức đầy đủ bốn ngôn ngữ. A15 tách cặp đang dùng khỏi nháp; A07 trả điều kiện bật hiện. [Hợp đồng 9.13](#api-pair-visibility-contract) giữ DTO, mã lỗi, lock/replay và giới hạn file. Thành phụ trách Controller/Service/DTO/test API theo T05/G02; Repository/Entity bổ sung phục vụ giao dịch thuộc T02/Hòa, không suy tác giả từ phân công.
+
+Backend có 178 file/161 Java, thêm 11 Java và sửa 17 nguồn so với mốc 336 test. Không thêm migration, không sửa V1–V9/seed, cấu hình, pom.xml hoặc Wrapper. Job TTS không tự chuyển thành công từ cặp được dựng trong fixture; chưa FFmpeg/provider thật, nghe duyệt hoặc dữ liệu đã được phép phục vụ.
+
+<a id="admin-pair-visibility-test-result"></a>
+
+#### Kiểm chứng ngày 09/11/2026
+
+`mvnw.cmd --offline test` trên bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-apply-pair-sa9jc86n\backend`, Java 21.0.12.1/Maven Wrapper 3.9.12/Boot 4.1.2/Security 7.1.2 và MySQL 8.4.13 Testcontainers/Docker Linux Engine 29.8.1. Kết thúc **14:54:36 +07 ngày 09/11/2026**, **366 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**, đối chiếu 37 XML Surefire. Nguồn chính khớp SHA-256 bản sao đã kiểm; dữ liệu/file/khóa fixture tách biệt, không Git/GitHub, cài công cụ, database phục vụ hoặc API TTS thật.
+
+[AdminPairApiTests](../../backend/src/test/java/vn/hueqr/backend/controller/AdminPairApiTests.java) có 30 ca:
+
+- Hồ sơ audio: đọc thiếu không tạo ref; giữ Unicode và đúng Id/text/lang/hash, none khác version 0; stale/wrong-object tag, locator rỗng/surrogate, file mất bị chặn. Ghi/ref update lỗi receipt rollback; replay ref cũ không ghi đè sửa đổi mới; hai Admin tạo ref chỉ một thành công.
+- Cặp: áp dụng đầu tiên/cặp thay thế, hai con trỏ nháp và áp dụng tách biệt, đổi riêng audio với text cũ dù có nháp mới; không tự bật hiện/chờ đủ bốn tiếng. Sai text/ngăn/audio/hashes/ref version/file size giữ cặp cũ. New key đúng cặp hiện tại không tạo pair hoặc tăng version lại.
+- Giao dịch: same-key concurrent một receipt/replay; khác key với cùng ETag một 200/một 412. Receipt lỗi rollback cặp/pointer/ever_applied/last-unapply; replay sự kiện cũ sau cặp mới không đổi bản hiện hành. File dùng chung hai điểm chỉ bắt đầu hạn sau tham chiếu áp dụng cuối cùng bị bỏ, UTC micro giây đúng DATETIME(6).
+- Bật/ẩn: thiếu vùng/cặp vi hoặc chỉ có draft/cặp chưa áp dụng bị chặn; có vùng và cặp vi đủ thì được bật dù chưa en/fr/ru. Hash vùng sai/ref mất/file mất có missingConditions; ẩn luôn được khi còn đúng version, giữ cặp/mốc file. Replay/rollback visibility, hai bật cùng version và Apply tranh chấp Hide trên MySQL thật.
+- A25: đúng bốn dòng/điểm, không tạo slot trống, phân biệt nháp mới với cặp cũ, không lộ storage key/secret hoặc suy approved. File mất được phản ánh trong cặp/candidate; đọc không Q3. Admin/session/CSRF/window owner/expiry được kiểm cho các lệnh mới; hồi quy toàn bộ bộ kiểm cũ.
+
+Log `..\full-tests.log`, XML `target/surefire-reports`; baseline.json/tested-source-hashes.json/verification.json và các log riêng pair-api-tests*.log ở thư mục tạm cha. Fixture WAV là sóng tổng hợp; file mang đuôi MP3 chỉ là bytes cố định để kiểm file-stat/quan hệ/giao dịch, không chứng minh codec MP3 hoặc nghe duyệt. Bộ 24 ca riêng trước A25 đã đạt; bằng chứng toàn cây trên mới là mốc hiện hành.
+
+**Còn mở:** A22 stream/nghe thử thực, FFmpeg/đăng ký audio thật và TTS success, frontend Q2/xem hồ sơ/preview, xét vùng và phê duyệt nội dung thực, khách opening/grant/ACK/Blob, xóa địa điểm/D08/claims/cleaner và backup/restore. Vì vậy chưa hoàn thành toàn T05/T07 hoặc tự tích thêm checklist; local vẫn 89 ô/20 dấu tích, GitHub chưa kiểm lại.
+
+
+
+<a id="guest-content-implementation"></a>
+
+### 11.9. Nội dung khách, lần mở, grant, ACK và nguồn giao diện
+
+Đã bổ sung K03/K05–K10 theo [mục 9.14](#api-guest-content-implementation-contract), migration V10 và mở rộng K02/K04 về currentLanguage/thu hồi grant. Backend hiện có **194 file nguồn, 176 Java**, thêm 16 file và sửa 6 nguồn từ mốc 366 test. T02/Hòa giữ migration/Entity/Repository/schema test, T03/Thành giữ HTTP/Service/DTO/API test; phân công không tự là bằng chứng tác giả. Không sửa V1–V9, seed, cấu hình, pom.xml hoặc Wrapper.
+
+Giao diện Vue khách có nguồn tại [frontend](../../frontend/README.md): bắt đầu/khôi phục/owner tab, vùng từ API, chọn liên tục/đổi tiếng, ACK sau render, một audio/Blob và các box kết thúc/hết hạn. T04/Nghĩa phụ trách theo G02. Chưa resolve/build hoặc kiểm DOM/template/Leaflet/Web Locks trên browser; chưa frontend Admin T06. Không coi nguồn này là ứng dụng đã chạy thử đạt yêu cầu.
+
+<a id="guest-content-test-result"></a>
+
+#### Kiểm chứng ngày 09/11/2026
+
+Môi trường tách biệt `C:\Users\khait\AppData\Local\Temp\hueqr-guest-content-7_i_z4v5\backend`, Java 21.0.12.1/Maven Wrapper 3.9.12/Boot 4.1.2 và MySQL 8.4.13 Testcontainers, Docker Linux Engine 29.8.1. Không dùng database phục vụ, provider thật hoặc cài công cụ. Kiểm Git/commit/push thuộc bước bàn giao riêng được giao sau triển khai, không thay bằng chứng kiểm thử.
+
+| Lần kiểm | Kết quả thực | Giới hạn |
+| --- | --- | --- |
+| Biên dịch `mvnw.cmd --offline -DskipTests compile` | BUILD SUCCESS, 16:30:06 +07 | Không thay kiểm giao dịch/API |
+| Riêng GuestContentApiTests | 26/26 đạt, không lỗi/bỏ qua, BUILD SUCCESS, 16:35:39 +07 | Fixture tạm, chưa browser/codec |
+| Hồi quy đầu `mvnw.cmd --offline test` | 397 ca, 1 failure/0 errors/0 skipped, BUILD FAILURE, 16:48:40 +07 | Assertion kiểm kê migration cũ chỉ liệt kê V1–V9; database đã áp V10 thành công. Đã cập nhật kỳ vọng đủ V1–V10, giữ kiểm FK/validate và log thất bại |
+| Hồi quy sau sửa bị ngắt | Không có kết quả kết thúc hoặc exit code | Log dừng ở 17:05:52 +07, không dùng các XML đang ghi dở để kết luận toàn bộ đạt |
+| Unit khi tiếp tục, `mvnw.cmd --offline -Dtest=GuestInputPolicyTests,GuestRuntimeConfigurationTests,StartTicketCodecTests,StartTicketSignerTests,StartTicketTimePolicyTests,GuestSessionEndTests test` | 55/55 đạt, BUILD SUCCESS, exit 0; 22:10:40 +07 | Biên dịch lại nguồn/test; không thay kiểm MySQL |
+| Hồi quy sau khi Docker sẵn sàng, `mvnw.cmd --offline -Dlogging.level.root=WARN -Dlogging.level.org.springframework=WARN -Dlogging.level.org.hibernate=WARN test` | 397 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0 | 09/11/2026 22:26:24 +07; 39 XML, tham số log chỉ ở lệnh chạy, không đổi cấu hình nguồn hoặc bỏ kiểm thử |
+| Playback JavaScript | 13/13 ca đạt trong V8 tách biệt với audio/clock/URL giả; 8 phần script qua kiểm cú pháp | Không chạy Node/npm, resolve/build Vue, compile template, DOM/CSS, browser audio/owner hoặc điện thoại |
+
+[GuestContentApiTests](../../backend/src/test/java/vn/hueqr/backend/controller/GuestContentApiTests.java) có 26 ca: map chỉ điểm hiện/vùng áp dụng; không lộ nháp; chọn đúng cặp; thiếu bản dịch/file; ACK đúng một lần, cùng điểm/đổi tiếng/reload không tạo lượt mới; A→B→A và leave; request cũ/key reuse/version; CAS nonce; ẩn/xóa vẫn ACK snapshot/tải grant cũ; replay text đã xóa không tráo bản; byte/checksum/no-store/Range/claim; credential/grant chéo; exact expiry/end; concurrent retry/ACK. [GuestContentSchemaTests](../../backend/src/test/java/vn/hueqr/backend/schema/GuestContentSchemaTests.java) có 5 ca: nâng V9 có dữ liệu lên V10 giữ bản ghi/checksum, FK opening cùng session, RESTORE không viewEligible, UK key/nonce-seq và claim chặn xóa file.
+
+Log ở thư mục tạm cha: compile.log, guest-tests.log, full-tests.log (giữ lần thất bại), full-final-tests.log (lần bị ngắt), unit-resume-tests.log, full-resumed-tests.log; first-full-reports giữ XML trước sửa, interrupted-full-reports giữ tập báo cáo trước lần chạy lại. verification.json/tested-source-hashes.json/frontend-verification.json ghi kiểm kê, mốc chạy và đối chiếu nguồn. Tệp sinh/log tạm không đưa vào nhóm commit. WAV tổng hợp; bytes mang đuôi MP3 chỉ kiểm giao thức/quyền/checksum, không codec hoặc nghe duyệt.
+
+**Còn mở:** dọn grant/opening/request-result sau end/expiry và D08 vật lý, thu hồi claim khi có bằng chứng process đã chết, xóa địa điểm/cleaner, FFmpeg/MP3 và provider thật, UI Admin, resolve/build Vue, owner/Blob/expiry/background/clock qua browser và bộ nội dung/vùng được duyệt. Pin grant hiện vẫn giữ metadata/file sau hạn tới khi worker dọn được triển khai; quyền tải đã bị chặn ngay theo session, không được nhầm hai mốc. Không hoàn tất toàn T02/T03/T04/T05/T07 hoặc tự đổi checklist 89 ô/20 dấu tích.
 
 ### Nhật ký biên tập
 
