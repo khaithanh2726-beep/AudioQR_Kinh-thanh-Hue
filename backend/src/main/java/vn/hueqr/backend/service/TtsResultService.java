@@ -67,8 +67,17 @@ public class TtsResultService {
 				text.clearActiveTtsJob(job.getId());
 			return false;
 		}
-		files.saveAndFlush(new FileAsset(staged.fileId(), staged.storageKey(), HexFormat.of().parseHex(staged.checksum()),
-				staged.byteSize(), staged.duration(), now));
+		var existing = files.findByIdForUpdate(staged.fileId()).orElse(null);
+		if (existing == null)
+			files.saveAndFlush(new FileAsset(staged.fileId(), staged.storageKey(), HexFormat.of().parseHex(staged.checksum()),
+					staged.byteSize(), staged.duration(), now));
+		else if (!"READY".equals(existing.getState()) || !"WAV".equals(existing.getFormat())
+				|| !staged.storageKey().equals(existing.getStorageKey()) || staged.byteSize() != existing.getByteSize()
+				|| !staged.checksum().equals(HexFormat.of().formatHex(existing.getChecksum()))
+				|| staged.duration().compareTo(existing.getDuration()) != 0)
+			return false;
+		if (existing != null)
+			existing.retainReference();
 		job.stage(staged.fileId(), now);
 		jobs.flush();
 		return true;

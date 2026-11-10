@@ -27,10 +27,11 @@ public class TtsRecoveryService {
 	private final ObjectMapper json;
 	private final ObjectProvider<WavResultStore> stores;
 	private final TtsResultService results;
+	private final RuntimeOwnerService owners;
 
 	public TtsRecoveryService(TtsJobRepository jobs, TextRevisionRepository texts, PlaceRepository places,
 			AdminCommandService commands, ContentTextPolicy input, java.time.Clock clock, ObjectMapper json,
-			ObjectProvider<WavResultStore> stores, TtsResultService results) {
+			ObjectProvider<WavResultStore> stores, TtsResultService results, RuntimeOwnerService owners) {
 		this.jobs = jobs;
 		this.texts = texts;
 		this.places = places;
@@ -40,6 +41,7 @@ public class TtsRecoveryService {
 		this.json = json;
 		this.stores = stores;
 		this.results = results;
+		this.owners = owners;
 	}
 
 	public AdminOperationResponse retry(UUID account, String key, String jobId, RetryTtsRequest request) {
@@ -80,7 +82,7 @@ public class TtsRecoveryService {
 		String inspection = "NO_LOCAL_EVIDENCE";
 		WavResultStore store = stores.getIfAvailable();
 		if (snapshot.getWorkerToken() != null && store != null && java.util.Set.of("DISPATCHING", "UNCERTAIN").contains(snapshot.getPhase())) {
-			try {
+			try (var task = owners.begin("RECOVER", id)) {
 				evidence = store.recover(id, snapshot.getWorkerToken(), HexFormat.of().formatHex(snapshot.getTextHashSnapshot())).orElse(null);
 				if (evidence != null)
 					inspection = "LOCAL_WAV_VERIFIED";

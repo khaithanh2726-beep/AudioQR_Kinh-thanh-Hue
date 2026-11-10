@@ -32,13 +32,15 @@ public class GuestAudioService {
 	private final Clock clock;
 	private final Path root;
 	private final TransactionTemplate transaction;
+	private final RuntimeOwnerService owners;
 
 	public GuestAudioService(GuestContentService guests, GuestContentRepository content, FileAssetRepository files,
-			Clock clock, @Value("${HUEQR_AUDIO_ROOT:}") String root, PlatformTransactionManager manager) {
+			Clock clock, @Value("${HUEQR_AUDIO_ROOT:}") String root, PlatformTransactionManager manager, RuntimeOwnerService owners) {
 		this.guests = guests;
 		this.content = content;
 		this.files = files;
 		this.clock = clock;
+		this.owners = owners;
 		this.root = root.isBlank() ? null : Path.of(root);
 		transaction = new TransactionTemplate(manager);
 		transaction.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -47,6 +49,7 @@ public class GuestAudioService {
 
 	public Download download(UUID sid, UUID gid, String credential, String range) {
 		var opened = new AtomicReference<InputStream>();
+		var work = new AtomicReference<RuntimeOwnerService.Task>();
 		UUID claim = UUID.randomUUID();
 		try {
 			Download result = transaction.execute(tx -> {
@@ -74,7 +77,9 @@ public class GuestAudioService {
 					throw new GuestSessionException("MEDIA_NOT_READY");
 				}
 				// Giữ claim sau commit tới khi stream thực đóng, không giữ giao dịch trong lúc truyền file
-				content.claim(claim, file.getId(), grant.id(), clock.instant().truncatedTo(ChronoUnit.MICROS));
+				work.set(owners.begin("READ", grant.id()));
+				content.claim(claim, file.getId(), grant.id(), clock.instant().truncatedTo(ChronoUnit.MICROS), work.get().instanceId());
+				file.retainReference();
 				return new Download(null, file.getByteSize(), HexFormat.of().formatHex(file.getChecksum()));
 			});
 			InputStream tracked = new FilterInputStream(opened.get()) {
@@ -89,7 +94,12 @@ public class GuestAudioService {
 						super.close();
 					}
 					finally {
-						transaction.executeWithoutResult(tx -> content.release(claim));
+						try {
+							transaction.executeWithoutResult(tx -> content.release(claim));
+						}
+						finally {
+							work.get().close();
+						}
 					}
 				}
 			};
@@ -104,6 +114,8 @@ public class GuestAudioService {
 					error.addSuppressed(closeError);
 				}
 			}
+			if (work.get() != null)
+				work.get().close();
 			throw error;
 		}
 	}
