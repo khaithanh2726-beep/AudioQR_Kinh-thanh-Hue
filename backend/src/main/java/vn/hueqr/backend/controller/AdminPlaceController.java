@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ import vn.hueqr.backend.dto.SetPlaceVisibilityRequest;
 import vn.hueqr.backend.service.AdminPlaceService;
 import vn.hueqr.backend.service.AdminSessionService;
 import vn.hueqr.backend.service.AdminVisibilityService;
+import vn.hueqr.backend.service.AdminPlaceDeletionService;
 
 @RestController
 @RequestMapping("/api/v1/admin/places")
@@ -29,17 +31,28 @@ public class AdminPlaceController {
 	private final AdminPlaceService places;
 	private final AdminSessionService sessions;
 	private final AdminVisibilityService visibility;
+	private final AdminPlaceDeletionService deletion;
 
-	public AdminPlaceController(AdminPlaceService places, AdminSessionService sessions, AdminVisibilityService visibility) {
+	public AdminPlaceController(AdminPlaceService places, AdminSessionService sessions, AdminVisibilityService visibility, AdminPlaceDeletionService deletion) {
 		this.places = places;
 		this.sessions = sessions;
 		this.visibility = visibility;
+		this.deletion = deletion;
 	}
 
 	@GetMapping
 	public ResponseEntity<List<AdminPlaceResponse>> list(HttpServletRequest request) {
 		sessions.current(request);
 		return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(places.list());
+	}
+
+	@DeleteMapping("/{placeId}")
+	public ResponseEntity<AdminOperationResponse> delete(@PathVariable String placeId,
+			@RequestHeader(value = "Idempotency-Key", required = false) String key,
+			@RequestHeader(value = "If-Match", required = false) String ifMatch, HttpServletRequest request) {
+		var account = sessions.activity(request, "DELETE");
+		var result = deletion.delete(account.accountId(), key, placeId, ifMatch);
+		return ResponseEntity.status(result.httpStatus()).cacheControl(CacheControl.noStore()).body(result);
 	}
 
 	@GetMapping("/{placeId}")

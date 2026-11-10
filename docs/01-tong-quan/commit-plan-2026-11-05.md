@@ -490,6 +490,43 @@ Bảng ghi mốc đối chiếu, không mặc định là HEAD ở lần đọc 
 
 Các worktree riêng phục vụ Git, không chạy ứng dụng hoặc kiểm thử trên database đang dùng. Thư mục IDE giữ nhánh T01 và nguyên trạng nguồn của lượt triển khai tiếp theo; không chuyển nhánh để làm mất file đang sửa. 14 file frontend T04 chưa commit/push; T06 chưa thực hiện. Chưa merge PR mới vào main hoặc thay issue/Project. Điểm dừng và giới hạn kiểm chứng tại [handoff mục 2.25](handoff.md#commit-push-20261109).
 
+<a id="guest-retention-commit-group"></a>
+
+### 4.13. Dọn metadata và phiên/lượt D08 — T02/T05
+
+[Bằng chứng và giới hạn](../03-ky-thuat/operations-design.md#ops-guest-retention-result) thuộc cây backend đầy đủ: 200 file/182 Java, sáu Java mới; nguồn cũ, cấu hình và V1–V10 giữ nguyên. Không thêm file vào task khác để làm đầy nhánh, không coi scheduler mặc định chưa bật là retention vận hành đã nghiệm thu.
+
+T02/Hòa bổ sung Repository:
+
+```powershell
+$guestRetentionDataFiles = @(
+    'backend/src/main/java/vn/hueqr/backend/repository/GuestRetentionRepository.java'
+)
+```
+
+T05/Thành bổ sung quy tắc, giao dịch, runner và kiểm:
+
+```powershell
+$guestRetentionServiceFiles = @(
+    'backend/src/main/java/vn/hueqr/backend/service/GuestRetentionPolicy.java'
+    'backend/src/main/java/vn/hueqr/backend/service/GuestRetentionService.java'
+    'backend/src/main/java/vn/hueqr/backend/service/GuestRetentionRunner.java'
+    'backend/src/test/java/vn/hueqr/backend/service/GuestRetentionPolicyTests.java'
+    'backend/src/test/java/vn/hueqr/backend/service/GuestRetentionTests.java'
+)
+```
+
+T02 nhận nền dữ liệu V10 hiện có rồi bàn giao Repository; T05 nhận T02 và cây API khách/cặp/TTS đã kiểm trước khi nhận Service/test. Tổng kiểm kê mới theo nguồn chính: 12 T01/57 T02/36 T03/75 T05/20 T07 =200 file backend. 14 file frontend T04 không thuộc nhóm này; T06 có bản chuẩn bị riêng chưa nhận vào cây bàn giao. Các số ở mục 4.12 giữ đúng mốc trước.
+
+Kết quả đã đối chiếu commit/push:
+
+| Task | Commit sản phẩm | Số file thay đổi | Tài khoản xác thực |
+| --- | --- | --- | --- |
+| T02 | `695480b9d4556362b063b84808c2ccff2eb924d4` — Bổ sung truy vấn dọn metadata và dữ liệu phiên khách | 1 | `gingpham` |
+| T05 | `23813ca0605b90f0dab0f4406113a8a532eede5d` — Dọn phiên và lượt xem theo hạn lưu, bảo vệ lượt tải đang xử lý | 5 | `khaithanh2726-beep` |
+
+SHA local/remote khớp tại mốc push. T05 nhận cây đầy đủ từ T03 và Repository T02; đã đối chiếu 200 file backend với bản hồi quy 421 test. Các commit nhận tài liệu có thể làm HEAD đổi, bảng ghi commit sản phẩm. Tài liệu lưu theo T01 và bàn giao vào T05; chưa merge PR vào main hoặc đổi issue/Project. Nguồn cũ và phần Nghĩa giữ nguyên.
+
 ## 5. Dấu vết thay đổi kế hoạch
 
 
