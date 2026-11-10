@@ -37,7 +37,7 @@ public class FileAsset {
 	private BigDecimal duration; // Thời lượng đã kiểm theo định dạng file, đơn vị giây
 
 	@Column(nullable = false, length = 16)
-	private String state; // READY khi file đầy đủ đã được đăng ký
+	private String state; // READY khi dùng được, DELETING khi chờ unlink, DELETED khi đã xác nhận vắng file
 
 	@Column(name = "ever_applied", nullable = false)
 	private boolean everApplied; // File đã từng thuộc cặp áp dụng hay chưa
@@ -102,6 +102,10 @@ public class FileAsset {
 
 	public String getState() {
 		return state;
+	}
+
+	public void retainReference() {
+		orphanEligibleSince = null;
 	}
 
 	public void markApplied() {
