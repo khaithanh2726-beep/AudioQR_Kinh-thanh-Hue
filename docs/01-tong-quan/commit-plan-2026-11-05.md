@@ -577,6 +577,24 @@ Tám tài liệu thay đổi được commit theo T01 với thông điệp `T01:
 
 **Điểm dừng:** mới commit cục bộ, chưa push các commit trong bảng, chưa merge PR hoặc thay main/issue/Project. Khi tiếp tục push cần chọn tài khoản theo G02, đối chiếu SHA local/remote và diff với base thực tế. Checklist giữ nguyên 89 ô/20 dấu tích; việc commit không xác nhận hoàn tất issue. Bằng chứng thao tác, bản chốt và đối chiếu ở `C:\Users\khait\AppData\Local\Temp\hueqr-commit-lifecycle-4zc8n4oh`.
 
+<a id="lifecycle-preview-push-result"></a>
+
+### 4.17. Kết quả push vòng đời và A22 — 10/11/2026
+
+Đã đối chiếu SHA local/remote sau push thường, không force-push:
+
+| Nhánh | Đầu nhánh tại mốc push sản phẩm | Tài khoản được chọn khi push |
+| --- | --- | --- |
+| T01 | `a1d1743e15d9098a55a1267267b25eee5f1c00a3` | khaithanh2726-beep |
+| T02 | `38f095be8b76d5a4909a172f832e600e167c698c` | gingpham |
+| T03 | `52ddc6bae407b56b8983ef1f11877c3495de6bf9` | khaithanh2726-beep |
+| T05 | `e1b9b341ffc66a1d9c9c989f03bdc068e3341ed8` | khaithanh2726-beep |
+| T07 | `8efdc2b0ae5a290d783fbddfbdec0f848d02e411` | khaithanh2726-beep |
+
+T05 có commit nhận tài liệu `e1b9b34`; các commit sản phẩm được giữ riêng ở mục 4.16. Không merge PR hoặc thay main. Commit T01 bổ sung kết quả push/phạm vi phối hợp có thể làm đầu nhánh đổi sau bảng này. Cây nguồn/giới hạn kiểm chứng không thay từ lượt commit; không phát sinh build/test mới do push.
+
+[Handoff 2.30](handoff.md#parallel-backend-frontend) là nguồn chính về quyền sở hữu file và điểm bàn giao khi làm backend/frontend song song. Frontend có bản sao riêng, không commit/push phần Nghĩa hoặc ghép vào cây chính trước rà soát. Checklist và trạng thái issue/Project giữ nguyên.
+
 ## 5. Dấu vết thay đổi kế hoạch
 
 

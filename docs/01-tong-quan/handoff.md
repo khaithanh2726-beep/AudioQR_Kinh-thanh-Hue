@@ -13,7 +13,7 @@
 | Job TTS | Worker WAV/manifest/Check/Retry, registry writer và xử lý kết quả muộn; dừng owner có bằng chứng OS cục bộ | Provider/quota thật, FFmpeg/MP3/audio, local retry/terminal audio, mất điện/restore và toàn T07 |
 | Đọc dữ liệu Admin | A26–A28, ngày Asia/Saigon, snapshot/tổng thống kê; D08 vật lý đã kiểm trong MySQL tạm | Frontend, luồng ghi lượt trên browser thực và nghiệm thu toàn T05 |
 | Hồi quy backend | [Operations 6.3](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result) giữ mốc toàn cây trước A22; mục 2.28 giữ 111 ca liên quan A22; các mốc 397 tại 2.24 và 421 tại 2.26 giữ đúng thời điểm | Mỗi nhánh trung gian, toàn bộ tiêu chí nghiệm thu và CI/CD |
-| Git | Vòng đời và A22 đã commit cục bộ theo [mục 2.29](#local-commits-lifecycle-preview), có cây backend đầy đủ tại T05 khớp nguồn đã kiểm | Chưa push lượt này, chưa merge PR mới; phần Nghĩa dừng trước đăng nhập |
+| Git | Vòng đời và A22 đã commit/push theo [mục 2.30](#parallel-backend-frontend), có cây backend đầy đủ tại T05 khớp nguồn đã kiểm | Chưa merge PR mới; frontend Nghĩa chưa commit/push, giữ điểm dừng đăng nhập |
 | Backlog | Checklist hiện hành tại roadmap mục 3: 89 ô/20 dấu tích; các mốc 18 dấu tích trước đó giữ theo thời điểm | Đợt này không thay issue/Project hoặc coi test/commit là hoàn thành toàn task |
 
 [Bằng chứng kiểm chứng](../03-ky-thuat/practice-01-start-session.md#practice-results) lưu thời điểm, kết quả và giới hạn. Metadata Git không chứng minh tài khoản dùng để xác thực GitHub hoặc ai đã thực hiện phần việc. Phân công và tài khoản theo G02 được đối chiếu riêng với bằng chứng.
@@ -24,7 +24,7 @@
 
 Repository: [AudioQR_Kinh-thanh-Hue](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue). Bảng công việc: [Project 21](https://github.com/users/khaithanh2726-beep/projects/21/views/1). Thư mục làm việc đã ghi nhận: `C:\Study\Code\VS Code\AudioQR_Kinh-thanh-Hue`.
 
-**Đọc để tiếp tục:** [mục 2.29](#local-commits-lifecycle-preview) ghi kết quả commit cục bộ và điểm dừng trước push. [Mục 2.28](#admin-preview-prepared) giữ 111 ca liên quan A22; [mục 2.27](#lifecycle-cleanup-result) giữ mốc toàn cây trước A22 qua 459 ca. [Mục 2.24](#guest-content-frontend-result) giữ frontend và giới hạn công cụ. Roadmap là nguồn checklist, mục 7 là nguồn quyền và nhịp bàn giao.
+**Đọc để tiếp tục:** [mục 2.30](#parallel-backend-frontend) ghi kết quả push và phạm vi làm song song backend/frontend. [Mục 2.29](#local-commits-lifecycle-preview) giữ commit; [mục 2.28](#admin-preview-prepared) giữ 111 ca liên quan A22; [mục 2.27](#lifecycle-cleanup-result) giữ 459 ca toàn cây trước A22. Roadmap là nguồn checklist, mục 7 là nguồn quyền và nhịp bàn giao.
 
 <a id="issue-recreation"></a>
 
@@ -442,6 +442,25 @@ Cây backend nhận có 216 file/197 Java, khớp mã Hash bản đã kiểm t�
 Cây backend đầy đủ tại T05 khớp 216 file/197 Java của bản kiểm ở mục 2.28 bằng Git blob sau chuẩn hóa line ending. Giữ nguồn IDE và frontend bằng mã Hash, giữ T01 đang mở và không gom các file untracked thuộc nhánh khác vào commit. Chỉ kiểm phạm vi/staged diff/whitespace và đối chiếu nguồn trong lượt Git; không chạy lại hoặc bổ sung kết quả build/test.
 
 **Điểm dừng hiện hành:** mới commit cục bộ, chưa push lượt vòng đời/A22, chưa merge PR, đổi main/issue/Project hay tích thêm checklist. Các câu chưa commit ở mốc 2.27–2.28 phản ánh thời điểm kiểm thử trước bàn giao này. Khi tiếp tục push cần chọn tài khoản theo task, đối chiếu SHA local/remote; phần Nghĩa giữ điểm dừng trước đăng nhập. Checklist hiện vẫn 89 ô/20 dấu tích. Giới hạn frontend/công cụ/audio thực và môi trường phục vụ ở 2.27–2.28 vẫn còn.
+
+<a id="parallel-backend-frontend"></a>
+
+### 2.30. Push vòng đời/A22 và phối hợp backend–frontend — 10/11/2026
+
+Đã push T02 bằng lựa chọn tài khoản gingpham, T01/T03/T05/T07 bằng khaithanh2726-beep; SHA local/remote khớp ở mốc [commit-plan 4.17](commit-plan-2026-11-05.md#lifecycle-preview-push-result). Không force-push, thay main, merge PR hoặc sửa issue/Project. Bảng giữ mốc sản phẩm; commit T01 bổ sung tài liệu phối hợp được theo dõi tiếp, không cố định HEAD bằng SHA cũ. Checklist vẫn 89 ô/20 dấu tích.
+
+Chia công việc song song theo phạm vi file, giữ G02:
+
+| Luồng | Phạm vi được sửa | Mục tiêu trước mắt |
+| --- | --- | --- |
+| Backend và tích hợp | backend/**, cấu hình ngoài frontend và tài liệu chung | T07 hoàn thiện chuyển đổi cục bộ/đăng ký MP3, trạng thái success/failure/retry và kiểm độc lập FFmpeg/provider; T02/T05 phối hợp nếu cần mapping/nghiệp vụ, T09 chuẩn bị kiểm, T01/T11 lưu hướng dẫn theo sản phẩm |
+| Frontend khách/Admin | Chỉ frontend/** trong bản sao được bàn giao | T04/T06 hoàn thiện nguồn, nối API hiện có; mốc đầu ưu tiên Admin quản lý địa điểm/vùng và nội dung/cặp, Q2/Q3 dựa trên bản login/danh sách/đổi tên đã chuẩn bị |
+
+Bản sao frontend tại `C:\Users\khait\AppData\Local\Temp\hueqr-frontend-parallel-2bdh_cq8`, có HANDOFF.md và baseline.json. Backend/tài liệu trong đó chỉ đọc. Đọc thêm bản Admin cũ `C:\Users\khait\AppData\Local\Temp\hueqr-codex2-admin-zf49j1_e\HANDOFF.md`, đối chiếu và kế thừa phần phù hợp, không tạo lại hoặc ghi đè tùy ý. Frontend vẫn thuộc Nghĩa theo G02; dừng trước commit/push để đăng nhập.
+
+Luồng frontend không thao tác Git/GitHub, sửa backend/tài liệu chung hoặc chép về dự án nhận. Chỉ ghi file thay đổi, bằng chứng, mã Hash đầu ra và yêu cầu API còn thiếu trong HANDOFF.md của bản sao. Luồng tích hợp đối chiếu baseline với nguồn đích rồi mới ghép từng file sau rà soát. Không đổi hợp đồng API khi bên còn lại đang triển khai; đề xuất thay đổi phải nêu endpoint/DTO/lý do và được đối chiếu trước khi áp dụng. Việc chia luồng không thay phân công hoặc xác nhận ai đã hoàn thành task.
+
+Không tự cài Node/npm/FFmpeg hoặc gọi provider/API ngoài. Thiếu công cụ thì tiếp tục code/kiểm độc lập và ghi giới hạn; không coi V8/mock/biên dịch là npm build/browser/MP3 thực đạt. Không dùng database chính hoặc mở môi trường phục vụ. Sau mỗi mục lớn vẫn dừng để nhóm rà theo 7.3; không tự tích checklist hoặc mở rộng quyền GitHub từ việc được push.
 
 ## 3. Tài liệu bàn giao
 
