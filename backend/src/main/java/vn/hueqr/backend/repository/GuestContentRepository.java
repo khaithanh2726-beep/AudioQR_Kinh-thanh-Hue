@@ -114,8 +114,12 @@ public class GuestContentRepository {
 	}
 
 	public void claim(UUID id, UUID file, UUID grant, Instant now) {
-		sql.update("INSERT INTO file_claim (id, file_id, owner_key, kind, created_at) VALUES (?, ?, ?, 'READ', ?)",
-				bytes(id), bytes(file), bytes(grant), Timestamp.from(now));
+		claim(id, file, grant, now, null);
+	}
+
+	public void claim(UUID id, UUID file, UUID grant, Instant now, UUID instance) {
+		sql.update("INSERT INTO file_claim (id, file_id, owner_key, kind, created_at, owner_instance) VALUES (?, ?, ?, 'READ', ?, ?)",
+				bytes(id), bytes(file), bytes(grant), LifecycleRepository.time(now), bytes(instance));
 	}
 
 	public void release(UUID id) {
