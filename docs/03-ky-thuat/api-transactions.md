@@ -822,6 +822,14 @@ Log ở thư mục tạm cha: compile.log, guest-tests.log, full-tests.log (gi�
 
 **Còn mở:** dọn grant/opening/request-result sau end/expiry và D08 vật lý, thu hồi claim khi có bằng chứng process đã chết, xóa địa điểm/cleaner, FFmpeg/MP3 và provider thật, UI Admin, resolve/build Vue, owner/Blob/expiry/background/clock qua browser và bộ nội dung/vùng được duyệt. Pin grant hiện vẫn giữ metadata/file sau hạn tới khi worker dọn được triển khai; quyền tải đã bị chặn ngay theo session, không được nhầm hai mốc. Không hoàn tất toàn T02/T03/T04/T05/T07 hoặc tự đổi checklist 89 ô/20 dấu tích.
 
+<a id="guest-retention-api-result"></a>
+
+### 11.10. Dọn metadata và phiên/lượt D08 ngày 10/11/2026
+
+Không đổi URL, DTO, HTTP status hoặc quyền của API. End/expiry vẫn chặn quyền theo clock trước khi worker dọn; K03/status của phiên còn giữ trả trạng thái hiện có, không tạo lại opening/lượt. Sau purge D08, credential cũ không còn phiên để dùng; gửi nguyên vé/key cũ không tạo phiên mới vì vé đã quá 24 giờ. Thống kê tiếp tục dùng dữ liệu còn giữ theo hạn gốc.
+
+[Operations 6.2](operations-design.md#ops-guest-retention-result) là nguồn chính về giao dịch khóa phiên/claim, rollback, UTC, 24 ca mới và hồi quy 421 test đạt. Cây backend đầy đủ được kiểm trong bản sao với MySQL tạm; chưa dùng database phục vụ, bật scheduler vận hành, đo tải hoặc kiểm browser. Không coi mốc này là đã kiểm toàn AC hoặc hoàn tất T03/T05.
+
 ### Nhật ký biên tập
 
 

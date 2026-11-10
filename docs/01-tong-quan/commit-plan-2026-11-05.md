@@ -2,6 +2,8 @@
 
 **Cập nhật:** 09/11/2026. Kế hoạch tổ chức bàn giao cho Thành, Hòa và Nghĩa trên ba máy riêng, tích hợp qua repository chung. Bảng phân công là trách nhiệm dự kiến; trạng thái hoàn thành phải căn cứ sản phẩm và bằng chứng. Quy trình Git chung tại [handoff 7.2](handoff.md#issue-git-handoff).
 
+**Kết quả mới nhất:** phần nguồn đã kiểm của Thành/Hòa được commit theo T01/T02/T03/T05/T07; bảng kết quả tại [mục 4.12](#commit-push-result-20261109). Các nhãn “chưa commit” và “tạm hoãn” ở các mốc 4.5–4.11 phản ánh thời điểm kiểm kê trước lần bàn giao này, không thay kết quả mới. Phần Nghĩa dừng trước đăng nhập.
+
 ## 1. Điều kiện và trạng thái đầu vào
 
 - Repository: [AudioQR_Kinh-thanh-Hue](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue); Project 21 và mapping #1–#11 tại [roadmap mục 6](roadmap.md#github-checklist-review).
@@ -469,6 +471,61 @@ $guestFrontendFiles = @(
 ```
 
 Thông điệp dự kiến theo đúng sản phẩm: `T02: Bổ sung dữ liệu lần mở, quyền nội dung và claim đọc`; `T03: Cung cấp nội dung khách, ghi lượt và tải audio theo quyền phiên`; `T04: Bổ sung nguồn giao diện khách và quản lý audio trong tab`. Không mô tả build/browser/codec/nghiệm thu đã đạt trước khi kiểm. Khi nối lại Git cần đối chiếu trạng thái, tài khoản, staged diff và nền phụ thuộc; chưa đủ thông tin đăng nhập không tự đổi metadata để ghi nhận người khác.
+
+<a id="commit-push-result-20261109"></a>
+
+### 4.12. Kết quả commit/push ngày 09/11/2026
+
+Phạm vi chốt: 194 file backend theo danh sách mục 4 và 11 tài liệu thay đổi; nguồn mới phát sinh sau mốc chốt để lượt sau. Commit sản phẩm có thay đổi thực tế: T01 11 tài liệu, T02 41 file, T05 47 file, T07 20 file, T03 15 file. Các file đã có và không đổi không tạo commit lặp. Metadata Thành dùng `KhaiThanh <khaithanh2726@gmail.com>`; Hòa dùng `gingpham <gingpham13052006@gmail.com>`, theo thông tin đã xác nhận. Tài khoản xác thực push được chọn riêng theo G02.
+
+| Nhánh | Commit sản phẩm | Đầu nhánh đã push và đối chiếu | Tài khoản xác thực |
+| --- | --- | --- | --- |
+| T01 | `f8f1c9a` | `f8f1c9a494557a10c02d7c9252de1e3a6d02be81` | `khaithanh2726-beep` |
+| T02 | `b6d39fc` | `b6d39fc407740fd85bec7cad32bf5c421b2b4e81` | `gingpham` |
+| T05 | `462d94b` | `394f69db2ac08fc134c18d50409f99a3b3586ddd` | `khaithanh2726-beep` |
+| T07 | `a676989` | `a67698944994859c0915c6c1363b772ec3fab831` | `khaithanh2726-beep` |
+| T03 | `671c3b5` | `671c3b53a61cff24ee778af7b8ea603d44fb8c44` | `khaithanh2726-beep` |
+
+Bảng ghi mốc đối chiếu, không mặc định là HEAD ở lần đọc sau; các commit tài liệu tiếp theo không đổi mã commit sản phẩm. T02 nhận `origin/main` `6042508` rồi T01; T03 nhận T02, T05 nhận nền T03, T07 nhận nền T05, T05 nhận T07 và T03 nhận T05 trước commit nội dung khách. Giữ lịch sử cũ bằng các commit nhận phụ thuộc, không force-push hoặc gán file khác task vào commit sản phẩm. Đã đối chiếu mã Git của cả 194 file backend ở T03 với nguồn đã kiểm: khớp toàn bộ, không có file backend ngoài danh sách. Từng nhánh trung gian chưa được xác nhận build độc lập. Khi mở PR phải xem diff với base thực tế và sắp thứ tự nhận phụ thuộc, không suy từ nhãn task rằng PR chỉ chứa commit riêng của task đó.
+
+Các worktree riêng phục vụ Git, không chạy ứng dụng hoặc kiểm thử trên database đang dùng. Thư mục IDE giữ nhánh T01 và nguyên trạng nguồn của lượt triển khai tiếp theo; không chuyển nhánh để làm mất file đang sửa. 14 file frontend T04 chưa commit/push; T06 chưa thực hiện. Chưa merge PR mới vào main hoặc thay issue/Project. Điểm dừng và giới hạn kiểm chứng tại [handoff mục 2.25](handoff.md#commit-push-20261109).
+
+<a id="guest-retention-commit-group"></a>
+
+### 4.13. Dọn metadata và phiên/lượt D08 — T02/T05
+
+[Bằng chứng và giới hạn](../03-ky-thuat/operations-design.md#ops-guest-retention-result) thuộc cây backend đầy đủ: 200 file/182 Java, sáu Java mới; nguồn cũ, cấu hình và V1–V10 giữ nguyên. Không thêm file vào task khác để làm đầy nhánh, không coi scheduler mặc định chưa bật là retention vận hành đã nghiệm thu.
+
+T02/Hòa bổ sung Repository:
+
+```powershell
+$guestRetentionDataFiles = @(
+    'backend/src/main/java/vn/hueqr/backend/repository/GuestRetentionRepository.java'
+)
+```
+
+T05/Thành bổ sung quy tắc, giao dịch, runner và kiểm:
+
+```powershell
+$guestRetentionServiceFiles = @(
+    'backend/src/main/java/vn/hueqr/backend/service/GuestRetentionPolicy.java'
+    'backend/src/main/java/vn/hueqr/backend/service/GuestRetentionService.java'
+    'backend/src/main/java/vn/hueqr/backend/service/GuestRetentionRunner.java'
+    'backend/src/test/java/vn/hueqr/backend/service/GuestRetentionPolicyTests.java'
+    'backend/src/test/java/vn/hueqr/backend/service/GuestRetentionTests.java'
+)
+```
+
+T02 nhận nền dữ liệu V10 hiện có rồi bàn giao Repository; T05 nhận T02 và cây API khách/cặp/TTS đã kiểm trước khi nhận Service/test. Tổng kiểm kê mới theo nguồn chính: 12 T01/57 T02/36 T03/75 T05/20 T07 =200 file backend. 14 file frontend T04 không thuộc nhóm này; T06 có bản chuẩn bị riêng chưa nhận vào cây bàn giao. Các số ở mục 4.12 giữ đúng mốc trước.
+
+Kết quả đã đối chiếu commit/push:
+
+| Task | Commit sản phẩm | Số file thay đổi | Tài khoản xác thực |
+| --- | --- | --- | --- |
+| T02 | `695480b9d4556362b063b84808c2ccff2eb924d4` — Bổ sung truy vấn dọn metadata và dữ liệu phiên khách | 1 | `gingpham` |
+| T05 | `23813ca0605b90f0dab0f4406113a8a532eede5d` — Dọn phiên và lượt xem theo hạn lưu, bảo vệ lượt tải đang xử lý | 5 | `khaithanh2726-beep` |
+
+SHA local/remote khớp tại mốc push. T05 nhận cây đầy đủ từ T03 và Repository T02; đã đối chiếu 200 file backend với bản hồi quy 421 test. Các commit nhận tài liệu có thể làm HEAD đổi, bảng ghi commit sản phẩm. Tài liệu lưu theo T01 và bàn giao vào T05; chưa merge PR vào main hoặc đổi issue/Project. Nguồn cũ và phần Nghĩa giữ nguyên.
 
 ## 5. Dấu vết thay đổi kế hoạch
 

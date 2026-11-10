@@ -380,6 +380,12 @@ V9/audio/cặp và seed năm điểm/20 ngăn có bằng chứng tại [data-mod
 
 Theo sản phẩm hiện có, đề xuất thêm T04/#4 vào In Progress cùng đề xuất T05/#5 trước đó. Nếu cả hai được đặt thì có 8 In Progress/3 Todo/0 Done. Đây là đề xuất; trạng thái được xác nhận gần nhất ở mục 6.4 vẫn 6 In Progress/5 Todo/0 Done, không ghi kế hoạch thành thao tác đã làm.
 
+<a id="guest-retention-progress"></a>
+
+### 6.7. Dọn metadata và phiên/lượt D08 ngày 10/11
+
+[Handoff 2.26](handoff.md#guest-retention-result) dẫn tới nguồn/test retention mới: hết phiên dọn context, tới anchor gốc +30 ngày xóa phiên/lượt trong TX, giữ an toàn READ claim. 24 ca mới đạt và hồi quy toàn cây có [bằng chứng](../03-ky-thuat/operations-design.md#ops-guest-retention-result). Chưa bật scheduler vận hành, xử lý claim rò hoặc đủ toàn ô tự xóa/nghiệm thu T05; chưa hoàn tất cơ chế file/window/receipt/job/backup/restore. Giữ nguyên mục 3, 89 ô/20 dấu tích; không tự sửa issue/Project.
+
 ## 7. Nhật ký và snapshot theo thời điểm
 
 
