@@ -510,6 +510,13 @@ Không hỏi lại DATA-05/DATA-04/TECH-05/DATA-03 hoặc hành vi đã duyệt.
 
 LIFE-P01 giữ vé 24 giờ ngắn hơn thời điểm purge ledger D08, phương án generation tiếp tục được loại khỏi thiết kế theo DATA-05. K11/K01/K02/K04, nền xác thực Admin, window/receipt, tạo điểm ẩn và đọc/sửa tên đã kiểm hồi quy trong bộ 168 ca. Cấu hình key/epoch thật, restart/restore/D08/browser và dọn grant/metadata, owner/Blob/clock/browser còn cần triển khai hoặc kiểm chứng. Tiến độ, quyền test/Git và điểm dừng theo [handoff](../01-tong-quan/handoff.md#guidance-protocol), bằng chứng mới tại [API](api-transactions.md#guest-content-test-result). Các ô T03/T05 giữ điều kiện nghiệm thu toàn ô.
 
+
+<a id="tdd-lifecycle-cleanup-result"></a>
+
+### 16.1. Triển khai vòng đời ngày 10/11/2026
+
+A11 và cơ chế dọn vòng đời tiếp tục theo Controller → Service → Repository. Receipt/giao dịch xóa địa điểm tách khỏi unlink; scope runtime giữ an toàn công việc đọc/ghi file bên ngoài TX. Cleaner mặc định tắt và không dùng TTL để kết luận tiến trình chết. Không thêm tầng trung gian hoặc đổi kiến trúc Vue + Spring Boot. Nguồn quy tắc, kiểm chứng và phần còn mở tại [operations 6.3](operations-design.md#ops-lifecycle-cleanup-result), cấu trúc V11 tại [data-model 7.9](data-model.md#model-lifecycle-cleanup-result).
+
 <a id="tdd-guide"></a>
 
 ## 17. Cách đọc cho người mới và nhật ký

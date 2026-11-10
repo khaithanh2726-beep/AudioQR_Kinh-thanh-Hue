@@ -471,6 +471,15 @@ Không thêm hoặc sửa migration. GuestRetentionRepository dùng các quan h�
 
 [Operations 6.2](operations-design.md#ops-guest-retention-result) giữ thuật toán, 24 ca mới, hồi quy toàn cây và giới hạn scheduler/claim rò. Repository thuộc T02; policy/Service/runner và test thuộc T05. Chưa đủ toàn mô hình/vòng đời hoặc tiêu chí nghiệm thu retention vận hành.
 
+
+<a id="model-lifecycle-cleanup-result"></a>
+
+### 7.9. V11 — owner runtime và trạng thái dọn
+
+Migration V11 nối tiếp V1–V10, không sửa lịch sử migration: thêm `runtime_instance` (node/root/PID/start OS/trạng thái), `runtime_task` (scope tác vụ), `workspace_file` (nguồn gốc file trước khi ghi), `file_claim.owner_instance` có thể null cho dữ liệu cũ và `tts_job.local_finished_at`. Marker kết thúc cục bộ không chứng minh kết quả provider; job không rõ vẫn không tự được gửi lại.
+
+`file_asset` giữ metadata sau unlink với trạng thái READY → DELETING → DELETED, token/owner/mốc dọn và lỗi chờ retry. Các tham chiếu mới chỉ được dùng file READY dưới khóa; việc unlink nằm ngoài giao dịch DB. V11 cho phép QUEUED bị DISCARDED khi đích bị xóa mà không bịa worker/dispatch marker. Không thêm CASCADE phá dữ liệu lịch sử. Quy tắc, kết quả và giới hạn kiểm thực tế tại [operations 6.3](operations-design.md#ops-lifecycle-cleanup-result).
+
 ### Nhật ký biên tập
 
 

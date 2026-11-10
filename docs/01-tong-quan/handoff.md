@@ -1,20 +1,20 @@
 # Bàn giao — trạng thái và quy trình dự án
 
-**Cập nhật:** 09/11/2026. Tài liệu ghi nhận sản phẩm hiện có, phạm vi kiểm chứng, công việc tiếp theo và quy trình phối hợp. Phê duyệt yêu cầu hoặc thiết kế không thay thế bằng chứng kiểm thử và nghiệm thu.
+**Cập nhật:** 10/11/2026. Tài liệu ghi nhận sản phẩm hiện có, phạm vi kiểm chứng, công việc tiếp theo và quy trình phối hợp. Phê duyệt yêu cầu hoặc thiết kế không thay thế bằng chứng kiểm thử và nghiệm thu.
 
 ## 1. Sản phẩm và bằng chứng hiện có
 
 | Hạng mục | Bằng chứng gần nhất | Phạm vi chưa được chứng minh |
 | --- | --- | --- |
-| Nền backend | Java 21.0.12.1, Maven Wrapper 3.9.12, Boot 4.1.2, Security 7.1.2, MySQL 8.4.13 Testcontainers. V1–V10/audio/cặp/grant/claim và seed riêng đã kiểm, nâng V1 có dữ liệu lên V2 vẫn đạt | Dọn opening/grant/claims, nội dung được duyệt, tài khoản thật và môi trường phục vụ bền vững |
-| API phiên khách | K11 cấp vé ký 24 giờ, K01 tạo/replay phiên 8 giờ, K02 kiểm trạng thái, K04 ghi kết thúc một lần và replay. Đã kiểm ba lớp, binding/ledger/expiry và concurrent | K03/K05–K10 và grant/ACK/tải MP3 đã bổ sung ở mục 2.24; frontend/owner tab, runtime thật/restart, D08/dọn metadata và backup/restore chưa kiểm trọn |
+| Nền backend | V1–V11, nền phiên/nội dung/cặp, owner runtime và dọn vòng đời đã kiểm trên MySQL tạm theo [operations 6.3](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result) | Chưa áp V11/bật cleaner trên môi trường phục vụ; nội dung được duyệt, tài khoản thật và vận hành bền vững còn kiểm |
+| API phiên khách | K11/K01/K02/K04 cùng K03/K05–K10, grant/ACK/tải MP3 và D08; READ giữ scope tới khi stream đóng | Frontend/owner tab, Blob/expiry qua browser, restart/restore và vận hành thực |
 | Xác thực Admin | A01–A05, session/CSRF, Q3 30 phút, mã Hash mật khẩu, đổi session id và logout. Header cookie và vòng đời đã kiểm qua HTTP localhost thật | Q2/Q3 trên frontend, tài khoản cấp cho môi trường phục vụ và HTTPS/proxy/browser thực |
-| Lệnh Admin và địa điểm | A31/A06/A08, receipt cùng giao dịch, đọc/sửa tên, vùng A12–A14, nháp/hồ sơ A15–A17; A23 hồ sơ audio/A24 cặp, A10 bật-ẩn có gate và A25 mức đầy đủ | Frontend Q2/xem trước, ranh giới/hồ sơ thực, nghe thử MP3, xóa và worker dọn metadata/file |
-| Job TTS | Worker/adapter unary, WAV/manifest/READY, Check phục hồi local, Retry lỗi xác định và A15 đọc job đúng nháp; mặc định tắt provider/scheduler | Provider/quota thật, FFmpeg/MP3/audio, local retry/terminal audio, phục hồi crash thực và toàn T07 |
-| Đọc dữ liệu Admin | A26–A28, ngày Asia/Saigon, state/D08, snapshot địa điểm cũ, hai tổng/hai nhóm | Frontend, luồng khách grant/ACK ghi lượt thật, tự xóa D08 vật lý và toàn T05 |
-| Hồi quy backend | 397 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0, 09/11/2026 22:26:24 +07; đối chiếu 39 XML Surefire theo mục 2.24. Mốc 366 test tại mục 2.23 giữ nguyên. Các mốc 64/88/104/122/147/168/204/240/267/318/336 giữ đúng thời điểm | Mỗi commit/nhánh trung gian, toàn bộ tiêu chí nghiệm thu và CI/CD |
-| Git | Bốn nhánh T01/T02/T03/T05 đã push; PR #12 T01 và PR #13 T02 đã merge vào main theo mục 2.16–2.17. Ba commit cũ giữ riêng ở mục 2.2 | Kiểm chứng nền sau T02 và tích hợp T03/T05, cập nhật nền local và CI/CD |
-| Backlog | Mốc issue #1–#11 đã đối chiếu: 89 ô/18 dấu tích; bản local hiện có 20 theo roadmap 6.5, giữ nguyên từ đầu lượt | Commit hoặc tạo issue không đồng nghĩa hoàn thành task |
+| Lệnh Admin và địa điểm | Xác thực/receipt, địa điểm/vùng/nháp/hồ sơ/cặp/bật-ẩn; A11 đã có giao dịch xóa và dọn file riêng theo mục 2.27; A22 đã kiểm backend nghe thử tại mục 2.28 | Q2/frontend, ranh giới/hồ sơ thực, nghe thử MP3 trên browser và scheduler phục vụ |
+| Job TTS | Worker WAV/manifest/Check/Retry, registry writer và xử lý kết quả muộn; dừng owner có bằng chứng OS cục bộ | Provider/quota thật, FFmpeg/MP3/audio, local retry/terminal audio, mất điện/restore và toàn T07 |
+| Đọc dữ liệu Admin | A26–A28, ngày Asia/Saigon, snapshot/tổng thống kê; D08 vật lý đã kiểm trong MySQL tạm | Frontend, luồng ghi lượt trên browser thực và nghiệm thu toàn T05 |
+| Hồi quy backend | [Operations 6.3](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result) giữ mốc toàn cây trước A22; mục 2.28 giữ 111 ca liên quan A22; các mốc 397 tại 2.24 và 421 tại 2.26 giữ đúng thời điểm | Mỗi nhánh trung gian, toàn bộ tiêu chí nghiệm thu và CI/CD |
+| Git | Vòng đời và A22 đã commit cục bộ theo [mục 2.29](#local-commits-lifecycle-preview), có cây backend đầy đủ tại T05 khớp nguồn đã kiểm | Chưa push lượt này, chưa merge PR mới; phần Nghĩa dừng trước đăng nhập |
+| Backlog | Checklist hiện hành tại roadmap mục 3: 89 ô/20 dấu tích; các mốc 18 dấu tích trước đó giữ theo thời điểm | Đợt này không thay issue/Project hoặc coi test/commit là hoàn thành toàn task |
 
 [Bằng chứng kiểm chứng](../03-ky-thuat/practice-01-start-session.md#practice-results) lưu thời điểm, kết quả và giới hạn. Metadata Git không chứng minh tài khoản dùng để xác thực GitHub hoặc ai đã thực hiện phần việc. Phân công và tài khoản theo G02 được đối chiếu riêng với bằng chứng.
 
@@ -24,7 +24,7 @@
 
 Repository: [AudioQR_Kinh-thanh-Hue](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue). Bảng công việc: [Project 21](https://github.com/users/khaithanh2726-beep/projects/21/views/1). Thư mục làm việc đã ghi nhận: `C:\Study\Code\VS Code\AudioQR_Kinh-thanh-Hue`.
 
-**Đọc để tiếp tục:** [mục 2.24](#guest-content-frontend-result) ghi backend nội dung khách và nguồn frontend/giới hạn công cụ; [mục 2.23](#pair-visibility-result) ghi hồ sơ audio/áp dụng cặp/bật-ẩn/mức đầy đủ và bước tiếp theo; [mục 2.22](#audio-pair-data-result) giữ nền audio/cặp/seed; [mục 2.21](#worker-report-result) giữ worker WAV/Check/Retry, đọc dữ liệu Admin và các phụ thuộc công cụ; commit/PR vẫn tạm dừng; [mục 2.17](#pr13-merged-result) ghi kết quả merge T02; [mục 7](#guidance-protocol) quy định quyền và các mốc thao tác. Các mục trước giữ sản phẩm và diễn biến bàn giao theo thời điểm, không thay trạng thái mới nhất. [Roadmap](roadmap.md) là nguồn checklist; phần này ghi bằng chứng và điểm tiếp tục.
+**Đọc để tiếp tục:** [mục 2.29](#local-commits-lifecycle-preview) ghi kết quả commit cục bộ và điểm dừng trước push. [Mục 2.28](#admin-preview-prepared) giữ 111 ca liên quan A22; [mục 2.27](#lifecycle-cleanup-result) giữ mốc toàn cây trước A22 qua 459 ca. [Mục 2.24](#guest-content-frontend-result) giữ frontend và giới hạn công cụ. Roadmap là nguồn checklist, mục 7 là nguồn quyền và nhịp bàn giao.
 
 <a id="issue-recreation"></a>
 
@@ -411,6 +411,38 @@ Phân nhóm sáu file ở [commit-plan 4.13](commit-plan-2026-11-05.md#guest-ret
 
 **Điểm tiếp tục:** bật/đo retention khi môi trường phục vụ được chuẩn bị đúng quyền; xử lý claim rò có bằng chứng owner dừng, rồi hoàn thiện xóa địa điểm/dọn file và backup/restore. Nguồn Admin đang được chuẩn bị riêng theo hợp đồng API; chỉ nhận sau đối chiếu phần bàn giao và kiểm frontend khi có Node. Giữ 89 ô/20 dấu tích và trạng thái issue/Project theo nguồn hiện có.
 
+<a id="lifecycle-cleanup-result"></a>
+
+### 2.27. Xóa địa điểm, thu hồi claim có bằng chứng và dọn vòng đời — 10/11/2026
+
+Đã triển khai A11, dọn window/receipt 24 giờ, job terminal đủ điều kiện 7 ngày và file theo các mốc 8 giờ/24 giờ/1 giờ. READ/TTS/Check có scope tiến trình; chỉ thu hồi claim khi xác nhận owner gốc đã dừng, không dùng TTL. Chi tiết, kết quả và giới hạn tại [operations 6.3](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result); nhóm file/phụ thuộc tại [commit-plan 4.14](commit-plan-2026-11-05.md#lifecycle-cleanup-commit-group).
+
+Hồi quy 459 test đạt, nguồn backend 212 file/193 Java khớp bản kiểm tách biệt và đã đưa về thư mục làm việc để rà soát. Giữ V1–V10, bổ sung V11; chưa áp migration hoặc bật cleaner trên database đang dùng. Không thay nguồn frontend đang chuẩn bị riêng, không tự merge PR/tích issue/đổi Project. Giữ nguyên 89 ô/20 dấu tích. Lượt vòng đời này **chưa stage/commit/push**; dừng để nhóm kiểm tra kết quả trước khi tiếp tục hoặc bàn giao Git. Các mốc đã push ở 2.25–2.26 giữ nguyên.
+
+**Điểm tiếp tục:** người vận hành chuẩn bị công cụ và môi trường để kiểm provider/quota, WAV → MP3 thật, frontend build/browser, scheduler và backup/restore. Nội dung/bản dịch/nghe duyệt, bản đồ và nghiệm thu tổng thể còn mở theo roadmap. Phần T04/T06 dừng trước đăng nhập Nghĩa; các sản phẩm backend đã có không đủ hoàn thành toàn issue.
+
+<a id="admin-preview-prepared"></a>
+
+### 2.28. A22 nghe thử Admin — kết quả backend ngày 10/11/2026
+
+Đã bổ sung API nghe thử MP3 của đúng audio/text/ngôn ngữ đã lưu, kể cả nội dung nháp chưa duyệt/áp dụng hoặc địa điểm đang ẩn. Phạm vi T05; Repository READ claim thuộc T02. Năm file đã kiểm gồm FileReadClaimRepository, AdminAudioPreviewService, AdminPairController và hai bộ kiểm, đã nhận vào backend dự án để rà trong IDE.
+
+**Bằng chứng:** 111 ca liên quan, 0 failure/error/skipped, BUILD SUCCESS/exit 0, kết thúc 10/11/2026 22:50:05 +07 trong bản sao và MySQL tạm. Gồm 16 ca API A22, 8 unit stream, 30 ca cặp Admin, 26 ca nội dung khách và 31 ca vòng đời. Lần kiểm trước bị chặn ở khởi tạo context do Docker chưa kết nối; log/XML thất bại được giữ riêng, không tính thành kết quả đạt. Mốc toàn cây 459 ca ở mục 2.27 thuộc nguồn trước A22; 111 ca mới là bộ kiểm liên quan, chưa phải chạy lại toàn bộ cây mới.
+
+Cây backend nhận có 216 file/197 Java, khớp mã Hash bản đã kiểm tại `C:\Users\khait\AppData\Local\Temp\hueqr-admin-preview-h6qryy92/tested-source-hashes.json`. Giữ nguyên cấu hình, V1–V11 và nguồn ngoài năm file đã ghi. [API 11.12](../03-ky-thuat/api-transactions.md#admin-preview-prepared-result) giữ hành vi, giới hạn và bằng chứng; [commit-plan 4.15](commit-plan-2026-11-05.md#admin-preview-commit-group) giữ phân nhóm bàn giao.
+
+**Điểm dừng:** dừng để nhóm rà kết quả backend và nguồn trong IDE trước mục tiếp theo hoặc commit/push. Chưa stage/commit/push, thay issue/Project hay tích thêm checklist. Chưa kiểm MP3 thực/codec/FFmpeg, frontend nghe thử, dừng player/Blob khi hết phiên hoặc browser/HTTPS; không đánh dấu hoàn thành toàn T05 hay tiêu chí nghe thử từ các fixture truyền tải.
+
+<a id="local-commits-lifecycle-preview"></a>
+
+### 2.29. Commit cục bộ vòng đời và A22 — 10/11/2026
+
+Đã nhận phụ thuộc và commit 29 file backend mới/sửa theo T02/T03/T05/T07. [Commit-plan 4.16](commit-plan-2026-11-05.md#lifecycle-preview-local-commits) giữ SHA, số file và quan hệ bàn giao; tám tài liệu thiết kế/bằng chứng thuộc nhóm commit T01. T02 dùng metadata Hòa đã xác nhận, các task Thành dùng metadata Thành; không suy tài khoản xác thực từ metadata.
+
+Cây backend đầy đủ tại T05 khớp 216 file/197 Java của bản kiểm ở mục 2.28 bằng Git blob sau chuẩn hóa line ending. Giữ nguồn IDE và frontend bằng mã Hash, giữ T01 đang mở và không gom các file untracked thuộc nhánh khác vào commit. Chỉ kiểm phạm vi/staged diff/whitespace và đối chiếu nguồn trong lượt Git; không chạy lại hoặc bổ sung kết quả build/test.
+
+**Điểm dừng hiện hành:** mới commit cục bộ, chưa push lượt vòng đời/A22, chưa merge PR, đổi main/issue/Project hay tích thêm checklist. Các câu chưa commit ở mốc 2.27–2.28 phản ánh thời điểm kiểm thử trước bàn giao này. Khi tiếp tục push cần chọn tài khoản theo task, đối chiếu SHA local/remote; phần Nghĩa giữ điểm dừng trước đăng nhập. Checklist hiện vẫn 89 ô/20 dấu tích. Giới hạn frontend/công cụ/audio thực và môi trường phục vụ ở 2.27–2.28 vẫn còn.
+
 ## 3. Tài liệu bàn giao
 
 | Nội dung | Nguồn chính |
@@ -443,7 +475,7 @@ Trách nhiệm và người commit theo [G02](../02-nghiep-vu/decisions.md#g02).
 
 ## 6. Thông tin chuyển giao
 
-Đã lưu bằng chứng commit/push trước lần tạo lại repository ở mục 2.2 và kết quả chỉnh comment ở mục 2.3. Đích chính thức tại mục 2.4. Nguồn Draw.io cùng SVG Use Case đã kiểm ảnh theo mục 2.5, chờ nhóm rà soát trong VS Code. Mốc issue #1–#11 đã đối chiếu có 89 ô/18 dấu tích; bản local có 20 theo roadmap 6.5. Project có 6 In Progress/5 Todo theo xác nhận vận hành gần nhất, đề xuất chuyển T05 tại roadmap mục 6.4 chưa được xác nhận. Backend có nền V10, nội dung khách/grant/ACK/tải MP3 và READ claim cùng nền quản trị/worker WAV; bằng chứng hiện tại ở mục 2.24. Frontend khách đã có nguồn nhưng chưa build/browser; chưa provider/quota thật, FFmpeg/MP3 thực, frontend Admin hoặc dọn vòng đời. Các nhánh T01/T02/T03/T05/T07 đã được đối chiếu push ở mục 2.25; PR #12 và #13 giữ kết quả merge nền T01/T02. Mốc D08 mới nhất tại mục 2.26, không suy kiểm thử thành đã merge main. Quyền Git hiện hành tại mục 7; phần Nghĩa dừng trước đăng nhập.
+Đã lưu bằng chứng commit/push trước lần tạo lại repository ở mục 2.2 và kết quả chỉnh comment ở mục 2.3. Đích chính thức tại mục 2.4. Nguồn Draw.io cùng SVG Use Case đã kiểm ảnh theo mục 2.5, chờ nhóm rà soát trong VS Code. Mốc issue #1–#11 đã đối chiếu có 89 ô/18 dấu tích; bản local có 20 theo roadmap 6.5. Project có 6 In Progress/5 Todo theo xác nhận vận hành gần nhất, đề xuất chuyển T05 tại roadmap mục 6.4 chưa được xác nhận. Backend có nền V10, nội dung khách/grant/ACK/tải MP3 và READ claim cùng nền quản trị/worker WAV; bằng chứng hiện tại ở mục 2.24. Frontend khách đã có nguồn nhưng chưa build/browser; chưa provider/quota thật, FFmpeg/MP3 thực hoặc frontend Admin đã build/browser. Dọn vòng đời đã kiểm backend theo mục 2.27, chưa bật trên môi trường phục vụ. Các nhánh T01/T02/T03/T05/T07 đã được đối chiếu push ở mục 2.25; PR #12 và #13 giữ kết quả merge nền T01/T02. Mốc D08 tại mục 2.26, vòng đời tại mục 2.27 và A22 tại mục 2.28; không suy kiểm thử thành đã merge main. Sau A22 dừng để nhóm rà, chưa stage/commit/push. Quyền Git hiện hành tại mục 7; phần Nghĩa dừng trước đăng nhập.
 
 <a id="guidance-protocol"></a>
 
@@ -453,7 +485,7 @@ Trách nhiệm và người commit theo [G02](../02-nghiep-vu/decisions.md#g02).
 2. **Triển khai:** đọc nguồn hiện có, bảo vệ sửa đổi đang có; thực hiện trong phạm vi mục checklist đã chọn. Tránh tạo file/lớp trống hoặc thay nghiệp vụ để thuận tiện triển khai.
 3. **Kiểm chứng:** chạy kiểm tra liên quan và full suite khi có lý do; dùng môi trường/database tạm tách biệt. Không làm yếu assertion hoặc dùng dữ liệu đang phục vụ thay cho fixture.
 4. **Rà soát:** báo sản phẩm, thay đổi chính, kết quả và giới hạn. Hoàn thành một phần phải ghi rõ phần còn thiếu.
-5. **Mốc bàn giao:** lưu sản phẩm và bằng chứng theo mục checklist hoặc issue, tiếp tục các phần độc lập theo nhịp tại mục 7.3. Dừng khi cần quyết định, thao tác môi trường hoặc kiểm chứng cùng nhóm; chuẩn bị commit khi có yêu cầu nối lại. Không coi từng file/hàm/test là một mục checklist mới.
+5. **Mốc bàn giao:** lưu sản phẩm và bằng chứng sau mỗi mục lớn, dừng để nhóm kiểm tra trước khi chuyển sang mục tiếp theo hoặc commit/push theo nhịp tại mục 7.3. Dừng khi cần quyết định, thao tác môi trường hoặc kiểm chứng cùng nhóm; chuẩn bị commit khi có yêu cầu nối lại. Không coi từng file/hàm/test là một mục checklist mới.
 6. **Checklist:** đối chiếu đúng issue và nguyên văn ô trước khi ghi nhận hoàn thành. Người vận hành trực tiếp tích/sửa/đóng issue; chưa đủ toàn ô thì không tích.
 
 **Quyền Git hiện hành:** công cụ được trực tiếp kiểm tra Git, stage/commit/push theo từng task sau mỗi mục lớn đã kiểm chứng; hiện thực hiện phần Thành và Hòa, dừng trước phần Nghĩa để đăng nhập. Giữ tài khoản/metadata có căn cứ theo G02, không tự force-push, viết lại lịch sử hoặc ghi đè sửa đổi. Quyền này không tự bao gồm merge PR, tích/đóng issue hoặc đổi Project.
@@ -492,7 +524,7 @@ Quy tắc áp dụng cho mã nguồn do nhóm quản lý và cấu hình có h�
 
 ### 7.2. Nhánh, commit và bàn giao Git
 
-- Sau mỗi mục lớn đã kiểm chứng, thực hiện commit/push trực tiếp trong phạm vi được giao tại mục 7 và 2.24. Hiện làm phần Thành/Hòa; dừng trước T04/T06 để đăng nhập tài khoản Nghĩa. Giữ phân công G02, các mốc kiểm và bằng chứng; PR/merge/issue không tự mở rộng từ quyền commit/push.
+- Sau mỗi mục lớn đã kiểm chứng, dừng để nhóm rà kết quả. Khi tiếp tục Git, được thực hiện commit/push trực tiếp trong phạm vi đã giao tại mục 7 và 2.24. Hiện làm phần Thành/Hòa; dừng trước T04/T06 để đăng nhập tài khoản Nghĩa. Giữ phân công G02, các mốc kiểm và bằng chứng; PR/merge/issue không tự mở rộng từ quyền commit/push.
 - Nhánh task: T01–T11. Thông điệp tiếng Việt: `Txx: Những việc đã thực hiện`. Một issue có thể có nhiều commit theo sản phẩm; commit không tự hoàn thành hoặc đóng issue.
 - Thành, Hòa và Nghĩa phối hợp trên ba máy riêng theo G02. Mỗi nhóm commit/push sử dụng tài khoản GitHub của thành viên phụ trách task; nguồn ánh xạ và quy tắc metadata ở G02. Phân công, người nhập lệnh, metadata author/committer và tài khoản xác thực là các thông tin cần đối chiếu riêng; không suy kết quả thực hiện từ việc chọn tài khoản.
 - Trình bày gọn toàn bộ quy trình của một nhóm commit: điều kiện/chuẩn bị → stage và xem staged diff → commit/push/kiểm kết quả. Mỗi khối có lệnh, kết quả mong đợi và điều kiện dừng; bước phụ thuộc chưa đủ điều kiện phải được ghi rõ.
@@ -508,7 +540,7 @@ Quy tắc áp dụng cho mã nguồn do nhóm quản lý và cấu hình có h�
 
 Triển khai từng mục checklist khả thi theo phụ thuộc, thực hiện liền mạch từ viết code đến kiểm thử trong môi trường tách biệt. Việc tạm hoãn commit không chặn công việc này. Kế hoạch bàn giao qua nhánh task, PR và tích hợp vẫn giữ trong commit-plan để thực hiện khi tiếp tục Git.
 
-Tiếp tục liền mạch các phần khả thi, lưu sản phẩm và bằng chứng theo mốc; không mặc định dừng sau từng mục nhỏ để chờ xác nhận. Phần thiếu công cụ chưa cài tạm gác đúng phụ thuộc, triển khai và kiểm thử các phần độc lập trước để nhóm cùng rà. Ghi rõ mục nào chưa được kiểm và công cụ/đầu vào cần bổ sung; nhóm cùng chuẩn bị môi trường rồi hoàn thiện phần còn thiếu. Chỉ đánh dấu hoàn thành khi đủ toàn điều kiện của ô checklist; việc hoãn commit hoặc một công cụ chưa có không tự chặn toàn dự án.
+Trong mỗi mục lớn, triển khai và kiểm thử liền mạch, lưu sản phẩm và bằng chứng rồi dừng để nhóm rà trước khi tiếp tục hoặc commit/push. Không tách từng file, hàm hoặc ca test thành một mốc phải chờ riêng. Phần thiếu công cụ chưa cài tạm gác đúng phụ thuộc, triển khai và kiểm thử các phần độc lập trước để nhóm cùng rà. Ghi rõ mục nào chưa được kiểm và công cụ/đầu vào cần bổ sung; nhóm cùng chuẩn bị môi trường rồi hoàn thiện phần còn thiếu. Chỉ đánh dấu hoàn thành khi đủ toàn điều kiện của ô checklist; việc hoãn commit hoặc một công cụ chưa có không tự chặn toàn dự án.
 
 Tạm dừng sớm khi thiếu quyết định quan trọng, gặp lỗi chặn hoặc cần thao tác thuộc quyền người vận hành. Việc tiếp tục phải dựa trên kết quả mốc kiểm, không dựa riêng vào việc đã có code hoặc commit.
 

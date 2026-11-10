@@ -13,6 +13,12 @@
 
 **Mốc D08 ngày 10/11:** đã bổ sung dọn context và phiên/lượt theo hạn gốc; [operations 6.2](03-ky-thuat/operations-design.md#ops-guest-retention-result) giữ kết quả và giới hạn scheduler/claim rò. Điểm bàn giao tại [handoff 2.26](01-tong-quan/handoff.md#guest-retention-result).
 
+**Mốc vòng đời ngày 10/11:** A11 và cơ chế dọn window/receipt/job/claim/file có [bằng chứng và giới hạn](03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result); [handoff 2.27](01-tong-quan/handoff.md#lifecycle-cleanup-result) ghi điểm tiếp tục. Cleaner mặc định tắt, chưa áp V11 trên database đang dùng và chưa đủ nghiệm thu toàn issue.
+
+**Mốc A22 ngày 10/11:** [handoff 2.28](01-tong-quan/handoff.md#admin-preview-prepared) ghi backend nghe thử Admin đã nhận vào dự án và dừng để nhóm rà. [API 11.12](03-ky-thuat/api-transactions.md#admin-preview-prepared-result) giữ kết quả 111 ca liên quan đạt, giới hạn MP3 thực/frontend và bằng chứng. Chưa stage/commit/push hoặc đánh dấu hoàn thành toàn issue.
+
+**Bàn giao cục bộ ngày 10/11:** 29 file backend vòng đời/A22 đã commit theo task; 8 tài liệu thuộc nhóm T01. [Handoff 2.29](01-tong-quan/handoff.md#local-commits-lifecycle-preview) và [commit-plan 4.16](01-tong-quan/commit-plan-2026-11-05.md#lifecycle-preview-local-commits) là trạng thái Git mới nhất, thay điểm dừng trước commit ở các mốc kiểm bên dưới. Chưa push lượt này, chưa thay main/issue/Project hoặc checklist.
+
 **Thứ tự đọc từ tổng quan đến triển khai:** README gốc → Business Flow → PRD và các quyết định liên quan → UI → TDD → mô hình dữ liệu/API/vận hành. Sau đó dùng roadmap để chọn công việc, handoff để xác định trạng thái và quyền thao tác, commit-plan để bàn giao qua nhánh/PR. Mục 1 phục vụ tìm nhanh; mục 2 xác định nguồn chính; mục 3 kiểm kê sơ đồ. Lịch sử chỉ tra khi cần đối chiếu căn cứ, không thay nguồn hiện hành.
 
 <a id="find"></a>

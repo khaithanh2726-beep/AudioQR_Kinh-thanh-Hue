@@ -1,6 +1,6 @@
 # Roadmap — Backlog 11 issue và tiến độ theo bằng chứng
 
-**Phiên bản nội dung:** 0.11, rà soát bàn giao 08/11/2026. **Trạng thái:** backlog 11 issue/89 ô/18 dấu tích đã được duyệt theo G02. Issue #1–#11 được tạo và đọc lại ngày 08/11. Project có đủ 11 issue, 6 In Progress/5 Todo/0 Done theo xác nhận vận hành ngày 08/11, chưa có lần kiểm trực tiếp mới. Phân công không chứng minh thành viên đã thực hiện hoặc hoàn thành task.
+**Phiên bản nội dung:** 0.12, cập nhật sản phẩm backend 10/11/2026. **Trạng thái:** backlog 11 issue/89 ô/18 dấu tích đã được duyệt theo G02. Issue #1–#11 được tạo và đọc lại ngày 08/11. Project có đủ 11 issue, 6 In Progress/5 Todo/0 Done theo xác nhận vận hành ngày 08/11, chưa có lần kiểm trực tiếp mới. Phân công không chứng minh thành viên đã thực hiện hoặc hoàn thành task.
 **Checklist local ngày 09/11:** 89 ô/20 dấu tích, giữ nguyên bản lưu đầu lượt; mốc GitHub đã đối chiếu là 18 dấu tích, chưa kiểm lại. Chi tiết tại [mục 6.5](#local-checklist-20261109).
 **Mục đích:** tra phạm vi, phân công, phụ thuộc và lịch dự kiến. Bảng tổng quan cập nhật theo bằng chứng backend và xác nhận Project ngày 08/11/2026, các snapshot cũ giữ theo thời điểm. Điểm dừng và bằng chứng mới nhất ở [handoff](handoff.md#next-step).
 **Giới hạn:** checklist và thiết kế không thay bằng chứng phần mềm. Quy trình phối hợp, quyền thao tác và mốc bàn giao tại [handoff mục 7](handoff.md#guidance-protocol). Trạng thái Git và sản phẩm được cập nhật theo kết quả thực tế, không theo kế hoạch dự kiến.
@@ -33,9 +33,9 @@ Nguồn FR/UC/AC/NFR vẫn ở PRD. Bằng chứng checklist GitHub ở mục 6 
 | --- | --- | --- | --- | --- |
 | [T01](#t01) | Thành | Thành | Đang thực hiện | Nghiệp vụ/PRD/hướng UI và công nghệ nền đã chốt; tương thích/môi trường/TDD/roadmap triển khai chưa hoàn tất. |
 | [T02](#t02) | Hòa | Hòa | Đang thực hiện | V1–V10 gồm phiên, nội dung/audio/cặp, opening/grant/READ claim; seed riêng 5 điểm/20 ngăn trống đã kiểm. Còn dọn vòng đời/nội dung được duyệt, xem [handoff 2.24](handoff.md#guest-content-frontend-result) |
-| [T03](#t03) | Thành | Thành | Đang thực hiện | K03/K05–K10, grant/ACK/tải MP3 và thu hồi quyền đã kiểm cùng nền phiên. Còn browser/Blob/owner, dọn metadata/D08 và tích hợp theo [bằng chứng](../03-ky-thuat/api-transactions.md#guest-content-test-result) |
+| [T03](#t03) | Thành | Thành | Đang thực hiện | K03/K05–K10, grant/ACK/tải MP3 và thu hồi quyền đã kiểm cùng nền phiên. D08/claim có mốc mới tại [mục 6.8](#lifecycle-cleanup-progress); còn browser/Blob/owner và vận hành theo [bằng chứng](../03-ky-thuat/api-transactions.md#guest-content-test-result) |
 | [T04](#t04) | Nghĩa | Nghĩa | Đang triển khai nguồn, chưa build/kiểm browser | Có [nguồn Vue khách](../../frontend/README.md); 13 ca Playback V8 đạt, chưa Node/npm/lockfile/build hoặc giao diện hoạt động được kiểm chứng. |
-| [T05](#t05) | Thành | Thành | Đang thực hiện | Đã kiểm xác thực/CSRF/Q3, window/receipt, địa điểm/vùng/nháp/hồ sơ, áp dụng cặp/bật-ẩn/mức đầy đủ và báo cáo. Còn Q2/frontend, MP3/preview/nội dung thật, xóa/dọn và nghiệp vụ quản trị khác; [bằng chứng](../03-ky-thuat/api-transactions.md#admin-pair-visibility-test-result) |
+| [T05](#t05) | Thành | Thành | Đang thực hiện | Đã kiểm xác thực/CSRF/Q3, window/receipt, địa điểm/vùng/nháp/hồ sơ, áp dụng cặp/bật-ẩn/mức đầy đủ và báo cáo. A11 và dọn vòng đời đã kiểm theo [mục 6.8](#lifecycle-cleanup-progress). Còn Q2/frontend, MP3/preview/nội dung thật và vận hành; [bằng chứng](../03-ky-thuat/api-transactions.md#admin-pair-visibility-test-result) |
 | [T06](#t06) | Nghĩa | Nghĩa | Chưa bắt đầu | Hướng thiết kế đã chốt, chưa có UI Admin hoạt động. |
 | [T07](#t07) | Thành | Thành | Đang thực hiện | Đã chọn model/giọng; worker/WAV/Check/Retry được kiểm theo [bằng chứng 09/11](../03-ky-thuat/api-transactions.md#worker-report-test-result). Provider/MP3/pipeline/quota và bốn ngôn ngữ thật chưa kiểm chứng. |
 | [T08](#t08) | Thành, Nghĩa, Hòa | Thành, Nghĩa, Hòa theo phần phụ trách | Đang thực hiện | Đã có báo cáo về năm bản nháp vi; chưa xác minh bản lưu trong repo hoặc rà soát/duyệt; chưa tích hoàn tất nội dung. |
@@ -385,6 +385,12 @@ Theo sản phẩm hiện có, đề xuất thêm T04/#4 vào In Progress cùng �
 ### 6.7. Dọn metadata và phiên/lượt D08 ngày 10/11
 
 [Handoff 2.26](handoff.md#guest-retention-result) dẫn tới nguồn/test retention mới: hết phiên dọn context, tới anchor gốc +30 ngày xóa phiên/lượt trong TX, giữ an toàn READ claim. 24 ca mới đạt và hồi quy toàn cây có [bằng chứng](../03-ky-thuat/operations-design.md#ops-guest-retention-result). Chưa bật scheduler vận hành, xử lý claim rò hoặc đủ toàn ô tự xóa/nghiệm thu T05; chưa hoàn tất cơ chế file/window/receipt/job/backup/restore. Giữ nguyên mục 3, 89 ô/20 dấu tích; không tự sửa issue/Project.
+
+<a id="lifecycle-cleanup-progress"></a>
+
+### 6.8. Xóa địa điểm và dọn vòng đời ngày 10/11
+
+Đã có A11, dọn window/receipt/job, registry owner/claim và dọn file theo hạn đã duyệt, với [bằng chứng backend](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result). [Handoff 2.27](handoff.md#lifecycle-cleanup-result) ghi điểm tiếp tục. Chưa bật scheduler hoặc áp V11 trên môi trường phục vụ, chưa backup/restore/provider/FFmpeg/browser; chưa đủ toàn ô nghiệm thu T05/T07. Giữ nguyên tiêu đề, Description, Checklist mục 3 và 89 ô/20 dấu tích, không thay issue/Project trong đợt này.
 
 ## 7. Nhật ký và snapshot theo thời điểm
 
