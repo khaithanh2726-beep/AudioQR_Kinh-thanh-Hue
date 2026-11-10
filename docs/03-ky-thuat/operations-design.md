@@ -321,6 +321,32 @@ Lần kiểm đầu 22 ca có một failure do fixture thời gian JDBC lệch U
 
 Bằng chứng kỹ thuật nằm trong thư mục kiểm `hueqr-retention-3nr6bkvi`: baseline, mã Hash nguồn đã kiểm, XML/log từng lần và kết quả bàn giao; không chứa dữ liệu database đang phục vụ.
 
+<a id="ops-lifecycle-cleanup-result"></a>
+
+### 6.3. Xóa địa điểm và dọn vòng đời — ngày 10/11/2026
+
+**Sản phẩm:** A11 xóa địa điểm trong cùng giao dịch với receipt; V11 bổ sung định danh tiến trình, tác vụ đang sử dụng file, registry workspace và trạng thái dọn file. Mốc này nối tiếp D08 tại mục 6.2, không thay các hạn đã duyệt hoặc kết quả lịch sử.
+
+| Thành phần | Cách xử lý đã triển khai |
+| --- | --- |
+| Xóa địa điểm | Khóa địa điểm và file liên quan; kiểm If-Match và khóa chống lặp; tháo bản riêng/vùng/nội dung/cặp trong một TX. Giữ phiên, lượt và snapshot; chỉ bỏ liên kết live. Receipt trả `databaseState=DELETED`, `historyPreserved=true`, `fileCleanup.state=PENDING`, không unlink trong giao dịch xóa địa điểm |
+| Kết quả TTS đến muộn | QUEUED bị loại bỏ mà không tạo marker dispatch giả. Tác vụ đã gửi giữ marker; kết quả muộn không tạo lại địa điểm hoặc gắn vào bản đã xóa. Chỉ tháo WAV của job đã mất đích sau khi công việc cục bộ đã kết thúc hoặc có bằng chứng owner dừng; không kết luận kết quả provider từ marker này |
+| Window/receipt | Khóa window, đối chiếu hạn 24 giờ rồi xóa receipt/window cùng TX; chờ lệnh đang giữ khóa kết thúc. Key của window đã mất vẫn bị từ chối, không trở thành lệnh mới |
+| Job cũ | Chỉ xóa FAILED/DISCARDED từ terminalAt +7 ngày khi không còn active/latest/audio/retry/workspace hoặc tác vụ sử dụng. Không tính từ acceptedAt; unknown/active giữ và không tự gửi lại provider |
+| Owner/claim rò | Ghi UUID instance, node/root, PID và thời điểm khởi động OS; ghi scope cho READ/TTS/RECOVER/DELETE/TEMP. Owner cùng node/root chỉ được thu hồi khi OS xác nhận tiến trình gốc vắng/đã thay hoặc instance đã kết thúc có kiểm soát sau khi hết scope. Không dùng TTL, heartbeat thiếu hoặc tuổi claim để suy owner chết |
+| File từng áp dụng | Chỉ xét sau 8 giờ từ lần bỏ tham chiếu áp dụng cuối, đồng thời hết mọi tham chiếu và sử dụng. Xóa bản cũ không khởi động lại mốc bảo vệ; file chia sẻ còn được áp dụng giữ nguyên |
+| File chưa từng áp dụng | Bắt đầu mốc 24 giờ tại lần xác nhận đủ điều kiện không còn tham chiếu/sử dụng, không lấy readyAt/mtime. Tham chiếu mới đặt lại điều kiện; không xóa sớm từ tuổi file |
+| Workspace/file tạm | Chỉ registry có nguồn gốc do server ghi trước CREATE_NEW được xét. Chỉ job terminal hoặc WAV đã stage có marker kết thúc cục bộ, đồng thời không còn writer/Check, mới bắt đầu mốc một giờ. WAV hoàn chỉnh chưa đăng ký do crash được đưa vào file_asset và hạn 24 giờ; WAV dở/manifest/file tạm đủ điều kiện mới unlink. File lạ, job thiếu hoặc owner chưa rõ được giữ |
+| Unlink | Chốt DELETING dưới khóa FILE trước khi ra ngoài TX; chỉ dùng tên phẳng do server cấp trong audio root. Không theo symlink, không xóa directory. Chỉ xác nhận vắng bằng NoSuchFileException rồi mới DELETED; lỗi quyền/I/O giữ chờ retry, có thể tiếp tục sau crash giữa unlink và cập nhật DB |
+
+Scheduler dọn vòng đời **mặc định tắt**. Chỉ môi trường đã được người vận hành chuẩn bị mới đặt `hueqr.cleanup.enabled=true`; batch mặc định 100 và nhịp/độ trễ đầu 60000 ms là cấu hình kỹ thuật, không thay các hạn nghiệp vụ. D08 dùng cấu hình `hueqr.retention.enabled` riêng. Chưa bật hai cơ chế này trên database đang phục vụ.
+
+**Kiểm chứng:** 459 test, 0 failure/error/skipped; 43 XML, BUILD SUCCESS/exit 0 lúc 2026-11-10T02:19:06+07:00. Trong đó 7 ca A11 và 31 ca vòng đời mới, cùng hồi quy API nội dung khách, worker/check, schema và D08. MySQL 8.4.13 Testcontainers, file và tiến trình con chỉ thuộc môi trường tạm; không gọi provider thật. Cây backend có 212 file/193 Java, được đối chiếu mã Hash với bản kiểm.
+
+Đã kiểm các deadline ngay trước một micro giây/đúng mốc, cutoff trước hạn một nano giây không bị JDBC làm tròn lên, receipt đang có giao dịch, xóa đồng bộ/rollback, snapshot và file chia sẻ, claim của tiến trình con còn sống rồi thực sự dừng, owner ngoài node/claim cũ chưa có định danh, lỗi unlink/retry, workspace còn writer, WAV dở/hoàn chỉnh sau crash và kết quả TTS muộn. Bằng chứng XML/log từng lần và mã Hash nguồn được giữ trong thư mục kiểm `hueqr-lifecycle-0_vj5foc`; các lần thất bại/bị ngắt không được dùng làm kết quả đạt. SHA-256 của manifest đường dẫn/mã Hash bytes của cây nguồn đã kiểm: `21b9397b410e5211d414bda8c8237eff20811a9f33f51f40ce33fc718a03b12f`.
+
+**Giới hạn:** chưa đo scheduler/tải lớn/độ trễ trên môi trường phục vụ, chưa kiểm dừng đột ngột toàn máy/restore/backup. Claim hoặc file từ phiên bản cũ thiếu registry không tự bị thu hồi; cần đối chiếu vận hành trước khi xử lý riêng. Kiểm owner chỉ có hiệu lực trên cùng node/root được nhận diện; không suy sang host khác. Kiểm filesystem không thay quyền bảo vệ audio root khỏi thao tác ngoài quy trình. Provider thật/quota, FFmpeg/MP3 thật, frontend/browser và nội dung nghe duyệt tiếp tục được theo dõi riêng. Không tích thêm checklist hoặc đóng issue từ kết quả này.
+
 ### Nhật ký biên tập
 
 

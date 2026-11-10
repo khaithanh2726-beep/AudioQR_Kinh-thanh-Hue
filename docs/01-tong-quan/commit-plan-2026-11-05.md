@@ -527,6 +527,56 @@ Kết quả đã đối chiếu commit/push:
 
 SHA local/remote khớp tại mốc push. T05 nhận cây đầy đủ từ T03 và Repository T02; đã đối chiếu 200 file backend với bản hồi quy 421 test. Các commit nhận tài liệu có thể làm HEAD đổi, bảng ghi commit sản phẩm. Tài liệu lưu theo T01 và bàn giao vào T05; chưa merge PR vào main hoặc đổi issue/Project. Nguồn cũ và phần Nghĩa giữ nguyên.
 
+<a id="lifecycle-cleanup-commit-group"></a>
+
+### 4.14. Xóa địa điểm và dọn vòng đời — T02/T05/T03/T07
+
+Nguồn và kiểm chứng tại [operations 6.3](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result). Đây là **phân nhóm chuẩn bị, chưa stage/commit/push trong lượt vòng đời**; nhóm đang rà kết quả. Khi tiếp tục, phối hợp trên nhánh task theo G02, giữ lịch sử bằng merge phụ thuộc; PR tích hợp phải xem diff với base thực tế, không suy sản phẩm đã vào main từ việc push.
+
+| Task / phụ trách | Nhóm file thay đổi |
+| --- | --- |
+| T02 / Hòa | V11, PlaceDeletionRepository, LifecycleRepository, GuestContentRepository, FileAsset và kiểm inventory schema PlaceRegionSchemaTests |
+| T05 / Thành | A11 trong AdminPlaceController/AdminPlaceDeletionService; RuntimeOwnerService, MetadataCleanupService, CleanupFileStore, FileCleanupService, WorkspaceCleanupService, LifecycleCleanupRunner; AdminPlaceDeletionTests và LifecycleCleanupTests |
+| T03 / Thành | GuestAudioService giữ scope tới khi stream thực đóng; GuestContentService bảo vệ metadata tham chiếu file |
+| T07 / Thành | TtsWorkerConfiguration, TtsWorker, WavResultStore, TtsRecoveryService, TtsResultService và TtsWorkerIntegrationTests |
+| T01 / Thành | Đồng bộ thiết kế, phạm vi kiểm, bằng chứng và điểm bàn giao trong tài liệu |
+
+Thứ tự bàn giao dự kiến sau rà soát: T02 → T05 nền xóa/dọn → T03 luồng khách → T07 worker/Check/workspace → T05 bổ sung bộ kiểm tích hợp đầy đủ → T01 tài liệu. LifecycleCleanupTests kiểm xuyên các phần nên chỉ nhận sau T07; các nhánh trung gian không mặc định đã build độc lập. Cây cuối phải khớp 212 file/193 Java đã qua 459 test. Không đưa frontend T04/T06 vào nhóm này; giữ điểm dừng đăng nhập Nghĩa.
+
+<a id="admin-preview-commit-group"></a>
+
+### 4.15. A22 nghe thử Admin — nguồn đã kiểm, chờ rà trước commit
+
+[Phạm vi và bằng chứng](../03-ky-thuat/api-transactions.md#admin-preview-prepared-result): 111 ca liên quan đạt trên bản sao/MySQL tạm, đã đối chiếu và nhận nguồn vào backend chính theo handoff 2.28. Chưa stage/commit/push; không coi kết quả truyền tải fixture là đã nghe duyệt MP3 thực.
+
+| Task / phụ trách | File bàn giao |
+| --- | --- |
+| T02 / Hòa | FileReadClaimRepository.java — READ claim dùng cho bản audio nghe thử, cùng registry V11 |
+| T05 / Thành | AdminAudioPreviewService.java, AdminPairController.java, AdminAudioPreviewTests.java, AdminAudioPreviewStreamTests.java |
+| T01 / Thành | Hợp đồng, trạng thái kiểm và điểm bàn giao trong tài liệu |
+
+Phụ thuộc nền V11/claim tại mục 4.14. Sau khi nhóm rà và tiếp tục Git: tích hợp nền T02 → Repository claim T02 → API/bộ kiểm T05 → tài liệu T01, kiểm nhánh nhận đủ nền trước mỗi bàn giao. Giữ G02 và đăng nhập tương ứng; phần này không thuộc T07 hoặc Nghĩa chỉ vì có audio. Các mục chờ công cụ/frontend/MP3 thực tiếp tục được theo dõi riêng, không đóng issue theo commit.
+
+<a id="lifecycle-preview-local-commits"></a>
+
+### 4.16. Bàn giao commit cục bộ vòng đời và A22 — 10/11/2026
+
+Đã commit 29 file backend mới/sửa theo đúng nhóm mục 4.14–4.15, gồm 7 T02, 2 T03, 14 T05 và 6 T07. Các commit nhận phụ thuộc giữ lịch sử giữa các task, không tạo lại sản phẩm cũ. T02 dùng metadata `gingpham <gingpham13052006@gmail.com>`; T03/T05/T07 dùng `KhaiThanh <khaithanh2726@gmail.com>`. Metadata không chứng minh tài khoản xác thực GitHub hoặc ai đã viết mã.
+
+| Task | Commit sản phẩm cục bộ | File thay đổi | Nội dung |
+| --- | --- | --- | --- |
+| T02 | `38f095be8b76d5a4909a172f832e600e167c698c` | 7 | Bổ sung dữ liệu vòng đời, owner và claim đọc audio |
+| T05 | `a2ccc26c068b2175aacddae3914317cceaddc39f` | 9 | Xóa địa điểm an toàn và dọn metadata, claim, file theo hạn lưu |
+| T03 | `52ddc6bae407b56b8983ef1f11877c3495de6bf9` | 2 | Giữ scope tải audio và bảo vệ tham chiếu nội dung khách |
+| T07 | `8efdc2b0ae5a290d783fbddfbdec0f848d02e411` | 6 | Theo dõi owner của worker, WAV và phục hồi tác vụ |
+| T05 | `0b99500787bb30c80568b881e4ae1e122faa31b4` | 5 | Bổ sung nghe thử audio Admin và kiểm thử tích hợp vòng đời |
+
+T02 nhận nền T05 đã kiểm trước đó; sau đó bàn giao T02 → T05 nền xóa/dọn → T03 → T07 → T05 nghe thử và bộ kiểm vòng đời. Đầu nhánh backend đầy đủ ở T05 khớp cả 216 file/197 Java của bản kiểm A22, đối chiếu bằng Git blob sau chuẩn hóa line ending. 459 ca toàn cây là mốc trước A22; 111 ca liên quan là mốc A22, không cộng thành số ca độc lập hoặc coi đã chạy lại toàn bộ cây mới. Không sửa mã nguồn hoặc chạy lại build/test trong lượt commit.
+
+Tám tài liệu thay đổi được commit theo T01 với thông điệp `T01: Ghi nhận thiết kế, kiểm chứng và bàn giao vòng đời, nghe thử audio`. Thư mục IDE giữ T01, nguồn backend/frontend được bảo vệ bằng mã Hash; các file hiện untracked tại T01 vẫn có thể đã được lưu trên nhánh task. Không stage lại toàn thư mục vì thấy U. T04/T06/Nghĩa giữ nguyên điểm dừng đăng nhập.
+
+**Điểm dừng:** mới commit cục bộ, chưa push các commit trong bảng, chưa merge PR hoặc thay main/issue/Project. Khi tiếp tục push cần chọn tài khoản theo G02, đối chiếu SHA local/remote và diff với base thực tế. Checklist giữ nguyên 89 ô/20 dấu tích; việc commit không xác nhận hoàn tất issue. Bằng chứng thao tác, bản chốt và đối chiếu ở `C:\Users\khait\AppData\Local\Temp\hueqr-commit-lifecycle-4zc8n4oh`.
+
 ## 5. Dấu vết thay đổi kế hoạch
 
 

@@ -830,6 +830,37 @@ Không đổi URL, DTO, HTTP status hoặc quyền của API. End/expiry vẫn c
 
 [Operations 6.2](operations-design.md#ops-guest-retention-result) là nguồn chính về giao dịch khóa phiên/claim, rollback, UTC, 24 ca mới và hồi quy 421 test đạt. Cây backend đầy đủ được kiểm trong bản sao với MySQL tạm; chưa dùng database phục vụ, bật scheduler vận hành, đo tải hoặc kiểm browser. Không coi mốc này là đã kiểm toàn AC hoặc hoàn tất T03/T05.
 
+
+<a id="api-place-deletion-result"></a>
+
+### 11.11. A11 xóa địa điểm và liên kết vòng đời
+
+`DELETE /api/v1/admin/places/{placeId}` yêu cầu Admin còn phiên, CSRF, Idempotency-Key và If-Match. Service dùng receipt để lặp đúng kết quả, kiểm phiên bản dưới khóa PLACE và xóa dữ liệu riêng trong cùng TX; thiếu/sai phiên bản hoặc key dùng sang đối tượng khác không thực hiện xóa. Kết quả 200 dùng AdminOperationResponse, trong `result` có `placeId`, `databaseState=DELETED`, `historyPreserved=true` và `fileCleanup.state=PENDING` theo mục 9.6. File không được unlink trong request này; phiên/lượt và snapshot lịch sử được giữ, tham chiếu live trở thành null.
+
+Kết quả TTS muộn không phục hồi dữ liệu đã xóa. K09 giữ scope và READ claim tới khi stream thực đóng; dọn vật lý kiểm owner, tham chiếu và các hạn riêng. Hợp đồng tổng thể giữ nguyên; [operations 6.3](operations-design.md#ops-lifecycle-cleanup-result) là nguồn chính của bằng chứng kiểm và giới hạn vận hành mới nhất.
+
+<a id="admin-preview-prepared-result"></a>
+
+### 11.12. A22 nghe thử Admin — kết quả backend ngày 10/11/2026
+
+Giữ hợp đồng `GET /api/v1/admin/audio-revisions/{aid}/preview`: Admin còn phiên được nghe MP3 của đúng audio/text đã lưu, kể cả nháp chưa có hồ sơ duyệt/cặp áp dụng và địa điểm đang ẩn. Không ghi lượt khách, duyệt hoặc áp dụng nội dung; không dùng quyền khách để gọi API Admin. Không cần migration mới ngoài V11.
+
+Controller kiểm phiên hiện hành, không tự ghi hoạt động Q3. Service khóa PLACE rồi FILE, kiểm lại quyền sau khi chờ khóa; chỉ mở metadata MP3 READY, tên file chuẩn do server cấp, trong audio root, không symlink/directory và đúng số byte. READ claim gắn bản audio và runtime instance, giữ tới khi stream đóng thực. Khi mất quyền, lần đọc tiếp theo bị chặn và đóng scope/claim; việc này không thu hồi được bytes đã tải về client. Giao diện vẫn phải dừng player/Blob, che nội dung tại expiry và không tự phát lại sau login theo UI-AP07.
+
+Phản hồi trọn MP3 `audio/mpeg`, no-store, số byte và mã Hash từ metadata, Id văn bản và ngôn ngữ khai báo; không lộ storage key hoặc đường dẫn. HEAD đóng stream ngay vì không qua bộ ghi body. Range không chia đoạn, trả trọn 200 với Accept-Ranges:none. Các hành vi này đã kiểm qua Spring/MockMvc; kiểm file, giao dịch, claim và tranh chấp khóa dùng MySQL tạm. Bytes fixture là dữ liệu tổng hợp, chưa chứng minh giải mã hoặc chất lượng MP3; header mã Hash lấy từ metadata, không phải phép xác minh lại nội dung file khi tải.
+
+**Bộ kiểm liên quan:** 111 ca, 0 failure/error/skipped, BUILD SUCCESS/exit 0, kết thúc 10/11/2026 22:50:05 +07. Gồm:
+
+- 16 ca API A22: quyền Admin/guest, nháp/ẩn và đúng text/ngôn ngữ, không gia hạn Q3/không ghi view, HEAD/Range, Id sai/không tồn tại, file thiếu/sai size/path/state, giữ READ tới đóng stream, nhiều stream, hết phiên/logout/khóa tài khoản, xóa địa điểm khi đang tải, rollback khi ghi claim lỗi và kiểm lại quyền sau chờ khóa
+- 8 unit stream: truyền bytes, các đường đọc/skip/available không bỏ qua quyền, close lặp, lỗi ghi/nhả claim và giải phóng runtime scope
+- Hồi quy 30 ca cặp Admin, 26 ca nội dung khách và 31 ca vòng đời
+
+Lần kiểm đầu có 103 lỗi khởi tạo context vì Docker Linux Engine chưa kết nối; giữ log/XML riêng, không ghi thành assertion API đạt. Bộ 8 unit trước đó cũng đạt riêng lúc 22:41:42 +07. Kết quả 459 ca tại operations 6.3 là mốc toàn cây trước A22; không cộng các lần chạy chồng nhau thành tổng số ca mới hoặc coi 111 ca là chạy lại toàn bộ cây.
+
+**Bàn giao và giới hạn:** backend dự án đã nhận năm file có thay đổi, cây 216 file/197 Java khớp bản kiểm. Chưa provider/FFmpeg/giải mã MP3, nghe duyệt, browser/HTTPS hoặc ngừng phát ở client. Chưa hoàn thành toàn T05 hay AC nghe thử. Dừng để nhóm rà trước commit/push hoặc mục tiếp theo.
+
+Bằng chứng tại `C:\Users\khait\AppData\Local\Temp\hueqr-admin-preview-h6qryy92`: `verification.json`, `baseline.json`, `tested-source-hashes.json`, `preview-tests.log`, `backend/target/surefire-reports`, `docker-unavailable-reports` và HANDOFF.md. Không sửa Git/GitHub trong mốc A22.
+
 ### Nhật ký biên tập
 
 
