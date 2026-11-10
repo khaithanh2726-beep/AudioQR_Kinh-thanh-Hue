@@ -379,6 +379,38 @@ Bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-apply-pair-sa9jc86n\backend`,
 
 Đã dọn 7 container MySQL Testcontainers đã dừng từ lượt kiểm bị ngắt, cùng session kiểm thử `68822daa-5774-4cf1-bf3f-a91a04049f16`. Giữ container `hue-qr-dev-mysql-1` đang dừng, không kết nối database đó, xóa image hoặc volume. `container-cleanup.json` trong thư mục kiểm giữ Id/trạng thái và kiểm kê sau dọn.
 
+<a id="commit-push-20261109"></a>
+
+### 2.25. Bàn giao commit/push phần Thành và Hòa ngày 09/11/2026
+
+Bộ nguồn bàn giao được chốt riêng trước khi commit: 194 file backend khớp bản hồi quy 397 test đạt tại mục 2.24 và 11 tài liệu thay đổi. Các file mới hoặc chỉnh sửa phát sinh sau mốc chốt thuộc lượt triển khai tiếp theo, không tự nhập vào nhóm này. Mỗi task giữ phân công G02, metadata và tài khoản xác thực tương ứng; kết quả commit/push không xác nhận hoàn thành toàn issue.
+
+| Task / tài khoản | Commit sản phẩm | Nội dung |
+| --- | --- | --- |
+| T01 / `khaithanh2726-beep` | `f8f1c9a` | Thiết kế, bằng chứng kiểm thử và phân nhóm bàn giao |
+| T02 / `gingpham` | `b6d39fc` | V5–V10, Entity/Repository, seed riêng và kiểm dữ liệu |
+| T05 / `khaithanh2726-beep` | `462d94b` | Quản trị vùng, văn bản, hồ sơ/cặp áp dụng, bật-ẩn và thống kê |
+| T07 / `khaithanh2726-beep` | `a676989` | Hàng đợi TTS, worker WAV, provider và phục hồi tác vụ |
+| T03 / `khaithanh2726-beep` | `671c3b5` | K03/K05–K10, snapshot/grant/ACK, tải audio và thu hồi khi kết thúc |
+
+T02 nhận nền `origin/main` đã merge T01/T02 và thiết kế T01 mới; T05 nhận nền dữ liệu/API phiên và T07; T03 nhận cặp áp dụng/TTS trước khi bổ sung nội dung khách. Đây là các lần nhận phụ thuộc trên nhánh task, không phải merge PR vào main. Từng commit trung gian chưa được build độc lập; cây backend đầy đủ tại T03 được đối chiếu với nguồn đã kiểm, không suy từ tên nhánh thành phạm vi diff của một PR.
+
+Kết quả push và các đầu nhánh đã đối chiếu được ghi tại [commit-plan mục 4.12](commit-plan-2026-11-05.md#commit-push-result-20261109). Bảng trên ghi commit sản phẩm, không cố định HEAD sau các commit nhận phụ thuộc hoặc cập nhật tài liệu. Thư mục IDE giữ nhánh T01 để bảo vệ công việc triển khai song song; backend hiện thành untracked tại T01 vẫn có thể đã được lưu trên T02/T03/T05/T07. Không stage lại toàn thư mục chỉ dựa vào trạng thái untracked trên T01.
+
+**Điểm dừng:** chưa commit/push 14 file frontend T04 và chưa thao tác T06; chờ đăng nhập tài khoản Nghĩa theo yêu cầu. Chưa merge PR mới, đổi main/Project hoặc tích issue. Trước lượt Git tiếp theo, kiểm lại nhánh/index, phần việc mới và phụ thuộc; không chạy lại kế hoạch khởi tạo repository.
+
+<a id="guest-retention-result"></a>
+
+### 2.26. Dọn metadata và phiên/lượt D08 ngày 10/11/2026
+
+Đã bổ sung GuestRetentionRepository (T02/Hòa) cùng policy/Service/runner/hai lớp test (T05/Thành); sáu Java mới, backend 200 file/182 Java, không sửa nguồn cũ/config/migration. [Operations mục 6.2](../03-ky-thuat/operations-design.md#ops-guest-retention-result) là nguồn chính về thuật toán, UTC/DATETIME(6), claim, điều kiện scheduler, kết quả và giới hạn. 24 ca mới đạt; hồi quy 421 test đạt, 0 failures/errors/skipped, BUILD SUCCESS/exit 0, 2026-11-10T00:32:58+07:00, trên MySQL tạm.
+
+Đến end/expiry dọn context, giữ ledger/lượt; tới anchor gốc +30 ngày xóa vật lý phiên/lượt trong một TX, chặn khi còn READ claim. Không unlink file hoặc nhả claim theo TTL. Mặc định runner chưa bật; chưa thao tác database đang dùng. Chưa dọn window/receipt/job/file hoặc xử lý claim rò/crash, backup/restore thực; không tự tích ô T05.
+
+Phân nhóm sáu file ở [commit-plan 4.13](commit-plan-2026-11-05.md#guest-retention-commit-group). Repository đã commit/push T02 `695480b` bằng tài khoản Hòa; policy/Service/runner/test đã commit/push T05 `23813ca` bằng tài khoản Thành, SHA local/remote khớp. Cây backend đầy đủ 200 file ở T05 khớp nguồn đã kiểm 421 test; các commit nhận phụ thuộc/tài liệu có thể làm HEAD khác commit sản phẩm. Chưa merge vào main. Giữ thư mục IDE ở T01, bảo vệ triển khai song song, không gom các file untracked từ nhánh khác hoặc sản phẩm mới chưa kiểm vào commit này. Phần Nghĩa tiếp tục dừng trước đăng nhập.
+
+**Điểm tiếp tục:** bật/đo retention khi môi trường phục vụ được chuẩn bị đúng quyền; xử lý claim rò có bằng chứng owner dừng, rồi hoàn thiện xóa địa điểm/dọn file và backup/restore. Nguồn Admin đang được chuẩn bị riêng theo hợp đồng API; chỉ nhận sau đối chiếu phần bàn giao và kiểm frontend khi có Node. Giữ 89 ô/20 dấu tích và trạng thái issue/Project theo nguồn hiện có.
+
 ## 3. Tài liệu bàn giao
 
 | Nội dung | Nguồn chính |
@@ -411,7 +443,7 @@ Trách nhiệm và người commit theo [G02](../02-nghiep-vu/decisions.md#g02).
 
 ## 6. Thông tin chuyển giao
 
-Đã lưu bằng chứng commit/push trước lần tạo lại repository ở mục 2.2 và kết quả chỉnh comment ở mục 2.3. Đích chính thức tại mục 2.4. Nguồn Draw.io cùng SVG Use Case đã kiểm ảnh theo mục 2.5, chờ nhóm rà soát trong VS Code. Mốc issue #1–#11 đã đối chiếu có 89 ô/18 dấu tích; bản local có 20 theo roadmap 6.5. Project có 6 In Progress/5 Todo theo xác nhận vận hành gần nhất, đề xuất chuyển T05 tại roadmap mục 6.4 chưa được xác nhận. Backend có nền V10, nội dung khách/grant/ACK/tải MP3 và READ claim cùng nền quản trị/worker WAV; bằng chứng hiện tại ở mục 2.24. Frontend khách đã có nguồn nhưng chưa build/browser; chưa provider/quota thật, FFmpeg/MP3 thực, frontend Admin hoặc dọn vòng đời. Bốn nhánh đã push; PR #12 và #13 đã merge nền T01/T02 vào main, nguồn vùng/văn bản/job và tài liệu mới còn cục bộ. Quy trình commit/PR đang tạm dừng để tiếp tục hoàn thiện sản phẩm; chưa có kiểm chứng nhánh Git riêng mới từ bộ test toàn cây này.
+Đã lưu bằng chứng commit/push trước lần tạo lại repository ở mục 2.2 và kết quả chỉnh comment ở mục 2.3. Đích chính thức tại mục 2.4. Nguồn Draw.io cùng SVG Use Case đã kiểm ảnh theo mục 2.5, chờ nhóm rà soát trong VS Code. Mốc issue #1–#11 đã đối chiếu có 89 ô/18 dấu tích; bản local có 20 theo roadmap 6.5. Project có 6 In Progress/5 Todo theo xác nhận vận hành gần nhất, đề xuất chuyển T05 tại roadmap mục 6.4 chưa được xác nhận. Backend có nền V10, nội dung khách/grant/ACK/tải MP3 và READ claim cùng nền quản trị/worker WAV; bằng chứng hiện tại ở mục 2.24. Frontend khách đã có nguồn nhưng chưa build/browser; chưa provider/quota thật, FFmpeg/MP3 thực, frontend Admin hoặc dọn vòng đời. Các nhánh T01/T02/T03/T05/T07 đã được đối chiếu push ở mục 2.25; PR #12 và #13 giữ kết quả merge nền T01/T02. Mốc D08 mới nhất tại mục 2.26, không suy kiểm thử thành đã merge main. Quyền Git hiện hành tại mục 7; phần Nghĩa dừng trước đăng nhập.
 
 <a id="guidance-protocol"></a>
 

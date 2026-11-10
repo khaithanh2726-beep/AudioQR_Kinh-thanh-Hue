@@ -1,13 +1,17 @@
 # Mục lục tài liệu dự án
 
-**Biên tập:** 09/11/2026. Nghiệp vụ/phạm vi PRD và các hướng UI/công nghệ được xác nhận đúng phần; toàn TDD, ranh giới, nội dung và bằng chứng phần mềm chưa được duyệt theo gói. Áp dụng [quy trình phối hợp tại handoff](01-tong-quan/handoff.md#guidance-protocol).
+**Biên tập:** 10/11/2026. Nghiệp vụ/phạm vi PRD và các hướng UI/công nghệ được xác nhận đúng phần; toàn TDD, ranh giới, nội dung và bằng chứng phần mềm chưa được duyệt theo gói. Áp dụng [quy trình phối hợp tại handoff](01-tong-quan/handoff.md#guidance-protocol).
 
 **Checklist local ngày 09/11:** 89 ô/20 dấu tích theo [roadmap 6.5](01-tong-quan/roadmap.md#local-checklist-20261109). Mốc issue đã đối chiếu có 18 dấu tích; chưa kiểm lại GitHub. Các bản ghi theo ngày giữ nguyên phạm vi và số đếm cũ.
 
 **Tổ chức dự án:** Thành, Hòa và Nghĩa phụ trách theo [G02](02-nghiep-vu/decisions.md#g02), làm việc trên ba máy riêng và bàn giao qua repository chung. Quy trình phối hợp và kiểm chứng tại [handoff mục 7](01-tong-quan/handoff.md#guidance-protocol).
 
+**Bàn giao Git ngày 09/11:** bộ nguồn đã kiểm của Thành/Hòa được chốt và commit theo task; kết quả push, phụ thuộc và điểm dừng trước phần Nghĩa tại [handoff 2.25](01-tong-quan/handoff.md#commit-push-20261109) và [commit-plan 4.12](01-tong-quan/commit-plan-2026-11-05.md#commit-push-result-20261109). File phát sinh sau mốc chốt thuộc lượt tiếp theo; commit không tự hoàn thành issue.
+
 
 **Mốc nội dung khách và frontend ngày 09/11:** V10/K03/K05–K10, grant/ACK/tải MP3/READ claim và kết quả kiểm tại [API 11.9](03-ky-thuat/api-transactions.md#guest-content-test-result). [Frontend khách](../frontend/README.md) có nguồn Vue, 13 ca logic Playback V8 đạt, chưa resolve/lockfile/build hoặc browser. Điểm tiếp tục tại [handoff 2.24](01-tong-quan/handoff.md#guest-content-frontend-result); không coi source có sẵn là hoàn tất T03/T04.
+
+**Mốc D08 ngày 10/11:** đã bổ sung dọn context và phiên/lượt theo hạn gốc; [operations 6.2](03-ky-thuat/operations-design.md#ops-guest-retention-result) giữ kết quả và giới hạn scheduler/claim rò. Điểm bàn giao tại [handoff 2.26](01-tong-quan/handoff.md#guest-retention-result).
 
 **Thứ tự đọc từ tổng quan đến triển khai:** README gốc → Business Flow → PRD và các quyết định liên quan → UI → TDD → mô hình dữ liệu/API/vận hành. Sau đó dùng roadmap để chọn công việc, handoff để xác định trạng thái và quyền thao tác, commit-plan để bàn giao qua nhánh/PR. Mục 1 phục vụ tìm nhanh; mục 2 xác định nguồn chính; mục 3 kiểm kê sơ đồ. Lịch sử chỉ tra khi cần đối chiếu căn cứ, không thay nguồn hiện hành.
 
@@ -105,20 +109,20 @@ Nguồn .drawio là bản chỉnh sửa chính của hình Use Case, SVG đượ
 
 ## 5. Hiện trạng và phần chưa được chứng minh
 
-Mốc hồi quy backend gần nhất: **397 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**, 09/11/2026 22:26:24 +07, trên MySQL tạm. [Bằng chứng và giới hạn](03-ky-thuat/api-transactions.md#guest-content-test-result) là nguồn chính; các mốc 64/88/104/122/147/168/204/240/267/318/336 giữ nguyên theo thời điểm tại từng hồ sơ.
+Mốc hồi quy backend gần nhất: **421 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**, 2026-11-10T00:32:58+07:00, trên MySQL tạm. [Bằng chứng D08 và giới hạn](03-ky-thuat/operations-design.md#ops-guest-retention-result) là nguồn chính; mốc 397 test nội dung khách và các mốc trước giữ nguyên theo thời điểm tại từng hồ sơ.
 
 | Sản phẩm hiện có | Phạm vi chưa hoàn tất |
 | --- | --- |
-| V1–V9, audio/cặp, seed riêng 5 điểm/20 ngăn và ràng buộc đã kiểm | Opening/grant/claims, nội dung được duyệt và migration/seed trên môi trường vận hành |
-| K11/K01/K02/K04, binding/ledger/replay/expiry và đồng thời | Grant/nội dung/audio/lượt xem, owner/browser, runtime bền vững, D08 và restore |
+| V1–V10, audio/cặp, opening/grant/READ claim, seed riêng 5 điểm/20 ngăn và ràng buộc đã kiểm | Nội dung được duyệt, vòng đời file/job và migration/seed trên môi trường vận hành |
+| K03/K05–K10, K11/K01/K02/K04, grant/nội dung/audio/ACK, ledger/replay/expiry và đồng thời | Owner/browser, runtime bền vững, claim rò và restore |
 | A01–A05, window/receipt, địa điểm/vùng/nháp/hồ sơ; hồ sơ audio/áp dụng cặp/bật-ẩn/mức đầy đủ A10/A15/A23–A25 | Q2/frontend, ranh giới/hồ sơ thật, MP3/preview, xóa/dọn và phần quản trị còn lại |
 | Worker/adapter WAV, READY/manifest, Check local/Retry lỗi xác định và job của nháp | Provider/quota thật, FFmpeg/MP3/audio, crash thật/file claims/dọn và toàn T07 |
-| Đọc phiên/lượt đã tính/thống kê A26–A28 | Frontend, ACK/grant ghi lượt thật, job xóa vật lý D08 và toàn T05 |
+| Đọc phiên/lượt/thống kê A26–A28, dọn context và xóa vật lý D08 đã kiểm | Bật/đo scheduler vận hành, claim rò, frontend và toàn T05 |
 | Use Case Draw.io/SVG, Mermaid và tài sản bản đồ theo danh mục | Rà bản in, UI ứng dụng, nền/vị trí/ranh giới thật chưa được duyệt |
 
 Bộ nghiệm thu **20 văn bản/20 audio** vẫn giữ nguyên. Năm nháp vi đã được báo cáo là có, còn cần xác minh bản lưu, nguồn, bản dịch, nghe trọn và hồ sơ duyệt. Không dùng kết quả backend để đóng R06, toàn T01/T02/T03/T05 hoặc các mục UI/nội dung/CI-CD/vận hành.
 
-Trạng thái Git, Project và điểm tiếp tục có nguồn chính tại [handoff](01-tong-quan/handoff.md#next-step); phân nhóm bàn giao tại [commit-plan](01-tong-quan/commit-plan-2026-11-05.md). Nền T01/T02 đã tích hợp qua PR #12/#13; nguồn vùng/văn bản/job mới còn cục bộ và commit/PR đang tạm dừng. Phần còn mở theo [decisions](02-nghiep-vu/decisions.md#dec-6), [R06](02-nghiep-vu/prd-review.md#review-open-final) và [TDD](03-ky-thuat/TDD.md#tdd-open).
+Trạng thái Git, Project và điểm tiếp tục có nguồn chính tại [handoff](01-tong-quan/handoff.md#next-step); phân nhóm bàn giao tại [commit-plan](01-tong-quan/commit-plan-2026-11-05.md). Nền T01/T02 đã tích hợp qua PR #12/#13; các nhóm T01/T02/T03/T05/T07 đã push theo handoff 2.25. Quyền Git hiện hành tại mục 7 handoff; D08 là mốc mới được ghi riêng, không suy đã merge main. Phần còn mở theo [decisions](02-nghiep-vu/decisions.md#dec-6), [R06](02-nghiep-vu/prd-review.md#review-open-final) và [TDD](03-ky-thuat/TDD.md#tdd-open).
 
 <a id="structure"></a>
 
