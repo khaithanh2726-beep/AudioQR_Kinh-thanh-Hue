@@ -17,6 +17,8 @@ import vn.hueqr.backend.service.TtsProvider;
 import vn.hueqr.backend.service.TtsResultService;
 import vn.hueqr.backend.service.TtsWorker;
 import vn.hueqr.backend.service.WavResultStore;
+import vn.hueqr.backend.service.RuntimeOwnerService;
+import vn.hueqr.backend.service.WorkspaceCleanupService;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = "hueqr.tts.enabled", havingValue = "true")
@@ -28,15 +30,15 @@ public class TtsWorkerConfiguration {
 	}
 
 	@Bean
-	WavResultStore wavResultStore(@Value("${HUEQR_AUDIO_ROOT}") String root, ObjectMapper json) throws IOException {
+	WavResultStore wavResultStore(@Value("${HUEQR_AUDIO_ROOT}") String root, ObjectMapper json, WorkspaceCleanupService workspace) throws IOException {
 		Path path = Path.of(root);
 		if (!path.isAbsolute())
 			throw new IllegalArgumentException("AUDIO_ROOT_MUST_BE_ABSOLUTE");
-		return new WavResultStore(path, json);
+		return new WavResultStore(path, json, workspace);
 	}
 
 	@Bean
-	TtsWorker ttsWorker(TtsDispatchService dispatch, TtsProvider provider, WavResultStore store, TtsResultService results) {
-		return new TtsWorker(UUID.randomUUID(), dispatch, provider, store, results);
+	TtsWorker ttsWorker(TtsDispatchService dispatch, TtsProvider provider, WavResultStore store, TtsResultService results, RuntimeOwnerService owners) {
+		return new TtsWorker(owners.identity().id(), dispatch, provider, store, results, owners);
 	}
 }

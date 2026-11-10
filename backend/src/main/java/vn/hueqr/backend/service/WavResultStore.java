@@ -20,23 +20,37 @@ public class WavResultStore {
 
 	private final Path root;
 	private final ObjectMapper json;
+	private final WorkspaceCleanupService workspace;
 
 	public WavResultStore(Path root, ObjectMapper json) throws IOException {
+		this(root, json, null);
+	}
+
+	public WavResultStore(Path root, ObjectMapper json, WorkspaceCleanupService workspace) throws IOException {
 		Files.createDirectories(root);
 		this.root = root.toRealPath();
 		this.json = json;
+		this.workspace = workspace;
 	}
 
 	public Staged save(UUID jobId, UUID token, String textHash, byte[] wav) throws IOException {
 		WavPolicy.Metadata info = WavPolicy.inspect(wav);
 		UUID fileId = UUID.randomUUID();
 		String key = fileId + ".wav";
+		if (workspace != null)
+			workspace.track(key, jobId, token, fileId, "WAV");
 		writeNew(root.resolve(key), wav);
 		var staged = new Staged(jobId, token, textHash, fileId, key, info.checksum(), info.byteSize(), info.duration());
+		if (workspace != null)
+			workspace.completed(staged);
 		// Manifest hoàn chỉnh xuất hiện bằng rename nguyên tử, không lộ JSON đang ghi dở cho Check
 		Path temporary = root.resolve(UUID.randomUUID() + ".manifest-part");
+		if (workspace != null)
+			workspace.track(temporary.getFileName().toString(), jobId, token, null, "TEMP");
 		writeNew(temporary, json.writeValueAsBytes(staged));
 		Path manifest = manifest(jobId, token);
+		if (workspace != null)
+			workspace.track(manifest.getFileName().toString(), jobId, token, null, "MANIFEST");
 		if (Files.exists(manifest, LinkOption.NOFOLLOW_LINKS))
 			throw new IOException("WAV_MANIFEST_ALREADY_EXISTS");
 		Files.move(temporary, manifest, java.nio.file.StandardCopyOption.ATOMIC_MOVE);

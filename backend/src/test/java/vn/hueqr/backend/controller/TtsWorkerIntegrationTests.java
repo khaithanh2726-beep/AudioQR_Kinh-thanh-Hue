@@ -83,6 +83,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import({TestcontainersConfiguration.class, GuestSessionTestClock.class, TtsWorkerIntegrationTests.StoreConfiguration.class})
 class TtsWorkerIntegrationTests {
 	private static final String PASSWORD = "Mat-khau-tts-fixture";
+	private static final Path ROOT = temporaryRoot();
+
+	@org.springframework.test.context.DynamicPropertySource
+	static void properties(org.springframework.test.context.DynamicPropertyRegistry registry) {
+		registry.add("HUEQR_AUDIO_ROOT", ROOT::toString);
+	}
+
+	private static Path temporaryRoot() {
+		try {
+			return Files.createTempDirectory("hueqr-wav-owner-test-");
+		}
+		catch (IOException error) {
+			throw new java.io.UncheckedIOException(error);
+		}
+	}
 
 	private record Browser(MockHttpSession session, AdminCsrfResponse csrf) {
 	}
@@ -139,7 +154,7 @@ class TtsWorkerIntegrationTests {
 	static class StoreConfiguration {
 		@Bean
 		WavResultStore resultStore(ObjectMapper json) throws IOException {
-			return new WavResultStore(Files.createTempDirectory("hueqr-wav-test-"), json);
+			return new WavResultStore(ROOT, json);
 		}
 	}
 

@@ -10,16 +10,36 @@ public class TtsWorker {
 	private final TtsProvider provider;
 	private final WavResultStore store;
 	private final TtsResultService results;
+	private final RuntimeOwnerService owners;
 
 	public TtsWorker(UUID instanceId, TtsDispatchService dispatch, TtsProvider provider, WavResultStore store, TtsResultService results) {
+		this(instanceId, dispatch, provider, store, results, null);
+	}
+
+	public TtsWorker(UUID instanceId, TtsDispatchService dispatch, TtsProvider provider, WavResultStore store, TtsResultService results, RuntimeOwnerService owners) {
 		this.instanceId = instanceId;
 		this.dispatch = dispatch;
 		this.provider = provider;
 		this.store = store;
 		this.results = results;
+		this.owners = owners;
 	}
 
 	public boolean run(UUID jobId) {
+		if (owners == null)
+			return runWork(jobId);
+		try (var task = owners.begin("TTS", jobId)) {
+			try {
+				return runWork(jobId);
+			}
+			finally {
+				// Marker này chỉ xác nhận công việc cục bộ kết thúc, không xác nhận kết quả phía provider
+				owners.finishedJob(jobId);
+			}
+		}
+	}
+
+	private boolean runWork(UUID jobId) {
 		var claimed = dispatch.claim(jobId, instanceId);
 		if (claimed.isEmpty())
 			return false;
