@@ -227,6 +227,8 @@ public class GuestContentService {
 		var revision = audio.findById(pair.getAudioRevisionId()).orElseThrow();
 		var assets = readiness.loadFiles(readiness.fileIds(revision), true);
 		UUID mp3 = readiness.filesReady(revision, assets) ? revision.getMp3FileId() : null;
+		if (mp3 != null)
+			assets.get(mp3).retainReference();
 		Grant grant = new Grant(UUID.randomUUID(), opening.id(), place.getId(), place.getDisplayName(), opening.language(), text.getId(),
 				text.getContentHash(), pair.getId(), revision.getId(), mp3, source, !source.equals("RESTORE"), String.join(",", available),
 				session.getExpiresAt(), null);
