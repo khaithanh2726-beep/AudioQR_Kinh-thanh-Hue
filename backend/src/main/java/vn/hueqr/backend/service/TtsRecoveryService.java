@@ -28,10 +28,14 @@ public class TtsRecoveryService {
 	private final ObjectProvider<WavResultStore> stores;
 	private final TtsResultService results;
 	private final RuntimeOwnerService owners;
+	private final vn.hueqr.backend.repository.LocalAudioRepository local;
+	private final vn.hueqr.backend.repository.FileAssetRepository files;
+	private final LocalAudioService processing;
 
 	public TtsRecoveryService(TtsJobRepository jobs, TextRevisionRepository texts, PlaceRepository places,
 			AdminCommandService commands, ContentTextPolicy input, java.time.Clock clock, ObjectMapper json,
-			ObjectProvider<WavResultStore> stores, TtsResultService results, RuntimeOwnerService owners) {
+			ObjectProvider<WavResultStore> stores, TtsResultService results, RuntimeOwnerService owners,
+			vn.hueqr.backend.repository.LocalAudioRepository local, vn.hueqr.backend.repository.FileAssetRepository files, LocalAudioService processing) {
 		this.jobs = jobs;
 		this.texts = texts;
 		this.places = places;
@@ -42,6 +46,9 @@ public class TtsRecoveryService {
 		this.stores = stores;
 		this.results = results;
 		this.owners = owners;
+		this.local = local;
+		this.files = files;
+		this.processing = processing;
 	}
 
 	public AdminOperationResponse retry(UUID account, String key, String jobId, RetryTtsRequest request) {
@@ -63,6 +70,17 @@ public class TtsRecoveryService {
 			if (!"FAILED".equals(previous.getPhase()) || previous.getFailureCode() == null || text.getActiveTtsJobId() != null)
 				throw new AdminCommandException(409, "TTS_RETRY_NOT_ALLOWED");
 			var now = clock.instant().truncatedTo(java.time.temporal.ChronoUnit.MICROS);
+			if (previous.getSourceWavFileId() != null) {
+				if ("LOCAL_SOURCE_INVALID".equals(previous.getFailureCode()) || files.findByIdForUpdate(previous.getSourceWavFileId())
+						.filter(f -> "WAV".equals(f.getFormat()) && "READY".equals(f.getState())).isEmpty())
+					throw new AdminCommandException(409, "TTS_RETRY_NOT_ALLOWED");
+				previous.reprocessLocal(now);
+				jobs.flush();
+				local.reset(id);
+				text.trackTtsJob(id);
+				texts.flush();
+				return Map.of("jobId", id.toString(), "phase", "RESULT_STAGED", "reprocessLocal", true, "acceptedAt", previous.getAcceptedAt().toString());
+			}
 			var next = new TtsJob(UUID.randomUUID(), text.getId(), previous.getPlaceKeySnapshot(), previous.getLanguageSnapshot(),
 					previous.getTextHashSnapshot(), previous.getModel(), previous.getVoice(), account,
 					UUID.fromString(key.substring(0, 36)), UUID.fromString(key.substring(37)), now);
@@ -78,6 +96,8 @@ public class TtsRecoveryService {
 		UUID id = input.textId(jobId, "jobId");
 		// Chỉ đọc bytes bên ngoài TX, việc gắn file vào job và receipt được commit cùng giao dịch sau đó
 		var snapshot = jobs.findById(id).orElseThrow(() -> new AdminCommandException(404, "TTS_JOB_NOT_FOUND"));
+		if ("CONVERTING".equals(snapshot.getPhase()))
+			return checkLocal(account,key,id);
 		WavResultStore.Staged evidence = null;
 		String inspection = "NO_LOCAL_EVIDENCE";
 		WavResultStore store = stores.getIfAvailable();
@@ -101,5 +121,29 @@ public class TtsRecoveryService {
 			return Map.of("jobId", id.toString(), "phase", job.getPhase(), "inspection", finding,
 					"phaseVersion", job.getPhaseVersion(), "outcomeUncertain", "UNCERTAIN".equals(job.getPhase()));
 		});
+	}
+
+	private AdminOperationResponse checkLocal(UUID account, String key, UUID id) {
+		try (var task = owners.begin("RECOVER",id)) {
+			LocalAudioService.Checked checked = null;
+			String inspection = "NO_LOCAL_EVIDENCE";
+			try {
+				checked = processing.inspectForCheck(id).orElse(null);
+				if (checked != null)
+					inspection = "LOCAL_MP3_VERIFIED";
+			}
+			catch (IOException | RuntimeException error) {
+				inspection = "LOCAL_EVIDENCE_INVALID";
+			}
+			final var evidence = checked;
+			final var finding = inspection;
+			var command = new Command("POST","/api/v1/admin/tts-jobs/"+id+"/check","{}",null,"CHECK_TTS_JOB",200,"TTS_JOB_CHECKED");
+			return commands.execute(account,key,command,() -> {
+				if (evidence != null)
+					processing.finishChecked(evidence);
+				var job = jobs.findByIdForUpdate(id).orElseThrow(() -> new AdminCommandException(404,"TTS_JOB_NOT_FOUND"));
+				return Map.of("jobId",id.toString(),"phase",job.getPhase(),"phaseVersion",job.getPhaseVersion(),"inspection",finding,"outcomeUncertain",false);
+			});
+		}
 	}
 }

@@ -31,9 +31,12 @@ public class TtsJobService {
 	private final AdminCommandService commands;
 	private final ObjectMapper json;
 	private final Clock clock;
+	private final vn.hueqr.backend.repository.AudioRevisionRepository audios;
+	private final vn.hueqr.backend.repository.FileAssetRepository files;
 
 	public TtsJobService(TextRevisionRepository texts, PlaceRepository places, TtsJobRepository jobs,
-			ContentTextPolicy input, AdminCommandService commands, ObjectMapper json, Clock clock) {
+			ContentTextPolicy input, AdminCommandService commands, ObjectMapper json, Clock clock,
+			vn.hueqr.backend.repository.AudioRevisionRepository audios, vn.hueqr.backend.repository.FileAssetRepository files) {
 		this.texts = texts;
 		this.places = places;
 		this.jobs = jobs;
@@ -41,6 +44,8 @@ public class TtsJobService {
 		this.commands = commands;
 		this.json = json;
 		this.clock = clock;
+		this.audios = audios;
+		this.files = files;
 	}
 
 	public AdminOperationResponse accept(UUID accountId, String key, String textId, CreateTtsRequest request) {
@@ -84,16 +89,27 @@ public class TtsJobService {
 	public TtsJobResponse response(TtsJob job) {
 		boolean uncertain = "UNCERTAIN".equals(job.getPhase());
 		String state = switch (job.getPhase()) {
+			case "SUCCEEDED" -> "SUCCEEDED";
 			case "FAILED" -> "FAILED";
 			case "DISCARDED" -> "DISCARDED";
 			case "UNCERTAIN" -> "UNCERTAIN";
 			default -> "PROCESSING";
 		};
+		TtsJobResponse.Result result = null;
+		if ("SUCCEEDED".equals(state)) {
+			var audio = audios.findByJobId(job.getId()).orElse(null);
+			if (audio != null) {
+				var mp3 = files.findById(audio.getMp3FileId()).orElseThrow();
+				result = new TtsJobResponse.Result(audio.getId(), audio.getWavFileId(), audio.getMp3FileId(), HexFormat.of().formatHex(mp3.getChecksum()), mp3.getDuration());
+			}
+		}
+		String retry = uncertain ? "INSPECT_ONLY" : "FAILED".equals(state)
+				? ("LOCAL_SOURCE_INVALID".equals(job.getFailureCode()) ? "INSPECT_ONLY"
+						: job.getSourceWavFileId() == null ? "CREATE_PROVIDER_ATTEMPT" : "REPROCESS_LOCAL") : null;
 		return new TtsJobResponse(job.getId(), job.getTextRevisionKeySnapshot(), HexFormat.of().formatHex(job.getTextHashSnapshot()),
 				job.getLanguageSnapshot(), job.getModel(), job.getVoice(), state,
 				job.getPhase(), job.isTargetValid(), uncertain, job.getAcceptedAt(), job.getUpdatedAt(), job.getPhaseVersion(),
-				job.getTerminalAt(), job.getSourceWavFileId(), job.getFailureCode(), uncertain ? "INSPECT_ONLY"
-						: "FAILED".equals(state) ? "CREATE_PROVIDER_ATTEMPT" : null);
+				job.getTerminalAt(), job.getSourceWavFileId(), job.getFailureCode(), retry, result);
 	}
 
 	private UUID jobId(String value) {
