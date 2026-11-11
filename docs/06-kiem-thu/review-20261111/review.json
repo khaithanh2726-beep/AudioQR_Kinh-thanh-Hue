@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-11-11T12:25:42.073Z",
+  "scope": "read-only review, isolated existing test runtime; no provider call",
+  "qr": {
+    "urlMissingConfirmed": true,
+    "pngNotYetAvailable": true
+  },
+  "completenessFailure": {
+    "requestAbortedForTest": true,
+    "busyEnded": true,
+    "loadingLabelStillVisible": true,
+    "errorMessages": [
+      "Không kết nối được. Vui lòng kiểm tra mạng"
+    ]
+  },
+  "databaseCounts": "places\t6\nvisible_places\t5\nstandard_places\t0\napplied_slots\t5\ndistinct_visible_geometry\t1\napplied_language\tvi\t5\n"
+}

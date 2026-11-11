@@ -1,0 +1,435 @@
+{
+  "generatedAt": "2026-11-11T02:48:16.575Z",
+  "baseline": "frontend integration-admin + frontend parallel baseline; backend tested-source-hashes",
+  "note": "A null baseline means absent from these historical manifests, not proof of a new file or a file never pushed on another branch.",
+  "files": [
+    {
+      "path": ".dockerignore",
+      "sha256": "66d6c7170a08cc9087aa6e59bbe4494ea1e77215122350deb21ccfff7c158a8c",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "f1cc52a59d5497469f1ea932ac1428c1a1294729d8e491e339e69d758c31153e",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "932e96142b53666d2c82a36db29dd6e137d5f8e55d55a2e2e22754a910df38a3",
+      "baselineSha256": "2b1770e5a30f104c7d22820e56978af00540997d243f1803690c8b8847957f27",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "README.md",
+      "sha256": "3d86bc68552df359ffc9e14190c67136161ee5adf3499a670d8ce3e81c5e4bb4",
+      "baselineSha256": "d3d9d89859b43d90c4e072c7c595d2f565b26499995f7a80856140a327e087ba",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "deploy/.env.example",
+      "sha256": "5a02586c04ebc7ab3e6e167611e9f363084b61820687462c9db5a40d5d702aa7",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "deploy/Dockerfile",
+      "sha256": "c399591dcf5f43e0a2804f590316fa03ad4b07dbb7c0efe8afb082c66cbff387",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "deploy/compose.yaml",
+      "sha256": "3dd09c3e229ff835e20b9427bc22831c80ea05f89b8143eec8363ff334002bef",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/01-tong-quan/handoff.md",
+      "sha256": "948f86a57b2d40aaac4c89ca7113119bdc6aa3c916d61376c8584b2aa62c2be1",
+      "baselineSha256": "24140bfcea9b29911b58f5f81d3a58505817df6606157bfea98148716f1e549a",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "docs/01-tong-quan/roadmap.md",
+      "sha256": "6ebec3be98f2885942f2fed0484c069d680cccf22854bf3d30288312ce1626e5",
+      "baselineSha256": "a5e4559009f12623003490091e99dbfd1c9268ec1f8f82e6e3f75e615b86d540",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "docs/05-noi-dung/audio-vi-v01.json",
+      "sha256": "de03f4c5bd1e29d7c22a9e4c8902aa3785e7e5e668e7ea0bc43c7af44feac1a7",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/05-noi-dung/doi-chieu-van-ban-audio.md",
+      "sha256": "b481f7cc4342ee292661363cf9b234634f8c2e7327be3b09e93b34922f7082e9",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/05-noi-dung/thuyet-minh-en-v01.md",
+      "sha256": "5d9ced2b3850e57a8ead59df5638aeef02c0ecc48469d9db13c035577734e50d",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/05-noi-dung/thuyet-minh-fr-v01.md",
+      "sha256": "3e3cd141f44bc01564de63dff3671e0233bac3a68148124a6cd106d175cf58cb",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/05-noi-dung/thuyet-minh-ru-v01.md",
+      "sha256": "1e0779cf09a1ef0b6942e23901f05aec90871ebf2ba75771e8b6b671945907b2",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/05-noi-dung/thuyet-minh-vi-v01.md",
+      "sha256": "74f371a8f08c0a8b81b5be3a8a249fd2903550bc77679ffea878401c0e183e84",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/README.md",
+      "sha256": "9c4fb55f230f40475080e7f086c6ba255b9c3f24ce37ddac7ad7e6aa5b8cffab",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/07-van-hanh/chay-thu/README.md",
+      "sha256": "c10c98e6d10eea2f39b8ec1fc8c124a4780524fecf04a554d9a3016395c6d5d0",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/07-van-hanh/chay-thu/application-smoke.properties",
+      "sha256": "56521e99712b0d20fb5ce738d9ad7b188b341758f74370c96e602ef1bbf29a7c",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/07-van-hanh/dong-goi-va-ci.md",
+      "sha256": "9ff4b1cdb777d0cf5d2d9e7e93f031cccd2b6329d20fccbd24d466a5ad531c83",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/07-van-hanh/moi-truong-local.md",
+      "sha256": "6117f033b5ea492faf0af99fcd5306d3e47889e9a6999c824f0616bf0b511ec5",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/07-van-hanh/nghiem-thu-van-hanh.md",
+      "sha256": "3a0c05980ab2280e115a8d7e032eca3005eb5c8b4ffd657269a9eb5c12290394",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "b438ca08a4ba02b115248855cd73dc06b9d18695237c52dcecede09c221fad62",
+      "baselineSha256": "721274b292d0b8d2daa75148ed22c2dc96f664515c11970e8a6c0d9d5ea7be51",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/.env.example",
+      "sha256": "058fa776e6aa38d3a19b74e2d295d04eb7db7d1dde82a634b408b9653038955f",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/.gitignore",
+      "sha256": "0a006bfe8199797d02e47dcc5cd01672656ca9ca07cd61a1da9d32522cac0fa5",
+      "baselineSha256": "a459038af144bb649dd32c98f20e160838ec500ed5580fb1669ed0860196e140",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/README.md",
+      "sha256": "5ff8b205b73a67af15867b3f1fac37108b2c0a9f397460a44b7012f7130b0bdc",
+      "baselineSha256": "05ff5b7e08ed713e2c055864caa33bb9f570b1cfee395fe6e565a74afcd2fdf0",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/admin.html",
+      "sha256": "cf5d4982e8ef0da56c590e26cd442c54bbee521d6ac321a05cdb7a3a42063bea",
+      "baselineSha256": "cf5d4982e8ef0da56c590e26cd442c54bbee521d6ac321a05cdb7a3a42063bea",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/index.html",
+      "sha256": "3e8720df593ffb0167419b7ffc0a7d11bc33eb456617193af684b735939e9e86",
+      "baselineSha256": "3e8720df593ffb0167419b7ffc0a7d11bc33eb456617193af684b735939e9e86",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/integration-admin.json",
+      "sha256": "64a4990f4f18597bc1129fd137e8d2ba97b61b8c90aeb0b43c02d0c054ede278",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/package-lock.json",
+      "sha256": "27adc4dc791f3ec3764877a47471e18c262e7e0b64aa3bc50731a768d97bb652",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/package.json",
+      "sha256": "09ef1622e16271b38c2014ea8e0a6f5c8f636cb7cc2c9425ee0a35d0dc2e8a47",
+      "baselineSha256": "16cbcbbaf676b1686d567eb07e966acc2c8f02188016fb1e7a9235befeb32fe4",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/playwright.config.js",
+      "sha256": "3be72819d84fd1ed54925d459d480c45ffd9b97a78cadf7c951dcfe6da65842f",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/src/App.vue",
+      "sha256": "3122475ca7091c6a4b292638d9fd27e9441015db900991972720e7b47fe00a29",
+      "baselineSha256": "4d20f4669b9d615cd4a9a68448888bfe6039fd57dad338b5c9adc2ff6892cfc7",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/src/admin/AdminApp.vue",
+      "sha256": "b6c761a05562d796323fb30886adf9e98e6a9a2259d8208f64077f78636df85b",
+      "baselineSha256": "c76f11f5787d72bafa7eadc8bbbf9f58febc79bcd3e8a1dffb9504b341b1dbea",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/src/admin/CompletenessPanel.vue",
+      "sha256": "7e6e4c15fc3a854b246cbdd881f6ba225f26e235bd5488ed72eba121ae499b8a",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/src/admin/ContentEditor.vue",
+      "sha256": "d266c9e7b45bfdcdaf5913a19b86e61d6d8953843387c84fe87fe33c9c2efc0c",
+      "baselineSha256": "3efbeca2e098dfddccb8a7ecef842b1de15c8f6386ec9c656938e727df62d635",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/src/admin/QrPanel.vue",
+      "sha256": "3a8fc3302f3b7e5f6b232deca8db94aa0366d99fbff272167c110d2bff99128a",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/src/admin/RegionEditor.vue",
+      "sha256": "9ca53f8b5e33e06cda5c0b271e975d719c86c0f321ab6a5a25a267243e8222db",
+      "baselineSha256": "9ca53f8b5e33e06cda5c0b271e975d719c86c0f321ab6a5a25a267243e8222db",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/src/admin/ReportsPanel.vue",
+      "sha256": "9709402616101853e0d2f702b96df3ef4977c587584fafe0f2062748eb311b0b",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/src/admin/TtsPanel.vue",
+      "sha256": "bd370b5d3fd8ac6104615cd306ef0c3584dd14ef2a854b3dcce6af95d8d7cafc",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/src/admin/admin.css",
+      "sha256": "3eeba951c3550b2a5a940c9b80cdd427eabaa3bd5d23888f05d6b25eb8cdd7b9",
+      "baselineSha256": "83663efebbba73e392aa5bbd65b73e6783974a3b6c697282addfd763528755f1",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/src/admin/api.js",
+      "sha256": "08d9e36450eb8f8f40797ace117aa1aaaa7de93e38b82e021798857d830ac86f",
+      "baselineSha256": "dd5947baa7fc550480d00848068dec90d7b756cf7051515e2c6a819757ecd8dd",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/src/admin/geometry.js",
+      "sha256": "3bee94d77916ea69ce0bd1f126d5f5548aec66888442fee6dec9bc4cea131a7f",
+      "baselineSha256": "3bee94d77916ea69ce0bd1f126d5f5548aec66888442fee6dec9bc4cea131a7f",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/src/admin/main.js",
+      "sha256": "2d27063caec9e6f7c40397089dac640e9d1f24633050a5b84a2dd019c2b24156",
+      "baselineSha256": "2d27063caec9e6f7c40397089dac640e9d1f24633050a5b84a2dd019c2b24156",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/src/admin/workspace.js",
+      "sha256": "a9b5ed72e9962725ba81d341d7e9e4bab24896a3b4028713a0046fa88181eeaa",
+      "baselineSha256": "66a3a512e98c4fdaff1f0d3e480867d33d5841db6575faaa718ba17009209470",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/src/components/GuestMap.vue",
+      "sha256": "76fe6bbe5d8c6011220c317c80210eb83c3283a13f300ae53facaa2b09e8c21b",
+      "baselineSha256": "76fe6bbe5d8c6011220c317c80210eb83c3283a13f300ae53facaa2b09e8c21b",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/src/guest/api.js",
+      "sha256": "f65c27b1f5977819ea51eca6c66c619c1e701696e3594462f604908700357b21",
+      "baselineSha256": "f65c27b1f5977819ea51eca6c66c619c1e701696e3594462f604908700357b21",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/src/guest/messages.js",
+      "sha256": "e55c2623e5d7855599bbacacf4f041fab6a6f06d67d85028a7d69aeedb42cc99",
+      "baselineSha256": "e55c2623e5d7855599bbacacf4f041fab6a6f06d67d85028a7d69aeedb42cc99",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/src/guest/owner.js",
+      "sha256": "fea7d159bbc3a663ab1cb7c66c4a6c593d56efc555ca9df5e151902c3ff45da3",
+      "baselineSha256": "b0fc0131b61360ab56b661b3cdf26fd99c72e18695741a63f74ffe439416aca8",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/src/guest/playback.js",
+      "sha256": "159c47ae881c740d846e392f20666a3112154b4512a06f7b6cf8cc251107da8e",
+      "baselineSha256": "159c47ae881c740d846e392f20666a3112154b4512a06f7b6cf8cc251107da8e",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/src/main.js",
+      "sha256": "0d42fb6bb74a51d647f20a0cd2bcdcc7b89b146f4cdfbf6f1f7b640e7e036119",
+      "baselineSha256": "0d42fb6bb74a51d647f20a0cd2bcdcc7b89b146f4cdfbf6f1f7b640e7e036119",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/src/style.css",
+      "sha256": "612eda1419c4aa08126d924d77507d9559866507f496cb21753962076547202b",
+      "baselineSha256": "612eda1419c4aa08126d924d77507d9559866507f496cb21753962076547202b",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/tests/admin-editors.test.mjs",
+      "sha256": "81bc511bcf28c8b690aaf4baac439cc054f36cec7d446948e3c7feed88f23dab",
+      "baselineSha256": "676b63c7c7ff881183539670f942ac7e1e4e1158e22448ef8e37a69792930ab2",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/tests/admin-workspace.test.mjs",
+      "sha256": "157db259eb1e37bc909b6c2deb9e15cadae2a0ed441c5e93a0a3ce1729caca8a",
+      "baselineSha256": "74aba9247f2fdadaa06f069b8f14092d3b261aae4bbf553dbc6e4edcde32e0bf",
+      "changedFromBaseline": true
+    },
+    {
+      "path": "frontend/tests/e2e/README.md",
+      "sha256": "7c207f7136ebb7fd1884e891b2fde5e8bac8a696de3d68f3c1c08f1696bacace",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/tests/e2e/visit.spec.mjs",
+      "sha256": "48fa16764304ebce85819fb4fe913e7dcdec0d39bc1f019e94acd334737f90d0",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/tests/owner.test.mjs",
+      "sha256": "cdd1139e21eb0182374430e8584b19efa764d3e1f5898e905235c8022f85a75a",
+      "baselineSha256": null,
+      "changedFromBaseline": null
+    },
+    {
+      "path": "frontend/tests/playback.test.mjs",
+      "sha256": "4ad72c6e9d7455501635d02d3bf89266545346fb4d2102e87541daada125f824",
+      "baselineSha256": "4ad72c6e9d7455501635d02d3bf89266545346fb4d2102e87541daada125f824",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/verification-admin.json",
+      "sha256": "d30a0ab80bb060b98cf8d7487c6638a60aa773bf498dabdb2ca1b6080bf606df",
+      "baselineSha256": "d30a0ab80bb060b98cf8d7487c6638a60aa773bf498dabdb2ca1b6080bf606df",
+      "changedFromBaseline": false
+    },
+    {
+      "path": "frontend/vite.config.js",
+      "sha256": "b82416d029aa67597b130040e1bdb8eeb209dc008a7f09719c1068b716113f3d",
+      "baselineSha256": "98186b4ada205b134bd8bab04cc31c9b0c1f63c49704762b5dc4c378d609e803",
+      "changedFromBaseline": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/06-kiem-thu/local-20261111/admin-statistics.png",
+      "sha256": "499b3dc8bf60a432b42f933fde1db6fa76156d6587c2332f842bdfeddf7eddb9",
+      "bytes": 68412
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/backend-summary.log",
+      "sha256": "73386806dc5194ebefb830cb4bcb129671014b6e8756a9237aa8d452ef3232f5",
+      "bytes": 162
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/backend-tests.json",
+      "sha256": "6504653851179cde06e56986913b7f03e2381e4cc152db86ea0b0661c0a1db17",
+      "bytes": 130189
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/e2e-final-exit.txt",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "bytes": 3
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/e2e-final-run.json",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "bytes": 45
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/e2e-final.log",
+      "sha256": "722ab4be401cc3839271ee43d7b01bcbc0319600df5981e233dda41655784540",
+      "bytes": 1662
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/e2e-first-run.json",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "bytes": 45
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/e2e-result.json",
+      "sha256": "d42791651820fceb3cf1c970dcbad134ca6a49a400e54e0bb6fc7466aa1457da",
+      "bytes": 667
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/frontend-build.log",
+      "sha256": "0de92f0bb583add3410b6ffcb0335848cf519f4f0ac90e46e0f0091bc504ee54",
+      "bytes": 1426
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/frontend-test.log",
+      "sha256": "40a311120516c6303fa4f3bf2da425577ec9ffbce7b2fae4b87ae8094085dd21",
+      "bytes": 9878
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/guest-visit.png",
+      "sha256": "5b714c0a9758d023a77a1d2231cceb2cf7b1a87f91119ec07e46fe5035ea2fd0",
+      "bytes": 62443
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/mobile-visit.png",
+      "sha256": "d026ef79a53f6f89a7b7651fe886f94b7f5eb08f129c54ff731c3d46bcf02453",
+      "bytes": 57022
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/README.md",
+      "sha256": "9c4fb55f230f40475080e7f086c6ba255b9c3f24ce37ddac7ad7e6aa5b8cffab",
+      "bytes": 5329
+    },
+    {
+      "path": "docs/06-kiem-thu/local-20261111/verification.json",
+      "sha256": "37fa8143ac44d501d075c78f29aee8b79ff25dd4825196f5473670c5857edd3d",
+      "bytes": 1665
+    }
+  ],
+  "backendBaselineFiles": 229,
+  "backendMismatches": []
+}

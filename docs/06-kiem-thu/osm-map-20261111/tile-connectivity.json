@@ -1,0 +1,8 @@
+{
+  "checkedAt": "2026-11-11T14:37:14.111Z",
+  "method": "HEAD",
+  "url": "https://tile.openstreetmap.org/17/104703/59455.png",
+  "error": "TypeError: fetch failed",
+  "tileBodyDownloaded": false,
+  "visualAcceptance": false
+}

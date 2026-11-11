@@ -1,0 +1,245 @@
+[
+  {
+    "path": "backend/src/test/fixtures/demo/README.md",
+    "sha256": "1d52ae7e18e70c9c76626919ae15513605696e558e875e236e4ab647fc65cd6d"
+  },
+  {
+    "path": "backend/src/test/fixtures/demo/refresh-preview.mjs",
+    "sha256": "b9f81421bb215c83fe72cc8a9c39cf173816e709fd3a23cc366ad5a213773618"
+  },
+  {
+    "path": "deploy/.env.example",
+    "sha256": "67ee4f38c7b1b45e17b0d39bf1801735836dd50a426e38a6be286dcd6e5c0934"
+  },
+  {
+    "path": "deploy/Dockerfile",
+    "sha256": "db8e49979bd33dc88556d87284363bab0ccca176cb7ae6c587d0915ce3867d82"
+  },
+  {
+    "path": "deploy/compose.yaml",
+    "sha256": "e948b09286e4a5059d6f4149e1d8ff5cbd959cbf1fde640eb262cabc48e63a43"
+  },
+  {
+    "path": "docs/01-tong-quan/handoff.md",
+    "sha256": "fdbf0eb07721839690b521990bdcbfa23333b1e3f0941b76c2ef24b660598952"
+  },
+  {
+    "path": "docs/01-tong-quan/issue-follow-up-2026-11-11.md",
+    "sha256": "3d2d533eeb29b9046fe2e6471c7a9c252ac502bc3c223e67177f242d525b41df"
+  },
+  {
+    "path": "docs/01-tong-quan/roadmap.md",
+    "sha256": "b6be18e339ea35325a33c9de800b21d758c70f0d83454f0b164407cb74096f01"
+  },
+  {
+    "path": "docs/04-giao-dien/ui-design.md",
+    "sha256": "c80d715f280dc39d62a34d1eab67126f98048ef35da51550cabcbee63c7c44bf"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/README.md",
+    "sha256": "bcee7520160f532edced7bc4e23e9f3d91d3469cc50806e0b340aaa1db9ef63a"
+  },
+  {
+    "path": "docs/06-kiem-thu/map-preview-20261111/assertions.json",
+    "sha256": "96a7bdc39b3887195641107c3ae9f628e5115024c12c29cb286d35bcbcdef505",
+    "originalPath": "docs/06-kiem-thu/osm-map-20261111/assertions.json"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/backend-source-comparison.json",
+    "sha256": "4e9dea34bfc5b0a6f806be4b56e470628b4286942f4e8e9ed237d56e1ed92148"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/browser-admin-protection.txt",
+    "sha256": "36f1b7f924da3076d6c60bb568ccc63d0ad65db650e3eb94e30a22106a74522f"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/browser-offline-final.txt",
+    "sha256": "20f6cce3401a669dbcc55eb8b8e3e2214e3816e841d51e55a943a3bfc082c063"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/browser-packaged-final.txt",
+    "sha256": "0eebf60651d39e31a444af0b16771be59e1ac849363179796003faf4281497df"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/build.txt",
+    "sha256": "38102722f8d4485deb3007e49d9439833abfceefb74d00354976ebd0dfdd98fe"
+  },
+  {
+    "path": "docs/06-kiem-thu/map-preview-20261111/completeness-failed.png",
+    "sha256": "e44d5ddaae5c268a8c4a5acab90379e165de86137fa2603ec8ef8954c45ad0c2",
+    "originalPath": "docs/06-kiem-thu/osm-map-20261111/completeness-failed.png"
+  },
+  {
+    "path": "docs/06-kiem-thu/map-preview-20261111/completeness-retried.png",
+    "sha256": "428f3b90554206acd61dfcfdf959b1ddfb1e89b51942ce73bd84494a23add5f4",
+    "originalPath": "docs/06-kiem-thu/osm-map-20261111/completeness-retried.png"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/docker-build-final.txt",
+    "sha256": "0d7b5ddcd9e2b92e82fb7762bfbefab962487647499ecb382385ef146ae82489"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/map-preview-1280.png",
+    "sha256": "399a93ca4a909519cc3e56ec2a559bd1f7280723e166e1c963a30f2938ba0134"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/map-preview-390.png",
+    "sha256": "3ed43a5c7e341fca8440cff0bd8799cdc232f9c9877939288294f371bcf15974"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/osm-mechanism-fixture-1280.png",
+    "sha256": "8ece89f84f24d3a5140b308b21b6b537b5db0557c86ead0670a64831053aa3d5"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/osm-mechanism-fixture-390.png",
+    "sha256": "d270d9bcb930c3a76eaafd4fc0eb031b5722a408e78858f9d59738209a75067c"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/runtime-public.json",
+    "sha256": "87278c6e09cd80140ae91eb5572b7def1834d637cd976e9c9c686af12f53f6e2"
+  },
+  {
+    "path": "docs/06-kiem-thu/ui-reference-20261111/start-en.png",
+    "sha256": "0ececd6feb104c4287325c5d998441e1cb09f0bd8c217e544bd64e7d75e0a7f0",
+    "originalPath": "docs/06-kiem-thu/osm-map-20261111/start-en.png"
+  },
+  {
+    "path": "docs/06-kiem-thu/ui-reference-20261111/start-fr.png",
+    "sha256": "d9cdf19b6565b10e3ed5cebaa3f70bc6b49f854f13f68bf560778c8c5f706247",
+    "originalPath": "docs/06-kiem-thu/osm-map-20261111/start-fr.png"
+  },
+  {
+    "path": "docs/06-kiem-thu/ui-reference-20261111/start-ru.png",
+    "sha256": "baf61d7280a590c8f216d4ed4ae85e5894553ddfa48575797d3fa3be35e4889d",
+    "originalPath": "docs/06-kiem-thu/osm-map-20261111/start-ru.png"
+  },
+  {
+    "path": "docs/06-kiem-thu/ui-reference-20261111/start-vi.png",
+    "sha256": "5c5e7f1a28dae39cd346221e93c81d211e7a010b13dad097925ff7870f923874",
+    "originalPath": "docs/06-kiem-thu/osm-map-20261111/start-vi.png"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/tile-connectivity.json",
+    "sha256": "71c25e61ad2250a0500c93036c7cec3bcf8fbe83654d2a57ebdb50ff4cc13a09"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/tile-head-curl.txt",
+    "sha256": "c9c1c2f2c4193f9be75fa6dba7b42f1c3805ef00a0b4904029171984d161fcea"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/unit.txt",
+    "sha256": "d1a0598c4bdbe4ded0fb2c32eb592279c634080ae8ca46296d44aad232efbe27"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/verification.json",
+    "sha256": "bd35fcae48b81f91184269be30299719560610311dda6ad5e18e9a2b0140a8a6"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/visit-fixture-1280.png",
+    "sha256": "f6430dfae4b46301bdf62734598eaf9c6bd3736c1fc5a3f9c88dc882dd8c1646"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/visit-fixture-320.png",
+    "sha256": "ef820a29d4d17e860f3b707caafbbc8ede5ae57369c2d74356bb0c74a73ff329"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/visit-fixture-390.png",
+    "sha256": "1d3225b569ae7f565b657feffc56250fca06234807730a7bdbe35d43b817fef2"
+  },
+  {
+    "path": "docs/06-kiem-thu/osm-map-20261111/visit-fixture-960.png",
+    "sha256": "20a7b5aedbb0cda93a9d32bc1753e7d9a73ad3b25a552edc5e6f60b638447765"
+  },
+  {
+    "path": "docs/07-van-hanh/xem-truoc-ban-do.md",
+    "sha256": "ac71044b31c48220ab3ac118092ce0216be468c01c9a2a06c613c14f15df02ad"
+  },
+  {
+    "path": "docs/README.md",
+    "sha256": "fb8eaad0914695a6628cd954622ef753e16ce6058057d188b8561fe145719d9a"
+  },
+  {
+    "path": "frontend/.env.example",
+    "sha256": "95177f99a949cea791089b42ff554aaff1b45c5e03f4745fd82dccf1f757171b"
+  },
+  {
+    "path": "frontend/.gitignore",
+    "sha256": "e933a1e21b4d68b44363c8c389628a707915631bb398230784b08f178fdf5ac8"
+  },
+  {
+    "path": "frontend/README.md",
+    "sha256": "bdf697521c4294f60cdfc7c9f9abd4030559c0d5356d6e3f011909c38b3a3ce1"
+  },
+  {
+    "path": "frontend/admin.html",
+    "sha256": "65783a88206d94eb971dc77202e0199da745accd2d72270958297d3553671933"
+  },
+  {
+    "path": "frontend/index.html",
+    "sha256": "f9691e0e42b90f7d793a0912af02f243e316d946c1664cb3734df5439cdef248"
+  },
+  {
+    "path": "frontend/map-preview.html",
+    "sha256": "ee36f0e5cead8629229b059494ba4f4654f44fd09f7e73a142bb606e25d43043"
+  },
+  {
+    "path": "frontend/src/App.vue",
+    "sha256": "a1daa2777c202fdb7cfc5a933c3cbcfcd50f9dbf7618297de0b743bf2e33a162"
+  },
+  {
+    "path": "frontend/src/admin/RegionEditor.vue",
+    "sha256": "98a848ca5b620530c319e4b2534b1014253d46c0cb2ed337304b922922add525"
+  },
+  {
+    "path": "frontend/src/components/BasemapStatus.vue",
+    "sha256": "a0c4ed7aecb4d018be9470335eb3934999b1e07dc0645e47f78e5773de8cfeac"
+  },
+  {
+    "path": "frontend/src/components/GuestMap.vue",
+    "sha256": "072bb4d81f0eafc776c76c52817b9fd5e2d93ac756840b6bad24ffe469c7ed65"
+  },
+  {
+    "path": "frontend/src/guest/messages.js",
+    "sha256": "ffa471098d233de694f72cf47a576ee872aafe279c5e494c63d29391aad5dff8"
+  },
+  {
+    "path": "frontend/src/map/basemap.js",
+    "sha256": "fff3c5377aec98bb49b6b45a693c62a455995f453b5c87e6b76d25b56fa12097"
+  },
+  {
+    "path": "frontend/src/map/config.js",
+    "sha256": "4e168d08a6863bb165f18b39c4d1c057ab6673ce98dc2b397ace2fb5257fe3cd"
+  },
+  {
+    "path": "frontend/src/map/local-basemap.js",
+    "sha256": "31de5ad9c9c6e5fb56cedeed69563a2aba4cc9fe7b7b59297fbd2800663697ff"
+  },
+  {
+    "path": "frontend/src/style.css",
+    "sha256": "01680bf8125c19cc373a5389785cdcfbc9ab6e2e942a348c4d2d083131c6386e"
+  },
+  {
+    "path": "frontend/tests/basemap-config.test.mjs",
+    "sha256": "ddc4c5b12b7e204026361fce5d595234a195f4527edd58c2fa9098329e4614dd"
+  },
+  {
+    "path": "frontend/tests/e2e/admin-protection.spec.mjs",
+    "sha256": "bbee20772d606a4d7e4a9a4b088660e6fd0a8da724e22cf50c34ef1b7fba2973"
+  },
+  {
+    "path": "frontend/tests/e2e/guest-theme.spec.mjs",
+    "sha256": "a4e8afebb0c4a9bd9d27bec3776ca0d93e0dda508aa6ca7a47241acb245b03c4"
+  },
+  {
+    "path": "frontend/tests/e2e/helpers/tile-fixture.mjs",
+    "sha256": "4337eb21b410b34d4f46b393a05bb543b791829332e1a7834a37d47343602e03"
+  },
+  {
+    "path": "frontend/tests/e2e/map-preview.spec.mjs",
+    "sha256": "415ea8e93e8796b4b2451f2723fcfc592f0f4e893e4e52c6820d4f0b80d239a3"
+  },
+  {
+    "path": "frontend/tests/e2e/osm-map.spec.mjs",
+    "sha256": "58987c6e18f39f752ead50bd17e68b18aa41afd0d8c9907e919f1019fa8dc138"
+  }
+]

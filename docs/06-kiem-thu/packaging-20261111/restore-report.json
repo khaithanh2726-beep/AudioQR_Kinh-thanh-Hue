@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-11-11T03:37:28.212Z",
+  "status": "PASSED_OFFLINE_REHEARSAL",
+  "sourceContainer": "hueqr-e2e-bc6a1e3ee5",
+  "restoreContainer": "hueqr-restore-11f21f88",
+  "files": 12,
+  "bytes": 7925856,
+  "databaseHash": "bbe9b7da72f502402018e3b115ffafbefcbab603debe46756f99a6b977f3ad5a",
+  "snapshotCounts": "places\t6\npairs\t5\naudios\t6\nsessions\t7\nviews\t6",
+  "restoredCounts": "places\t6\npairs\t5\naudios\t6\nsessions\t8\nviews\t7",
+  "purgedSessions": 3,
+  "originalTimestampsPreserved": true,
+  "newEpoch": true,
+  "oldGuestEpochRejectedByComparison": true,
+  "guestContextsCleared": true,
+  "retentionFixture": {
+    "insertedSessions": 4,
+    "insertedViews": 4,
+    "expectedPurged": 3,
+    "retainedSessions": 1,
+    "retainedViews": 1,
+    "cases": [
+      "expired",
+      "boundary 30 days",
+      "invalid endedAt falls back to expiresAt",
+      "valid endedAt retains original anchor"
+    ]
+  },
+  "providerEnabled": false,
+  "appStarted": false,
+  "portPublished": false,
+  "elapsedSeconds": 27.506,
+  "limitations": [
+    "Chỉ job terminal và zero claim/task",
+    "Chưa OPS_GUARD/drain live",
+    "Chưa kiểm endpoint với epoch mới hoặc phát audio sau restore"
+  ]
+}

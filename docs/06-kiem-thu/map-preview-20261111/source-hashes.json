@@ -1,0 +1,225 @@
+{
+  "generatedAt": "2026-11-11T12:57:54.191Z",
+  "baselineNote": "null means not in the phase baseline, not proof of Git history",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "226c710bfde7da15fb58bb78c505e516182a1669d6b4ca6e7e08b871360de6c8",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/README.md",
+      "sha256": "a58a98b39d767f9feb323d924228455828c493a18272b2971b65a1dad708ac41",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/prepare-preview.mjs",
+      "sha256": "5f5ce2a995fc5f9e9e113019592231a2b19fc348befe70a38c36dc41a0446104",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "deploy/Dockerfile",
+      "sha256": "99a05f7fb43967059d3147063bb65a82f136fe889e22c1293012a814ed9cffe7",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "docs/01-tong-quan/handoff.md",
+      "sha256": "d23b269c3dd7198be311b4eb07e31653d6cc5dae77bb74f414afb13b2a3e6ae5",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "docs/01-tong-quan/issue-follow-up-2026-11-11.md",
+      "sha256": "eb291713a91fa4130dce728396b3cd9dbfa724e8a12cc4f1d58bb812a6cc5ac6",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "docs/01-tong-quan/roadmap.md",
+      "sha256": "e05c6abfea135617943de35cea41cb2e9983276e6db362afd715a734b7624c7b",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "docs/07-van-hanh/xem-truoc-ban-do.md",
+      "sha256": "2395f86e65421c4b812ed348655295f99260a74115ad7b30af1ba5f8b0199f6e",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "0543b833d8551e6c0179e9e27122b01d73f3149ca78afe4f0f107e75fa79032f",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/.env.example",
+      "sha256": "b5f78ab93ef87b1c8f5b6cf4d0d62f66028e5714b34c72d6ac5b40bc765ca208",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/README.md",
+      "sha256": "423659487751cd9bab36eb817c8c9ae8b974e6e5746c95f68af2a8d472f9684e",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/map-preview.html",
+      "sha256": "b2bd030e5ce36598ec0a47f0256203c98dc5077e018fadbfd0fb3511e8958eb3",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/scripts/build-map-assets.mjs",
+      "sha256": "ea77269ec7ad6a68779648ea54fb1d30f4d400b7d96b884a611fae1d3a1ee931",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/src/App.vue",
+      "sha256": "37de6e7ada7f234cc2ba536ff90b8054eabba3aee4c950fa25e60bd4b402823c",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/src/admin/CompletenessPanel.vue",
+      "sha256": "b58b5db0d08b3ffcb67d46486084c5cb702a70136b3846ee1ce4dd5819d5c4d7",
+      "phaseBaselineSha256": "7e6e4c15fc3a854b246cbdd881f6ba225f26e235bd5488ed72eba121ae499b8a"
+    },
+    {
+      "path": "frontend/src/admin/RegionEditor.vue",
+      "sha256": "460571dbd13f3bfe234b3d635f0ed6fe6e45c7a462be1f2686382aeea88186b9",
+      "phaseBaselineSha256": "9ca53f8b5e33e06cda5c0b271e975d719c86c0f321ab6a5a25a267243e8222db"
+    },
+    {
+      "path": "frontend/src/assets/README.md",
+      "sha256": "f023e38efdd7c72b4b8ef2eedbf58e5b2d33dcba49246082fbe4d1b19e8a0e6a",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/src/assets/hue-basemap.json",
+      "sha256": "4d50d8c617937aea1722b9ed32f8c94fd5230c4a68f4b6c89ac6757f2d3e93bc",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/src/assets/hue-proposed-regions.json",
+      "sha256": "12b36df502f311d4a2474f6160c8b0513a471a61bdfe26c49ec6dcd1f10cd77d",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/src/components/GuestMap.vue",
+      "sha256": "f9d456b85c179e86e9cedfcb8d6a5050153ea8b3b49ddcdd03ef46d991365a07",
+      "phaseBaselineSha256": "55b934534ebc5defdae1139c9da267a1b08e91c5bc78790d7be97154849e9405"
+    },
+    {
+      "path": "frontend/src/map/local-basemap.js",
+      "sha256": "c78671dc35c76b4fc7681d59c493e9034c6895a2fd860c3e76b230aa643d33d7",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/src/preview/MapPreview.vue",
+      "sha256": "0f40ed1a7110580ef2e53ec10c0559f0c9d552534e61b0ccc5a11ec522fc844a",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/src/preview/main.js",
+      "sha256": "9d34f0540761061a4e4ec2d46138b035f5116ec05e2b7fb204d31e4fc2d7f606",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/src/style.css",
+      "sha256": "82571c5979ae06d5440b86917a1fa35093197224bc56f5fdca767850fd5bbe89",
+      "phaseBaselineSha256": "ad5c115a7ea33887080604aba44617f01aaa23a1f34a92be8713bba19e004176"
+    },
+    {
+      "path": "frontend/tests/e2e/map-preview.spec.mjs",
+      "sha256": "b5dd09ac6c35d47d7108026da46e5218c09909a2e5a1c42d69d313de9a33904e",
+      "phaseBaselineSha256": null
+    },
+    {
+      "path": "frontend/vite.config.js",
+      "sha256": "9be4931c23b7f35c1ff05b39b372e7d26904c32f828e12cfe5a05155bc88650a",
+      "phaseBaselineSha256": null
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/assertions.json",
+      "bytes": 228,
+      "sha256": "96a7bdc39b3887195641107c3ae9f628e5115024c12c29cb286d35bcbcdef505"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/baseline.json",
+      "bytes": 637,
+      "sha256": "783a1576ba5708cfbb741acff5003deffc8973c0354926558f8cb978091cc078"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/browser-final.log",
+      "bytes": 1902,
+      "sha256": "55314aa62b741861f2b723b4367ccf886969fdee8e27193a1c48674024e7979c"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/browser-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/build-default.log",
+      "bytes": 4236,
+      "sha256": "64eec9765b53220c4bd212672a6e7dce34effad4aaaa5cefd5e0482ea1ab65a9"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/completeness-failed.png",
+      "bytes": 27909,
+      "sha256": "e44d5ddaae5c268a8c4a5acab90379e165de86137fa2603ec8ef8954c45ad0c2"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/completeness-retried.png",
+      "bytes": 63488,
+      "sha256": "428f3b90554206acd61dfcfdf959b1ddfb1e89b51942ce73bd84494a23add5f4"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/dataset-manifest.json",
+      "bytes": 1872,
+      "sha256": "06f95f83992e68eaa4352bd9941957df7f9b9514a65cc1148650669fdd5d1d08"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/default-build-check.json",
+      "bytes": 83,
+      "sha256": "80857faf04d096618addebcbdb3cc6dac352b32f016b74a37c46c93da8eee37a"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/image-build-summary.log",
+      "bytes": 359,
+      "sha256": "ab26dfb36e7dc72e87a7d8667e4376da74b887d019a63cad9254b54ef84448d5"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/map-preview-1280.png",
+      "bytes": 255352,
+      "sha256": "b73534ffbeb60d1bbe47045961396e478dbdd6ecf2eedb892951a3df2d60cdd2"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/map-preview-390.png",
+      "bytes": 196011,
+      "sha256": "75cc372d97e90c75a53c4a97a0dbe76a4217fea3770cae6fc31dde3f19079481"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/preview-image.json",
+      "bytes": 347,
+      "sha256": "643f919dbd48a2b5b6442b5767e7f44a4921dc02556c2de3f35f4f642fcac502"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/README.md",
+      "bytes": 5579,
+      "sha256": "52576994a49e9c091d889a56b3d44fd335fbfc9ab5901228bd65db7cec7026af"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/unit-final.log",
+      "bytes": 9874,
+      "sha256": "81b756511d85a3635452f3429b68ce1b60368b25ccf6b217716e8ba7c5c8e1ca"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-preview-20261111/verification.json",
+      "bytes": 1924,
+      "sha256": "4a6b545b5d628e91510e74ced37419138f9f5a85b6630c4171f9649fc8003d97"
+    }
+  ],
+  "backendBaselineFiles": 229,
+  "backendDifferences": [],
+  "addedBackendTestFixture": true,
+  "localLinks": {
+    "checked": 315,
+    "broken": []
+  }
+}

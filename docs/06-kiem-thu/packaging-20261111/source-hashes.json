@@ -1,0 +1,234 @@
+{
+  "generatedAt": "2026-11-11T03:50:51.804Z",
+  "baseline": "local-20261111/source-hashes.json; backend tested-source-hashes",
+  "note": "null baseline means absent from the milestone manifest; it does not prove a file was never pushed on another branch",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "adae8896e80e80056bb42375b8c820dfa32b47efbf88c10de8192a2d4cb7bed0",
+      "localMilestoneSha256": "f1cc52a59d5497469f1ea932ac1428c1a1294729d8e491e339e69d758c31153e",
+      "changed": true
+    },
+    {
+      "path": "README.md",
+      "sha256": "846dc7ef2fa138014c3d331e527907709c29a65d416534c525cb4d839efb85ac",
+      "localMilestoneSha256": "3d86bc68552df359ffc9e14190c67136161ee5adf3499a670d8ce3e81c5e4bb4",
+      "changed": true
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/README.md",
+      "sha256": "75db5a533366b3406ab0cdab62b259fa48e14716df62f902b06a5138cebda48a",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/README.md",
+      "sha256": "75db5a533366b3406ab0cdab62b259fa48e14716df62f902b06a5138cebda48a",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/backup-manifest.mjs",
+      "sha256": "4d9496d15284768db82a61f7681f15ae0562708b4ebed46202548ce7c0156057",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/backup-manifest.test.mjs",
+      "sha256": "c9915c6855a01052dbde92bf35a333ae7ed8f32cd93515cb4f21efd682a05bd8",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/backup-restore.mjs",
+      "sha256": "78eb8f97a00a1ac87dfa93061dfb8fe9b48f6ffd901c976575acf18c8a89a72d",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/linux-media.mjs",
+      "sha256": "fe65e6bbc591b29977ffb510d1b609a8ca9f9570b3fd1af1a33cadb2aceec547",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/packaged-runtime.mjs",
+      "sha256": "f1f62cbae6db78bb544662406d7b7052efb9491c303acbc596e91bf1de1b566b",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/restore-filter.sql",
+      "sha256": "96d6bd83c066cdd75ae56dab2bd32fd3e45d204f0776ccb41c44bbdb4a626d7d",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/restore-retention-cases.sql",
+      "sha256": "6a6ad129fb375ccf181a39bb88b7df2466f2e9babef095d917860c95f213d3c5",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "deploy/.env.example",
+      "sha256": "5a02586c04ebc7ab3e6e167611e9f363084b61820687462c9db5a40d5d702aa7",
+      "localMilestoneSha256": "5a02586c04ebc7ab3e6e167611e9f363084b61820687462c9db5a40d5d702aa7",
+      "changed": false
+    },
+    {
+      "path": "deploy/Dockerfile",
+      "sha256": "c399591dcf5f43e0a2804f590316fa03ad4b07dbb7c0efe8afb082c66cbff387",
+      "localMilestoneSha256": "c399591dcf5f43e0a2804f590316fa03ad4b07dbb7c0efe8afb082c66cbff387",
+      "changed": false
+    },
+    {
+      "path": "deploy/compose.yaml",
+      "sha256": "3dd09c3e229ff835e20b9427bc22831c80ea05f89b8143eec8363ff334002bef",
+      "localMilestoneSha256": "3dd09c3e229ff835e20b9427bc22831c80ea05f89b8143eec8363ff334002bef",
+      "changed": false
+    },
+    {
+      "path": "docs/01-tong-quan/handoff.md",
+      "sha256": "7ed6dfed0c51f3667adf4bd959c125c885272bcefa3d9aedec5b57829830ff7d",
+      "localMilestoneSha256": "948f86a57b2d40aaac4c89ca7113119bdc6aa3c916d61376c8584b2aa62c2be1",
+      "changed": true
+    },
+    {
+      "path": "docs/01-tong-quan/roadmap.md",
+      "sha256": "92b37b1549859530237ce2e65e752f21b986adb3355b087394bcc38d35a12d6e",
+      "localMilestoneSha256": "6ebec3be98f2885942f2fed0484c069d680cccf22854bf3d30288312ce1626e5",
+      "changed": true
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/README.md",
+      "sha256": "294276609a6d34897737334778f0bd18b5ac2db8bd22e4302fcf3b825564171b",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "docs/07-van-hanh/dong-goi-va-ci.md",
+      "sha256": "792320fc201703e457acd0cb17284d17f61beb66c6e1c982de7739d4d96dcf4c",
+      "localMilestoneSha256": "9ff4b1cdb777d0cf5d2d9e7e93f031cccd2b6329d20fccbd24d466a5ad531c83",
+      "changed": true
+    },
+    {
+      "path": "docs/07-van-hanh/nghiem-thu-van-hanh.md",
+      "sha256": "e504e6a52dbefe344d1ee1cada4b87778bbdf0aa1174d2e9ed0ab042f46d254a",
+      "localMilestoneSha256": "3a0c05980ab2280e115a8d7e032eca3005eb5c8b4ffd657269a9eb5c12290394",
+      "changed": true
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "af1b4779e07c36588e6ff4fcd70c2dfa7471ff984b2c48c4bc2d70c01c43de7c",
+      "localMilestoneSha256": "b438ca08a4ba02b115248855cd73dc06b9d18695237c52dcecede09c221fad62",
+      "changed": true
+    },
+    {
+      "path": "frontend/tests/e2e/README.md",
+      "sha256": "7c207f7136ebb7fd1884e891b2fde5e8bac8a696de3d68f3c1c08f1696bacace",
+      "localMilestoneSha256": "7c207f7136ebb7fd1884e891b2fde5e8bac8a696de3d68f3c1c08f1696bacace",
+      "changed": false
+    },
+    {
+      "path": "frontend/tests/e2e/packaged.spec.mjs",
+      "sha256": "12a228f411ab196def487fa0fa97b280433e4b87aabf9a0016a840350afa69ec",
+      "localMilestoneSha256": null,
+      "changed": null
+    },
+    {
+      "path": "frontend/tests/e2e/visit.spec.mjs",
+      "sha256": "48fa16764304ebce85819fb4fe913e7dcdec0d39bc1f019e94acd334737f90d0",
+      "localMilestoneSha256": "48fa16764304ebce85819fb4fe913e7dcdec0d39bc1f019e94acd334737f90d0",
+      "changed": false
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/browser-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/docker-build-summary.log",
+      "bytes": 2490,
+      "sha256": "706a4e59cb42f5e7c1ab3fa02e0203a0f52cdc978438aad6b2a81be80050a143"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/frontend-in-image.log",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/image.json",
+      "bytes": 265,
+      "sha256": "302465126a1ff5a2b2be26259e482d283012622a20cd72177b039cc179c82560"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/java-runtime.log",
+      "bytes": 201,
+      "sha256": "26bd8b5b353c2feaef00d69600f42ed6b36292d6f428099bfa308093f0c0b18f"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/linux-media.json",
+      "bytes": 534,
+      "sha256": "ac3d2292ab9dbf6379f07133b7fd417b06b6b86312168033a5650dd11189a9de"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/linux-tools.log",
+      "bytes": 189,
+      "sha256": "37738051c663223b7061e373974767c69a6daf7bd505f2f14a17af2d9f49c25c"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/manifest-test.log",
+      "bytes": 810,
+      "sha256": "dfc446d6ede6d8805aed87c6c25136ee1b3a51a5bb7b47f5ea6fcc9378d34979"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/packaged-browser.log",
+      "bytes": 1400,
+      "sha256": "46ca335c924ec6404dc284a5dd7a785d90e95abb5b61b76ea36232c4d3c51726"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/packaged-guest.png",
+      "bytes": 62336,
+      "sha256": "f515fb0742d1fc64e7e07b4c3b66da8821b1bce4f7b7c6f5476e52dfe6ffb573"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/packaged-result.json",
+      "bytes": 353,
+      "sha256": "7c96d813f1ec54fd233156caa975512059b6b9894e84bf5618210c6cf8d40bcc"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/README.md",
+      "bytes": 4816,
+      "sha256": "294276609a6d34897737334778f0bd18b5ac2db8bd22e4302fcf3b825564171b"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/restore-report.json",
+      "bytes": 1214,
+      "sha256": "0dfb94bfd4939f3af6f5d84088f70df3367cd6281e16dcbfbe86da25267c41e0"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/restore-run.log",
+      "bytes": 2064,
+      "sha256": "708ed2ddfcaf2e69f22d4d63ce29d58cd668ff0aa1987b81eff479a59b013e4d"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/snapshot-manifest.json",
+      "bytes": 3253,
+      "sha256": "9cb05ba0fb3d3e033faa031efa4bdd194c4f56e931e625870df68421ac6ef449"
+    },
+    {
+      "path": "docs/06-kiem-thu/packaging-20261111/verification.json",
+      "bytes": 2002,
+      "sha256": "a7ea1d698601b7fb9d3234bcfc8422dc66830d20d08b85552f6bd35c5805f4ad"
+    }
+  ],
+  "backendBaselineFiles": 229,
+  "backendMismatches": [],
+  "documentLinkCheck": {
+    "files": 8,
+    "targets": 287,
+    "broken": []
+  }
+}

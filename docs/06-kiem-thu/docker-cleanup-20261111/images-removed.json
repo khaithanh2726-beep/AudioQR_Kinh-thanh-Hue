@@ -1,0 +1,23 @@
+﻿[
+    {
+        "Image":  "sha256:a67f538e931056d316c437dd8c5117282eb1ab77d4683c6e5320c3880563ca07",
+        "Status":  "removed",
+        "Tags":  [
+
+                 ]
+    },
+    {
+        "Image":  "sha256:61722bfc150a04e38013ef7f31fb271f60d2ca21cda155b9359b213079065bf1",
+        "Status":  "removed",
+        "Tags":  [
+                     "hueqr-local:20261111-guest-ui"
+                 ]
+    },
+    {
+        "Image":  "sha256:b73222550f18789076d94b4c6bfa86cb099e4d7aaef32a53b20bfa2a453d88b7",
+        "Status":  "removed",
+        "Tags":  [
+                     "hueqr-local:20261111"
+                 ]
+    }
+]

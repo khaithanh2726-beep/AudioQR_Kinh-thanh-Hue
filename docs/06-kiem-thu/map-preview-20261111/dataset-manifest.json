@@ -1,0 +1,48 @@
+{
+  "preparedAt": "2026-11-11T12:43:55.443Z",
+  "url": "http://127.0.0.1:18082",
+  "mapPreviewUrl": "http://127.0.0.1:18082/map-preview.html",
+  "application": "hueqr-map-preview-91b4feca",
+  "databaseContainer": "hueqr-preview-mysql-91b4feca",
+  "schema": "hueqr_preview",
+  "counts": "places\t5\nslots\t20\ndraft_texts\t5\nvisible\t0\napplied\t0\nreviews\t0",
+  "drafts": [
+    {
+      "placeId": "039d5ff2-da6b-5283-b7ed-5196dd4dcb2e",
+      "name": "Cổng Ngọ Môn",
+      "textRevisionId": "78a2f4cc-afe5-46a1-be7e-941dc829d878",
+      "contentHash": "d78e71e427aebe1552575ff4f5e6e62c3b27de904ce6d1450c802bf11dd66177"
+    },
+    {
+      "placeId": "68667731-5be9-592f-bf28-3e3f0e81e4ef",
+      "name": "Điện Thái Hòa",
+      "textRevisionId": "89d0fdb6-c9d9-4d43-a750-c453be96feec",
+      "contentHash": "f1b7ae246191a00356103c99d5550cb043c5dd6b2785abe68ad61bf46800d111"
+    },
+    {
+      "placeId": "5a3bc1b0-7e12-593e-9570-ce3ed726dbae",
+      "name": "Tử Cấm Thành",
+      "textRevisionId": "56425266-dcfc-47b5-9570-53c4db23c56e",
+      "contentHash": "cf4f4c0d7042999ca11fb9304c18f4f0856a877a8e55ea099bc53be1297f19ba"
+    },
+    {
+      "placeId": "0ccc056f-6203-5da3-b4b3-18613615ea91",
+      "name": "Cửu Đỉnh",
+      "textRevisionId": "1989bafc-6c0a-4b34-b94f-faaa5946f353",
+      "contentHash": "0ef92f441d92a71acae3e23f9d5ce037d4890d48e298962d97ede72db7b8ca56"
+    },
+    {
+      "placeId": "9b30736e-75fd-5c62-916e-ad8e2b11747a",
+      "name": "Cung Diên Thọ",
+      "textRevisionId": "772075ff-698b-471d-a75a-157bcef0787f",
+      "contentHash": "48165fc580dbd02aef3bb06723e165e3baae9ea1e84c2a86a5f8579948a04032"
+    }
+  ],
+  "proposedRegions": 5,
+  "regionApproval": "pending",
+  "textApproval": "pending",
+  "providerEnabled": false,
+  "fakeApprovalsCreated": false,
+  "activePairsCreated": false,
+  "sourceDatabaseModified": false
+}

@@ -1,0 +1,84 @@
+{
+  "recordedAt": "2026-11-11T03:50:50.893Z",
+  "dockerBuild": {
+    "exit": 0,
+    "image": "sha256:b73222550f18789076d94b4c6bfa86cb099e4d7aaef32a53b20bfa2a453d88b7",
+    "bytes": 527973042,
+    "frontendTests": 60,
+    "frontendFailures": 0,
+    "frontendBuild": true,
+    "backendPackage": true,
+    "backendTestsSkipped": true
+  },
+  "linuxMedia": {
+    "passed": true,
+    "ffmpeg": "9.0.2",
+    "ffprobe": "9.0.2",
+    "javaMajor": 21,
+    "unicodePath": true,
+    "fullDecode": true,
+    "nonRoot": true,
+    "network": "none"
+  },
+  "offlineRestore": {
+    "passed": true,
+    "files": 12,
+    "audioBytes": 7925856,
+    "terminalJobsOnly": true,
+    "zeroTasksAndClaims": true,
+    "sourceApplicationStopped": true,
+    "retentionFixture": {
+      "insertedSessions": 4,
+      "insertedViews": 4,
+      "expectedPurged": 3,
+      "retainedSessions": 1,
+      "retainedViews": 1,
+      "cases": [
+        "expired",
+        "boundary 30 days",
+        "invalid endedAt falls back to expiresAt",
+        "valid endedAt retains original anchor"
+      ]
+    },
+    "originalTimestampsPreserved": true,
+    "newEpoch": true
+  },
+  "manifestUnit": {
+    "tests": 5,
+    "passed": 5,
+    "failures": 0
+  },
+  "browser": {
+    "tests": 1,
+    "passed": 1,
+    "exit": 0,
+    "seconds": 10.6,
+    "servedByDocker": true,
+    "vite": false,
+    "restoredMediaPlays": true,
+    "oldEpochFixtureHttpStatus": 401,
+    "providerCalled": false
+  },
+  "limits": {
+    "opsGuardImplemented": false,
+    "liveDrainTested": false,
+    "inflightJobsRestored": false,
+    "composeRuntimeTested": false,
+    "composeConfigPreviouslyValidated": true,
+    "githubCiRun": false,
+    "httpsQrTested": false,
+    "physicalDevicesTested": false
+  },
+  "isolation": {
+    "applicationStopped": true,
+    "restoreDatabaseStopped": true,
+    "sourceTestDatabaseStopped": true,
+    "volumesAndFilesPreserved": true
+  },
+  "git": {
+    "mutations": false,
+    "branch": "T01",
+    "head": "3bdef85",
+    "index": "empty"
+  }
+}

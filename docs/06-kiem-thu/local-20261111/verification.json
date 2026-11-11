@@ -1,0 +1,70 @@
+{
+  "recordedAt": "2026-11-11T02:47:05.078Z",
+  "git": {
+    "branch": "T01",
+    "head": "3bdef85",
+    "index": "empty",
+    "mutations": false
+  },
+  "backend": {
+    "runner": "Maven Wrapper offline with Testcontainers MySQL 8.4.13",
+    "tests": 520,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "uniqueCases": 520,
+    "build": "SUCCESS",
+    "finishedAt": "2026-11-11T09:39:14+07:00",
+    "report": "backend-tests.json"
+  },
+  "frontend": {
+    "runner": "Node 24.22.2 npm test",
+    "tests": 60,
+    "failures": 0,
+    "skipped": 0,
+    "testExit": 0,
+    "buildExit": 0
+  },
+  "browser": {
+    "runner": "Playwright 1.65.0 with installed Google Chrome",
+    "tests": 2,
+    "passed": 2,
+    "exitCode": 0,
+    "seconds": 34.6,
+    "autoplayOverride": false,
+    "viewportEmulationOnly": true,
+    "realApi": true,
+    "isolatedDatabase": true,
+    "realWavAndMp3": true,
+    "providerWavStagedByFixture": true,
+    "providerWorkerEndToEnd": false,
+    "report": "e2e-final.log"
+  },
+  "media": {
+    "language": "vi",
+    "wavFiles": 4,
+    "mp3Files": 4,
+    "review": "pending",
+    "remainingVi": {
+      "place": "Cung Diên Thọ",
+      "status": 503,
+      "reason": "provider high demand"
+    },
+    "draftTranslations": 15,
+    "translatedAudioGenerated": 0
+  },
+  "deployment": {
+    "composeConfigValidated": true,
+    "linuxImageBuilt": false,
+    "githubCiRun": false,
+    "httpsQrTested": false,
+    "physicalDevicesTested": false,
+    "cdConfigured": false,
+    "backupRestoreRehearsed": false
+  },
+  "isolation": {
+    "applicationAndViteStopped": true,
+    "testDatabaseContainerStopped": true,
+    "dataPreserved": true
+  }
+}
