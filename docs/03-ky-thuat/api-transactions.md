@@ -1,6 +1,6 @@
 # TDD — API và giao dịch
 
-**Phiên bản nội dung:** 0.4, biên tập 09/11/2026. **Trạng thái:** hợp đồng tổng thể còn dự thảo. K11/K01/K02/K04, xác thực Admin A01–A05, cửa sổ lệnh/receipt/tạo điểm ẩn A31/A06/A08, đọc/sửa tên A07/A09 và lưu/đọc/áp dụng bản vùng A12–A14 có sản phẩm backend và bằng chứng riêng, chưa toàn API/OpenAPI thực thi.
+**Phiên bản nội dung:** 0.4, biên tập 11/11/2026. **Trạng thái:** hợp đồng tổng thể còn dự thảo. K11/K01/K02/K04, xác thực Admin A01–A05, cửa sổ lệnh/receipt/tạo điểm ẩn A31/A06/A08, đọc/sửa tên A07/A09 và lưu/đọc/áp dụng bản vùng A12–A14 có sản phẩm backend và bằng chứng riêng, chưa toàn API/OpenAPI thực thi.
 **Mục đích:** tra quyền, điều kiện, hợp đồng khách/Admin, thao tác lặp, giao dịch, đồng thời và lỗi. LIFE-P01 dùng vé ký 24 giờ theo DATA-05; LIFE-P02/P03/REC/BKP-P02 theo DATA-04.
 **Nguồn:** [PRD](../02-nghiep-vu/PRD.md), [decisions](../02-nghiep-vu/decisions.md), [TDD](TDD.md), [mô hình hiện hành](data-model.md), [vòng đời/kiểm chứng](operations-design.md). Không lấy thiết kế làm kết quả triển khai.
 
@@ -860,6 +860,40 @@ Lần kiểm đầu có 103 lỗi khởi tạo context vì Docker Linux Engine c
 **Bàn giao và giới hạn:** backend dự án đã nhận năm file có thay đổi, cây 216 file/197 Java khớp bản kiểm. Chưa provider/FFmpeg/giải mã MP3, nghe duyệt, browser/HTTPS hoặc ngừng phát ở client. Chưa hoàn thành toàn T05 hay AC nghe thử. Dừng để nhóm rà trước commit/push hoặc mục tiếp theo.
 
 Bằng chứng tại `C:\Users\khait\AppData\Local\Temp\hueqr-admin-preview-h6qryy92`: `verification.json`, `baseline.json`, `tested-source-hashes.json`, `preview-tests.log`, `backend/target/surefire-reports`, `docker-unavailable-reports` và HANDOFF.md. Không sửa Git/GitHub trong mốc A22.
+
+<a id="local-audio-implementation-result"></a>
+
+### 11.13. Local WAV → MP3, Check và Retry — 11/11/2026
+
+Phần T07 nối sau RESULT_STAGED theo state machine đã thiết kế, không đổi URL/đầu vào A18–A21 hoặc các trường TtsJobResponse cũ. `CONVERTING` ánh xạ PROCESSING; chỉ giao dịch đăng ký thành công mới chuyển `SUCCEEDED`, có terminalAt và `result={audioRevisionId,wavFileId,mp3FileId,checksum,durationSeconds}`. Kết quả thuộc đúng bản đã lưu, không chạy theo nháp mới, không tự tạo hồ sơ duyệt, áp dụng cặp hoặc bật hiện.
+
+**Nhận và xử lý.** Khóa PLACE → TEXT → JOB trước khi nhận; kiểm target, active job, snapshot text/hash/ngôn ngữ và WAV READY. Marker conversion_instance/task/token/file tách khỏi marker provider. Runtime TTS scope giữ tới khi công việc và tiến trình con đã kết thúc; không dùng timeout/tuổi job để giành lại scope còn sống. CONVERTING chỉ được nhận lại khi task cũ đã đóng hoặc được thu hồi theo bằng chứng owner dừng. Khi owner bên ngoài node/root chưa đủ căn cứ, giữ nguyên.
+
+FFmpeg/ffprobe chạy ngoài DB transaction, ProcessBuilder dùng danh sách đối số, không shell. FFmpeg trả bytes qua stdout; Java là phía ghi file CREATE_NEW do server cấp, không truyền tên đích có thể ghi đè cho tool. Kiểm WAV container/hash/size/duration, không symlink/path ngoài audio root. Encode MP3 mono 24 kHz, probe đúng codec/kênh/tần số/thời lượng dương rồi yêu cầu giải mã toàn file; timeout/exit code/lỗi I/O được trả bằng mã phân loại, không raw diagnostic/path. Timeout mặc định 300 giây là cấu hình kỹ thuật, không ngưỡng nghiệm thu hoặc hạn nội dung.
+
+Đăng ký workspace trước ghi, force bytes trước READY. MP3 hoàn chỉnh được đăng ký metadata trước manifest; manifest kỹ thuật xuất hiện bằng rename nguyên tử. Finalize khóa các FILE theo cùng thứ tự UUID, kiểm lại token/task/đích và metadata, insert audio + SUCCEEDED + tháo active pointer trong một TX. WAV vẫn được giữ bởi quan hệ job/audio; không xóa con trỏ đang là thành phần FK V9. Nếu target bị xóa giữa lúc xử lý thì không tạo lại dữ liệu, giữ bytes hoàn chỉnh theo chính sách dọn. Lỗi finalize giữ CONVERTING/manifest để đối chiếu, không gọi provider lại.
+
+**Check.** Với CONVERTING không còn task gốc, đọc/kiểm manifest và bytes ngoài TX dưới RECOVER scope. Chỉ gắn audio trong TX receipt sau khi kiểm account/window/key; lỗi receipt hoàn tác cả audio và SUCCEEDED. `LOCAL_MP3_VERIFIED` là bằng chứng file local, phase trong response mới phản ánh trạng thái DB. Không có manifest hoặc bằng chứng không hợp lệ không tự encode, thử provider, ghi FAILED hay kết luận rollback. Task đang chạy không bị Check giành quyền. Check WAV DISPATCHING/UNCERTAIN trước đây giữ hành vi.
+
+**Retry.** Lỗi local giữ WAV có retryAction=REPROCESS_LOCAL. Retry chủ động kiểm expectedPhaseVersion/latest/active/target, giữ cùng job và snapshot/WAV, đưa về RESULT_STAGED với token/file mới ở lần nhận tiếp; không đổi marker provider, acceptedAt hay tạo chi phí provider mới. Job + pointer + receipt cùng TX; replay không queue thêm. Source thiếu/sai cho FAILED/LOCAL_SOURCE_INVALID/INSPECT_ONLY, không tự mở lại lời gọi provider. Lỗi provider xác định vẫn dùng CREATE_PROVIDER_ATTEMPT; unknown vẫn INSPECT_ONLY. DISCARDED không gợi ý Check/Retry dù còn giữ mã lỗi cũ để đối chiếu.
+
+**Bật riêng, mặc định tắt.** `hueqr.tts.local.enabled=true` cần HUEQR_AUDIO_ROOT tuyệt đối; HUEQR_FFMPEG_PATH/HUEQR_FFPROBE_PATH mặc định tên executable trong PATH, có thể cấp đường dẫn ngoài repo. Không cần/bật provider key cho bước local. `hueqr.tts.local.process-timeout-seconds` mặc định 300, poll-delay-ms mặc định 1000; runner chỉ nhận RESULT_STAGED/CONVERTING, không tự retry FAILED hoặc provider unknown. Chưa bật trên môi trường phục vụ.
+
+**Vòng đời và giới hạn.** Workspace nhận thêm MP3/SUCCEEDED. Sau đúng một giờ đủ điều kiện có thể bỏ registry/manifest; metadata/bytes hoàn chỉnh vẫn chịu các tham chiếu và hạn 24 giờ/8 giờ đã chốt. MP3 chưa có metadata/manifest xác minh được giữ để đối chiếu khi có tool, không suy là file dở rồi xóa một giờ. Không coi cleaner đã xử lý đầy đủ mọi đầu ra MP3 sau crash. Source/owner của hệ thống cũ không có căn cứ vẫn giữ như trước.
+
+**Kiểm chứng:** lượt full kết thúc 2026-11-11T00:31:49+07:00 có 519 ca: 518 đạt, một failure fixture Mockito, không error/skipped; exit 1 được giữ đúng. Fixture gọi phương thức thật trên interface Spring Data nên chưa tới assertion rollback. Đã sửa callback của ca `checkReceiptFailureRollsBackTheActualAudioInsertAndSuccessState`: kiểm bằng SQL trong TX rằng audio đã insert và phase SUCCEEDED trước khi gây lỗi receipt, rồi kiểm sau rollback không còn audio/job vẫn CONVERTING. Chạy lại đúng ca đó đạt 1 test/0 failure/error/skipped, BUILD SUCCESS/exit 0 lúc 2026-11-11T00:37:39+07:00.
+
+Sau đó siết một biểu thức retryAction ở TtsJobService.response: chỉ FAILED/UNCERTAIN gợi ý xử lý, DISCARDED không nhận gợi ý từ failure_code local cũ. Thêm ca local lỗi → xóa điểm → đối chiếu metadata → DISCARDED/retryAction=null. Chạy lại AdminTtsApiTests, LocalAudioIntegrationTests và TtsWorkerIntegrationTests: 60 ca, 3 XML, 0 failure/error/skipped, BUILD SUCCESS/exit 0 lúc 2026-11-11T00:44:53+07:00. Đối chiếu nguồn xác nhận chỉ thay biểu thức response và fixture/ca mới sau full; phần chuyển đổi/SQL/endpoint/test khác giữ nguyên.
+
+Ledger dùng 49 XML full và 3 XML nhóm cuối, thay bằng chứng mới cho các ca trùng, có 520 ca độc lập đều đạt (460 ngoài nhóm từ full + 60 nhóm cuối). Giữ XML/log gốc, không nói đã có một lượt full mới 520 ca/0 failure. Ca sửa riêng trước đó giữ như lịch sử, không cộng thêm vào ledger.
+
+Có SQL thật, chuyển trạng thái, hai worker, token/owner, target mất, sửa nháp không tráo bản, đúng bốn ngôn ngữ, file/manifest thiếu/hỏng, rollback audio/receipt, Retry, Check không encode và nâng V11 có dữ liệu lên V12 giữ checksum V1–V11. Unit command/probe dùng công cụ giả; kiểm timeout/pipe/exit code dùng tiến trình Java con và bytes giả. Trước nối Check, bộ riêng 30 ca đạt lúc 2026-11-10T23:56:58+07:00; không cộng vào full. Các lần trước có lỗi fixture flush/code page Windows và truy vấn workspace/loại exception CHECK, đã giữ log/XML và sửa đúng phạm vi, không bỏ assertion nghiệp vụ.
+
+Chưa chạy FFmpeg/ffprobe, codec MP3/provider thật hoặc browser/nghe duyệt. Đối số Unicode qua Java launcher Windows có giới hạn code page quan sát trong fixture; chưa chứng minh đường dẫn Unicode của FFmpeg thật hoặc nền Linux đích. CLI đối chiếu tài liệu chính thức [FFmpeg](https://ffmpeg.org/ffmpeg.html), [ffprobe](https://ffmpeg.org/ffprobe.html), [pipe](https://ffmpeg.org/ffmpeg-protocols.html#pipe), không dùng đọc tài liệu làm bằng chứng tool đã chạy.
+
+Lượt full trước đó dừng chủ động khi máy thiếu RAM, giữ `full-interrupted-memory.log` và `interrupted-full-reports`, không tính là pass. Các lượt sau dùng `-Dspring.test.context.cache.maxSize=2`, giới hạn [cache context kiểm thử](https://docs.spring.io/spring-framework/reference/testing/testcontext-framework/ctx-management/caching.html), không đổi cấu hình ứng dụng hoặc bỏ assertion.
+
+Bản kiểm `C:\Users\khait\AppData\Local\Temp\hueqr-local-audio-46vou1oi`: baseline.json, full-start-source-hashes.json, tested-source-hashes.json, verification.json, full-regression.log/exit, `full-before-fixture-reports` (49 XML), `fixture-correction.log/exit`, `fixture-correction-reports`, `response-guard-tests.log/exit`, `backend/target/surefire-reports` (3 XML cuối), `validation-ledger.json`, các source-proof.json và báo cáo lần trước. Cây 229 file/209 Java có mã Hash manifest `551bb431597767866acf3bb6821dd8ef01e825b1178d0afb83d477efade27c70`; đã đối chiếu trước khi nhận 21 file mới/sửa. Không thao tác database chính, TTS ngoài, frontend, Git/GitHub hoặc tick checklist trong mốc này.
 
 ### Nhật ký biên tập
 

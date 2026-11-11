@@ -1,6 +1,6 @@
 # Roadmap — Backlog 11 issue và tiến độ theo bằng chứng
 
-**Phiên bản nội dung:** 0.12, cập nhật sản phẩm backend 10/11/2026. **Trạng thái:** backlog 11 issue/89 ô/18 dấu tích đã được duyệt theo G02. Issue #1–#11 được tạo và đọc lại ngày 08/11. Project có đủ 11 issue, 6 In Progress/5 Todo/0 Done theo xác nhận vận hành ngày 08/11, chưa có lần kiểm trực tiếp mới. Phân công không chứng minh thành viên đã thực hiện hoặc hoàn thành task.
+**Phiên bản nội dung:** 0.12, cập nhật sản phẩm backend 11/11/2026. **Trạng thái:** backlog 11 issue/89 ô/18 dấu tích đã được duyệt theo G02. Issue #1–#11 được tạo và đọc lại ngày 08/11. Project có đủ 11 issue, 6 In Progress/5 Todo/0 Done theo xác nhận vận hành ngày 08/11, chưa có lần kiểm trực tiếp mới. Phân công không chứng minh thành viên đã thực hiện hoặc hoàn thành task.
 **Checklist local ngày 09/11:** 89 ô/20 dấu tích, giữ nguyên bản lưu đầu lượt; mốc GitHub đã đối chiếu là 18 dấu tích, chưa kiểm lại. Chi tiết tại [mục 6.5](#local-checklist-20261109).
 **Mục đích:** tra phạm vi, phân công, phụ thuộc và lịch dự kiến. Bảng tổng quan cập nhật theo bằng chứng backend và xác nhận Project ngày 08/11/2026, các snapshot cũ giữ theo thời điểm. Điểm dừng và bằng chứng mới nhất ở [handoff](handoff.md#next-step).
 **Giới hạn:** checklist và thiết kế không thay bằng chứng phần mềm. Quy trình phối hợp, quyền thao tác và mốc bàn giao tại [handoff mục 7](handoff.md#guidance-protocol). Trạng thái Git và sản phẩm được cập nhật theo kết quả thực tế, không theo kế hoạch dự kiến.
@@ -391,6 +391,40 @@ Theo sản phẩm hiện có, đề xuất thêm T04/#4 vào In Progress cùng �
 ### 6.8. Xóa địa điểm và dọn vòng đời ngày 10/11
 
 Đã có A11, dọn window/receipt/job, registry owner/claim và dọn file theo hạn đã duyệt, với [bằng chứng backend](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result). [Handoff 2.27](handoff.md#lifecycle-cleanup-result) ghi điểm tiếp tục. Chưa bật scheduler hoặc áp V11 trên môi trường phục vụ, chưa backup/restore/provider/FFmpeg/browser; chưa đủ toàn ô nghiệm thu T05/T07. Giữ nguyên tiêu đề, Description, Checklist mục 3 và 89 ô/20 dấu tích, không thay issue/Project trong đợt này.
+
+<a id="local-audio-progress"></a>
+
+### 6.9. Local audio sau WAV — 11/11/2026
+
+[Handoff 2.31](handoff.md#local-audio-result) và [API 11.13](../03-ky-thuat/api-transactions.md#local-audio-implementation-result) ghi V12/CONVERTING/SUCCEEDED, đăng ký audio, Check và Retry dùng WAV cũ; ledger đối chiếu 520 ca qua full và nhóm local/TTS chạy lại. Test dùng encoder giả/Java process fixture, chưa FFmpeg/MP3/provider thật hoặc nghe duyệt; chưa đủ toàn T07. Frontend T04/T06 vẫn triển khai độc lập theo 2.30. Giữ nguyên mục 3/89 ô/20 dấu tích, không sửa issue/Project hoặc suy test thành hoàn tất task. Các snapshot trước giữ phạm vi/thời điểm riêng.
+
+### 6.10. Frontend và luồng local ngày 11/11
+
+[Handoff 2.33](handoff.md#local-e2e-20261111) đối chiếu Admin đã ghép vào nguồn chính và các màn TTS/mức đầy đủ/phiên/thống kê/QR mới. Frontend đạt 60 ca npm và build Vue; Chrome/API/MySQL riêng đã chạy áp dụng cặp, phát MP3 thật và ca lỗi mạng. [Hồ sơ kiểm](../06-kiem-thu/local-20261111/README.md) phân biệt lượt đầu, hồi quy cuối, full backend và các giới hạn.
+
+Có 15 bản dịch nháp và bốn audio vi thật chưa duyệt; bài Diên Thọ gặp HTTP 503. Chưa đủ 20 cặp đã duyệt, vùng/nền chính thức, thiết bị thật, HTTPS/QR, CI/CD hoặc backup/restore. Docker/CI hiện là nguồn cấu hình, chưa phải nghiệm thu môi trường. Giữ nguyên mục 3, 89 ô/20 dấu tích; không cập nhật issue/Project từ mốc kiểm local.
+
+### 6.11. Đóng gói Linux và restore offline ngày 11/11
+
+[Handoff 2.34](handoff.md#packaging-restore-20261111) và [hồ sơ đóng gói](../06-kiem-thu/packaging-20261111/README.md) ghi Docker build đạt, FFmpeg Unicode/giải mã MP3 thật, phục hồi riêng 12 audio có Hash, lọc retention và Chrome sau restore với epoch mới. Năm ca kiểm manifest đạt; không đổi số đếm backend full 520/520 ở mốc trước thành full Linux.
+
+Chưa có OPS_GUARD/drain live, phục hồi job/claim đang xử lý, Compose update/rollback, HTTPS/thiết bị hoặc CI/CD thật. Đây là diễn tập trên dữ liệu thử, không đủ toàn ô backup/restore/vận hành T09/T10. Giữ nguyên mục 3, 89 ô/20 dấu tích; không cập nhật issue/Project hoặc suy phân công G02 từ người thao tác.
+
+### 6.12. Chữ và bố cục Khách ngày 11/11
+
+[Handoff 2.35](handoff.md#guest-ui-fix-20261111) ghi sửa phông, bố cục dọc, ô văn bản cuộn riêng và Hủy luôn thấy theo UI-K01–UI-K04. 60 ca logic/build và 7 ca Chrome trên ảnh Docker mới đạt; có quan sát trực tiếp trong VS Code. [Hồ sơ kiểm](../06-kiem-thu/guest-ui-20261111/README.md) phân biệt bản văn thật với đoạn DOM dùng ép cuộn.
+
+Bản đồ lưới/các tam giác E2E trùng nhau vẫn chưa đạt demo; chưa tích hợp nền/vùng được duyệt hoặc chuẩn bị xong dữ liệu demo riêng. Kiểm API/audio trước đó không tự chứng minh giao diện được nghiệm thu. Giữ nguyên checklist mục 3 và 89 ô/20 dấu tích; không sửa issue/Project, phân công G02 hoặc tự hoàn tất T04/T06.
+
+### 6.13. Bản đồ xem trước và bộ nháp riêng ngày 11/11
+
+[Handoff 2.37](handoff.md#map-preview-dataset-20261111) ghi nền OSM offline/năm vùng đề xuất, nguồn/ghi công và cờ preview mặc định tắt; database mới có 5 điểm/20 slot/5 bản vi nháp còn ẩn, không review-ref/cặp giả. Lỗi tải/lỗi của Mức đầy đủ đã sửa và kiểm ba ca Chrome trên ảnh cuối; 60 ca logic/build đạt. [Hồ sơ](../06-kiem-thu/map-preview-20261111/README.md) phân biệt trang xem vùng với phiên Khách và các phần chưa kiểm.
+
+[Bảng theo dõi issue](issue-follow-up-2026-11-11.md) cụ thể hóa đầu ra còn mở theo G02, chưa sửa GitHub hoặc checklist. Nền/vùng vẫn chờ duyệt, bộ audio và QR/HTTPS chưa đủ; không hoàn tất T02/T04/T06/T08 hoặc các ô nghiệm thu từ việc seed/mở preview. Giữ nguyên mục 3, 89 ô/20 dấu tích và trạng thái Project chưa kiểm mới.
+
+### 6.14. Nền raster OSM và khôi phục preview — 11/11
+
+[Handoff 2.40](handoff.md#osm-map-20261111) ghi lớp nền OSM/ghi công/tải-lỗi-thử lại cho Khách/Admin, build Docker và preview 18082 được khôi phục với DNS Docker riêng. 65 ca logic, 11 ca Chrome trên ảnh mới và 3 ca offline riêng đạt; 229 file baseline backend khớp Hash. Browser dùng tile kiểm; kết nối tile thật đang reset, chưa có bằng chứng hình ảnh nền thực. Năm vùng/bộ nội dung vẫn chờ duyệt, không áp dụng cặp hoặc bật điểm giả. Không thay 89 ô/20 dấu tích, G02 hoặc trạng thái GitHub Project; [bảng issue](issue-follow-up-2026-11-11.md) giữ các đầu việc chưa hoàn tất.
 
 ## 7. Nhật ký và snapshot theo thời điểm
 

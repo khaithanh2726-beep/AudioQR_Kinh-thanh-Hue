@@ -1,6 +1,6 @@
 # TDD — Mô hình dữ liệu hiện hành
 
-**Phiên bản nội dung:** 0.4, biên tập 09/11/2026. **Trạng thái:** ERD còn dự thảo. Đã có V1 guest_session, V2 địa điểm/vùng theo [phần nền địa điểm/vùng](#model-place-region-result), V3 tài khoản và V4 window/receipt theo [bằng chứng quản trị](api-transactions.md#admin-command-implementation), V5 văn bản nháp/hồ sơ theo [mục 7.2](#model-text-result), V6 hàng đợi TTS theo [mục 7.3](#model-tts-queue-result), V7/V8 WAV và lượt xem theo [mục 7.4](#model-worker-report-result). V9 bổ sung audio/cặp và seed riêng theo [mục 7.5](#model-audio-pair-result); nghiệp vụ áp dụng/bật-ẩn và mốc file có bằng chứng riêng tại [API 11.8](api-transactions.md#admin-pair-visibility-implementation). V10/grant/ACK/READ claim và quyền phục vụ có bằng chứng tại [mục 7.7](#model-guest-content-result); chưa toàn schema/vòng đời hoặc duyệt toàn mô hình.
+**Phiên bản nội dung:** 0.4, biên tập 11/11/2026. **Trạng thái:** ERD còn dự thảo. Đã có V1 guest_session, V2 địa điểm/vùng theo [phần nền địa điểm/vùng](#model-place-region-result), V3 tài khoản và V4 window/receipt theo [bằng chứng quản trị](api-transactions.md#admin-command-implementation), V5 văn bản nháp/hồ sơ theo [mục 7.2](#model-text-result), V6 hàng đợi TTS theo [mục 7.3](#model-tts-queue-result), V7/V8 WAV và lượt xem theo [mục 7.4](#model-worker-report-result). V9 bổ sung audio/cặp và seed riêng theo [mục 7.5](#model-audio-pair-result); nghiệp vụ áp dụng/bật-ẩn và mốc file có bằng chứng riêng tại [API 11.8](api-transactions.md#admin-pair-visibility-implementation). V10/grant/ACK/READ claim và quyền phục vụ có bằng chứng tại [mục 7.7](#model-guest-content-result); chưa toàn schema/vòng đời hoặc duyệt toàn mô hình.
 **Mục đích:** vị trí chính duy nhất của mô hình nội dung, phiên/lượt, quyền tải, thao tác lặp, job và file. LIFE-P01 theo DATA-05: vé ký 24 giờ/ledger, không bảng start context hoặc start_generation.
 **Đọc cùng:** [TDD](TDD.md), [API](api-transactions.md), [operations](operations-design.md), [PRD](../02-nghiep-vu/PRD.md), [decisions](../02-nghiep-vu/decisions.md). [Mô hình cũ](../99-luu-tru/data-model-history.md) chỉ để truy vết.
 
@@ -479,6 +479,14 @@ Không thêm hoặc sửa migration. GuestRetentionRepository dùng các quan h�
 Migration V11 nối tiếp V1–V10, không sửa lịch sử migration: thêm `runtime_instance` (node/root/PID/start OS/trạng thái), `runtime_task` (scope tác vụ), `workspace_file` (nguồn gốc file trước khi ghi), `file_claim.owner_instance` có thể null cho dữ liệu cũ và `tts_job.local_finished_at`. Marker kết thúc cục bộ không chứng minh kết quả provider; job không rõ vẫn không tự được gửi lại.
 
 `file_asset` giữ metadata sau unlink với trạng thái READY → DELETING → DELETED, token/owner/mốc dọn và lỗi chờ retry. Các tham chiếu mới chỉ được dùng file READY dưới khóa; việc unlink nằm ngoài giao dịch DB. V11 cho phép QUEUED bị DISCARDED khi đích bị xóa mà không bịa worker/dispatch marker. Không thêm CASCADE phá dữ liệu lịch sử. Quy tắc, kết quả và giới hạn kiểm thực tế tại [operations 6.3](operations-design.md#ops-lifecycle-cleanup-result).
+
+<a id="model-local-audio-result"></a>
+
+### 7.10. V12 — kết quả chuyển đổi local và audio
+
+V12 thêm marker conversion_instance/task/token/file trên tts_job, FK instance đến runtime_instance và CHECK cho CONVERTING/SUCCEEDED; FAILED giữ WAV chỉ khi có failure_code LOCAL_ và mốc stage. SUCCEEDED/FAILED/DISCARDED có terminalAt, trạng thái đang xử lý không có terminal giả. workspace_file nhận thêm MP3. Không sửa checksum V1–V11 hoặc seed; nâng V11 có dữ liệu đã được kiểm trong bộ mới.
+
+Audio tiếp tục dùng V9: UNIQUE(job), cùng text/WAV của job và đúng định dạng hai file; không tạo bảng/audio nháp mới ngoài hợp đồng. Giữ source_wav_file_id khi audio còn tham chiếu FK tổ hợp, không tháo để vi phạm toàn vẹn. Token local không thay worker_token/snapshot provider. Retry local dùng lại job/WAV; token/file mới được cấp khi nhận lại, các file cũ giữ quy tắc dọn riêng. Kết quả/giới hạn tại [API 11.13](api-transactions.md#local-audio-implementation-result), phân công ở commit-plan 4.18; không tự tích toàn T02/T07.
 
 ### Nhật ký biên tập
 

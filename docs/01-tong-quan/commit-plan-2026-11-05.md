@@ -595,6 +595,42 @@ T05 có commit nhận tài liệu `e1b9b34`; các commit sản phẩm được g
 
 [Handoff 2.30](handoff.md#parallel-backend-frontend) là nguồn chính về quyền sở hữu file và điểm bàn giao khi làm backend/frontend song song. Frontend có bản sao riêng, không commit/push phần Nghĩa hoặc ghép vào cây chính trước rà soát. Checklist và trạng thái issue/Project giữ nguyên.
 
+<a id="local-audio-commit-group"></a>
+
+### 4.18. Local WAV → MP3 và đăng ký audio — nguồn chờ rà
+
+Phạm vi [API 11.13](../03-ky-thuat/api-transactions.md#local-audio-implementation-result): 229 file backend/209 Java, 21 file mới/sửa so với mốc A22. Phạm vi 520 ca có ledger đạt qua full và nhóm local/TTS chạy lại sau sửa fixture/siết gợi ý xử lý; chưa FFmpeg/provider/codec thật hoặc frontend. Chưa stage/commit/push phần triển khai local audio; các mốc push 4.17 giữ nguyên.
+
+| Task / phụ trách | Nguồn mới/sửa |
+| --- | --- |
+| T02 / Hòa | V12; LocalAudioRepository; TtsJob; AudioRevisionRepository; LifecycleRepository; PlaceRegionSchemaTests; LocalAudioMigrationTests |
+| T07 / Thành | LocalAudioConfiguration; LocalAudioService/Runner; MediaToolProcess; Mp3Encoder/FfmpegMp3Encoder; Mp3ResultStore; TtsJobResponse; TtsJobService; TtsRecoveryService; LocalAudioIntegrationTests; MediaToolProcessTests; FfmpegMp3EncoderTests |
+| T05 / Thành | WorkspaceCleanupService nối registry MP3 và terminal SUCCEEDED |
+| T01 / Thành | Thiết kế, kết quả/giới hạn, nhóm file và điểm bàn giao |
+
+Khi tiếp tục Git sau rà: nhận nền V12/T02 → nối workspace T05 cùng hợp đồng local → T07 API/state/converter/test → T01 tài liệu. WorkspaceCleanupService có tham chiếu DTO Mp3ResultStore, vì vậy các commit trung gian cần nhận đủ phụ thuộc trước build; không mặc định nhánh dữ liệu hoặc từng task trung gian đã chạy độc lập. Giữ G02, không đổi người commit, không đưa frontend Nghĩa vào nhóm này. Cây cuối phải khớp manifest kiểm, giữ V1–V11/config/seed.
+
+<a id="local-commits-20261112"></a>
+
+### 4.19. Commit cục bộ nguồn đã kiểm — 12/11/2026
+
+Đối chiếu bản chốt sau dọn thư mục với các nhánh task, không stage lại 208 file backend khớp blob đã có. Các nhóm bên dưới đã commit bằng metadata G02 có căn cứ; chưa push hoặc kiểm SHA remote trong lượt này. Metadata author/committer không chứng minh tài khoản đăng nhập GitHub.
+
+| Task | Commit sản phẩm | Số file | Nội dung |
+|---|---|---:|---|
+| T02 / Hòa | `5724a986c276ddd4bbfdbec5cd9fdc4943722e62` | 7 | V12, Entity/Repository và kiểm dữ liệu local audio |
+| T07 / Thành | `422c43fa1b4b0c8700617846ca82401328c02245` | 13 | Chuyển WAV → MP3, đăng ký audio, trạng thái và phục hồi |
+| T05 / Thành | `97490dfbbd1bccb8cbe1b9f3ee98b3c783623527` | 1 | Nối registry MP3 và bảo vệ kết quả khi dọn workspace |
+| T09 / Hòa | `acf745201553233ccc76c5bd490e86f79b92211c` | 155 | E2E/fixture smoke, hồ sơ kiểm và 15 log tổng kết đã chọn lọc |
+| T10 / Hòa | `95f1f1ac73a732e11cab7b73d23390e534f71a93` | 18 | Docker/Compose/CI, công cụ preview và diễn tập vận hành |
+| T11 / Thành | `cf9ed80d6355e76a0bbeae53645d5142bc95f802` | 6 | README gốc và hướng dẫn môi trường/chạy thử/bàn giao |
+
+Nhận nền backend bằng fast-forward T05 → T02 → T07 → T05, sau đó T02/T07 nhận đầu T05 hoàn chỉnh. Ba cây backend ở T02/T05/T07 khớp 229/229 file với nguồn đã kiểm bằng Git blob sau chuẩn hóa line ending. T09 nhận nền T05, T10 nhận T09, T11 nhận T10. Các nhánh có E2E/CI vẫn cần nhận nguồn frontend trước khi kiểm checkout đầy đủ hoặc push; không suy từng commit trung gian đã build độc lập.
+
+T01 ghi thiết kế/hiện trạng và kết quả bàn giao trong nhóm tài liệu này. T04/T06 có 29/17 file đã chốt nhưng chưa stage/commit; giữ điểm dừng tài khoản Nghĩa theo G02. Sáu file T08 là bộ nháp chung, chờ chốt người commit; không tự phân công nội dung hoặc ghi thành đã duyệt. Bản chốt/manifests và staged diff được lưu ngoài repo tại `C:\Users\khait\AppData\Local\AudioQR-Commits\20261112-e4db8c07`.
+
+Không dùng computer use, đổi main, merge PR, thay issue/Project hoặc tích checklist. Không chạy lại phần mềm chỉ do commit; dùng bằng chứng đã có và đối chiếu scope/blob/metadata. Cảnh báo whitespace của log bằng chứng giữ nguyên để bảo toàn bản ghi; mã nguồn được kiểm riêng. Chưa kích hoạt GitHub CI/CD hoặc gọi provider.
+
 ## 5. Dấu vết thay đổi kế hoạch
 
 
