@@ -87,21 +87,21 @@ public class LifecycleRepository {
 	}
 
 	public List<UUID> ownerJobs(UUID instance) {
-		return ids("SELECT id FROM tts_job WHERE worker_instance = ? AND phase IN ('DISPATCHING', 'UNCERTAIN', 'RESULT_STAGED')", bytes(instance));
+		return ids("SELECT id FROM tts_job WHERE (worker_instance = ? OR conversion_instance = ?) AND phase IN ('DISPATCHING', 'UNCERTAIN', 'RESULT_STAGED', 'CONVERTING', 'SUCCEEDED', 'FAILED')", bytes(instance), bytes(instance));
 	}
 
 	public Optional<Job> job(UUID id, boolean lock) {
 		return sql.query("SELECT * FROM tts_job WHERE id = ?" + (lock ? " FOR UPDATE" : ""), (r, n) -> new Job(
-				uuid(r, "id"), uuid(r, "place_key_snapshot"), uuid(r, "target_text_revision_id"), uuid(r, "worker_instance"),
+				uuid(r, "id"), uuid(r, "place_key_snapshot"), uuid(r, "target_text_revision_id"), uuid(r, "conversion_instance") == null ? uuid(r, "worker_instance") : uuid(r, "conversion_instance"),
 				r.getString("phase"), r.getBoolean("target_valid"), instant(r, "terminal_at"), instant(r, "local_finished_at")), bytes(id)).stream().findFirst();
 	}
 
 	public void finishedLocally(UUID job, UUID instance, Instant now) {
-		sql.update("UPDATE tts_job SET local_finished_at = ? WHERE id = ? AND worker_instance = ?", time(now), bytes(job), bytes(instance));
+		sql.update("UPDATE tts_job SET local_finished_at = ? WHERE id = ? AND (worker_instance = ? OR conversion_instance = ?)", time(now), bytes(job), bytes(instance), bytes(instance));
 	}
 
 	public List<UUID> detachedJobs(int limit) {
-		return ids("SELECT id FROM tts_job j WHERE target_valid = FALSE AND phase IN ('DISPATCHING', 'UNCERTAIN', 'RESULT_STAGED') AND local_finished_at IS NOT NULL AND NOT EXISTS (SELECT 1 FROM runtime_task t WHERE t.owner_key = j.id) ORDER BY local_finished_at, id LIMIT ?", limit);
+		return ids("SELECT id FROM tts_job j WHERE target_valid = FALSE AND phase IN ('DISPATCHING', 'UNCERTAIN', 'RESULT_STAGED', 'CONVERTING', 'SUCCEEDED', 'FAILED') AND local_finished_at IS NOT NULL AND NOT EXISTS (SELECT 1 FROM runtime_task t WHERE t.owner_key = j.id) ORDER BY local_finished_at, id LIMIT ?", limit);
 	}
 
 	public void lockTarget(Job job) {
@@ -112,13 +112,17 @@ public class LifecycleRepository {
 
 	public void reconcileJob(Job job, Instant now) {
 		if (!job.valid())
-			sql.update("UPDATE tts_job SET phase = 'DISCARDED', terminal_at = ?, source_wav_file_id = NULL, result_staged_at = NULL, phase_version = phase_version + 1, updated_at = ? WHERE id = ? AND phase IN ('DISPATCHING', 'UNCERTAIN', 'RESULT_STAGED') AND NOT EXISTS (SELECT 1 FROM audio_revision a WHERE a.job_id = tts_job.id)", time(now), time(now), bytes(job.id()));
+			sql.update("UPDATE tts_job SET phase = 'DISCARDED', terminal_at = ?, source_wav_file_id = NULL, result_staged_at = NULL, phase_version = phase_version + 1, updated_at = ? WHERE id = ? AND phase IN ('DISPATCHING', 'UNCERTAIN', 'RESULT_STAGED', 'CONVERTING', 'SUCCEEDED', 'FAILED') AND NOT EXISTS (SELECT 1 FROM audio_revision a WHERE a.job_id = tts_job.id)", time(now), time(now), bytes(job.id()));
 		else if ("DISPATCHING".equals(job.phase()))
 			sql.update("UPDATE tts_job SET phase = 'UNCERTAIN', phase_version = phase_version + 1, updated_at = ? WHERE id = ?", time(now), bytes(job.id()));
 	}
 
 	public List<UUID> windows(Instant now, int limit) {
 		return ids("SELECT id FROM admin_command_window WHERE expires_at <= ? ORDER BY expires_at, id LIMIT ?", time(now), limit);
+	}
+
+	public boolean ownsConversion(UUID job, UUID token, UUID instance) {
+		return sql.queryForObject("SELECT EXISTS(SELECT 1 FROM tts_job j JOIN runtime_task t ON t.id = j.conversion_task WHERE j.id = ? AND j.phase = 'CONVERTING' AND j.conversion_token = ? AND j.conversion_instance = ? AND t.instance_id = ? AND t.kind = 'TTS' AND t.owner_key = j.id)", Boolean.class, bytes(job), bytes(token), bytes(instance), bytes(instance));
 	}
 
 	public boolean purgeWindow(UUID id, Instant now) {
@@ -193,7 +197,7 @@ public class LifecycleRepository {
 	}
 
 	public List<Workspace> workspaces(int limit) {
-		return sql.query("SELECT w.* FROM workspace_file w JOIN tts_job j ON j.id = w.job_key WHERE (j.phase IN ('FAILED', 'DISCARDED') OR (j.phase = 'RESULT_STAGED' AND j.local_finished_at IS NOT NULL)) AND NOT EXISTS (SELECT 1 FROM runtime_task t WHERE t.owner_key = j.id AND t.kind IN ('TTS', 'RECOVER', 'TEMP')) ORDER BY COALESCE(w.eligible_since, w.created_at), w.storage_key LIMIT ?", (r, n) -> workspace(r), limit);
+		return sql.query("SELECT w.* FROM workspace_file w JOIN tts_job j ON j.id = w.job_key WHERE (j.phase IN ('FAILED', 'DISCARDED', 'SUCCEEDED') OR (j.phase = 'RESULT_STAGED' AND j.local_finished_at IS NOT NULL)) AND NOT EXISTS (SELECT 1 FROM runtime_task t WHERE t.owner_key = j.id AND t.kind IN ('TTS', 'RECOVER', 'TEMP')) ORDER BY COALESCE(w.eligible_since, w.created_at), w.storage_key LIMIT ?", (r, n) -> workspace(r), limit);
 	}
 
 	public Optional<Workspace> workspace(String key, boolean lock) {

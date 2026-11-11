@@ -46,7 +46,7 @@ public class TtsJob {
 	private String voice; // Giọng đọc theo lựa chọn của dự án tại lúc tiếp nhận
 
 	@Column(name = "phase", nullable = false, length = 32)
-	private String phase; // Chặng QUEUED, DISPATCHING hoặc UNCERTAIN của nền hàng đợi hiện tại
+	private String phase; // Chặng tiếp nhận, provider, chuyển đổi local hoặc kết quả cuối của tác vụ
 
 	@Column(name = "target_valid", nullable = false)
 	private boolean targetValid; // Cờ cho phép xử lý đích, không dùng để kết luận kết quả provider
@@ -238,6 +238,14 @@ public class TtsJob {
 		this.failureCode = code;
 		this.updatedAt = now;
 		this.terminalAt = now;
+	}
+
+	// Thử lại local giữ đúng WAV và job cũ, không tạo marker gọi provider mới
+	public void reprocessLocal(Instant now) {
+		phase = "RESULT_STAGED";
+		failureCode = null;
+		terminalAt = null;
+		updatedAt = now;
 	}
 
 	public void discard(Instant now) {

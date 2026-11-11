@@ -137,7 +137,7 @@ class PlaceRegionSchemaTests {
 		flyway.validate();
 
 		assertThat(Arrays.stream(flyway.info().applied()).filter(info -> info.getVersion() != null)
-				.map(info -> info.getVersion().toString())).containsExactly("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11");
+				.map(info -> info.getVersion().toString())).containsExactly("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
 		assertThat(jdbc.queryForList("""
 				SELECT DELETE_RULE FROM information_schema.REFERENTIAL_CONSTRAINTS
 				WHERE CONSTRAINT_SCHEMA = DATABASE()
