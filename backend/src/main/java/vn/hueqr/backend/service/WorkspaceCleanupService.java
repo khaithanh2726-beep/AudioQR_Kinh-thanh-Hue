@@ -58,6 +58,21 @@ public class WorkspaceCleanupService {
 		});
 	}
 
+	public void completedMp3(Mp3ResultStore.Staged staged) {
+		transaction.executeWithoutResult(tx -> {
+			repository.job(staged.jobId(), true).orElseThrow();
+			if (!repository.ownsConversion(staged.jobId(), staged.token(), owners.identity().id()))
+				throw new IllegalStateException("WORKSPACE_WRITER_NOT_REGISTERED");
+			var asset = files.findByIdForUpdate(staged.fileId()).orElse(null);
+			if (asset == null)
+				files.saveAndFlush(FileAsset.mp3(staged.fileId(), staged.storageKey(), HexFormat.of().parseHex(staged.checksum()), staged.byteSize(), staged.duration(), now()));
+			else if (!"READY".equals(asset.getState()) || !"MP3".equals(asset.getFormat()) || !staged.storageKey().equals(asset.getStorageKey())
+					|| staged.byteSize() != asset.getByteSize() || !staged.checksum().equals(HexFormat.of().formatHex(asset.getChecksum()))
+					|| staged.duration().compareTo(asset.getDuration()) != 0)
+				throw new IllegalStateException("WORKSPACE_FILE_MISMATCH");
+		});
+	}
+
 	public int sweep(int limit) {
 		if (limit < 1)
 			throw new IllegalArgumentException("CLEANUP_BATCH_MUST_BE_POSITIVE");
@@ -78,7 +93,7 @@ public class WorkspaceCleanupService {
 				var entry = repository.workspace(key, true).orElse(null);
 				if (job == null || entry == null)
 					return null;
-				boolean finished = java.util.Set.of("FAILED", "DISCARDED").contains(job.phase())
+				boolean finished = java.util.Set.of("FAILED", "DISCARDED", "SUCCEEDED").contains(job.phase())
 						|| ("RESULT_STAGED".equals(job.phase()) && job.localFinishedAt() != null);
 				if (!finished || repository.jobInUse(job.id())) {
 					repository.workspaceEligible(key, null);
@@ -96,6 +111,12 @@ public class WorkspaceCleanupService {
 				return false;
 			try {
 				validateKey(ready);
+				if ("MP3".equals(ready.kind())) {
+					if (repository.asset(ready.file(), false).isEmpty())
+						return false; // Chưa kiểm codec thì giữ đầu ra để đối chiếu, không coi MP3 hoàn chỉnh là file tạm
+					forget(key);
+					return true;
+				}
 				if ("WAV".equals(ready.kind())) {
 					if (repository.asset(ready.file(), false).isPresent()) {
 						forget(key);
@@ -150,7 +171,8 @@ public class WorkspaceCleanupService {
 	private static void validateKey(Workspace entry) throws IOException {
 		boolean valid = switch (entry.kind()) {
 			case "WAV" -> entry.file() != null && entry.key().equals(entry.file() + ".wav");
-			case "MANIFEST" -> entry.key().equals(entry.job() + "-" + entry.token() + ".json");
+			case "MP3" -> entry.file() != null && entry.key().equals(entry.file() + ".mp3");
+			case "MANIFEST" -> entry.key().equals(entry.job() + "-" + entry.token() + ".json") || entry.key().equals(entry.job() + "-" + entry.token() + ".mp3.json");
 			case "TEMP" -> entry.key().matches("[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}\\.manifest-part");
 			default -> false;
 		};
