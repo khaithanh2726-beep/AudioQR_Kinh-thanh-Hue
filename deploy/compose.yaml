@@ -1,0 +1,47 @@
+name: hueqr
+services:
+  database:
+    image: mysql:8.4.13
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: hueqr
+      MYSQL_USER: hueqr
+      MYSQL_PASSWORD: ${HUEQR_DB_PASSWORD:?Set HUEQR_DB_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysql -h 127.0.0.1 -u hueqr -D hueqr -e 'SELECT 1' >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+  application:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+      args:
+        VITE_PUBLIC_START_URL: ${HUEQR_PUBLIC_START_URL:-}
+        VITE_MAP_BASEMAP: ${HUEQR_MAP_BASEMAP:-osm}
+        VITE_OSM_TILE_URL: ${HUEQR_OSM_TILE_URL:-}
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${HUEQR_HTTP_PORT:-8080}:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/hueqr
+      SPRING_DATASOURCE_USERNAME: hueqr
+      SPRING_DATASOURCE_PASSWORD: ${HUEQR_DB_PASSWORD:?Set HUEQR_DB_PASSWORD}
+      HUEQR_GUEST_SIGNING_KEY_BASE64: ${HUEQR_GUEST_SIGNING_KEY_BASE64:?Set signing key}
+      HUEQR_SERVICE_EPOCH: ${HUEQR_SERVICE_EPOCH:?Set service epoch}
+      HUEQR_AUDIO_ROOT: /data/audio
+      HUEQR_TTS_ENABLED: ${HUEQR_TTS_ENABLED:-false}
+      HUEQR_TTS_API_KEY: ${HUEQR_TTS_API_KEY:-}
+      HUEQR_TTS_LOCAL_ENABLED: "true"
+      HUEQR_CLEANUP_ENABLED: ${HUEQR_CLEANUP_ENABLED:-false}
+      HUEQR_RETENTION_ENABLED: ${HUEQR_RETENTION_ENABLED:-false}
+      SERVER_FORWARD_HEADERS_STRATEGY: framework
+    volumes:
+      - audio-data:/data/audio
+volumes:
+  mysql-data:
+  audio-data:
