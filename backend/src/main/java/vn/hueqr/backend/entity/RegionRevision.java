@@ -12,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 // Bản hình vùng đã lưu, giữ nguyên dữ liệu khi địa điểm chọn bản vùng khác
 @Entity
@@ -27,9 +26,8 @@ public class RegionRevision {
 	@JoinColumn(name = "place_id", nullable = false, updatable = false)
 	private Place place; // Entity địa điểm trong Java, database lưu khóa place_id
 
-	@JdbcTypeCode(SqlTypes.JSON)
-	@Column(name = "polygon", nullable = false, updatable = false, columnDefinition = "JSON")
-	private String polygon; // Dữ liệu JSON của hình vùng đã lưu
+	@Column(name = "polygon", nullable = false, updatable = false, columnDefinition = "LONGTEXT")
+	private String polygon; // JSON chuẩn giữ nguyên số thập phân để đọc lại không đổi mã Hash
 
 	@Column(name = "map_space_key", nullable = false, updatable = false, columnDefinition = "LONGTEXT")
 	private String mapSpaceKey; // Mã không gian nền dùng để diễn giải tọa độ vùng
