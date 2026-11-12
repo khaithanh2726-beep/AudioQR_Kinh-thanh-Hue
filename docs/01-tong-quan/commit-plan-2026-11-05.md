@@ -577,6 +577,77 @@ Tám tài liệu thay đổi được commit theo T01 với thông điệp `T01:
 
 **Điểm dừng:** mới commit cục bộ, chưa push các commit trong bảng, chưa merge PR hoặc thay main/issue/Project. Khi tiếp tục push cần chọn tài khoản theo G02, đối chiếu SHA local/remote và diff với base thực tế. Checklist giữ nguyên 89 ô/20 dấu tích; việc commit không xác nhận hoàn tất issue. Bằng chứng thao tác, bản chốt và đối chiếu ở `C:\Users\khait\AppData\Local\Temp\hueqr-commit-lifecycle-4zc8n4oh`.
 
+<a id="lifecycle-preview-push-result"></a>
+
+### 4.17. Kết quả push vòng đời và A22 — 10/11/2026
+
+Đã đối chiếu SHA local/remote sau push thường, không force-push:
+
+| Nhánh | Đầu nhánh tại mốc push sản phẩm | Tài khoản được chọn khi push |
+| --- | --- | --- |
+| T01 | `a1d1743e15d9098a55a1267267b25eee5f1c00a3` | khaithanh2726-beep |
+| T02 | `38f095be8b76d5a4909a172f832e600e167c698c` | gingpham |
+| T03 | `52ddc6bae407b56b8983ef1f11877c3495de6bf9` | khaithanh2726-beep |
+| T05 | `e1b9b341ffc66a1d9c9c989f03bdc068e3341ed8` | khaithanh2726-beep |
+| T07 | `8efdc2b0ae5a290d783fbddfbdec0f848d02e411` | khaithanh2726-beep |
+
+T05 có commit nhận tài liệu `e1b9b34`; các commit sản phẩm được giữ riêng ở mục 4.16. Không merge PR hoặc thay main. Commit T01 bổ sung kết quả push/phạm vi phối hợp có thể làm đầu nhánh đổi sau bảng này. Cây nguồn/giới hạn kiểm chứng không thay từ lượt commit; không phát sinh build/test mới do push.
+
+[Handoff 2.30](handoff.md#parallel-backend-frontend) là nguồn chính về quyền sở hữu file và điểm bàn giao khi làm backend/frontend song song. Frontend có bản sao riêng, không commit/push phần Nghĩa hoặc ghép vào cây chính trước rà soát. Checklist và trạng thái issue/Project giữ nguyên.
+
+<a id="local-audio-commit-group"></a>
+
+### 4.18. Local WAV → MP3 và đăng ký audio — nguồn chờ rà
+
+Phạm vi [API 11.13](../03-ky-thuat/api-transactions.md#local-audio-implementation-result): 229 file backend/209 Java, 21 file mới/sửa so với mốc A22. Phạm vi 520 ca có ledger đạt qua full và nhóm local/TTS chạy lại sau sửa fixture/siết gợi ý xử lý; chưa FFmpeg/provider/codec thật hoặc frontend. Chưa stage/commit/push phần triển khai local audio; các mốc push 4.17 giữ nguyên.
+
+| Task / phụ trách | Nguồn mới/sửa |
+| --- | --- |
+| T02 / Hòa | V12; LocalAudioRepository; TtsJob; AudioRevisionRepository; LifecycleRepository; PlaceRegionSchemaTests; LocalAudioMigrationTests |
+| T07 / Thành | LocalAudioConfiguration; LocalAudioService/Runner; MediaToolProcess; Mp3Encoder/FfmpegMp3Encoder; Mp3ResultStore; TtsJobResponse; TtsJobService; TtsRecoveryService; LocalAudioIntegrationTests; MediaToolProcessTests; FfmpegMp3EncoderTests |
+| T05 / Thành | WorkspaceCleanupService nối registry MP3 và terminal SUCCEEDED |
+| T01 / Thành | Thiết kế, kết quả/giới hạn, nhóm file và điểm bàn giao |
+
+Khi tiếp tục Git sau rà: nhận nền V12/T02 → nối workspace T05 cùng hợp đồng local → T07 API/state/converter/test → T01 tài liệu. WorkspaceCleanupService có tham chiếu DTO Mp3ResultStore, vì vậy các commit trung gian cần nhận đủ phụ thuộc trước build; không mặc định nhánh dữ liệu hoặc từng task trung gian đã chạy độc lập. Giữ G02, không đổi người commit, không đưa frontend Nghĩa vào nhóm này. Cây cuối phải khớp manifest kiểm, giữ V1–V11/config/seed.
+
+<a id="local-commits-20261112"></a>
+
+### 4.19. Commit cục bộ nguồn đã kiểm — 12/11/2026
+
+Đối chiếu bản chốt sau dọn thư mục với các nhánh task, không stage lại 208 file backend khớp blob đã có. Các nhóm bên dưới đã commit bằng metadata G02 có căn cứ; chưa push hoặc kiểm SHA remote trong lượt này. Metadata author/committer không chứng minh tài khoản đăng nhập GitHub.
+
+| Task | Commit sản phẩm | Số file | Nội dung |
+|---|---|---:|---|
+| T02 / Hòa | `5724a986c276ddd4bbfdbec5cd9fdc4943722e62` | 7 | V12, Entity/Repository và kiểm dữ liệu local audio |
+| T07 / Thành | `422c43fa1b4b0c8700617846ca82401328c02245` | 13 | Chuyển WAV → MP3, đăng ký audio, trạng thái và phục hồi |
+| T05 / Thành | `97490dfbbd1bccb8cbe1b9f3ee98b3c783623527` | 1 | Nối registry MP3 và bảo vệ kết quả khi dọn workspace |
+| T09 / Hòa | `acf745201553233ccc76c5bd490e86f79b92211c` | 155 | E2E/fixture smoke, hồ sơ kiểm và 15 log tổng kết đã chọn lọc |
+| T10 / Hòa | `95f1f1ac73a732e11cab7b73d23390e534f71a93` | 18 | Docker/Compose/CI, công cụ preview và diễn tập vận hành |
+| T11 / Thành | `cf9ed80d6355e76a0bbeae53645d5142bc95f802` | 6 | README gốc và hướng dẫn môi trường/chạy thử/bàn giao |
+
+Nhận nền backend bằng fast-forward T05 → T02 → T07 → T05, sau đó T02/T07 nhận đầu T05 hoàn chỉnh. Ba cây backend ở T02/T05/T07 khớp 229/229 file với nguồn đã kiểm bằng Git blob sau chuẩn hóa line ending. T09 nhận nền T05, T10 nhận T09, T11 nhận T10. Các nhánh có E2E/CI vẫn cần nhận nguồn frontend trước khi kiểm checkout đầy đủ hoặc push; không suy từng commit trung gian đã build độc lập.
+
+T01 ghi thiết kế/hiện trạng và kết quả bàn giao trong nhóm tài liệu này. T04/T06 có 29/17 file đã chốt nhưng chưa stage/commit; giữ điểm dừng tài khoản Nghĩa theo G02. Sáu file T08 là bộ nháp chung, chờ chốt người commit; không tự phân công nội dung hoặc ghi thành đã duyệt. Bản chốt/manifests và staged diff được lưu ngoài repo tại `C:\Users\khait\AppData\Local\AudioQR-Commits\20261112-e4db8c07`.
+
+Không dùng computer use, đổi main, merge PR, thay issue/Project hoặc tích checklist. Không chạy lại phần mềm chỉ do commit; dùng bằng chứng đã có và đối chiếu scope/blob/metadata. Cảnh báo whitespace của log bằng chứng giữ nguyên để bảo toàn bản ghi; mã nguồn được kiểm riêng. Chưa kích hoạt GitHub CI/CD hoặc gọi provider.
+
+<a id="frontend-commits-20261112"></a>
+
+### 4.20. Commit frontend T04/T06 — 12/11/2026
+
+Đã xác nhận tài khoản `lechiNghiaa` được lưu trong Git Credential Manager; metadata do người vận hành cung cấp: `lechiNghiaa <lechinghia1412@gmail.com>`. Áp dụng riêng cho author/committer của frontend, không thay danh tính các nhóm Thành/Hòa.
+
+| Task | Commit sản phẩm | Số file | Nội dung |
+|---|---|---:|---|
+| T04 / Nghĩa | `3a818567838953d21d42ec88ce563f1eed4b9e91` | 29 | Nguồn Khách, phiên/audio, nền OSM, vùng/ghim, cấu hình build và kiểm logic liên quan |
+| T06 / Nghĩa | `b77516ee6a2e4f5cc31c7b8837c0985524569274` | 17 | Nguồn Admin, địa điểm/vùng/nội dung/cặp, bảo vệ bản soạn, TTS/nghe thử, thống kê/QR và kiểm logic Admin |
+
+T04 nhận nền T11 đã có backend, fixture/E2E và đóng gói; T06 tiếp nối T04. Cây frontend đủ 57 file khớp Git blob với nguồn đã rà, gồm 11 file kiểm chung đã lưu ở T09. Đã chạy lại 65/65 logic và build trong worktree chuẩn bị đầy đủ trước commit; không gọi riêng commit trung gian T04 là checkout đã build độc lập. Không chạy lại browser chỉ do commit; dùng bằng chứng mốc ghim/cleanup và đối chiếu cây nguồn.
+
+Hai thông điệp frontend ban đầu bị thay ký tự khi truyền qua PowerShell; đã sửa riêng hai commit mới chưa push bằng thông điệp UTF-8, giữ nguyên tree và bảy commit trước. SHA trong bảng là bản đã sửa và kiểm author/committer/thông điệp. Bản ghi cũ/mới giữ trong hồ sơ commit ngoài repo, không force-push hoặc thay lịch sử đã công bố.
+
+Sau nhận đủ nền, HEAD nhánh có thể khác SHA sản phẩm do nhận tài liệu hoặc commit phụ thuộc. Chưa push/merge PR, không đổi main/issue/Project/checklist. T08 vẫn giữ sáu file nháp chờ chốt người commit, không gán cho Nghĩa chỉ vì đang xử lý frontend.
+
 ## 5. Dấu vết thay đổi kế hoạch
 
 

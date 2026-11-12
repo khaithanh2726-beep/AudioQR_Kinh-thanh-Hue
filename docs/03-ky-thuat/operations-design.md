@@ -1,6 +1,6 @@
 # TDD — Vòng đời dữ liệu, backup và kế hoạch kiểm chứng
 
-**Phiên bản nội dung:** 0.3; biên tập 08/11/2026. **Trạng thái:** dự thảo cơ chế và cách kiểm; phần backend Bắt đầu có bằng chứng riêng, chưa kiểm toàn bộ vòng đời/vận hành.
+**Phiên bản nội dung:** 0.3; biên tập 11/11/2026. **Trạng thái:** dự thảo cơ chế và cách kiểm; phần backend Bắt đầu có bằng chứng riêng, chưa kiểm toàn bộ vòng đời/vận hành.
 **Mục đích:** giải thích tạo/giữ/vô hiệu/dọn quyền và metadata, tác vụ TTS/file, backup tạm ngừng phục vụ, restore và ma trận kiểm. LIFE-P01 vé ký 24 giờ, LIFE-P02/P03/REC/BKP-P02 đã chốt đúng phần.
 **Nguồn:** [decisions](../02-nghiep-vu/decisions.md), [model](data-model.md), [API](api-transactions.md), [TDD](TDD.md). Hướng đã chọn khác với cơ chế đã kiểm chứng; [điểm dừng thực tế](practice-01-start-session.md#practice-stop) được ghi riêng.
 
@@ -346,6 +346,16 @@ Scheduler dọn vòng đời **mặc định tắt**. Chỉ môi trường đã 
 Đã kiểm các deadline ngay trước một micro giây/đúng mốc, cutoff trước hạn một nano giây không bị JDBC làm tròn lên, receipt đang có giao dịch, xóa đồng bộ/rollback, snapshot và file chia sẻ, claim của tiến trình con còn sống rồi thực sự dừng, owner ngoài node/claim cũ chưa có định danh, lỗi unlink/retry, workspace còn writer, WAV dở/hoàn chỉnh sau crash và kết quả TTS muộn. Bằng chứng XML/log từng lần và mã Hash nguồn được giữ trong thư mục kiểm `hueqr-lifecycle-0_vj5foc`; các lần thất bại/bị ngắt không được dùng làm kết quả đạt. SHA-256 của manifest đường dẫn/mã Hash bytes của cây nguồn đã kiểm: `21b9397b410e5211d414bda8c8237eff20811a9f33f51f40ce33fc718a03b12f`.
 
 **Giới hạn:** chưa đo scheduler/tải lớn/độ trễ trên môi trường phục vụ, chưa kiểm dừng đột ngột toàn máy/restore/backup. Claim hoặc file từ phiên bản cũ thiếu registry không tự bị thu hồi; cần đối chiếu vận hành trước khi xử lý riêng. Kiểm owner chỉ có hiệu lực trên cùng node/root được nhận diện; không suy sang host khác. Kiểm filesystem không thay quyền bảo vệ audio root khỏi thao tác ngoài quy trình. Provider thật/quota, FFmpeg/MP3 thật, frontend/browser và nội dung nghe duyệt tiếp tục được theo dõi riêng. Không tích thêm checklist hoặc đóng issue từ kết quả này.
+
+<a id="ops-local-audio-result"></a>
+
+### 6.4. Bước local audio và phối hợp dọn — 11/11/2026
+
+[API 11.13](api-transactions.md#local-audio-implementation-result) giữ triển khai CONVERTING/SUCCEEDED, Check/Retry local và cấu hình mặc định tắt. [V12](data-model.md#model-local-audio-result) nối registry owner/task trước xử lý. Không bật provider hoặc scheduler phục vụ từ việc chạy test.
+
+Runtime scope bao phủ xử lý và tiến trình con; đầu ra tool qua pipe để Java ghi file, không để tool ghi trực tiếp tên MP3 đích. Marker local tách provider, chỉ nhận CONVERTING bị gián đoạn sau khi task cũ không còn. Metadata READY của WAV/MP3 hoàn chỉnh được giữ dù finalization lỗi. Workspace thành công được dọn theo hạn một giờ, file hoàn chỉnh theo tham chiếu/hạn gốc. MP3 không đủ bằng chứng codec/manifest được giữ; chưa tuyên bố xử lý mọi đầu ra mồ côi hoặc phục hồi toàn máy.
+
+Bộ full có 518/519 ca đạt; ca lỗi fixture đã sửa và chạy lại đạt. Sau siết gợi ý xử lý trên DISCARDED và thêm một ca, nhóm local/TTS 60 ca đạt lúc 2026-11-11T00:44:53+07:00. Ledger đối chiếu 520 ca độc lập từ 49 XML full và 3 XML nhóm cuối, không ghi full exit 1 thành pass hoặc cộng ca lặp. Bộ tích hợp dùng encoder giả/bytes tổng hợp, tiến trình con chỉ là Java fixture; chưa FFmpeg/ffprobe/provider/MP3 nghe thực. Bằng chứng tại API 11.13 và handoff 2.31. Giữ riêng 459 ca ở 6.3 theo thời điểm. V12 chỉ áp trên MySQL tạm, chưa migration/bật cleaner hoặc local runner trên database đang dùng, chưa backup/restore thực.
 
 ### Nhật ký biên tập
 

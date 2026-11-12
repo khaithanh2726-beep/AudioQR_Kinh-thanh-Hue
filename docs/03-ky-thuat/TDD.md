@@ -1,6 +1,6 @@
 # TDD — Thiết kế kỹ thuật theo từng phần
 
-**Phiên bản nội dung:** 0.7; biên tập 08/11/2026. **Trạng thái:** dự thảo; các hướng đã xác nhận theo [TECH/DATA trong decisions](../02-nghiep-vu/decisions.md) không đồng nghĩa duyệt toàn TDD hoặc đã chạy tương thích.
+**Phiên bản nội dung:** 0.7; biên tập 11/11/2026. **Trạng thái:** dự thảo; các hướng đã xác nhận theo [TECH/DATA trong decisions](../02-nghiep-vu/decisions.md) không đồng nghĩa duyệt toàn TDD hoặc đã chạy tương thích.
 **Mục đích:** giải thích kiến trúc/module/ba lớp, API-quyền, tab/audio, môi trường và CI/CD; dẫn tới mô hình, DTO, vận hành và kiểm chứng chi tiết.
 **Trạng thái triển khai:** sản phẩm và bằng chứng xem [mục 16](#tdd-open); điểm bàn giao/Git có nguồn chính tại [handoff](../01-tong-quan/handoff.md#next-step). Phần thiết kế dưới đây giữ rõ các mục đã chốt và còn dự thảo.
 **Đọc cùng:** [PRD](../02-nghiep-vu/PRD.md), [đầu vào](../01-tong-quan/technical-inputs.md), [data-model](data-model.md), [API](api-transactions.md), [operations](operations-design.md), [DFD](dfd.md), [UI](../04-giao-dien/ui-design.md).
@@ -531,6 +531,12 @@ Câu hỏi ôn tập:
 5. Vì sao volume không là backup, và restore phải lọc theo mốc gốc trước phục vụ?
 6. Vì sao ngrok có URL công khai chưa chứng minh CI/CD, hoặc MP3 nghe được chưa chứng minh 20 cặp được duyệt?
 
+
+### 16.2. Local audio theo ba lớp — 11/11/2026
+
+Không thêm endpoint/tầng trung gian. Controller TTS và session/receipt hiện hành gọi Service điều phối local/Check/Retry; LocalAudioRepository xử lý marker/job/audio trong giao dịch, Mp3ResultStore/Encoder xử lý bytes/tool ngoài giao dịch. Finalize kiểm lại đích/token/metadata rồi commit audio/job/pointer, Check gắn kết quả cùng receipt. Bổ sung result đã có trong thiết kế API 9.4, giữ trường cũ để frontend nối hợp đồng.
+
+[API 11.13](api-transactions.md#local-audio-implementation-result) là nguồn chính về trạng thái, cấu hình mặc định tắt và giới hạn kiểm; [model 7.10](data-model.md#model-local-audio-result) ghi V12. Ledger 520 ca có bằng chứng đạt qua full và nhóm local/TTS chạy lại, không suy encoder giả/Java subprocess thành FFmpeg, MP3, provider hoặc browser thật. Cấu hình/migration trên môi trường phục vụ và frontend không thay trong lượt này.
 
 ### Nhật ký biên tập
 

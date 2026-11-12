@@ -1,19 +1,19 @@
 # Bàn giao — trạng thái và quy trình dự án
 
-**Cập nhật:** 10/11/2026. Tài liệu ghi nhận sản phẩm hiện có, phạm vi kiểm chứng, công việc tiếp theo và quy trình phối hợp. Phê duyệt yêu cầu hoặc thiết kế không thay thế bằng chứng kiểm thử và nghiệm thu.
+**Cập nhật:** 11/11/2026. Tài liệu ghi nhận sản phẩm hiện có, phạm vi kiểm chứng, công việc tiếp theo và quy trình phối hợp. Phê duyệt yêu cầu hoặc thiết kế không thay thế bằng chứng kiểm thử và nghiệm thu.
 
 ## 1. Sản phẩm và bằng chứng hiện có
 
 | Hạng mục | Bằng chứng gần nhất | Phạm vi chưa được chứng minh |
 | --- | --- | --- |
-| Nền backend | V1–V11, nền phiên/nội dung/cặp, owner runtime và dọn vòng đời đã kiểm trên MySQL tạm theo [operations 6.3](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result) | Chưa áp V11/bật cleaner trên môi trường phục vụ; nội dung được duyệt, tài khoản thật và vận hành bền vững còn kiểm |
+| Nền backend | V1–V12, nền phiên/nội dung/cặp, owner runtime và dọn vòng đời đã kiểm trên MySQL tạm theo [operations 6.3](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result) | Chưa áp V11/V12/bật cleaner trên môi trường phục vụ; nội dung được duyệt, tài khoản thật và vận hành bền vững còn kiểm |
 | API phiên khách | K11/K01/K02/K04 cùng K03/K05–K10, grant/ACK/tải MP3 và D08; READ giữ scope tới khi stream đóng | Frontend/owner tab, Blob/expiry qua browser, restart/restore và vận hành thực |
 | Xác thực Admin | A01–A05, session/CSRF, Q3 30 phút, mã Hash mật khẩu, đổi session id và logout. Header cookie và vòng đời đã kiểm qua HTTP localhost thật | Q2/Q3 trên frontend, tài khoản cấp cho môi trường phục vụ và HTTPS/proxy/browser thực |
 | Lệnh Admin và địa điểm | Xác thực/receipt, địa điểm/vùng/nháp/hồ sơ/cặp/bật-ẩn; A11 đã có giao dịch xóa và dọn file riêng theo mục 2.27; A22 đã kiểm backend nghe thử tại mục 2.28 | Q2/frontend, ranh giới/hồ sơ thực, nghe thử MP3 trên browser và scheduler phục vụ |
-| Job TTS | Worker WAV/manifest/Check/Retry, registry writer và xử lý kết quả muộn; dừng owner có bằng chứng OS cục bộ | Provider/quota thật, FFmpeg/MP3/audio, local retry/terminal audio, mất điện/restore và toàn T07 |
+| Job TTS | Worker WAV, local MP3/audio/Check/Retry đã kiểm bằng encoder giả theo mục 2.31; owner runtime và kết quả muộn | Provider/quota, FFmpeg/codec/MP3 thật, nghe duyệt, vận hành/restore và toàn T07 |
 | Đọc dữ liệu Admin | A26–A28, ngày Asia/Saigon, snapshot/tổng thống kê; D08 vật lý đã kiểm trong MySQL tạm | Frontend, luồng ghi lượt trên browser thực và nghiệm thu toàn T05 |
-| Hồi quy backend | [Operations 6.3](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result) giữ mốc toàn cây trước A22; mục 2.28 giữ 111 ca liên quan A22; các mốc 397 tại 2.24 và 421 tại 2.26 giữ đúng thời điểm | Mỗi nhánh trung gian, toàn bộ tiêu chí nghiệm thu và CI/CD |
-| Git | Vòng đời và A22 đã commit cục bộ theo [mục 2.29](#local-commits-lifecycle-preview), có cây backend đầy đủ tại T05 khớp nguồn đã kiểm | Chưa push lượt này, chưa merge PR mới; phần Nghĩa dừng trước đăng nhập |
+| Hồi quy backend | [API 11.13](../03-ky-thuat/api-transactions.md#local-audio-implementation-result) giữ mốc toàn cây local audio mới; operations 6.3 và mục 2.28 giữ các lần kiểm trước; các mốc 397 tại 2.24 và 421 tại 2.26 giữ đúng thời điểm | Mỗi nhánh trung gian, toàn bộ tiêu chí nghiệm thu và CI/CD |
+| Git | Vòng đời và A22 đã commit/push theo [mục 2.30](#parallel-backend-frontend), có cây backend đầy đủ tại T05 khớp nguồn đã kiểm | Chưa merge PR mới; frontend Nghĩa chưa commit/push, giữ điểm dừng đăng nhập |
 | Backlog | Checklist hiện hành tại roadmap mục 3: 89 ô/20 dấu tích; các mốc 18 dấu tích trước đó giữ theo thời điểm | Đợt này không thay issue/Project hoặc coi test/commit là hoàn thành toàn task |
 
 [Bằng chứng kiểm chứng](../03-ky-thuat/practice-01-start-session.md#practice-results) lưu thời điểm, kết quả và giới hạn. Metadata Git không chứng minh tài khoản dùng để xác thực GitHub hoặc ai đã thực hiện phần việc. Phân công và tài khoản theo G02 được đối chiếu riêng với bằng chứng.
@@ -24,7 +24,7 @@
 
 Repository: [AudioQR_Kinh-thanh-Hue](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue). Bảng công việc: [Project 21](https://github.com/users/khaithanh2726-beep/projects/21/views/1). Thư mục làm việc đã ghi nhận: `C:\Study\Code\VS Code\AudioQR_Kinh-thanh-Hue`.
 
-**Đọc để tiếp tục:** [mục 2.29](#local-commits-lifecycle-preview) ghi kết quả commit cục bộ và điểm dừng trước push. [Mục 2.28](#admin-preview-prepared) giữ 111 ca liên quan A22; [mục 2.27](#lifecycle-cleanup-result) giữ mốc toàn cây trước A22 qua 459 ca. [Mục 2.24](#guest-content-frontend-result) giữ frontend và giới hạn công cụ. Roadmap là nguồn checklist, mục 7 là nguồn quyền và nhịp bàn giao.
+**Đọc để tiếp tục:** [mục 2.31](#local-audio-result) ghi backend local audio và điểm dừng để rà; [mục 2.30](#parallel-backend-frontend) giữ kết quả push/phạm vi hai luồng. Các mốc trước giữ bằng chứng riêng; roadmap là nguồn checklist, mục 7 là nguồn quyền và nhịp bàn giao.
 
 <a id="issue-recreation"></a>
 
@@ -443,6 +443,181 @@ Cây backend đầy đủ tại T05 khớp 216 file/197 Java của bản kiểm 
 
 **Điểm dừng hiện hành:** mới commit cục bộ, chưa push lượt vòng đời/A22, chưa merge PR, đổi main/issue/Project hay tích thêm checklist. Các câu chưa commit ở mốc 2.27–2.28 phản ánh thời điểm kiểm thử trước bàn giao này. Khi tiếp tục push cần chọn tài khoản theo task, đối chiếu SHA local/remote; phần Nghĩa giữ điểm dừng trước đăng nhập. Checklist hiện vẫn 89 ô/20 dấu tích. Giới hạn frontend/công cụ/audio thực và môi trường phục vụ ở 2.27–2.28 vẫn còn.
 
+<a id="parallel-backend-frontend"></a>
+
+### 2.30. Push vòng đời/A22 và phối hợp backend–frontend — 10/11/2026
+
+Đã push T02 bằng lựa chọn tài khoản gingpham, T01/T03/T05/T07 bằng khaithanh2726-beep; SHA local/remote khớp ở mốc [commit-plan 4.17](commit-plan-2026-11-05.md#lifecycle-preview-push-result). Không force-push, thay main, merge PR hoặc sửa issue/Project. Bảng giữ mốc sản phẩm; commit T01 bổ sung tài liệu phối hợp được theo dõi tiếp, không cố định HEAD bằng SHA cũ. Checklist vẫn 89 ô/20 dấu tích.
+
+Chia công việc song song theo phạm vi file, giữ G02:
+
+| Luồng | Phạm vi được sửa | Mục tiêu trước mắt |
+| --- | --- | --- |
+| Backend và tích hợp | backend/**, cấu hình ngoài frontend và tài liệu chung | T07 hoàn thiện chuyển đổi cục bộ/đăng ký MP3, trạng thái success/failure/retry và kiểm độc lập FFmpeg/provider; T02/T05 phối hợp nếu cần mapping/nghiệp vụ, T09 chuẩn bị kiểm, T01/T11 lưu hướng dẫn theo sản phẩm |
+| Frontend khách/Admin | Chỉ frontend/** trong bản sao được bàn giao | T04/T06 hoàn thiện nguồn, nối API hiện có; mốc đầu ưu tiên Admin quản lý địa điểm/vùng và nội dung/cặp, Q2/Q3 dựa trên bản login/danh sách/đổi tên đã chuẩn bị |
+
+Bản sao frontend tại `C:\Users\khait\AppData\Local\Temp\hueqr-frontend-parallel-2bdh_cq8`, có HANDOFF.md và baseline.json. Backend/tài liệu trong đó chỉ đọc. Đọc thêm bản Admin cũ `C:\Users\khait\AppData\Local\Temp\hueqr-codex2-admin-zf49j1_e\HANDOFF.md`, đối chiếu và kế thừa phần phù hợp, không tạo lại hoặc ghi đè tùy ý. Frontend vẫn thuộc Nghĩa theo G02; dừng trước commit/push để đăng nhập.
+
+Luồng frontend không thao tác Git/GitHub, sửa backend/tài liệu chung hoặc chép về dự án nhận. Chỉ ghi file thay đổi, bằng chứng, mã Hash đầu ra và yêu cầu API còn thiếu trong HANDOFF.md của bản sao. Luồng tích hợp đối chiếu baseline với nguồn đích rồi mới ghép từng file sau rà soát. Không đổi hợp đồng API khi bên còn lại đang triển khai; đề xuất thay đổi phải nêu endpoint/DTO/lý do và được đối chiếu trước khi áp dụng. Việc chia luồng không thay phân công hoặc xác nhận ai đã hoàn thành task.
+
+Không tự cài Node/npm/FFmpeg hoặc gọi provider/API ngoài. Thiếu công cụ thì tiếp tục code/kiểm độc lập và ghi giới hạn; không coi V8/mock/biên dịch là npm build/browser/MP3 thực đạt. Không dùng database chính hoặc mở môi trường phục vụ. Sau mỗi mục lớn vẫn dừng để nhóm rà theo 7.3; không tự tích checklist hoặc mở rộng quyền GitHub từ việc được push.
+
+<a id="local-audio-result"></a>
+
+### 2.31. Local WAV → MP3 và đăng ký audio — 11/11/2026
+
+Đã nhận phần backend từ bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-local-audio-46vou1oi` sau kiểm nguồn: thêm V12, chuyển đổi local, đăng ký audio đúng text/ngôn ngữ, Check kết quả và Retry dùng lại WAV. Không sửa endpoint hoặc các trường DTO đã có; bổ sung result đã mô tả ở API 9.4. Nguồn chính về hành vi/giới hạn tại [API 11.13](../03-ky-thuat/api-transactions.md#local-audio-implementation-result).
+
+**Bằng chứng:** bộ full 519 ca có 518 ca đạt và một lỗi fixture Mockito; sau sửa fixture, ca đó chạy lại đạt. Sau đó siết biểu thức retryAction để DISCARDED không gợi ý xử lý từ lỗi local cũ và thêm một ca hồi quy. Nhóm local/TTS liên quan 60 ca chạy lại đạt (BUILD SUCCESS/exit 0 lúc 2026-11-11T00:44:53+07:00). Ledger đối chiếu 520 ca độc lập: 460 ca ngoài nhóm liên quan từ full và 60 ca từ lượt cuối; không cộng ca chạy trùng hoặc gọi full exit 1 là pass. Giữ 49 XML full và 3 XML nhóm cuối. Cây cuối 229 file/209 Java, 21 đường dẫn mới/sửa thuộc T02/T07/T05 theo [commit-plan 4.18](commit-plan-2026-11-05.md#local-audio-commit-group). Bộ riêng 30 ca trước khi nối Check giữ bằng chứng riêng.
+
+**Giới hạn:** chưa cài/chạy FFmpeg/ffprobe thật, chưa codec/MP3 hoặc provider/quota thật, nghe duyệt/20 cặp, frontend/browser hoặc vận hành scheduler/backup/restore. Bộ tích hợp dùng encoder giả và bytes tổng hợp để kiểm SQL/quyền sở hữu/vòng đời; phép kiểm tiến trình dùng chương trình Java con. Đầu ra MP3 chưa có metadata/manifest đủ căn cứ được giữ để đối chiếu, không tự xóa như temp. Không đổi hạn chính sách hoặc coi mọi đầu ra mồ côi đã được xử lý xong.
+
+**Điểm dừng:** dừng để nhóm rà mục lớn local audio trước commit/push hoặc công việc tiếp theo; chưa stage/commit/push, sửa main/GitHub hay tích checklist trong lượt triển khai này. V12 chỉ chạy trên database tạm. Backend/tài liệu là phạm vi luồng hiện tại; frontend T04/T06 vẫn ở bản sao riêng theo 2.30, chưa chép về hoặc commit phần Nghĩa. Các mốc push ở 2.30 giữ nguyên.
+
+### 2.32. Chuẩn bị chạy thử một địa điểm
+
+Đã đối chiếu luồng Admin và Khách với Controller/DTO hiện hành. Admin tải MP3 nghe thử theo đúng bản văn, ngôn ngữ và mã Hash. Khi lưu bản văn mới, giao diện yêu cầu xử lý tham chiếu đang soạn và bỏ liên kết tham chiếu/audio của bản cũ khỏi nháp mới. Khách chỉ nhận thông báo lỗi từ yêu cầu tải audio còn hiện hành.
+
+Bộ chạy thử gồm cấu hình MySQL và kho audio riêng, tài khoản thử, fixture WAV để V12 chuyển thành MP3 và năm ca kiểm. Bảng nội dung có 20 dòng theo địa điểm và ngôn ngữ, chờ ghi bản văn và audio tương ứng. [Hướng dẫn chạy thử](../07-van-hanh/chay-thu/README.md) · [Bảng nội dung](../05-noi-dung/doi-chieu-van-ban-audio.md)
+
+54/54 ca logic frontend đạt bằng V8, gồm ba ca hồi quy bổ sung. Đã kiểm cú pháp script và biên dịch công cụ sinh mã Hash mật khẩu thử. Build Vue, MySQL, FFmpeg, phát MP3 và trình duyệt còn chờ chạy thực tế. Mốc rà V12 ở mục 2.31 tiếp tục áp dụng cho bước bàn giao Git. [Bằng chứng và mã Hash nguồn](../06-kiem-thu/chay-thu-mot-dia-diem.json)
+
+<a id="local-e2e-20261111"></a>
+
+### 2.33. Frontend Admin và chạy thử local — 11/11/2026
+
+Đã đối chiếu nguồn chính và `frontend/integration-admin.json`: Admin T04/T06 đã được ghép vào thư mục chính. Trạng thái frontend còn ở bản sao trong mục 2.31 là mốc lịch sử, không đại diện nguồn hiện tại. Bộ 229 tệp backend khớp manifest nguồn local-audio đã bàn giao; không đổi Controller/Service/Repository hoặc hợp đồng API trong mốc frontend này.
+
+Đã bổ sung TTS tạo/đọc/Check/Retry và chọn kết quả nghe thử, bảng mức đầy đủ năm điểm/bốn ngôn ngữ, phiên/thống kê theo Asia/Saigon và QR từ URL HTTPS cấu hình. Giữ command-window/receipt, phiên bản, Q2/Q3 và không tự gửi lại lệnh chưa rõ. Sửa review phiên bản 0 bị coi là chưa có, tham số Web Locks không tương thích Chrome, hoạt động nghe thử Q3 và đọc lại phiên khi trở về tab. Bản nháp mới bỏ liên kết audio/job cũ; cặp đang phục vụ giữ độc lập.
+
+Frontend có lockfile thực, `npm test` đạt 60/60 và build Vue thành công. Full backend mới đạt 520/520, không failures/errors/skipped, BUILD SUCCESS lúc 09:39:14 +07. Chrome lượt cuối đạt 2/2, exit 0 với autoplay mặc định và API/MySQL/kho audio riêng: áp dụng cặp, phát MP3 thật, thống kê, modal chi tiết, bản nháp mới và tình huống lỗi tải/thử lại/reload. Phạm vi từng lượt, kiểm hồi quy cuối, backend full và Hash nguồn tại [hồ sơ kiểm](../06-kiem-thu/local-20261111/README.md). Không dùng viewport giả lập hoặc cờ autoplay của lượt đầu làm bằng chứng thiết bị/chính sách trình duyệt mặc định.
+
+Có 15 bài dịch en/fr/ru nháp chờ duyệt. Bốn WAV vi được tạo bằng Gemini thật, chuyển MP3 và giải mã bằng FFmpeg; lưu ngoài repository cùng [manifest Hash](../05-noi-dung/audio-vi-v01.json). Diên Thọ chưa tạo thành công do HTTP 503. WAV trong kiểm E2E được đưa vào bằng fixture rồi worker V12 xử lý thật; chưa chứng minh UI → provider worker xuyên suốt hoặc duyệt bộ 20 cặp.
+
+Nguồn mới/sửa tập trung tại `frontend/src/admin`, `frontend/src/guest/owner.js`, bộ kiểm frontend, package/lockfile và Vite; danh mục chi tiết trong `source-hashes.json` của hồ sơ kiểm. Có Dockerfile/Compose, mẫu cấu hình và workflow CI nguồn tại `deploy`/`.github/workflows`, cùng [hướng dẫn đóng gói](../07-van-hanh/dong-goi-va-ci.md). Chưa build ảnh Linux hoặc chạy GitHub Actions/CD. Nội dung, bằng chứng và vận hành lần lượt ở `docs/05-noi-dung`, `06-kiem-thu`, `07-van-hanh`; không thêm thư mục chạy thử vào `03-ky-thuat`.
+
+Điểm rà: kiểm kết quả local trước chuyển sang mốc HTTPS/thiết bị và vận hành. Chưa có URL HTTPS/ngrok, Tailscale/OpenSSH hoặc bằng chứng backup/restore. Các điều kiện và phép kiểm tiếp theo tại [nghiệm thu vận hành](../07-van-hanh/nghiem-thu-van-hanh.md). API liệt kê lịch sử region-revisions theo địa điểm vẫn là đề xuất không chặn; chưa tự thêm endpoint hoặc thay DTO. Không stage/commit/push, tích checklist, sửa issue/Project hoặc tự ghi nhận hoàn thành task.
+
+<a id="packaging-restore-20261111"></a>
+
+### 2.34. Ảnh Linux và diễn tập restore offline — 11/11/2026
+
+Đã build `deploy/Dockerfile` thành ảnh `hueqr-local:20261111`, Linux amd64, 527.973.042 byte; danh tính SHA tại [hồ sơ đóng gói](../06-kiem-thu/packaging-20261111/README.md). Frontend trong ảnh chạy 60 ca logic và build, backend package với skipTests; không ghi lượt package thành full regression Linux. Java runtime 21.0.13, major 21 giữ nguyên; không đổi công cụ Windows hoặc phiên bản Vue/Spring/Maven đã chốt.
+
+FFmpeg/ffprobe 9.0.2 trong ảnh đã chuyển WAV Ngọ Môn thật sang MP3 mono 24 kHz, probe và giải mã toàn tệp ở đường dẫn Unicode, chạy uid/gid 10001 và không có mạng. Ảnh phục vụ frontend tĩnh cùng API, không dùng Vite dev.
+
+Diễn tập dùng nguồn E2E đã dừng backend/worker, zero task/claim, job terminal và không file DELETING. Chụp dump/các mốc Flyway cùng catalog tham chiếu, sao chép 12 WAV/MP3 tổng 7.925.856 byte có kiểm Hash; restore sang container mới, đối chiếu dữ liệu trước thêm fixture. Ba trong bốn phiên fixture bị lọc đúng retention 30 ngày; phiên/lượt còn hạn giữ timestamp gốc. Epoch mới/khóa và dump ở thư mục ngoài repository có ACL riêng. Năm ca kiểm gói hỏng/hết hạn/path traversal đạt. Đây là công cụ kiểm thử ở `backend/src/test/fixtures/operations`, không thêm migration/API hoặc thay hợp đồng.
+
+Chrome trên ứng dụng Docker sau restore đạt 1/1, exit 0: Admin đăng nhập, khách bắt đầu/đọc/phát MP3/kết thúc; phiên fixture còn hạn nhưng epoch cũ bị từ chối HTTP 401 với credential đúng. Provider/worker/cleaner/retention đều tắt ở lượt ứng dụng sau restore. Có báo cáo, ảnh, Hash và hướng dẫn chạy lại; chưa đưa dump hoặc secret vào repository.
+
+OPS_GUARD/QUIESCING/FROZEN/drain live trong thiết kế chưa có mã thực thi. Script kiểm nguồn dừng không thể fence writer mới, chỉ nhận job terminal; chưa nghiệm thu backup lúc phục vụ, job/claim đang xử lý, lịch dọn bảy ngày hoặc Compose update/rollback. HTTPS, thiết bị, bộ 20 cặp, provider worker xuyên suốt và CI/CD thật vẫn mở. CI nguồn bổ sung kiểm manifest bằng Node, chưa push/chạy GitHub.
+
+Đã dừng đúng container ứng dụng/restore/nguồn thử, giữ dữ liệu và gói còn hạn để rà. Không sửa mã Java main, stage/commit/push, issue/Project hoặc checklist. Dừng mốc đóng gói/restore để nhóm rà; mục lớn khả thi tiếp theo là cơ chế bảo trì/drain có bằng chứng và kiểm backup với job đang xử lý, giữ thiết kế đã duyệt. Không dùng kết quả offline để tích hoàn tất T09/T10 hoặc toàn đồ án.
+
+<a id="guest-ui-fix-20261111"></a>
+
+### 2.35. Sửa chữ và bố cục Khách — 11/11/2026
+
+Đã xác nhận trực tiếp trong khung trình duyệt VS Code: bản Khách cũ có chữ tách dấu/mất nét, bố cục desktop chia hai cột và Kết thúc nằm cuối bài; hộp ứng viên cuộn cả Hủy. DevTools trên Chrome ghi nhận trộn Georgia/Times New Roman trong cùng nút/đoạn tiếng Việt. Đã đổi bộ phông sang Segoe UI/Arial/sans-serif, kiểm platform font thực vi/en/fr/ru và ảnh hiển thị; không thay bản văn hoặc tự kết luận lỗi UTF-8.
+
+Sửa `frontend/src/App.vue`, `frontend/src/style.css`, `frontend/src/components/GuestMap.vue`; thêm `frontend/tests/e2e/guest-layout.spec.mjs`. Form bắt đầu đặt tên/ngôn ngữ/nút trong cùng công việc; trang tham quan xếp dọc bản đồ/tên/audio/ô văn bản, Kết thúc ở đầu tách ngôn ngữ. Chỉ văn bản cuộn khi đọc, Hủy luôn thấy ngoài danh sách cuộn. Giữ API, owner/phiên, P01/P06, grant/ACK và cách phát/khôi phục; không thêm dependency hoặc sửa Java/backend.
+
+`npm test` 60/60, build Vue và Docker exit 0. Chrome với ảnh Docker mới đạt 7/7, exit 0 (54,5 giây): vi/en/fr/ru, bốn viewport 1280×800/960×600/390×844/320×568, thứ tự/vị trí/không tràn trang, cuộn/Hủy không mở hoặc ACK lại, lỗi audio/thử lại và ca Admin/Khách trên dữ liệu phục hồi. Đã kiểm lại bằng Computer Use trong VS Code: chữ rõ, bố cục dọc, reload giữ mốc 0:05 tạm dừng, mở/Hủy trong khung nhỏ giữ bài/mốc. [Ảnh, log, baseline/Hash và giới hạn](../06-kiem-thu/guest-ui-20261111/README.md).
+
+Ảnh `hueqr-local:20261111-guest-ui`, SHA `61722bfc150a04e38013ef7f31fb271f60d2ca21cda155b9359b213079065bf1`; container ứng dụng hiện `hueqr-packaged-ui-426f3b91` ở `localhost:18081`, thay container cũ đang dừng. Giữ database/kho audio, epoch/khóa và flags worker/provider/cleaner/retention tắt. Cấu hình riêng và mật khẩu không chép vào repository; HttpSession Admin có thể yêu cầu đăng nhập lại. Bản thử tiếp tục chạy để rà, không phải môi trường phục vụ public.
+
+**Điểm chưa đạt demo:** map hiện vẫn là lưới và năm tam giác/bản ghi E2E trùng nhau; nhãn đè, không có nền và bộ năm vùng thực. Kiểm API/audio đã đạt không chứng minh bản đồ hoặc toàn UI đạt yêu cầu. Chưa sửa/gộp/xóa các bản ghi cũ để che hiện trạng; cần dữ liệu demo tách E2E và bản xem trước nền/vùng từ tài sản hiện có để duyệt. Bản đề xuất trong design-assets không tự thành ranh giới đã duyệt. Chưa rà xong toàn Admin hoặc thiết bị thật; không tích checklist hoặc thay issue/Project.
+
+Điểm dừng: rà mốc chữ/bố cục trước chuyển mục lớn bản đồ/dữ liệu demo. Không stage/commit/push, không đổi phân công G02; frontend T04/T06 vẫn thuộc Nghĩa. Các sửa/tài liệu trước được giữ, baseline riêng ghi Hash trước mốc này.
+
+<a id="overall-review-20261111"></a>
+
+### 2.36. Đối chiếu thiếu sót toàn hệ thống — 11/11/2026
+
+[Báo cáo rà soát](../06-kiem-thu/review-20261111/README.md) gom mười nhóm còn mở theo PRD/UI/roadmap và bằng chứng thực thi. Bản đang mở chưa đạt demo hoàn chỉnh hoặc nghiệm thu toàn đồ án; 520 ca backend, 60 ca frontend, build/restore/media và bảy ca browser giữ đúng phạm vi từng lượt, không tự chứng minh QR/bản đồ/nội dung/thiết bị/vận hành đã hoàn tất.
+
+Đối chiếu chỉ đọc runtime thử: 6 địa điểm, 5 hiển thị, 0/5 mã điểm chuẩn, 5 slot áp dụng đều vi, chỉ 1 geometry hash trong các vùng đang hiển thị. Script seed năm điểm chuẩn có nguồn và test nhưng chưa áp cho runtime này. Không sửa/xóa/gộp dữ liệu E2E; cần bộ demo riêng. Browser context kiểm riêng xác nhận QR chưa có URL và tái hiện trang Mức đầy đủ giữ “Đang đọc…” sau lỗi API dù busy đã kết thúc. Flags provider/local audio/cleanup/retention trong bản thử đều tắt.
+
+Phần đã sửa chữ/bố cục Khách tại 2.35 giữ kết quả; bản đồ/nền/nhãn, QR/HTTPS, bộ 20 cặp và TTS xuyên suốt, rà Admin/thiết bị, OPS_GUARD/drain, CI/CD và hồ sơ nghiệm thu vẫn mở. Thứ tự xử lý và đầu vào cần nhóm duyệt/thao tác ghi tại báo cáo; không tự đổi nghiệp vụ, DTO, phân công, checklist hoặc trạng thái GitHub. Lượt rà này chỉ bổ sung hồ sơ, không sửa mã ứng dụng, database, Git ghi hoặc bật dịch vụ ngoài.
+
+<a id="map-preview-dataset-20261111"></a>
+
+### 2.37. Bản đồ xem trước và dữ liệu nháp riêng — 11/11/2026
+
+Đã tạo nền offline từ bản trích OSM hiện có: 651 way, nguồn/Hash/mốc snapshot/ODbL giữ trong metadata, có ghi công trên bản đồ. `VITE_MAP_PREVIEW=true` bật riêng nền và trang `/map-preview.html` với năm vùng đề xuất, số/chú giải/tên và dấu chọn; bản dựng mặc định không bật preview. GuestMap và trình vùng Admin có thể dùng cùng nền nhưng vùng phiên Khách vẫn từ API, không tự áp dữ liệu đề xuất. Năm vùng và nền còn chờ nhóm xem xét/duyệt, không là ranh giới được xác nhận.
+
+Môi trường mới `hueqr_preview` có 5 mã điểm chuẩn, 20 ngăn ngôn ngữ và 5 bản vi nháp lưu qua API đúng Hash. Tất cả điểm còn ẩn, 0 review-ref/cặp áp dụng; không chép dữ liệu E2E hoặc dùng WAV sai bài để làm đủ bộ. Khóa/mật khẩu/kho audio mới ở LocalAppData `AudioQR-Preview-*` có ACL riêng; chỉ đọc tài khoản thử nguồn để cấp tài khoản `preview-admin`. Helper này chưa thay quy trình cấp Admin phục vụ từ checkout mới.
+
+Đã sửa lỗi Mức đầy đủ còn báo đang đọc khi API thất bại; tách loading/error/result, thử lại và nhãn dữ liệu cũ. Tên/mã xuống dòng, checkbox cùng nhãn. `npm test` 60/60, build thường và Docker preview exit 0. Chrome trên ảnh cuối 3/3 đạt, exit 0 (35,4 giây): nền/vùng/chọn đủ năm điểm/không yêu cầu mạng ngoài ở 1280×900 và 390×844, Admin đủ bộ nháp, tải lỗi/thử lại/dữ liệu cũ. Browser kiểm dist mặc định xác nhận không dựng preview khi cờ false. [Ảnh/log/baseline/Hash và giới hạn](../06-kiem-thu/map-preview-20261111/README.md).
+
+Ảnh `hueqr-local:20261111-map-preview`, SHA `978801878f79dfbbd0f9b9268de113153e94f66b0884ec3879932b9547fdd371`, app `hueqr-map-preview-507da98b`, database `hueqr-preview-mysql-91b4feca`. [Cách mở](../07-van-hanh/xem-truoc-ban-do.md): `http://127.0.0.1:18082/map-preview.html`, Admin `/admin.html`. Bản E2E cũ cổng 18081 đã dừng để giảm RAM, container/database và ảnh cũ còn nguyên. Provider/local worker/cleanup/retention đều tắt, không gọi TTS hoặc mở tunnel. App preview tiếp tục chạy để rà, database không publish cổng.
+
+[Bảng tiếp tục theo issue](issue-follow-up-2026-11-11.md) đối chiếu danh sách công khai 11 issue mở, đọc riêng T04/T06/T09/T10 và liên kết checklist local cho T01–T11. Bản đồ/QR/thiết bị/môi trường đã nằm trong phạm vi hiện có; chưa tạo issue trùng, chưa sửa body/assignee/checklist/Project, chưa commit/push. Phân công G02 không đổi theo người thao tác.
+
+Điểm dừng để rà nền và năm vùng đề xuất. Trang xem trước không là phiên Khách đầy đủ; chưa áp vùng/bật điểm/ghép audio, chưa nhập 15 bản dịch vào bộ nháp mới, chưa QR/HTTPS hoặc thiết bị thật. Sau duyệt đúng phần, tiếp tục Admin lưu/xem/áp vùng, nội dung/audio và hồ sơ/cặp trước bật. Giữ mục tiêu 20 cặp và các phần vận hành còn mở, không dùng preview thay nghiệm thu.
+
+<a id="docker-cleanup-20261111"></a>
+
+### 2.38. Dọn Docker thử nghiệm — 11/11/2026
+
+Đã xóa theo định danh 6 container thử cũ ở trạng thái exited và 3 image ứng dụng cũ không còn container tham chiếu; [báo cáo và mapping volume](../06-kiem-thu/docker-cleanup-20261111/README.md). Giữ app/database preview 18082 đang chạy, MySQL `hue-qr-dev-mysql-1` của workspace trước, cả 12 volume, audio/dump/cấu hình và bằng chứng. Không prune chung/cache, không xóa nguồn/untracked, không Git ghi hoặc thay checklist. Sau dọn, preview/Admin HTTP 200 và database vẫn 5 điểm/20 slot/5 nháp.
+
+Tên container cũ đã xóa không dùng được bằng `docker start`; khi cần dựng lại phải đối chiếu volume/phiên bản MySQL/cấu hình từ hồ sơ dọn. Các kết quả chạy trước giữ đúng mốc, không chứng minh container/image lịch sử còn tồn tại. Bản xem trước tại 2.37 và các đầu việc còn mở không đổi.
+
+<a id="ui-reference-20261111"></a>
+
+### 2.39. Mẫu UI đỏ sẫm và bảng tiếp tục issue — 11/11/2026
+
+Đã áp mẫu thị giác tại [UI 3.2.1](../04-giao-dien/ui-design.md#ui-reference-red) vào nguồn Khách và bản đồ preview: đầu đỏ sẫm, thẻ trắng, tiêu đề/vùng đỏ, giữ phông và box cuộn riêng. Không thêm GPS/khoảng cách/mã phiên/quét QR trong trang hoặc đổi polygon/hợp đồng. [Hồ sơ kiểm](../06-kiem-thu/ui-reference-20261111/README.md) ghi 60/60 logic, build mặc định đạt và Chrome 8/8 trong 17,8 giây. Bốn ca bố cục dùng API fixture/audio NOT_READY, không phải bằng chứng nghe thật; bản đồ/Completeness dùng preview thật theo phạm vi riêng. Dev server kiểm đã dừng; Docker 18082 chưa được dựng lại với UI mới.
+
+[Bảng tiếp tục issue](issue-follow-up-2026-11-11.md) bổ sung checklist còn lại T01–T11, trạng thái đề xuất In Progress/0 Done và sổ lỗi phân biệt đã sửa, đang chờ rà hoặc thiếu cấu hình/bằng chứng. Đọc lại danh sách công khai có 11 issue mở; chưa truy cập được bảng Project, không sửa issue/Project/89 ô hoặc Git ghi. G02 giữ nguyên. Dừng để rà mẫu UI và ưu tiên trước khi chuyển mốc.
+
+<a id="osm-map-20261111"></a>
+
+### 2.40. Nền raster OSM và khôi phục preview — 11/11/2026
+
+Đã nối nền OpenStreetMap tiêu chuẩn như kiểu bản đồ trong mẫu UI, không chỉ đổi màu. Khách/Admin có nền HTTPS và trạng thái tải/lỗi/thử lại; vùng vẫn theo API, không tự áp đề xuất hoặc đổi hợp đồng. [Hồ sơ](../06-kiem-thu/osm-map-20261111/README.md) ghi 65/65 logic, build Windows/Docker đạt; **11/11 Chrome trên ảnh mới (2,2 phút)** và **3/3 offline riêng (1,9 phút)** đạt, cùng kiểm Compose và Hash 229/229 baseline backend không đổi. Tile browser bị chặn bằng ảnh kiểm; hai lần HEAD tile thật lỗi/reset, chưa kết luận nền thật hiển thị hoặc toàn đồ án đạt.
+
+App mới `hueqr-osm-preview-21a39bd3`, ảnh `hueqr-local:20261111-osm-map` / `sha256:c36ae6fc13a894d19e2be4a1b468fcd65bcb0d4e53ffd838345b0698b4f854d1`, URL `http://127.0.0.1:18082/map-preview.html`. Database/audio/khóa/epoch được giữ; chuyển sang network riêng có alias `database` để tránh IP đổi sau restart. Provider/local worker/cleaner/retention vẫn tắt, 5 điểm/20 slot/5 vi nháp còn ẩn và 0 cặp áp dụng. Container app trước giữ dừng. Fixture refresh nằm trong `backend/src/test/fixtures/demo`, không đổi Java/schema. Nhánh lấy manifest/khởi động lại app cũ khi lỗi bổ sung sau lượt thành công chỉ kiểm cú pháp, chưa diễn tập rollback.
+
+Không dùng computer use, Git ghi, thay issue/Project/checklist, cài công cụ hoặc gọi TTS. Các tiến trình dev kiểm được dừng sau hoàn tất; Docker preview tiếp tục để rà. Điểm tiếp tục: kiểm kết nối/hiển thị nền thực, duyệt vùng/nội dung/audio và hoàn tất hành trình thật/HTTPS/QR/thiết bị/vận hành. Dừng để rà mục lớn này trước chuyển mốc hoặc commit.
+
+Rà bổ sung Admin trên cùng ảnh đạt **3/3 Chrome (1,3 phút)**: Q2 Hủy/tải lại giữ phần chưa lưu, 401 che dữ liệu rồi đăng nhập lại cùng tài khoản phục hồi, thống kê API thật/nhãn bộ lọc cũ. Ca 401 dùng phản hồi chặn, không chứng minh hết hạn 30 phút thật; không ghi nội dung/vùng/cặp. Bằng chứng nằm cùng hồ sơ 2.40, không gộp ba lượt Chrome thành một lượt full. Kiểm môi trường không thấy `HUEQR_TTS_API_KEY` hoặc `HUEQR_PUBLIC_START_URL` ở tiến trình/tài khoản; chưa đủ điều kiện kiểm provider thật hoặc QR HTTPS.
+
+<a id="map-pin-20261111"></a>
+
+### 2.41. Ghim đúng vị trí nhấn và thu gọn preview — 11/11/2026
+
+Đã bỏ hàng nút trùng chú giải, gộp hướng dẫn/chờ duyệt và giữ tên điểm ở thẻ phản hồi. Khách/preview có một ghim xanh đúng tọa độ nhấn trong vùng; ngoài vùng/kéo/phóng không tạo chọn mới, chồng lấn chỉ dời sau chọn ứng viên, Hủy giữ ghim/bài cũ. Không GPS, không tọa độ mới trong API hoặc tự đặt ghim ở tâm sau reload. [Hồ sơ](../06-kiem-thu/map-pin-20261111/README.md) ghi 65/65 logic, build Windows/Docker, 3/3 ca ghim riêng và **14/14 Chrome trên ảnh cuối (1,8 phút)**. Tile kiểm có nhãn, chưa chứng minh nền OSM thật hoặc nghe MP3 sau thay đổi này.
+
+Preview cùng URL 18082, app mới `hueqr-osm-preview-f620552b`, ảnh `hueqr-local:20261111-osm-map` / `sha256:5d49ffaea21b1a0bd457b050e836f975af230a9cd03b4d7abe8574827610896b`; giữ MySQL/audio/network/khóa/epoch và các worker tắt. Nhánh refresh lấy tên app từ manifest đã chạy thành công. Không đổi Java/schema/phụ thuộc, Git ghi hoặc checklist. Dev server kiểm đã dừng. Điểm dừng: rà thao tác ghim/bố cục; các phụ thuộc nền thật, vùng/nội dung/audio, QR/HTTPS và nghiệm thu ở mốc trước vẫn còn.
+
+<a id="workspace-cleanup-20261112"></a>
+
+### 2.42. Dọn thư mục trước bàn giao Git — 12/11/2026
+
+Đã chuyển tám thư mục kết quả test frontend và dist ra LocalAppData, giữ nguồn/test/dependency; gom 15 bản sao bằng chứng giống bytes về bản chung, cập nhật liên kết và originalPath trong ledger, lưu nguyên bản metadata ngoài repo. [Hồ sơ](../06-kiem-thu/workspace-cleanup-20261112/README.md) ghi 44 file chuyển đi khớp Hash và 281/281 file nguồn được bảo vệ không đổi. Playwright mặc định xuất vào Temp; Docker context loại kết quả test và tài liệu không cần cho build.
+
+65/65 logic và build frontend ngoài repo đạt; Playwright resolve 29 ca/8 file, chỉ là list chứ không thực chạy 29 ca. Trước dọn Source Control có 456 mục (11 sửa/445 U) trên T01; 208/242 file backend khớp blob trên nhánh task local, không suy trạng thái remote/main. Sau gom bản sao và thêm hồ sơ còn 444 mục. Không Git ghi, đổi Java/runtime, database/audio, issue/Project hoặc checklist. Khi nối commit phải phân loại từng file/nền phụ thuộc theo G02, không stage lại backend chỉ vì U tại T01.
+
+<a id="local-commits-20261112"></a>
+
+### 2.43. Bàn giao commit cục bộ — 12/11/2026
+
+Đã commit các nhóm mới T02 `5724a98`, T07 `422c43f`, T05 `97490df`, T09 `acf7452`, T10 `95f1f1a`, T11 `cf9ed80`; bảng SHA đầy đủ/scope tại [commit-plan 4.19](commit-plan-2026-11-05.md#local-commits-20261112). Nhóm T01 giữ thiết kế và bản ghi bàn giao này. T02/T05/T07 đã nhận nền và khớp 229/229 file backend đã kiểm; không commit lại backend chỉ vì hiện U trên nhánh IDE.
+
+Giữ nhánh IDE T01 và nguồn đang sửa bằng Hash; dùng worktree cùng repository để chia task. Metadata Hòa `gingpham <gingpham13052006@gmail.com>`, Thành `KhaiThanh <khaithanh2726@gmail.com>` theo G02 và lịch sử đã đối chiếu. Chưa push/xác thực tài khoản cho lượt push hoặc thay main/PR/issue/Project/checklist. Không phát sinh kết quả build/browser mới trong lượt commit.
+
+Điểm tiếp tục: T04/T06 chờ đăng nhập/metadata đúng Nghĩa, chưa stage/commit 46 file frontend; T08 chờ chốt người ghi nhận sáu file nháp chung. Sau khi có nguồn frontend, nhận đủ nền vào các nhánh E2E/đóng gói/hướng dẫn, kiểm cây checkout trước push. Không dùng việc commit hồ sơ làm bằng chứng QR/HTTPS, nền tile thật, đủ 20 cặp được duyệt hoặc toàn đồ án hoàn tất.
+
+<a id="frontend-commits-20261112"></a>
+
+### 2.44. Bàn giao commit frontend Nghĩa — 12/11/2026
+
+Đã commit T04 `3a81856` (29 file) và T06 `b77516e` (17 file), author/committer `lechiNghiaa <lechinghia1412@gmail.com>` theo danh tính được cung cấp và bước đăng nhập Credential Manager. [Commit-plan 4.20](commit-plan-2026-11-05.md#frontend-commits-20261112) ghi SHA đầy đủ/phạm vi; đã đối chiếu đủ 57 file frontend với nguồn đã rà, bao gồm các file kiểm chung T09.
+
+65/65 logic và build trên cây chuẩn bị đầy đủ đạt trước commit; không tạo thêm kết quả browser hoặc nghiệm thu nền tile/audio thật. Chỉ sửa metadata thông điệp của hai commit vừa tạo chưa push để khắc phục mất dấu, giữ tree và bảy commit trước. Giữ nhánh IDE T01 và nguồn đang làm việc; các nhánh task nhận nền frontend/tài liệu trong cùng repository trước kiểm checkout. Chưa push, đổi main, merge PR hoặc tích issue/Project/checklist. T08 còn sáu file nháp chờ chốt người commit.
+
 ## 3. Tài liệu bàn giao
 
 | Nội dung | Nguồn chính |
@@ -475,7 +650,7 @@ Trách nhiệm và người commit theo [G02](../02-nghiep-vu/decisions.md#g02).
 
 ## 6. Thông tin chuyển giao
 
-Đã lưu bằng chứng commit/push trước lần tạo lại repository ở mục 2.2 và kết quả chỉnh comment ở mục 2.3. Đích chính thức tại mục 2.4. Nguồn Draw.io cùng SVG Use Case đã kiểm ảnh theo mục 2.5, chờ nhóm rà soát trong VS Code. Mốc issue #1–#11 đã đối chiếu có 89 ô/18 dấu tích; bản local có 20 theo roadmap 6.5. Project có 6 In Progress/5 Todo theo xác nhận vận hành gần nhất, đề xuất chuyển T05 tại roadmap mục 6.4 chưa được xác nhận. Backend có nền V10, nội dung khách/grant/ACK/tải MP3 và READ claim cùng nền quản trị/worker WAV; bằng chứng hiện tại ở mục 2.24. Frontend khách đã có nguồn nhưng chưa build/browser; chưa provider/quota thật, FFmpeg/MP3 thực hoặc frontend Admin đã build/browser. Dọn vòng đời đã kiểm backend theo mục 2.27, chưa bật trên môi trường phục vụ. Các nhánh T01/T02/T03/T05/T07 đã được đối chiếu push ở mục 2.25; PR #12 và #13 giữ kết quả merge nền T01/T02. Mốc D08 tại mục 2.26, vòng đời tại mục 2.27 và A22 tại mục 2.28; không suy kiểm thử thành đã merge main. Sau A22 dừng để nhóm rà, chưa stage/commit/push. Quyền Git hiện hành tại mục 7; phần Nghĩa dừng trước đăng nhập.
+Đã lưu bằng chứng commit/push trước lần tạo lại repository ở mục 2.2 và kết quả chỉnh comment ở mục 2.3. Đích chính thức tại mục 2.4. Nguồn Draw.io cùng SVG Use Case đã kiểm ảnh theo mục 2.5, chờ nhóm rà soát trong VS Code. Mốc issue #1–#11 đã đối chiếu có 89 ô/18 dấu tích; bản local có 20 theo roadmap 6.5. Project có 6 In Progress/5 Todo theo xác nhận vận hành gần nhất, đề xuất chuyển T05 tại roadmap mục 6.4 chưa được xác nhận. Backend có nền V10, nội dung khách/grant/ACK/tải MP3 và READ claim cùng nền quản trị/worker WAV; bằng chứng hiện tại ở mục 2.24. Frontend khách đã có nguồn nhưng chưa build/browser; chưa provider/quota thật, FFmpeg/MP3 thực hoặc frontend Admin đã build/browser. Dọn vòng đời đã kiểm backend theo mục 2.27, chưa bật trên môi trường phục vụ. Các nhánh T01/T02/T03/T05/T07 đã được đối chiếu push ở mục 2.25; PR #12 và #13 giữ kết quả merge nền T01/T02. Mốc D08 tại mục 2.26, vòng đời tại mục 2.27 và A22 tại mục 2.28; không suy kiểm thử thành đã merge main. Trạng thái push ở mục 2.30, local audio mới ở 2.31 chờ rà trước commit/push. Quyền Git hiện hành tại mục 7; phần Nghĩa dừng trước đăng nhập.
 
 <a id="guidance-protocol"></a>
 
