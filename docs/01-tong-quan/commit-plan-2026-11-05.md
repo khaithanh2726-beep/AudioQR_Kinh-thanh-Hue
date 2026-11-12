@@ -648,6 +648,41 @@ Hai thông điệp frontend ban đầu bị thay ký tự khi truyền qua Power
 
 Sau nhận đủ nền, HEAD nhánh có thể khác SHA sản phẩm do nhận tài liệu hoặc commit phụ thuộc. Chưa push/merge PR, không đổi main/issue/Project/checklist. T08 vẫn giữ sáu file nháp chờ chốt người commit, không gán cho Nghĩa chỉ vì đang xử lý frontend.
 
+<a id="push-ci-20261112"></a>
+
+### 4.21. Push các nhánh task và sửa CI — 12/11/2026
+
+Đã push thường, đối chiếu remote và xác thực tài khoản qua Git Credential Manager/GitHub API, không force-push hoặc sửa lịch sử đã công bố. Tài khoản push theo G02 tách với author/committer đã ghi ở 4.19–4.20. Các nhánh nhận phụ thuộc bằng fast-forward nên HEAD có thể chứa sản phẩm của task khác; SHA sản phẩm vẫn giữ trong hai bảng trước.
+
+| Nhánh | HEAD remote đã đối chiếu | Tài khoản push |
+|---|---|---|
+| T01 | `2c5d7bac54f88929a1de7915bf33bd3597d55c72` | khaithanh2726-beep |
+| T02 | `97490dfbbd1bccb8cbe1b9f3ee98b3c783623527` | gingpham |
+| T05 | `97490dfbbd1bccb8cbe1b9f3ee98b3c783623527` | khaithanh2726-beep |
+| T07 | `97490dfbbd1bccb8cbe1b9f3ee98b3c783623527` | khaithanh2726-beep |
+| T04 | `56814d3f3f7468ec891e25c15647516e56d2aed2` | lechiNghiaa |
+| T06 | `56814d3f3f7468ec891e25c15647516e56d2aed2` | lechiNghiaa |
+| T09 | `56814d3f3f7468ec891e25c15647516e56d2aed2` | gingpham |
+| T10 | `56814d3f3f7468ec891e25c15647516e56d2aed2` | gingpham |
+| T11 | `56814d3f3f7468ec891e25c15647516e56d2aed2` | khaithanh2726-beep |
+
+Hai commit T10 bổ sung do Hòa author/committer và push:
+
+- `e37e4726ffd1767941a51d350057bf1869fcc200`: thêm LF cuối Maven Wrapper properties để Linux đọc đủ distributionUrl; gom các lượt workflow cùng SHA. Giữ Maven 3.9.12.
+- `56814d3f3f7468ec891e25c15647516e56d2aed2`: cấp hostname thực cho Java trên runner Linux, giữ cơ chế từ chối khi node chưa xác định.
+
+Một lượt [CI trên T10](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43135057755) của `56814d3` đạt full 520/520 backend, 65/65 logic frontend, 5/5 manifest và build; artifact gồm Surefire, JAR, frontend dist. Việc push cùng SHA sang nhánh khác có thể tạo lượt trùng bị hủy; không tính các lượt đó là kiểm độc lập đạt.
+
+T03 không đổi trong lượt này; T08 chung giữ sáu file nháp chưa commit. Main/PR/issue/Project/checklist giữ nguyên. [Hồ sơ mới](../06-kiem-thu/release-readiness-20261112/README.md) ghi thêm Compose/provider thật và danh sách nguồn chưa commit để rà; không trộn vào mốc push trong bảng này.
+
+### 4.22. Mốc lưu nguồn HTTPS Ngọ Môn — 12/11/2026
+
+Phạm vi lưu nguồn gồm V13 giữ precision vùng; frontend Khách xử lý ngrok không cookie và tách preview khỏi build thường; kiểm hồi quy/HTTPS/provider; Compose và công cụ chuẩn bị môi trường riêng; QR, hướng dẫn và hồ sơ. Giữ sáu tệp nháp T08 ngoài commit. Hồ sơ chấp thuận riêng Ngọ Môn đã được xác nhận được lưu như căn cứ bàn giao, không thay duyệt toàn bộ T08.
+
+Commit chia theo G02: T02 (Hòa) dữ liệu/region mapping; T04 (Nghĩa) frontend Khách; T09 (Hòa) kiểm thử/bằng chứng; T10 (Hòa) đóng gói; T11 (Thành) hướng dẫn/hồ sơ bàn giao; T01 (Thành) thiết kế/checklist/tổng hợp. Danh tính tác giả/committer được đặt riêng từng commit, không đổi cấu hình Git toàn cục. Chỉ stage danh sách đã đối chiếu Hash; không stage toàn cây hoặc đưa runtime/khóa/database/audio vào Git.
+
+PR tổng hợp dùng nguồn đã lưu để rà mốc chạy thử; không tự merge, đóng issue hoặc đổi Project. Mô tả PR liệt kê từng commit và tách kết quả CI cũ với lượt kiểm nguồn mới. Khôi phục mã nguồn không tự khôi phục MySQL/audio/epoch; dữ liệu chạy cần bản sao riêng, không rollback ảnh trước V13 trên schema đã nâng.
+
 ## 5. Dấu vết thay đổi kế hoạch
 
 
