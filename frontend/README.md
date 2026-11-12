@@ -10,13 +10,15 @@ Admin đăng nhập và quản lý địa điểm/vùng, bản văn và cặp n�
 
 QR chỉ được tạo từ URL HTTPS cấu hình lúc build qua `VITE_PUBLIC_START_URL`; chưa có URL thì hiển thị chưa sẵn sàng. Bản đồ dùng nền raster OpenStreetMap tiêu chuẩn qua Leaflet, tải trực tiếp qua HTTPS; vùng chọn vẫn lấy từ API. Nền có ghi công, trạng thái tải/lỗi/thử lại riêng. Không tự duyệt vùng/bài hoặc bật điểm seed.
 
+Ngrok free: bản tập dượt bật `VITE_NGROK_SKIP_BROWSER_WARNING=true` và URL HTTPS thật. API Khách thêm header công khai của ngrok chỉ khi origin hiện tại khớp URL cấu hình; giữ `credentials: omit`, header credential riêng và chặn redirect. Cờ mặc định tắt, không thêm header khi chạy localhost hoặc origin khác. HTTP 200 không có Content-Type JSON cũng bị từ chối thay vì coi trang cảnh báo là phản hồi nghiệp vụ.
+
 ## Bản xem trước bản đồ
 
 Nhấn trong vùng hợp lệ đặt một ghim xanh đúng vị trí nhấn, áp dụng cho Khách và preview; không dùng GPS, không gửi tọa độ thêm vào API. Mỗi trang chỉ có một ghim; Hủy chọn chồng lấn giữ ghim cũ. Preview đã bỏ hàng nút trùng chú giải và các lời nhắc lặp; [hồ sơ](../docs/06-kiem-thu/map-pin-20261111/README.md).
 
 Mẫu cần nền bản đồ địa lý đầy đủ như [ảnh tham khảo](../docs/04-giao-dien/ui-design.md#ui-reference-red), không chỉ màu sắc. Docker preview 18082 đã nhận UI đỏ sẫm và lớp OSM; [hồ sơ mới](../docs/06-kiem-thu/osm-map-20261111/README.md) ghi kết quả và giới hạn kết nối tile. [Hồ sơ màu/bố cục trước](../docs/06-kiem-thu/ui-reference-20261111/README.md) giữ đúng mốc, không là trạng thái runtime hiện tại.
 
-`map-preview.html` là trang riêng để rà năm vùng đề xuất, không phải phiên khách. Chỉ hiển thị các vùng đề xuất khi build với `VITE_MAP_PREVIEW=true`; mặc định false. Cờ này độc lập nền bản đồ: `VITE_MAP_BASEMAP=osm` mặc định dùng OSM ở cả Khách/Admin; `offline` chỉ dùng bản trích giản lược khi kiểm riêng. URL mặc định `https://tile.openstreetmap.org/{z}/{x}/{y}.png`; có thể cấu hình `VITE_OSM_TILE_URL` cho nguồn OSM HTTPS phù hợp chính sách. Không kèm khóa/credential/query trong URL. Không prefetch/kho tile offline hoặc tự chuyển nhà cung cấp khi lỗi.
+`map-preview.html` là trang riêng để rà năm vùng đề xuất, không phải phiên khách. Từ mốc chuẩn bị tập dượt 12/11, chỉ đóng gói trang này khi build với `VITE_MAP_PREVIEW=true`; bản thường chỉ có Khách/Admin. Cờ này độc lập nền bản đồ: `VITE_MAP_BASEMAP=osm` mặc định dùng OSM ở cả Khách/Admin; `offline` chỉ dùng bản trích giản lược khi kiểm riêng. URL mặc định `https://tile.openstreetmap.org/{z}/{x}/{y}.png`; có thể cấu hình `VITE_OSM_TILE_URL` cho nguồn OSM HTTPS phù hợp chính sách. Không kèm khóa/credential/query trong URL. Không prefetch/kho tile offline hoặc tự chuyển nhà cung cấp khi lỗi.
 
 Tạo lại tài sản offline từ nguồn lưu bằng `node scripts/build-map-assets.mjs` trong thư mục frontend; có ghi công/mốc nguồn và chú giải số/tên. Bản offline không đại diện độ chi tiết/nhãn của raster OSM trong ảnh tham khảo.
 

@@ -7,8 +7,20 @@ export class ApiError extends Error {
   }
 }
 
+export function guestTransportHeaders(env = {}, origin) {
+  if (env.VITE_NGROK_SKIP_BROWSER_WARNING !== 'true') return {}
+  try {
+    const url = new URL(env.VITE_PUBLIC_START_URL)
+    if (url.protocol === 'https:' && url.origin === origin && !url.username && !url.password && !url.hash && !url.search) {
+      return { 'ngrok-skip-browser-warning': '1' }
+    }
+  } catch {}
+  return {}
+}
+
 export async function request(path, { credential, method = 'GET', body, key, etag, signal, binary = false } = {}) {
-  const headers = { Accept: binary ? 'audio/mpeg' : 'application/json' }
+  const headers = { ...guestTransportHeaders(import.meta.env || {}, globalThis.location?.origin),
+    Accept: binary ? 'audio/mpeg' : 'application/json' }
   if (credential) headers['X-Guest-Credential'] = credential
   if (key) headers['Idempotency-Key'] = key
   if (etag) headers['If-Match'] = etag
@@ -26,6 +38,9 @@ export async function request(path, { credential, method = 'GET', body, key, eta
       throw new ApiError(503, { code: 'MEDIA_NOT_READY' })
     }
     return response.arrayBuffer()
+  }
+  if (response.headers.get('Content-Type')?.split(';')[0] !== 'application/json') {
+    throw new ApiError(503, { code: 'INVALID_API_RESPONSE' })
   }
   return response.json()
 }
