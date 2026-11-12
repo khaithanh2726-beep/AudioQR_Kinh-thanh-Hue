@@ -114,7 +114,7 @@ class PlaceRegionSchemaTests {
 	void rejectsMalformedJsonInThePolygonColumn() {
 		UUID place = insertPlace();
 
-		assertRejected(() -> insertRegion(place, "{invalid"), 3140, "polygon");
+		assertRejected(() -> insertRegion(place, "{invalid"), 3819, "ck_region_polygon_json");
 	}
 
 	@Test
@@ -137,7 +137,7 @@ class PlaceRegionSchemaTests {
 		flyway.validate();
 
 		assertThat(Arrays.stream(flyway.info().applied()).filter(info -> info.getVersion() != null)
-				.map(info -> info.getVersion().toString())).containsExactly("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
+				.map(info -> info.getVersion().toString())).containsExactly("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13");
 		assertThat(jdbc.queryForList("""
 				SELECT DELETE_RULE FROM information_schema.REFERENTIAL_CONSTRAINTS
 				WHERE CONSTRAINT_SCHEMA = DATABASE()

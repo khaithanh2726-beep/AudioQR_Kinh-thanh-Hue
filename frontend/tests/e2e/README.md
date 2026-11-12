@@ -31,3 +31,19 @@ npm run test:e2e
 Chrome dùng bản đã cài sẵn; không tải browser tự động. Không cấu hình runtime thì các ca bị bỏ qua, không được ghi là đạt. Giữ thư mục kết quả riêng cho mỗi lượt để không xóa ảnh lỗi trước. Ảnh và `e2e-result.json` nằm trong thư mục runtime; sao chép có chọn lọc sang hồ sơ kiểm, không chép `runtime.json` hoặc cấu hình chứa khóa.
 
 Kịch bản tạo địa điểm/tài khoản khách có tên riêng, không xóa dữ liệu cũ. Sau kiểm, dừng đúng tiến trình/container thử do lượt đó tạo. Không dùng thao tác dọn toàn Docker hoặc reset/clean repository.
+
+## Kiểm bản tập dượt đã chuẩn bị
+
+`rehearsal.spec.mjs` nhận `HUEQR_REHEARSAL_RUNTIME` và URL đúng bộ `hueqr-rehearsal-*`, chỉ dùng bản ban đầu chưa duyệt/áp dụng/cấu hình QR. Hai ca kiểm form Khách/preview 404, đăng nhập Admin, Hash bản văn/MP3, thử phát và gate chưa có hồ sơ. Không tạo TTS hoặc thay nội dung nghiệp vụ. [Hướng dẫn tập dượt](../../../docs/07-van-hanh/tap-duot.md) ghi cách chuẩn bị và thực chạy; credential giữ ngoài repo. Sau khi có HTTPS/cặp phục vụ, dùng ca kiểm tương ứng, không sửa dữ liệu để ép bộ ban đầu đạt.
+
+## Kiểm HTTPS sau khi áp dụng Ngọ Môn
+
+`public-rehearsal.spec.mjs` nhận `HUEQR_PUBLIC_REHEARSAL_RUNTIME` trỏ tới runtime riêng có project `hueqr-rehearsal-*`, tài khoản và `publicStartUrl` HTTPS. Đặt `HUEQR_E2E_URL` cùng URL, chọn Chrome đã cài rồi chạy riêng `npm run test:e2e -- public-rehearsal.spec.mjs`. Chỉ dùng bộ một cặp vi đã áp dụng; không chạy bộ `rehearsal.spec.mjs` ban đầu trên trạng thái này. Kịch bản có tạo/kết thúc phiên khách và đăng nhập Admin, không tạo TTS hoặc thay cặp.
+
+Hai ca kiểm tải QR/in CSS, nhận map JSON không cookie, đọc/nghe MP3 thật và kết thúc. Tile là fixture; không thay bằng chứng quét QR/thiết bị hoặc mạng thật. Chọn thư mục kết quả mới, không công bố runtime chứa khóa. [Kết quả mốc HTTPS](../../../docs/06-kiem-thu/https-ngo-mon-20261112/README.md).
+
+## Kiểm một lượt provider thật
+
+`provider.spec.mjs` chỉ chạy khi đặt `HUEQR_ALLOW_PROVIDER_TEST=one-vi` và `HUEQR_PROVIDER_RUNTIME` tới thư mục riêng có `provider-runtime.json`. Cấu hình này gồm `project` có tiền tố `hueqr-compose-check-`, `url` là origin localhost, `providerEnabled=true`, `adminLogin`, `adminPassword`; giữ tệp ngoài repository và giới hạn ACL. Backend phải thuộc đúng project thử, đã có năm điểm ẩn/20 slot, tài khoản Admin thử, khóa Gemini được phép sử dụng và hai worker provider/local bật; cleaner/retention tắt. Không dùng runtime đang phục vụ.
+
+Đặt `HUEQR_E2E_URL` đúng `url` và chạy riêng `npm run test:e2e -- provider.spec.mjs`. Ca này lưu bài Ngọ Môn vi, bấm Tạo một lần, theo dõi job thật, tải và kiểm Hash MP3, thử phát trong Chrome. Nền bản đồ vẫn dùng tile kiểm; không gọi OSM. Không ghi hồ sơ duyệt, áp dụng cặp hoặc bật địa điểm. Kết quả provider lỗi/quota/chưa rõ được ghi trong `provider-result.json` và ca kiểm báo lỗi; không retry tự động. `provider-attempt.lock` được giữ cả khi lỗi để tránh lần chạy lại vô tình phát sinh thêm lời gọi; chỉ chuẩn bị lượt mới sau khi rà job cũ và quyền/quota. Dừng worker thử sau kiểm, giữ audio và bằng chứng riêng để nghe duyệt.

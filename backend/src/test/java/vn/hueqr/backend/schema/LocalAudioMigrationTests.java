@@ -20,7 +20,7 @@ class LocalAudioMigrationTests {
 			var source = new AudioDataFixture(sql).insertStagedWav("fr");
 			var checksums = sql.queryForList("SELECT version, checksum FROM flyway_schema_history ORDER BY installed_rank");
 			var before = sql.queryForMap("SELECT phase, phase_version, language_snapshot, model, voice, accepted_at, updated_at FROM tts_job WHERE id=?",bytes(source.job()));
-			var upgrade = Flyway.configure().dataSource(data).load();
+			var upgrade = Flyway.configure().dataSource(data).target("12").load();
 			upgrade.migrate();
 			upgrade.validate();
 			assertThat(sql.queryForList("SELECT version, checksum FROM flyway_schema_history WHERE version <> '12' ORDER BY installed_rank")).isEqualTo(checksums);

@@ -2,6 +2,18 @@
 
 Các công cụ tại đây phục vụ kiểm thử, không phải quy trình backup môi trường đang phục vụ. Thiết kế BKP-P02 yêu cầu OPS_GUARD và drain có bằng chứng; nguồn hiện chưa có gate đó. Không dùng việc script chạy đạt để tự bật backup hoặc scheduler live.
 
+## Diễn tập Compose và quay lại ảnh trước
+
+`compose-rehearsal.mjs` nhận thư mục đầu ra mới ngoài repository và hai ảnh `hueqr-local:*` đã có trên máy, có ID khác nhau. Chạy trên Windows với Docker Desktop; không tải hoặc build ảnh trong lượt này.
+
+```powershell
+node backend/src/test/fixtures/operations/compose-rehearsal.mjs '<thu-muc-moi-ngoai-repo>' '<anh-moi>' '<anh-truoc>'
+```
+
+Công cụ tạo project `hueqr-compose-check-*`, database/kho audio riêng, cổng loopback còn trống và cấu hình riêng có ACL cho tài khoản chạy/SYSTEM. Provider, converter, cleaner và retention đều tắt. Các chặng kiểm gồm seed hai lần, restart hai dịch vụ, thay ảnh ứng dụng và quay lại ảnh trước; đối chiếu 5 điểm ẩn/20 slot/0 cặp, migration, volume, khóa/epoch, tệp checkpoint và hai trang web. Tệp checkpoint chỉ kiểm độ bền của volume, không thay bằng chứng phát MP3.
+
+Chỉ dùng hai ảnh tương thích cùng schema để diễn tập này; không coi kết quả là cho phép hạ migration hoặc rollback mọi phiên bản. `report.json` không chứa credential. `private.env` chứa khóa/mật khẩu thử, giữ ngoài Git; không chia sẻ kết quả `docker inspect` hoặc `compose config` đầy đủ. Cuối lượt công cụ dừng đúng hai dịch vụ, giữ container/volume để rà, không gọi `down -v` hoặc prune. Nếu `servicesStopped` không đúng, dừng đúng project ghi trong báo cáo trước khi tiếp tục.
+
 ## Đầu vào
 
 - Node 24.22.2, Docker đang hoạt động, ảnh `mysql:8.4.13` và nguồn chạy thử riêng theo `frontend/tests/e2e/README.md`.

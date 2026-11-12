@@ -1,0 +1,210 @@
+{
+    "checkedAt":  "2026-11-12T20:14:00.7601207+07:00",
+    "backendFull":  {
+                        "exitCode":  1,
+                        "errors":  0,
+                        "tests":  522,
+                        "failures":  1,
+                        "passed":  521
+                    },
+    "targetedRerun":  {
+                          "exitCode":  0,
+                          "errors":  0,
+                          "tests":  1,
+                          "failures":  0
+                      },
+    "ledger":  {
+                   "passed":  522,
+                   "singleFullPass":  false,
+                   "uniqueCases":  522
+               },
+    "frontend":  {
+                     "logicTests":  71,
+                     "logicPassed":  71,
+                     "buildPassed":  true
+                 },
+    "https":  {
+                  "realPhoneVerified":  false,
+                  "tests":  2,
+                  "tileFixture":  true,
+                  "passed":  2
+              },
+    "manualDeviceCheck": {
+        "evidenceSource": "operator-report",
+        "platform": "Android",
+        "audioPlaybackPassed": true,
+        "browser": null,
+        "network": null,
+        "qrScanConfirmedSeparately": false,
+        "mapDisplayConfirmedSeparately": false,
+        "textDisplayConfirmedSeparately": false,
+        "sessionEndConfirmedSeparately": false,
+        "iosVerified": false
+    },
+    "t08":  {
+                "changedFiles":  0,
+                "unchangedFiles":  6
+            },
+    "baselineChanges":  [
+                            {
+                                "path":  ".github/workflows/ci.yml",
+                                "baseline":  "adae8896e80e80056bb42375b8c820dfa32b47efbf88c10de8192a2d4cb7bed0",
+                                "sha256":  "3ddb66a92d2564f23056b504805c92cb5079370ada2ce7333ed9031899b70b94"
+                            },
+                            {
+                                "path":  "backend/src/main/java/vn/hueqr/backend/entity/RegionRevision.java",
+                                "baseline":  "22418c208cb3efb4fa5a66df0f0dc2d7d0508e4abc5fbf2b054b6b4123d9e008",
+                                "sha256":  "a1d94e11af2b1c7ba7ef37f4d080de6ec9f55f6a19124ee474571dc7987a8165"
+                            },
+                            {
+                                "path":  "backend/src/test/fixtures/operations/README.md",
+                                "baseline":  "75db5a533366b3406ab0cdab62b259fa48e14716df62f902b06a5138cebda48a",
+                                "sha256":  "943d58fb59cbc64c7b52af31901e80e29015a3a441ec2dd99f776c7b4f0519a8"
+                            },
+                            {
+                                "path":  "backend/src/test/java/vn/hueqr/backend/controller/AdminRegionApiTests.java",
+                                "baseline":  "a906fd56d90ec75e2455833890d47431c62ed819613cd3e6713faa30b48ec855",
+                                "sha256":  "362758ad2e22492fcb797e926ec191406e5ba9098c2bd52d9f0c007f16390f30"
+                            },
+                            {
+                                "path":  "backend/src/test/java/vn/hueqr/backend/schema/LocalAudioMigrationTests.java",
+                                "baseline":  "3ad0cebc7d70da2fc3258b7c080b71786a51ce2cc5cd0d9295564825596107fe",
+                                "sha256":  "13b19a120fc23dbc44b07682c4b20e35caf121486a960511adb026db0414bdfb"
+                            },
+                            {
+                                "path":  "backend/src/test/java/vn/hueqr/backend/schema/PlaceRegionSchemaTests.java",
+                                "baseline":  "13d25780d444db3c8e87d4c18d68f3b3bd0e2d7a747383a8c88e664d5bf37bd0",
+                                "sha256":  "bbbf5f0b758163a34ade9dd4465abe20058bedbf7cc4e412b3544e1fa3cee7e8"
+                            },
+                            {
+                                "path":  "deploy/.env.example",
+                                "baseline":  "67ee4f38c7b1b45e17b0d39bf1801735836dd50a426e38a6be286dcd6e5c0934",
+                                "sha256":  "e2d15d1cea32694b069d715ef391b96e50ef9e90cc3dd165e54fc9089adbbb16"
+                            },
+                            {
+                                "path":  "deploy/Dockerfile",
+                                "baseline":  "db8e49979bd33dc88556d87284363bab0ccca176cb7ae6c587d0915ce3867d82",
+                                "sha256":  "91b8f110f96806dbfd991c36d24ac6ca21c722c15aeb935d10c4eae0dce94955"
+                            },
+                            {
+                                "path":  "deploy/compose.yaml",
+                                "baseline":  "e948b09286e4a5059d6f4149e1d8ff5cbd959cbf1fde640eb262cabc48e63a43",
+                                "sha256":  "edbe779672dff74a0e1087988112c3d67ede0c51587ca98d4d52f756036a7465"
+                            },
+                            {
+                                "path":  "docs/01-tong-quan/issue-follow-up-2026-11-11.md",
+                                "baseline":  "3d2d533eeb29b9046fe2e6471c7a9c252ac502bc3c223e67177f242d525b41df",
+                                "sha256":  "f9209437af154c67e8e9c659052e6c7ab8bd20e2aae7dd6400e82eb0d65837b8"
+                            },
+                            {
+                                "path":  "docs/07-van-hanh/dong-goi-va-ci.md",
+                                "baseline":  "792320fc201703e457acd0cb17284d17f61beb66c6e1c982de7739d4d96dcf4c",
+                                "sha256":  "4fc74fd2e0135a0b9c225e7c5b6c12f9ec528fef653eb96b7bfaeb594b7f24f1"
+                            },
+                            {
+                                "path":  "docs/07-van-hanh/nghiem-thu-van-hanh.md",
+                                "baseline":  "e504e6a52dbefe344d1ee1cada4b87778bbdf0aa1174d2e9ed0ab042f46d254a",
+                                "sha256":  "a78ba48b0adade0563782a100a2bb9feb9a28fb1ab9c5f854b6d9a52ea158ee6"
+                            },
+                            {
+                                "path":  "frontend/README.md",
+                                "baseline":  "b6b2c832cfeca50c7ac0c4483210a76cf69a741314d4baf2120606a07cb8014b",
+                                "sha256":  "eced0ed536c51ba39f92d7064d0b97bce78517310d9776193b8ce77e470b6735"
+                            },
+                            {
+                                "path":  "frontend/src/guest/api.js",
+                                "baseline":  "f65c27b1f5977819ea51eca6c66c619c1e701696e3594462f604908700357b21",
+                                "sha256":  "4a3410db9e3126893777a58a780f449f1ed8c8cca9d49fbab573627f169db22e"
+                            },
+                            {
+                                "path":  "frontend/tests/e2e/README.md",
+                                "baseline":  "1c7ba40d867b104cd0811eb18bf7407a8279f65c42735402db769a081feba9f3",
+                                "sha256":  "b45a1f44b6cf48f16a35822833396256d4eb0ecb0d4eb885bf7411dfaa2d7012"
+                            },
+                            {
+                                "path":  "frontend/vite.config.js",
+                                "baseline":  "9be4931c23b7f35c1ff05b39b372e7d26904c32f828e12cfe5a05155bc88650a",
+                                "sha256":  "863f8636fb411c13bb2d3865fa89bba2d77b87f787f352b0076a5b30f7b8985e"
+                            },
+                            {
+                                "path":  "backend/.mvn/wrapper/maven-wrapper.properties",
+                                "baseline":  "337fd007fb6e5ef42376cebe7e4cb1d6817e560163871906f6a093d055c34e71",
+                                "sha256":  "e67de487071199117b7c9808dca5f56c73a44b656c925140ec68761947bdd384"
+                            },
+                            {
+                                "path":  "docs/01-tong-quan/commit-plan-2026-11-05.md",
+                                "baseline":  "4b9d97679cefe3163682a6142eaff67c2165c556987118fdd6882dd47e0115d8",
+                                "sha256":  "1eed7a6cdf5e406165d15e909369969c497644e5920f860f9ac7c8f2fb7a467f"
+                            },
+                            {
+                                "path":  "docs/01-tong-quan/handoff.md",
+                                "baseline":  "380bfe3137cdd410959d10c1701c34eb6ddd3c1d4fbba0eef126e28c84ccc380",
+                                "sha256":  "0480b5f4df1b851dd135cfc6c0b4e35b3bf9237ba4d8621ab6fb4890453c3484"
+                            },
+                            {
+                                "path":  "docs/01-tong-quan/roadmap.md",
+                                "baseline":  "b6be18e339ea35325a33c9de800b21d758c70f0d83454f0b164407cb74096f01",
+                                "sha256":  "3462a9d120e4d88fd8cbb18d3144db9ba1be895fc5960520cf9ffebaed752350"
+                            },
+                            {
+                                "path":  "docs/03-ky-thuat/data-model.md",
+                                "baseline":  "67bfb338da1574ecd5f6b0caf4dd767bdeb4963847b520cc0a93bee8fb8e2410",
+                                "sha256":  "210c34445f75dbd8a2a8ece3aeee9b74d382dfbc54cd0f9906a81097074b36fd"
+                            },
+                            {
+                                "path":  "docs/README.md",
+                                "baseline":  "01a620d6ed71cc3f7640228691c97fb8e91438b583f28190e2976eb2b37f0c1a",
+                                "sha256":  "4233a5edbf1f952874afec05c295c068f75c6840296852fa65ede49dfb196b13"
+                            }
+                        ],
+    "sourceFiles":  [
+                        {
+                            "sha256":  "12afc11671f3bbd301aa7ab330b9f3129ded271387f17c3099350333a578cc3c",
+                            "path":  "backend/src/main/resources/db/migration/V13__preserve_region_coordinate_precision.sql"
+                        },
+                        {
+                            "sha256":  "a1d94e11af2b1c7ba7ef37f4d080de6ec9f55f6a19124ee474571dc7987a8165",
+                            "path":  "backend/src/main/java/vn/hueqr/backend/entity/RegionRevision.java"
+                        },
+                        {
+                            "sha256":  "3ba71786c7bc6838e2e12d334ffc4282859e4e8cff344a9fb2b4d2a569751789",
+                            "path":  "backend/src/test/java/vn/hueqr/backend/schema/RegionPrecisionMigrationTests.java"
+                        },
+                        {
+                            "sha256":  "362758ad2e22492fcb797e926ec191406e5ba9098c2bd52d9f0c007f16390f30",
+                            "path":  "backend/src/test/java/vn/hueqr/backend/controller/AdminRegionApiTests.java"
+                        },
+                        {
+                            "sha256":  "bbbf5f0b758163a34ade9dd4465abe20058bedbf7cc4e412b3544e1fa3cee7e8",
+                            "path":  "backend/src/test/java/vn/hueqr/backend/schema/PlaceRegionSchemaTests.java"
+                        },
+                        {
+                            "sha256":  "13b19a120fc23dbc44b07682c4b20e35caf121486a960511adb026db0414bdfb",
+                            "path":  "backend/src/test/java/vn/hueqr/backend/schema/LocalAudioMigrationTests.java"
+                        },
+                        {
+                            "sha256":  "4a3410db9e3126893777a58a780f449f1ed8c8cca9d49fbab573627f169db22e",
+                            "path":  "frontend/src/guest/api.js"
+                        },
+                        {
+                            "sha256":  "acfe89e75e2ab25992ae5e653c182539d72cc893c041b015b4432a7d0c8c139c",
+                            "path":  "frontend/tests/guest-transport.test.mjs"
+                        },
+                        {
+                            "sha256":  "599008e717760ad63392748c794f5532f5958581880a869b565ad73d0c9fa98a",
+                            "path":  "frontend/tests/e2e/public-rehearsal.spec.mjs"
+                        },
+                        {
+                            "sha256":  "91b8f110f96806dbfd991c36d24ac6ca21c722c15aeb935d10c4eae0dce94955",
+                            "path":  "deploy/Dockerfile"
+                        },
+                        {
+                            "sha256":  "edbe779672dff74a0e1087988112c3d67ede0c51587ca98d4d52f756036a7465",
+                            "path":  "deploy/compose.yaml"
+                        },
+                        {
+                            "sha256":  "e2d15d1cea32694b069d715ef391b96e50ef9e90cc3dd165e54fc9089adbbb16",
+                            "path":  "deploy/.env.example"
+                        }
+                    ]
+}

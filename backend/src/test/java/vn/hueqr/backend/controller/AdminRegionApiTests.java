@@ -119,6 +119,31 @@ class AdminRegionApiTests {
 	}
 
 	@Test
+	void preciseCoordinatesSurviveMySqlAndRemainValidAfterApplyingTheRegion() throws Exception {
+		String polygon = "{\"type\":\"Polygon\",\"coordinates\":[[[107.57891379087943,16.467354402659],"
+				+ "[107.57956620912057,16.467645002659],[107.57922589087943,16.468010497340998],"
+				+ "[107.57891379087943,16.467354402659]]]}";
+		Browser browser = login();
+		Place place = seed();
+		String window = issue(browser);
+		UUID revision = revisionId(read(save(browser, place.getId(), key(window), "\"0\"", request(polygon))
+				.andExpect(status().isCreated())));
+		var response = mvc.perform(get(regionPath(place.getId(), revision)).session(browser.session()))
+				.andExpect(status().isOk()).andReturn();
+		var saved = json.readValue(response.getResponse().getContentAsString(), AdminRegionRevisionResponse.class);
+		var checked = new RegionGeometryPolicy(json).validate(saved.polygon(), saved.mapSpaceKey(), saved.geometryHash());
+		assertThat(checked.polygon()).isEqualTo(polygon);
+		apply(browser, place.getId(), key(window), "\"0\"", revision.toString(), hash(polygon))
+				.andExpect(status().isOk());
+		var rejected = mvc.perform(put("/api/v1/admin/places/" + place.getId() + "/visibility").session(browser.session())
+				.header(browser.csrf().headerName(), browser.csrf().token()).header("Idempotency-Key", key(window))
+				.header("If-Match", "\"1\"").contentType(MediaType.APPLICATION_JSON).content("{\"visible\":true}"))
+				.andExpect(status().isConflict()).andReturn();
+		assertThat(json.readTree(rejected.getResponse().getContentAsString()).get("missingConditions"))
+				.isEqualTo(json.readTree("[\"VI_PAIR_NOT_APPLIED\"]"));
+	}
+
+	@Test
 	void savingAndReadingARevisionDoesNotApplyItOrChangePlaceVersion() throws Exception {
 		Browser browser = login();
 		Place original = seed();
