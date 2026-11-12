@@ -43,7 +43,7 @@ jobs:
           java-version: "21"
           cache: maven
       - run: chmod +x mvnw
-      - run: ./mvnw -B -Dspring.test.context.cache.maxSize=2 verify
+      - run: HOSTNAME="$(hostname)" ./mvnw -B -Dspring.test.context.cache.maxSize=2 verify
       - uses: actions/upload-artifact@v4
         if: always()
         with:
