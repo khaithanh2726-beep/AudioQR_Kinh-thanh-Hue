@@ -1,0 +1,291 @@
+{
+  "executedAt": "2026-11-10T16:52:01.902Z",
+  "runner": "V8/node_repl adapter; not npm test, Vue build or browser",
+  "tests": [
+    {
+      "suite": "admin-workspace",
+      "name": "CSRF uses current session cookie and header, no guest credential or automatic replay",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "bootstrap reads session and places without reporting interactive activity",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "expiry masks data and blocks writes without a network request",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "same-account reload restores draft only after session check, without saving",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "different-account login removes previous draft and pending work",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "unknown create keeps exact key and body across reload and explicit replay",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "NOT_OBSERVED keeps pending and never creates a second command",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "expired-window replay does not discard an unresolved original operation",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "committed receipt followed by failed refresh stays successful and clears pending",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "first determined validation error allows editing without an unknown operation",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "late list response after lock cannot expose data",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "blocked sessionStorage reports inability to protect work across reload",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "unknown logout masks data without claiming session termination",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "restored edit compares new version and keeps draft instead of silently replacing it",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "deleted target on reload remains a draft and cannot recreate the old place",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "successful save reads server session to track Q3 extension without a fake activity",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "network delay reading session does not extend the remaining idle deadline",
+      "ok": true
+    },
+    {
+      "suite": "admin-workspace",
+      "name": "double save click does not issue two windows while the first is in flight",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "reload preserves partial polygon and requires session before exposing it",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "reload preserves text and both reference drafts without sending them",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "account switch clears content editor as well as place form",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "new server version blocks command until explicit review acceptance",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "late editor response after lock does not expose data",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "unknown text save keeps key payload and version across restore",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "expiry blocks editor write before obtaining a command window",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "audio language mismatch cannot become selected pair",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "unsaved body prevents pair apply even with two valid references",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "pair command includes both revisions hashes review versions and slot ETag",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "review write targets saved revision while preserving unsaved body",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "failed refresh after committed editor operation retains success evidence",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "region hash uses backend plain decimal canonicalization",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "incomplete region cannot be previewed as saved geometry",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "choosing another audio cannot overwrite an unsaved reference",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "confirmed receipt survives same-account reload without replay",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "lock during command window allocation prevents dispatch",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "audio candidates are read from completeness for the exact place language and draft",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "committed text keeps the submitted body when another edit becomes current before refresh",
+      "ok": true
+    },
+    {
+      "suite": "admin-editors",
+      "name": "failed first editor load can initialize normally on explicit refresh",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "chỉ phát sau khi nhận đủ bytes và mã Hash khớp",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "sai kích thước không gắn nguồn và không phát",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "sai mã Hash không phát dù đủ kích thước",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "response cũ đến sau lựa chọn mới không thay bài",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "đang tải khi chạm hạn thì loại bytes muộn và không cấp ngoại lệ",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "bài đang phát ở hạn giữ quyền pause-resume nhưng không tua hoặc nghe lại",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "pause trước hạn không được nghe tiếp sau hạn",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "khôi phục đúng bản giữ mốc và tạm dừng",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "mốc của bản khác không áp sang bài mới",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "đổi bài nhả URL cũ và không tự phát bài đổi tiếng",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "tua sau hết bài còn hạn giữ trạng thái tạm dừng",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "mở phiên khác không khôi phục ngoại lệ của bài cũ",
+      "ok": true
+    },
+    {
+      "suite": "playback",
+      "name": "play bị trình duyệt từ chối không báo đang phát",
+      "ok": true
+    }
+  ],
+  "syntax": [
+    {
+      "file": "admin/api.js",
+      "ok": true
+    },
+    {
+      "file": "admin/workspace.js",
+      "ok": true
+    },
+    {
+      "file": "admin/geometry.js",
+      "ok": true
+    },
+    {
+      "file": "admin/AdminApp.vue",
+      "ok": true
+    },
+    {
+      "file": "admin/ContentEditor.vue",
+      "ok": true
+    },
+    {
+      "file": "admin/RegionEditor.vue",
+      "ok": true
+    }
+  ],
+  "sourceChecks": {
+    "utf8Labels": true,
+    "navigationAndDeletionBindings": 6
+  }
+}
