@@ -15,11 +15,13 @@ services:
       timeout: 5s
       retries: 30
   application:
+    image: ${HUEQR_IMAGE:-hueqr:local}
     build:
       context: ..
       dockerfile: deploy/Dockerfile
       args:
         VITE_PUBLIC_START_URL: ${HUEQR_PUBLIC_START_URL:-}
+        VITE_NGROK_SKIP_BROWSER_WARNING: ${HUEQR_NGROK_SKIP_BROWSER_WARNING:-false}
         VITE_MAP_BASEMAP: ${HUEQR_MAP_BASEMAP:-osm}
         VITE_OSM_TILE_URL: ${HUEQR_OSM_TILE_URL:-}
     depends_on:
@@ -36,7 +38,7 @@ services:
       HUEQR_AUDIO_ROOT: /data/audio
       HUEQR_TTS_ENABLED: ${HUEQR_TTS_ENABLED:-false}
       HUEQR_TTS_API_KEY: ${HUEQR_TTS_API_KEY:-}
-      HUEQR_TTS_LOCAL_ENABLED: "true"
+      HUEQR_TTS_LOCAL_ENABLED: ${HUEQR_TTS_LOCAL_ENABLED:-false}
       HUEQR_CLEANUP_ENABLED: ${HUEQR_CLEANUP_ENABLED:-false}
       HUEQR_RETENTION_ENABLED: ${HUEQR_RETENTION_ENABLED:-false}
       SERVER_FORWARD_HEADERS_STRATEGY: framework
