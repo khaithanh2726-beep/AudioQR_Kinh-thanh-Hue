@@ -610,6 +610,14 @@ Giữ nhánh IDE T01 và nguồn đang sửa bằng Hash; dùng worktree cùng r
 
 Điểm tiếp tục: T04/T06 chờ đăng nhập/metadata đúng Nghĩa, chưa stage/commit 46 file frontend; T08 chờ chốt người ghi nhận sáu file nháp chung. Sau khi có nguồn frontend, nhận đủ nền vào các nhánh E2E/đóng gói/hướng dẫn, kiểm cây checkout trước push. Không dùng việc commit hồ sơ làm bằng chứng QR/HTTPS, nền tile thật, đủ 20 cặp được duyệt hoặc toàn đồ án hoàn tất.
 
+<a id="frontend-commits-20261112"></a>
+
+### 2.44. Bàn giao commit frontend Nghĩa — 12/11/2026
+
+Đã commit T04 `3a81856` (29 file) và T06 `b77516e` (17 file), author/committer `lechiNghiaa <lechinghia1412@gmail.com>` theo danh tính được cung cấp và bước đăng nhập Credential Manager. [Commit-plan 4.20](commit-plan-2026-11-05.md#frontend-commits-20261112) ghi SHA đầy đủ/phạm vi; đã đối chiếu đủ 57 file frontend với nguồn đã rà, bao gồm các file kiểm chung T09.
+
+65/65 logic và build trên cây chuẩn bị đầy đủ đạt trước commit; không tạo thêm kết quả browser hoặc nghiệm thu nền tile/audio thật. Chỉ sửa metadata thông điệp của hai commit vừa tạo chưa push để khắc phục mất dấu, giữ tree và bảy commit trước. Giữ nhánh IDE T01 và nguồn đang làm việc; các nhánh task nhận nền frontend/tài liệu trong cùng repository trước kiểm checkout. Chưa push, đổi main, merge PR hoặc tích issue/Project/checklist. T08 còn sáu file nháp chờ chốt người commit.
+
 ## 3. Tài liệu bàn giao
 
 | Nội dung | Nguồn chính |

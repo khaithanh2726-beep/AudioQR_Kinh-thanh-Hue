@@ -631,6 +631,23 @@ T01 ghi thiết kế/hiện trạng và kết quả bàn giao trong nhóm tài l
 
 Không dùng computer use, đổi main, merge PR, thay issue/Project hoặc tích checklist. Không chạy lại phần mềm chỉ do commit; dùng bằng chứng đã có và đối chiếu scope/blob/metadata. Cảnh báo whitespace của log bằng chứng giữ nguyên để bảo toàn bản ghi; mã nguồn được kiểm riêng. Chưa kích hoạt GitHub CI/CD hoặc gọi provider.
 
+<a id="frontend-commits-20261112"></a>
+
+### 4.20. Commit frontend T04/T06 — 12/11/2026
+
+Đã xác nhận tài khoản `lechiNghiaa` được lưu trong Git Credential Manager; metadata do người vận hành cung cấp: `lechiNghiaa <lechinghia1412@gmail.com>`. Áp dụng riêng cho author/committer của frontend, không thay danh tính các nhóm Thành/Hòa.
+
+| Task | Commit sản phẩm | Số file | Nội dung |
+|---|---|---:|---|
+| T04 / Nghĩa | `3a818567838953d21d42ec88ce563f1eed4b9e91` | 29 | Nguồn Khách, phiên/audio, nền OSM, vùng/ghim, cấu hình build và kiểm logic liên quan |
+| T06 / Nghĩa | `b77516ee6a2e4f5cc31c7b8837c0985524569274` | 17 | Nguồn Admin, địa điểm/vùng/nội dung/cặp, bảo vệ bản soạn, TTS/nghe thử, thống kê/QR và kiểm logic Admin |
+
+T04 nhận nền T11 đã có backend, fixture/E2E và đóng gói; T06 tiếp nối T04. Cây frontend đủ 57 file khớp Git blob với nguồn đã rà, gồm 11 file kiểm chung đã lưu ở T09. Đã chạy lại 65/65 logic và build trong worktree chuẩn bị đầy đủ trước commit; không gọi riêng commit trung gian T04 là checkout đã build độc lập. Không chạy lại browser chỉ do commit; dùng bằng chứng mốc ghim/cleanup và đối chiếu cây nguồn.
+
+Hai thông điệp frontend ban đầu bị thay ký tự khi truyền qua PowerShell; đã sửa riêng hai commit mới chưa push bằng thông điệp UTF-8, giữ nguyên tree và bảy commit trước. SHA trong bảng là bản đã sửa và kiểm author/committer/thông điệp. Bản ghi cũ/mới giữ trong hồ sơ commit ngoài repo, không force-push hoặc thay lịch sử đã công bố.
+
+Sau nhận đủ nền, HEAD nhánh có thể khác SHA sản phẩm do nhận tài liệu hoặc commit phụ thuộc. Chưa push/merge PR, không đổi main/issue/Project/checklist. T08 vẫn giữ sáu file nháp chờ chốt người commit, không gán cho Nghĩa chỉ vì đang xử lý frontend.
+
 ## 5. Dấu vết thay đổi kế hoạch
 
 
