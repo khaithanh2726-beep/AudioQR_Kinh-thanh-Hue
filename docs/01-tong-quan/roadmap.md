@@ -1,7 +1,7 @@
 # Roadmap — Backlog 11 issue và tiến độ theo bằng chứng
 
 **Phiên bản nội dung:** 0.12, cập nhật sản phẩm backend 11/11/2026. **Trạng thái:** backlog 11 issue/89 ô/18 dấu tích đã được duyệt theo G02. Issue #1–#11 được tạo và đọc lại ngày 08/11. Project có đủ 11 issue, 6 In Progress/5 Todo/0 Done theo xác nhận vận hành ngày 08/11, chưa có lần kiểm trực tiếp mới. Phân công không chứng minh thành viên đã thực hiện hoặc hoàn thành task.
-**Checklist local ngày 09/11:** 89 ô/20 dấu tích, giữ nguyên bản lưu đầu lượt; mốc GitHub đã đối chiếu là 18 dấu tích, chưa kiểm lại. Chi tiết tại [mục 6.5](#local-checklist-20261109).
+**Checklist local hiện hành ngày 12/11:** 89 ô/23 dấu tích sau khi ghi nhận thêm ba ô T02/T09/T11 tại [mục 6.18](#checklist-20261112). Mốc 09/11 là 20 dấu tích tại [mục 6.5](#local-checklist-20261109); trạng thái GitHub ghi riêng theo kết quả đồng bộ.
 **Mục đích:** tra phạm vi, phân công, phụ thuộc và lịch dự kiến. Bảng tổng quan cập nhật theo bằng chứng backend và xác nhận Project ngày 08/11/2026, các snapshot cũ giữ theo thời điểm. Điểm dừng và bằng chứng mới nhất ở [handoff](handoff.md#next-step).
 **Giới hạn:** checklist và thiết kế không thay bằng chứng phần mềm. Quy trình phối hợp, quyền thao tác và mốc bàn giao tại [handoff mục 7](handoff.md#guidance-protocol). Trạng thái Git và sản phẩm được cập nhật theo kết quả thực tế, không theo kế hoạch dự kiến.
 
@@ -51,7 +51,7 @@ Nguồn FR/UC/AC/NFR vẫn ở PRD. Bằng chứng checklist GitHub ở mục 6 
 
 ## 3. Nội dung 11 issue — kế thừa bản đã duyệt, thay đổi local ghi rõ
 
-Mỗi issue gồm **Description và một Checklist**. Giữ nguyên 11 task/89 ô và phân công đã duyệt; mốc đối chiếu GitHub có 18 dấu tích, bản local hiện có 20 theo mục 6.5. Không tách thành từng file/class/hàm hoặc tự sửa các dấu tích. Các dấu tích chỉ ghi nhận kết quả trong phạm vi có căn cứ, không xác nhận tích hợp/vận hành toàn hệ thống và không biểu thị phần trăm hoàn thành đồ án. Phần checklist giữ nguyên văn đã đối chiếu với issue; hai cách gọi bàn giao cũ trong T01/T08 được giữ để không thay nội dung issue trong đợt biên tập này.
+Mỗi issue gồm **Description và một Checklist**. Giữ nguyên 11 task/89 ô và phân công đã duyệt; bản local hiện có 23 dấu tích theo mục 6.18. Không tách thành từng file/class/hàm hoặc tự sửa các dấu tích ngoài phạm vi đã xác nhận. Các dấu tích chỉ ghi nhận kết quả trong phạm vi có căn cứ, không xác nhận tích hợp/vận hành toàn hệ thống và không biểu thị phần trăm hoàn thành đồ án. Phần checklist giữ nguyên văn đã đối chiếu với issue; hai cách gọi bàn giao cũ trong T01/T08 được giữ để không thay nội dung issue trong đợt biên tập này.
 
 <a id="t01"></a>
 
@@ -95,7 +95,7 @@ Thiết kế và xây dựng cấu trúc dữ liệu theo T01/TDD, cung cấp đ
 - [ ] Thiết kế bảng/quan hệ cho địa điểm, vùng, văn bản, audio/cặp, hồ sơ, yêu cầu tạo, phiên và lượt xem; đã có ERD logic dự thảo tại data-model hiện hành, chờ rà soát/mapping.
 - [x] Giữ định danh độc lập tên và thông tin nhận biết lịch sử địa điểm đã xóa, không gộp điểm trùng tên.
 - [ ] Thiết lập ràng buộc và khóa ngoại chặn xóa trực tiếp khi còn tham chiếu ở quan hệ cần chặn; không dùng ON DELETE CASCADE tại đó.
-- [ ] Viết migrations và dữ liệu khởi tạo tái tạo được cho năm điểm/bốn ngôn ngữ; không phục vụ nội dung chưa duyệt hoặc đưa secret vào repo.
+- [x] Viết migrations và dữ liệu khởi tạo tái tạo được cho năm điểm/bốn ngôn ngữ; không phục vụ nội dung chưa duyệt hoặc đưa secret vào repo.
 - [ ] Kiểm tra migrations, khởi tạo và ràng buộc; lưu bằng chứng phù hợp TDD, bàn giao cho Backend và T09.
 
 <a id="t03"></a>
@@ -225,7 +225,7 @@ Hòa phụ trách kiểm thử tích hợp/nghiệm thu theo PRD và môi trư�
 - [ ] Kiểm tra phiên khách 8 tiếng/cảnh báo 5 phút/ngoại lệ nghe tiếp, Admin 30 phút/Q2/Q3, tải lại, mạng lỗi và kết quả chưa rõ/đến muộn.
 - [ ] Kiểm tra áp dụng cả cặp, gate cặp vi, xóa giao dịch/giữ lịch sử, dọn file tách database và xóa dữ liệu 30 ngày.
 - [ ] Kiểm tra bộ 20+20, số đếm/hai bảng thống kê và QR/URL/PNG/bản in thực tế trên môi trường T10.
-- [ ] Lưu báo cáo/bằng chứng với kết luận đạt, chưa đạt hoặc chưa kiểm tra; kiểm tra lại sau sửa, không coi hàng chờ là đã xóa hoặc yêu cầu in là đã in.
+- [x] Lưu báo cáo/bằng chứng với kết luận đạt, chưa đạt hoặc chưa kiểm tra; kiểm tra lại sau sửa, không coi hàng chờ là đã xóa hoặc yêu cầu in là đã in.
 
 <a id="t10"></a>
 
@@ -257,7 +257,7 @@ Thành tổng hợp hướng dẫn và bàn giao theo sản phẩm thực tế; 
 
 #### Checklist
 
-- [ ] Soạn hướng dẫn chạy, cấu hình và khởi tạo theo sản phẩm/môi trường thực tế; ghi điều kiện, giới hạn, không đưa secret vào tài liệu.
+- [x] Soạn hướng dẫn chạy, cấu hình và khởi tạo theo sản phẩm/môi trường thực tế; ghi điều kiện, giới hạn, không đưa secret vào tài liệu.
 - [ ] Hoàn thiện hướng dẫn khách, Admin và trình diễn theo chức năng đã chạy, gồm phiên, vùng, cặp nội dung, lỗi, thống kê và QR.
 - [ ] Tập hợp hồ sơ nguồn/duyệt T08, kết quả kiểm thử T09 và vận hành T10; phân biệt đã kiểm chứng với chưa kiểm chứng.
 - [ ] Đồng bộ phiên bản, liên kết, trạng thái và giới hạn cuối; chuẩn bị bàn giao đúng đường dẫn và việc tiếp theo.
@@ -425,6 +425,36 @@ Bản đồ lưới/các tam giác E2E trùng nhau vẫn chưa đạt demo; chư
 ### 6.14. Nền raster OSM và khôi phục preview — 11/11
 
 [Handoff 2.40](handoff.md#osm-map-20261111) ghi lớp nền OSM/ghi công/tải-lỗi-thử lại cho Khách/Admin, build Docker và preview 18082 được khôi phục với DNS Docker riêng. 65 ca logic, 11 ca Chrome trên ảnh mới và 3 ca offline riêng đạt; 229 file baseline backend khớp Hash. Browser dùng tile kiểm; kết nối tile thật đang reset, chưa có bằng chứng hình ảnh nền thực. Năm vùng/bộ nội dung vẫn chờ duyệt, không áp dụng cặp hoặc bật điểm giả. Không thay 89 ô/20 dấu tích, G02 hoặc trạng thái GitHub Project; [bảng issue](issue-follow-up-2026-11-11.md) giữ các đầu việc chưa hoàn tất.
+
+### 6.15. Push, CI Linux, Compose và TTS thật — 12/11/2026
+
+[Handoff 2.45](handoff.md#push-ci-20261112) và [hồ sơ kiểm](../06-kiem-thu/release-readiness-20261112/README.md) ghi chín nhánh task đã push; một lượt full CI Linux đạt 520/520 backend, 65/65 logic frontend, 5/5 manifest và build. Diễn tập Compose giữ dữ liệu qua seed lặp/restart/update/rollback trên hai ảnh cùng schema đạt; một lượt Chrome từ Admin qua provider/converter đến nghe thử MP3 thật đạt, chưa duyệt/áp dụng cặp.
+
+Giữ 89 ô/20 dấu tích, không cập nhật issue hoặc Project từ các phép kiểm bộ phận. T08 thuộc cả nhóm và còn nháp chưa commit. HTTPS/QR, đủ 20 cặp được duyệt, thiết bị thật, gate/drain/scheduler/backup live và CD còn mở. Nguồn kiểm/Compose và tài liệu mới chờ rà trước mốc commit tiếp theo.
+
+### 6.16. Bản tập dượt riêng — 12/11/2026
+
+[Handoff 2.46](handoff.md#rehearsal-runtime-20261112) ghi môi trường mới 18083, image không chứa trang preview, tài khoản/khóa/volume riêng và bảo quản một bản văn/audio Gemini thật. [Hồ sơ](../06-kiem-thu/rehearsal-20261112/README.md) ghi 65 logic, build thường/preview, hai ca Chrome trước và sau restart, Hash và encode/probe/giải mã audio đạt. Một tile OSM thật tải được trong Chrome; chưa chốt toàn map/thiết bị. Các điểm vẫn ẩn, 0 cặp áp dụng; HTTPS/QR và duyệt bộ Ngọ Môn còn chờ đầu vào. T08 giữ nháp, chưa commit nguồn mới hoặc đổi 89 ô/20 dấu tích/Project.
+
+### 6.17. HTTPS Ngọ Môn — 12/11/2026
+
+[Handoff 2.47](handoff.md#https-ngo-mon-20261112) và [bằng chứng](../06-kiem-thu/https-ngo-mon-20261112/README.md): một cặp vi đã áp dụng/hiển thị, QR PNG thật, 71 logic frontend và 2 ca Chrome HTTPS đạt. V13 sửa precision vùng; API Khách ngrok vẫn không gửi cookie. Backend và lượt chạy lại được báo riêng trong hồ sơ. Còn thiết bị/QR thực, 20 cặp đã duyệt và vận hành live. Giữ nguyên checklist mục 3 và trạng thái GitHub chưa đối chiếu mới; chưa hoàn tất issue từ mốc một điểm.
+
+<a id="checklist-20261112"></a>
+
+### 6.18. Ghi nhận ba ô checklist — 12/11/2026
+
+Checklist local có 23/89 ô đã tích, tăng ba ô so với mốc 09/11, theo phạm vi đã được xác nhận:
+
+| Ô | Căn cứ |
+|---|---|
+| T02 — migrations và seed năm điểm/bốn ngôn ngữ | [Diễn tập Compose](../06-kiem-thu/release-readiness-20261112/README.md): seed hai lần vẫn 5 điểm/20 slot, điểm chưa duyệt giữ ẩn; không đưa secret vào bộ seed. |
+| T09 — báo cáo, phân loại kết quả và kiểm lại sau sửa | [Hồ sơ HTTPS](../06-kiem-thu/https-ngo-mon-20261112/README.md) tách full, chạy lại, fixture và kiểm thủ công; không suy yêu cầu in thành đã in. |
+| T11 — hướng dẫn chạy/cấu hình/khởi tạo | [Đóng gói](../07-van-hanh/dong-goi-va-ci.md) và [tập dượt](../07-van-hanh/tap-duot.md) ghi môi trường, cấu hình riêng, khởi động lại và giới hạn. |
+
+Không đóng issue hoặc đổi trạng thái Project; không tích các ô khác từ kết quả bộ phận. Các số đếm cũ ở mục 6.5–6.17 giữ theo thời điểm.
+
+Đã đồng bộ đúng ba dấu tích trên issue [#2](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/2), [#9](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/9) và [#11](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/11), đọc lại body sau cập nhật khớp nội dung dự kiến; cả ba issue vẫn mở. Không sửa title, assignee, nhãn, trạng thái Project hoặc các ô khác. Chưa đối chiếu lại tổng dấu tích trên toàn bộ 11 issue GitHub; 23/89 là số đếm local đã kiểm.
 
 ## 7. Nhật ký và snapshot theo thời điểm
 

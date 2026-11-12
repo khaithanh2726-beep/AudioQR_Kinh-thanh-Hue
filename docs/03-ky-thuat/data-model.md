@@ -47,7 +47,7 @@ erDiagram
     REGION_REVISION {
         uuid id PK
         uuid place_id FK
-        json polygon
+        longtext polygon
         string map_space_key
         string geometry_hash
         datetime saved_at
@@ -487,6 +487,14 @@ Migration V11 nối tiếp V1–V10, không sửa lịch sử migration: thêm `
 V12 thêm marker conversion_instance/task/token/file trên tts_job, FK instance đến runtime_instance và CHECK cho CONVERTING/SUCCEEDED; FAILED giữ WAV chỉ khi có failure_code LOCAL_ và mốc stage. SUCCEEDED/FAILED/DISCARDED có terminalAt, trạng thái đang xử lý không có terminal giả. workspace_file nhận thêm MP3. Không sửa checksum V1–V11 hoặc seed; nâng V11 có dữ liệu đã được kiểm trong bộ mới.
 
 Audio tiếp tục dùng V9: UNIQUE(job), cùng text/WAV của job và đúng định dạng hai file; không tạo bảng/audio nháp mới ngoài hợp đồng. Giữ source_wav_file_id khi audio còn tham chiếu FK tổ hợp, không tháo để vi phạm toàn vẹn. Token local không thay worker_token/snapshot provider. Retry local dùng lại job/WAV; token/file mới được cấp khi nhận lại, các file cũ giữ quy tắc dọn riêng. Kết quả/giới hạn tại [API 11.13](api-transactions.md#local-audio-implementation-result), phân công ở commit-plan 4.18; không tự tích toàn T02/T07.
+
+<a id="model-region-precision"></a>
+
+### 7.11. V13 — giữ nguyên tọa độ vùng
+
+Cột `region_revision.polygon` lưu chuỗi JSON chuẩn trong LONGTEXT với CHECK `JSON_VALID(polygon)`. JSON nhị phân của MySQL có thể đổi chữ số cuối của tọa độ khi đọc lại, làm sai Hash đã dùng trong A12/A14/gate hiển thị. Entity đọc/ghi chuỗi nguyên dạng; API vẫn nhận/trả GeoJSON, giữ cùng quy tắc chuẩn hóa, Hash và kiểm hình học, không làm tròn hoặc dùng dung sai để chấp nhận bản khác.
+
+V13 chỉ chuyển kiểu cột và giữ dữ liệu/Hash/con trỏ cũ, không sửa migration V1–V12. Không thể suy ngược các chữ số đã mất trong bản JSON cũ. Bản cũ đọc lại sai Hash tiếp tục bị chặn; cần lưu revision mới từ hình gốc đã duyệt và áp dụng qua API, giữ lịch sử cũ. V13 phải được kiểm nâng từ V12 và kiểm hồi quy đọc/lưu/áp dụng/bật điểm trước triển khai. Các mô tả mapping JSON tại mốc A12–A14 bên trên là lịch sử trước V13.
 
 ### Nhật ký biên tập
 

@@ -1,5 +1,11 @@
 # Mục lục tài liệu dự án
 
+**HTTPS Ngọ Môn 12/11:** [hồ sơ kiểm hiện hành](06-kiem-thu/https-ngo-mon-20261112/README.md) và [QR/hướng dẫn](07-van-hanh/tap-duot.md): một cặp vi đã áp dụng, Chrome HTTPS 2/2 và frontend 71/71 đạt. V13 giữ chính xác tọa độ; transport Khách xử lý cảnh báo ngrok mà vẫn không gửi cookie. Kiểm điện thoại thật và bộ 20 cặp còn mở. Các mốc bên dưới giữ kết quả lịch sử; nguồn mới chưa commit.
+
+**Bản tập dượt 12/11:** [hồ sơ mới](06-kiem-thu/rehearsal-20261112/README.md) và [hướng dẫn](07-van-hanh/tap-duot.md) ghi môi trường riêng 18083, tài khoản/volume riêng và audio Gemini đã giữ Hash. Đã đạt 65 logic, hai chế độ build, Docker, hai ca Chrome trước/sau restart và kiểm media; preview không đóng gói trong bản thường. Một tile thật tải được trong Chrome; toàn bản đồ/điện thoại chưa kiểm. Chưa public hoặc mở điểm khi chưa duyệt; T08 giữ nháp. Nguồn mới chờ rà, chưa commit.
+
+**Mốc 12/11:** [push task, CI Linux, Compose và TTS thật](06-kiem-thu/release-readiness-20261112/README.md): chín nhánh đã push, một lượt CI đạt 520/520 backend +65/65 frontend +5/5 manifest/build; bốn chặng Compose và một lượt Admin → Gemini → MP3/nghe thử đạt. T08 giữ nháp chưa commit. Chưa mở public; còn HTTPS/QR, duyệt vùng/20 cặp, thiết bị thật và vận hành. Các bản ghi bên dưới giữ kết quả đúng thời điểm; trạng thái push hiện hành tại [commit-plan 4.21](01-tong-quan/commit-plan-2026-11-05.md#push-ci-20261112).
+
 **Chuẩn bị Git:** [dọn thư mục ngày 12/11](06-kiem-thu/workspace-cleanup-20261112/README.md) đã chuyển kết quả test/dist ra ngoài repo và gom bằng chứng trùng có giữ Hash/đường dẫn gốc. 456 mục Source Control trên T01 không phải 456 file mới; 208 file backend khớp các nhánh task local. Giữ mã ứng dụng/kiểm thử; chưa stage/commit/push.
 
 **Preview mới nhất:** [ghim đúng vị trí nhấn và thu gọn trang](06-kiem-thu/map-pin-20261111/README.md) đã lên cổng 18082; 65 ca logic/build và 14 ca Chrome trên ảnh cuối đạt. Chỉ một ghim, không GPS; tile Chrome là ảnh kiểm, chưa xác nhận kết nối nền thật. Các mốc runtime bên dưới giữ đúng lịch sử.

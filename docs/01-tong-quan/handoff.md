@@ -1,5 +1,7 @@
 # Bàn giao — trạng thái và quy trình dự án
 
+**Mốc hiện hành 12/11:** [HTTPS Ngọ Môn](#https-ngo-mon-20261112) và [checklist 23/89](roadmap.md#checklist-20261112) cập nhật sau các bảng mốc cũ bên dưới. Android đã có xác nhận nghe thành công trong hồ sơ kiểm. Phạm vi lưu nguồn/PR tại [commit-plan mục 4.22](commit-plan-2026-11-05.md); chưa nghiệm thu toàn bộ đồ án.
+
 **Cập nhật:** 11/11/2026. Tài liệu ghi nhận sản phẩm hiện có, phạm vi kiểm chứng, công việc tiếp theo và quy trình phối hợp. Phê duyệt yêu cầu hoặc thiết kế không thay thế bằng chứng kiểm thử và nghiệm thu.
 
 ## 1. Sản phẩm và bằng chứng hiện có
@@ -617,6 +619,38 @@ Giữ nhánh IDE T01 và nguồn đang sửa bằng Hash; dùng worktree cùng r
 Đã commit T04 `3a81856` (29 file) và T06 `b77516e` (17 file), author/committer `lechiNghiaa <lechinghia1412@gmail.com>` theo danh tính được cung cấp và bước đăng nhập Credential Manager. [Commit-plan 4.20](commit-plan-2026-11-05.md#frontend-commits-20261112) ghi SHA đầy đủ/phạm vi; đã đối chiếu đủ 57 file frontend với nguồn đã rà, bao gồm các file kiểm chung T09.
 
 65/65 logic và build trên cây chuẩn bị đầy đủ đạt trước commit; không tạo thêm kết quả browser hoặc nghiệm thu nền tile/audio thật. Chỉ sửa metadata thông điệp của hai commit vừa tạo chưa push để khắc phục mất dấu, giữ tree và bảy commit trước. Giữ nhánh IDE T01 và nguồn đang làm việc; các nhánh task nhận nền frontend/tài liệu trong cùng repository trước kiểm checkout. Chưa push, đổi main, merge PR hoặc tích issue/Project/checklist. T08 còn sáu file nháp chờ chốt người commit.
+
+<a id="push-ci-20261112"></a>
+
+### 2.45. Push task, CI Linux, Compose và TTS thật — 12/11/2026
+
+Đã xác thực ba tài khoản GitHub có quyền push và đẩy chín nhánh task theo G02; SHA remote được đối chiếu. [Commit-plan 4.21](commit-plan-2026-11-05.md#push-ci-20261112) giữ bảng nhánh và hai commit sửa CI. T08 thuộc cả nhóm, sáu file nháp giữ ngoài commit theo điểm dừng nội dung; không thay main, merge PR, issue, Project hoặc 89 ô/20 dấu tích.
+
+[Hồ sơ kiểm](../06-kiem-thu/release-readiness-20261112/README.md) ghi một lượt GitHub Actions trên `56814d3`: full Linux 520/520 backend, 65/65 logic frontend, 5/5 manifest và build đạt. Hai lỗi CI đã xử lý: LF cuối cấu hình Maven Wrapper và cấp hostname thực cho tiến trình Java. Giữ phiên bản công cụ và cơ chế bảo vệ owner/file. Các lượt trùng SHA bị concurrency hủy không được tính là lượt đạt.
+
+Diễn tập Compose riêng đạt bốn chặng seed lặp/restart/update/rollback trên hai ảnh tương thích schema V1–V12; giữ database, volume audio, migration và khóa/epoch. Một ca Chrome headless thực từ Admin qua Gemini/converter đến MP3/nghe thử đạt, một job, không Retry. WAV/MP3 đã probe, giải mã trọn và đối chiếu Hash; audio còn là nháp, không ghi hồ sơ duyệt/áp dụng hoặc bật điểm. Container thử đã dừng; secret/audio giữ ngoài repository. Không dùng computer use.
+
+Nguồn tiếp theo chờ rà: Compose cho phép chọn ảnh và điều khiển converter mặc định tắt; công cụ/ca kiểm mới và hồ sơ này chưa commit. Phần T08 không thay đổi. Còn HTTPS/QR, duyệt vùng/20 cặp, thiết bị thật, OPS_GUARD/drain/scheduler/backup live và Tailscale/OpenSSH/CD. Hướng dẫn ngrok tại [vận hành](../07-van-hanh/dong-goi-va-ci.md); chưa mở public hoặc tuyên bố toàn đồ án hoàn thành.
+
+<a id="rehearsal-runtime-20261112"></a>
+
+### 2.46. Bản tập dượt riêng, chưa public — 12/11/2026
+
+Đã dựng project `hueqr-rehearsal-15d2f5c0` trên hai volume mới, Khách `http://localhost:18083` và Admin `/admin.html`. [Hồ sơ kiểm](../06-kiem-thu/rehearsal-20261112/README.md) ghi image/Hash, nguồn dữ liệu và giới hạn; [hướng dẫn](../07-van-hanh/tap-duot.md) giữ quy trình khởi tạo, đăng nhập, HTTPS/QR và restart. Preview 18082 giữ riêng. Tài khoản nguồn bị khóa trên đích; tài khoản mới và khóa runtime giữ ngoài repo với ACL riêng. Mọi worker tắt, chưa mở tunnel.
+
+Đã sửa `frontend/vite.config.js`: bản thường không đóng gói preview; chỉ thêm entry khi `VITE_MAP_PREVIEW=true`. 65/65 logic và cả hai chế độ build đạt. Bản mới giữ 5 điểm/20 slot, một bản văn/audio Ngọ Môn từ job Gemini thật, 0 cặp/0 điểm hiển thị. Không tạo hồ sơ duyệt giả hoặc gọi TTS mới. Hai ca Chrome đạt trước và sau restart; probe/giải mã/encode lại audio trong ảnh mới đạt và giữ đúng Hash. Một tile OSM thật tải được trong Chrome, chưa chứng minh toàn bản đồ/thiết bị; lỗi curl trước đó không tự chứng minh Chrome mất kết nối.
+
+Nguồn mới/sửa của mốc: `deploy/prepare-rehearsal.mjs` (T10), `frontend/vite.config.js`/README (T04), `frontend/tests/e2e/rehearsal.spec.mjs`/README và hồ sơ kiểm (T09), tài liệu bàn giao/vận hành (T01/T11). SHA-256 và danh sách đầy đủ trong `result.json` của hồ sơ. Chưa stage/commit/push mốc mới; G02 giữ nguyên, sáu file T08 không đổi. Mã backend/hợp đồng API/migration giữ nguyên.
+
+Điểm tiếp tục: cần ngrok đã liên kết/URL HTTPS và xác nhận duyệt văn bản/audio/vùng Ngọ Môn trước ghi hồ sơ, áp dụng cặp/bật điểm và kiểm Khách đầu cuối trên bộ này. Còn 20 cặp/thiết bị, OPS_GUARD/drain/scheduler/backup live và CD. Chưa thay main, issue/Project hoặc 89 ô/20 dấu tích; dừng ở mốc rà này trước chuyển mục lớn/commit.
+
+<a id="https-ngo-mon-20261112"></a>
+
+### 2.47. HTTPS/QR và cặp Ngọ Môn đã áp dụng — 12/11/2026
+
+[Hồ sơ kiểm](../06-kiem-thu/https-ngo-mon-20261112/README.md) ghi bản tập dượt riêng cổng 18083, URL HTTPS và QR thực. Đã áp dụng vùng và cặp Ngọ Môn vi theo hồ sơ duyệt, bật một điểm bằng API có receipt; không mở các điểm còn lại. V13 giữ chính xác tọa độ JSON; transport ngrok thêm header cùng origin có điều kiện và giữ API Khách không cookie. Frontend 71/71, build và hai ca Chrome HTTPS đạt; backend có lượt đầy đủ 521/522 với một assertion mới cần đọc cùng kết quả chạy lại riêng trong hồ sơ. Không gọi ledger nhiều lượt là một lượt full đạt.
+
+Ca assertion mới đã chạy lại 1/1 đạt; ledger có bằng chứng 522 ca độc lập đạt qua lượt full và chạy lại. Chưa kiểm quét QR/đọc/nghe trên điện thoại thật, chưa đủ 20 cặp và vận hành live. Bốn worker tắt; không gọi TTS thêm. [Hướng dẫn](../07-van-hanh/tap-duot.md) ghi cách khởi động lại và giới hạn V13. Khóa/tài khoản/dump giữ ngoài repo. Chưa stage/commit/push hoặc thay checklist/Project; dừng rà mốc này trước khi chuyển mục.
 
 ## 3. Tài liệu bàn giao
 
