@@ -26,6 +26,6 @@ Diễn tập restore trên schema, volume và kho audio **mới**, không ghi đ
 
 ## 4. CI/CD và tài khoản
 
-CI nguồn đã chuẩn bị; cần bàn giao các file đúng nhánh/tài khoản theo G02 và chạy GitHub Actions thật. CD cần Tailscale riêng, OpenSSH Windows, SSH host key/khóa đăng nhập, quyền Docker của tài khoản đích và thư mục triển khai. Chưa cấu hình các đầu vào này thì chưa chạy triển khai.
+Đã push chín nhánh theo G02 và chạy [CI Linux thật ngày 12/11](../06-kiem-thu/release-readiness-20261112/README.md): 520/520 backend, 65/65 frontend, 5/5 manifest và build đạt. Compose riêng đã kiểm giữ dữ liệu qua restart/update/rollback giữa hai ảnh tương thích schema; chưa thay cho kiểm môi trường phục vụ hoặc đường CD. CD cần Tailscale riêng, OpenSSH Windows, SSH host key/khóa đăng nhập, quyền Docker của tài khoản đích và thư mục triển khai. Chưa cấu hình các đầu vào này thì chưa chạy triển khai.
 
 Sau khi cấu hình, kiểm triển khai lặp lại, giữ volume qua thay ảnh, khởi động lại, rollback phiên bản tương thích schema và truy cập HTTPS từ thiết bị ngoài mạng. Phân biệt kết quả CI, đóng gói local, CD và nghiệm thu dữ liệu/thiết bị. Commit/push, PR, checklist và Project chỉ cập nhật đúng quyền đã giao và sau mốc rà.

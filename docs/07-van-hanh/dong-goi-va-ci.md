@@ -2,7 +2,7 @@
 
 Ứng dụng dùng Vue và Spring Boot chung origin. Docker build đóng gói hai trang khách/Admin vào static resources của backend. MySQL và kho audio nằm trên hai volume riêng.
 
-Mốc kiểm ngày 11/11: đã build ảnh Linux, kiểm FFmpeg/ffprobe với WAV thật và đường dẫn Unicode, chạy ứng dụng chung origin trên database/kho audio phục hồi riêng. [Bằng chứng đóng gói/restore](../06-kiem-thu/packaging-20261111/README.md) ghi phạm vi và danh tính ảnh. Lượt ứng dụng dùng `docker run`; Compose chỉ mới kiểm cấu hình, chưa nghiệm thu update/rollback qua Compose. Đây là môi trường kiểm loopback, chưa triển khai public.
+Mốc kiểm ngày 11/11: đã build ảnh Linux, kiểm FFmpeg/ffprobe với WAV thật và đường dẫn Unicode, chạy ứng dụng chung origin trên database/kho audio phục hồi riêng. [Bằng chứng đóng gói/restore](../06-kiem-thu/packaging-20261111/README.md) giữ phạm vi và danh tính ảnh. Mốc 12/11 đã kiểm [Compose restart/update/rollback và một lượt provider thật](../06-kiem-thu/release-readiness-20261112/README.md) trong môi trường mới chỉ mở loopback; chưa triển khai public hoặc nghiệm thu toàn bộ vận hành.
 
 ## Cấu hình
 
@@ -10,7 +10,11 @@ Sao chép mẫu `deploy/.env.example` ra tệp cấu hình riêng ngoài reposit
 
 `HUEQR_PUBLIC_START_URL` là URL HTTPS thật của trang bắt đầu và được nhận lúc build frontend. Trang Admin hiển thị URL chỉ đọc. Khi URL thay đổi, build lại ảnh ứng dụng và kiểm quét QR.
 
-`HUEQR_TTS_ENABLED` bật lời gọi provider. `HUEQR_TTS_LOCAL_ENABLED` trong Compose bật phần chuyển WAV đã có thành MP3. Cleaner và retention bật bằng các biến cấu hình riêng sau khi kiểm điều kiện vận hành.
+Riêng bản tập dượt ngrok free có `HUEQR_NGROK_SKIP_BROWSER_WARNING=true` lúc build để API Khách cùng origin nhận JSON/audio thay trang cảnh báo. Mặc định tắt; không đổi cơ chế credential hoặc gửi cookie cho Khách. Cách chạy và QR tại [hướng dẫn tập dượt](tap-duot.md).
+
+`HUEQR_TTS_ENABLED` bật lời gọi provider. `HUEQR_TTS_LOCAL_ENABLED` trong Compose bật phần chuyển WAV đã có thành MP3. Cả hai mặc định tắt; cleaner và retention cũng chỉ bật bằng các biến cấu hình riêng sau khi kiểm điều kiện vận hành. Không dùng khóa hoặc database của dự án khác khi sao chép cấu hình.
+
+`HUEQR_IMAGE` chọn tag ảnh, mặc định `hueqr:local`. Khi chuẩn bị phát hành, ghi tag/ID ảnh và SHA nguồn cụ thể vào hồ sơ. Chọn ảnh cũ bằng biến này chỉ phù hợp khi đã xác nhận tương thích schema; không hạ hoặc sửa migration đã áp dụng. [Công cụ Compose riêng](../../backend/src/test/fixtures/operations/README.md) kiểm độ bền volume qua bốn chặng, giữ cấu hình/credential ngoài repository.
 
 Từ thư mục repository, khi được giao chạy môi trường đóng gói, dùng lệnh sau với đường dẫn tệp cấu hình đã chuẩn bị.
 
@@ -30,9 +34,23 @@ Lượt ngày 11/11 đã đạt các kiểm media trên Linux nêu trên; giữ 
 
 Workflow `.github/workflows/ci.yml` chạy kiểm frontend và backend cho pull request, các nhánh task và khi kích hoạt thủ công. Frontend dùng lockfile, chạy test và build. Backend dùng Java 21, Maven Wrapper và Testcontainers MySQL, xuất báo cáo Surefire.
 
-Job Node kiểm thêm manifest backup bằng năm ca độc lập; không chạy Docker/provider hoặc database thật của môi trường phục vụ từ bộ kiểm này. Chưa push hoặc kích hoạt workflow trên GitHub.
+Job Node kiểm thêm manifest backup bằng năm ca độc lập; không chạy Docker/provider hoặc database thật của môi trường phục vụ từ bộ kiểm này. [Lượt GitHub ngày 12/11](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43135057755) trên `56814d3` đạt 520/520 backend, 65/65 logic frontend, 5/5 manifest và build. Artifact gồm Surefire, JAR và frontend dist; chưa có bước CD hoặc build/publish ảnh release trong workflow.
 
 Chạy workflow trên GitHub cần các file nguồn tương ứng đã được đưa lên nhánh. Lượt chạy cục bộ và lượt chạy GitHub được ghi nhận riêng trong hồ sơ kiểm thử.
+
+## Chuẩn bị ngrok trên Windows
+
+Cài và liên kết tài khoản theo [hướng dẫn Windows chính thức](https://ngrok.com/download/windows?tab=download), đối chiếu ngày 12/11/2026:
+
+```powershell
+winget install ngrok -s msstore
+ngrok version
+ngrok config add-authtoken '<authtoken-rieng>'
+```
+
+Thao tác đăng nhập/cấu hình token do người vận hành thực hiện trên máy, giữ ngoài Git và hồ sơ chia sẻ. Sau khi cài, mở lại terminal nếu PATH chưa cập nhật. Chưa chạy tunnel tới preview hoặc database thử chỉ vì đã cài công cụ.
+
+Khi đã xác nhận bản ứng dụng, dữ liệu và cổng phục vụ, mở một endpoint HTTP tới đúng cổng loopback theo [CLI quickstart](https://ngrok.com/docs/gateway/endpoints/agent-cli-quickstart), ví dụ `ngrok http 8080` nếu ứng dụng thực sự chạy tại 8080. Ghi URL HTTPS được cấp, đặt `HUEQR_PUBLIC_START_URL`, build lại và kiểm QR/cookie/CSRF qua URL đó. Ví dụ cổng không phải bằng chứng ứng dụng đang chạy hoặc URL đã được cấu hình. Giữ endpoint hoạt động trong lúc kiểm trên điện thoại; khi URL đổi phải cấu hình/build và phát QR lại.
 
 ## Bàn giao CD
 
