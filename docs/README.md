@@ -1,5 +1,9 @@
 # Mục lục tài liệu dự án
 
+**Mốc lưu nguồn 13/11:** [commit-plan 4.23](01-tong-quan/commit-plan-2026-11-05.md) ghi các commit local V14, kiểm thử/vận hành và bộ T08 dưới metadata Thành. Nguồn tổng hợp ở T01/T11, chưa push. Đã dọn build backend ra bản lưu ngoài dự án, giữ mã nguồn/dependencies/bằng chứng; trạng thái chưa commit trong các mốc lịch sử bên dưới được thay bởi mốc này. Không coi commit là duyệt đủ 20 cặp hoặc đã chuyển V14 sang bản phục vụ.
+
+**Vận hành 13/11:** [gate và backup/restore V14](06-kiem-thu/operations-guard-20261113/README.md), [hướng dẫn](07-van-hanh/bao-tri-va-sao-luu.md) và [đầu vào nội dung](05-noi-dung/san-sang-noi-dung-20261113.md). Đã kiểm nhóm backend, chu trình CLI và phát MP3 từ bản phục hồi riêng; lượt full có kết quả riêng trong hồ sơ. Chưa áp V14 lên bản Ngọ Môn V13, chưa đủ 20 cặp hoặc CD/Safari. Mốc mã nguồn trước được lưu ở tag `checkpoint-20261112-https-ngo-mon` (`4add6a8`); nguồn V14 đang chờ rà, chưa commit.
+
 **HTTPS Ngọ Môn 12/11:** [hồ sơ kiểm hiện hành](06-kiem-thu/https-ngo-mon-20261112/README.md) và [QR/hướng dẫn](07-van-hanh/tap-duot.md): một cặp vi đã áp dụng, Chrome HTTPS 2/2 và frontend 71/71 đạt. V13 giữ chính xác tọa độ; transport Khách xử lý cảnh báo ngrok mà vẫn không gửi cookie. Kiểm điện thoại thật và bộ 20 cặp còn mở. Các mốc bên dưới giữ kết quả lịch sử; nguồn mới chưa commit.
 
 **Bản tập dượt 12/11:** [hồ sơ mới](06-kiem-thu/rehearsal-20261112/README.md) và [hướng dẫn](07-van-hanh/tap-duot.md) ghi môi trường riêng 18083, tài khoản/volume riêng và audio Gemini đã giữ Hash. Đã đạt 65 logic, hai chế độ build, Docker, hai ca Chrome trước/sau restart và kiểm media; preview không đóng gói trong bản thường. Một tile thật tải được trong Chrome; toàn bản đồ/điện thoại chưa kiểm. Chưa public hoặc mở điểm khi chưa duyệt; T08 giữ nháp. Nguồn mới chờ rà, chưa commit.
@@ -208,6 +212,8 @@ docs/
 Tài liệu hiện hành và tài sản giữ vị trí ngoài hai file lịch sử đã chuyển. Các nhóm 05-noi-dung, 06-kiem-thu và 07-van-hanh chứa sản phẩm của mốc chuẩn bị chạy thử. Khung toàn dự án ở [README gốc](../README.md).
 
 <a id="handoff"></a>
+
+**Nội dung v02 ngày 13/11:** [bốn vùng](05-noi-dung/duyet-vung-demo-v02.json) đã áp dụng trên bản riêng; [hồ sơ đối chiếu](06-kiem-thu/content-review-20261113/README.md) ghi 14 audio mới có thật, 13 bản khớp qua AI, một bản cần nghe lại và năm bản ru chờ quota. Chưa đủ nghe duyệt D09 hoặc 20 cặp để chuyển phục vụ; bản Ngọ Môn cũ được giữ nguyên.
 
 ## 7. Bàn giao và thay đổi đường dẫn
 

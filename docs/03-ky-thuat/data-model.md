@@ -496,8 +496,16 @@ Cột `region_revision.polygon` lưu chuỗi JSON chuẩn trong LONGTEXT với C
 
 V13 chỉ chuyển kiểu cột và giữ dữ liệu/Hash/con trỏ cũ, không sửa migration V1–V12. Không thể suy ngược các chữ số đã mất trong bản JSON cũ. Bản cũ đọc lại sai Hash tiếp tục bị chặn; cần lưu revision mới từ hình gốc đã duyệt và áp dụng qua API, giữ lịch sử cũ. V13 phải được kiểm nâng từ V12 và kiểm hồi quy đọc/lưu/áp dụng/bật điểm trước triển khai. Các mô tả mapping JSON tại mốc A12–A14 bên trên là lịch sử trước V13.
 
+### 7.12. Gate vận hành V14 — 13/11/2026
+
+V14 bổ sung `ops_guard` một hàng id=1: mode RUNNING/QUIESCING/FROZEN, owner_token và changed_at UTC. CHECK yêu cầu RUNNING không có owner, các mode đóng có owner. `ops_activity` lưu id/instance_id UUID, kind HTTP/TTS_QUEUE/LOCAL_AUDIO/CLEANUP/RETENTION và started_at; không có hạn tự xóa hoặc suy hoàn tất theo tuổi.
+
+Các token điều phối nội bộ lưu CHAR(36) ASCII để CLI đối chiếu trực tiếp, không có quan hệ FK tới định danh nghiệp vụ; giữ nguyên mapping BINARY(16) của các định danh nghiệp vụ hiện hành.
+
+Admission khóa chia sẻ hàng guard trong giao dịch ngắn, chỉ ghi activity khi RUNNING; chuyển QUIESCING phải chờ cùng khóa hàng. Activity được tháo khi công việc thực kết thúc trong giao dịch riêng. Khởi động lại không thay mode/owner hoặc xóa activity. Trạng thái FROZEN còn yêu cầu bằng chứng drain và app đã dừng từ công cụ vận hành; CHECK database đơn lẻ không chứng minh tiến trình/file writer đã dừng.
+
+[Hồ sơ V14](../06-kiem-thu/operations-guard-20261113/README.md) và [hướng dẫn](../07-van-hanh/bao-tri-va-sao-luu.md) tách bộ kiểm riêng với bản Ngọ Môn V13 chưa cập nhật. Các migration V1–V13 giữ nguyên.
+
 ### Nhật ký biên tập
-
-
 
 Nhật ký theo thời điểm được giữ nguyên trong [hồ sơ biên tập](../99-luu-tru/document-history.md#official-20261107-03-ky-thuat-data-model-journal). Phần hiện hành không thay thế kết quả hoặc căn cứ lịch sử.

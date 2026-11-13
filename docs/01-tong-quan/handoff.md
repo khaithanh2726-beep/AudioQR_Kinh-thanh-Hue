@@ -1,6 +1,8 @@
 # Bàn giao — trạng thái và quy trình dự án
 
-**Mốc hiện hành 12/11:** [HTTPS Ngọ Môn](#https-ngo-mon-20261112) và [checklist 23/89](roadmap.md#checklist-20261112) cập nhật sau các bảng mốc cũ bên dưới. Android đã có xác nhận nghe thành công trong hồ sơ kiểm. Phạm vi lưu nguồn/PR tại [commit-plan mục 4.22](commit-plan-2026-11-05.md); chưa nghiệm thu toàn bộ đồ án.
+**Điểm tiếp tục 13/11:** [V14 và công cụ vận hành](#operations-guard-20261113) đã được triển khai/kiểm trên bộ riêng; giữ bản Ngọ Môn V13 và sáu nháp T08. Nguồn đã lưu local theo commit-plan 4.23, chưa push hoặc nghiệm thu vận hành chính thức. [Kiểm iPhone thật](../06-kiem-thu/https-ngo-mon-20261112/iphone-manual-20261113.json) đã có xác nhận bản Ngọ Môn chạy ổn; chưa đủ thông tin trình duyệt và toàn bộ ma trận Safari. CD còn thiếu đầu vào. Đọc hồ sơ mới trước khi dùng các nhận định lịch sử bên dưới.
+
+**Mốc 12/11 đã lưu:** [HTTPS Ngọ Môn](#https-ngo-mon-20261112) và [checklist 23/89](roadmap.md#checklist-20261112) cập nhật sau các bảng mốc cũ bên dưới. Android đã có xác nhận nghe thành công trong hồ sơ kiểm. Phạm vi lưu nguồn tại [commit-plan mục 4.22](commit-plan-2026-11-05.md); chưa tạo PR mới hoặc nghiệm thu toàn bộ đồ án.
 
 **Cập nhật:** 11/11/2026. Tài liệu ghi nhận sản phẩm hiện có, phạm vi kiểm chứng, công việc tiếp theo và quy trình phối hợp. Phê duyệt yêu cầu hoặc thiết kế không thay thế bằng chứng kiểm thử và nghiệm thu.
 
@@ -651,6 +653,36 @@ Nguồn mới/sửa của mốc: `deploy/prepare-rehearsal.mjs` (T10), `frontend
 [Hồ sơ kiểm](../06-kiem-thu/https-ngo-mon-20261112/README.md) ghi bản tập dượt riêng cổng 18083, URL HTTPS và QR thực. Đã áp dụng vùng và cặp Ngọ Môn vi theo hồ sơ duyệt, bật một điểm bằng API có receipt; không mở các điểm còn lại. V13 giữ chính xác tọa độ JSON; transport ngrok thêm header cùng origin có điều kiện và giữ API Khách không cookie. Frontend 71/71, build và hai ca Chrome HTTPS đạt; backend có lượt đầy đủ 521/522 với một assertion mới cần đọc cùng kết quả chạy lại riêng trong hồ sơ. Không gọi ledger nhiều lượt là một lượt full đạt.
 
 Ca assertion mới đã chạy lại 1/1 đạt; ledger có bằng chứng 522 ca độc lập đạt qua lượt full và chạy lại. Chưa kiểm quét QR/đọc/nghe trên điện thoại thật, chưa đủ 20 cặp và vận hành live. Bốn worker tắt; không gọi TTS thêm. [Hướng dẫn](../07-van-hanh/tap-duot.md) ghi cách khởi động lại và giới hạn V13. Khóa/tài khoản/dump giữ ngoài repo. Chưa stage/commit/push hoặc thay checklist/Project; dừng rà mốc này trước khi chuyển mục.
+
+### 2.48. Mốc lưu nguồn và ba ô checklist — 12/11/2026
+
+Đã ghi ba ô T02/T09/T11, đọc lại body các issue #2/#9/#11 trên GitHub sau cập nhật; checklist local 23/89 theo [roadmap 6.18](roadmap.md#checklist-20261112). Không đóng issue/đổi Project. Mã nguồn đã commit/push theo G02 và tổng hợp trên T11 tại `4add6a8`, tag `checkpoint-20261112-https-ngo-mon`; không tạo PR mới hoặc thay main. Sáu nháp T08 không thuộc tag. Tag/bundle chỉ khôi phục mã nguồn, không chứa database/audio/khóa runtime.
+
+<a id="operations-guard-20261113"></a>
+
+### 2.49. Khóa bảo trì và backup/restore V14 — 13/11/2026
+
+[Hồ sơ](../06-kiem-thu/operations-guard-20261113/README.md) ghi migration V14, admission lease bền cho API/bốn scheduler và CLI theo BKP-P02. Lượt full cuối sau sửa URL đạt 530/530; nhóm 36 sơ bộ, gate cuối 8 và manifest 8 lưu riêng, không cộng vào full. Đã sửa lỗi URI mã hóa đi qua gate, kiểm chu trình freeze/backup/resume, restore trên volume/schema mới, Admin phát đúng MP3 và quyền khách cũ/mới qua backup/restore. Cleanup/retention đã kiểm scheduler thật trên bản sao: gate đóng không quét; mở lại dọn đúng fixture đủ hạn, giữ file còn bảo vệ và Hash audio thật. Không gọi TTS, không mở tunnel và không áp V14 vào bản Ngọ Môn V13. Các bộ app/database thử được dừng và trả cờ worker về ban đầu, giữ dữ liệu/backup riêng.
+
+[Hướng dẫn vận hành](../07-van-hanh/bao-tri-va-sao-luu.md) ghi owner, khóa chống lệnh chạy chồng, kiểm dung lượng/Hash, hạn bảy ngày, epoch mới khi restore và giới hạn crash/manual writer. Chưa giải quyết mọi lease/claim không rõ owner hoặc lịch backup/dọn backup tự động; không bật các worker phục vụ từ kết quả bộ thử.
+
+[Đầu vào còn lại](../05-noi-dung/san-sang-noi-dung-20261113.md): duyệt bốn vùng, nội dung/15 bản dịch và 19 cặp còn lại; hiện API chưa có đường nhập audio cũ ngoài job được nghiệm thu, không giả registry. Android đã nghe thành công; iOS/Safari chưa có thiết bị. Preflight chưa có OpenSSH Server/service, chưa thấy Tailscale trong PATH, chưa xác thực CD-L01/quyền Docker từ xa. Không tự cài/mở truy cập hoặc suy kiểm local thành CD. Chưa tích thêm checklist/commit/push; dừng rà mốc vận hành trước khi áp vào bản phục vụ hoặc chuyển mục.
+
+<a id="content-review-20261113"></a>
+
+### 2.50. Rà nội dung v02 và TTS bộ demo — 13/11/2026
+
+[Hồ sơ và kết quả từng bản](../06-kiem-thu/content-review-20261113/README.md) ghi 20 văn bản v02, tám điều chỉnh ở Cửu Đỉnh/Diên Thọ và 14 audio mới qua API Admin thật, giữ Gemini 3.8 Flash TTS / Charon. MP3 được kiểm Hash và giải mã toàn file; Gemini 3.5 Flash chép lời độc lập không nhận văn bản tham chiếu. Có 13 bản khớp qua đối chiếu của tác nhân, Thái Hòa fr cần nghe lại thuật ngữ; năm bài ru chưa có audio đạt vì PROVIDER_QUOTA, đã dừng sau một lần Retry có kiểm vẫn lỗi. Không bật billing hoặc đổi model TTS.
+
+[Bốn vùng](../05-noi-dung/duyet-vung-demo-v02.json) được duyệt phạm vi chọn chạm cho demo, lưu/đọc lại/tính Hash/áp dụng trên bản V14 riêng; không phải xác nhận ranh giới khảo sát. Bản Ngọ Môn V13 đang phục vụ không bị sửa. Chưa ghi tham chiếu hoặc áp dụng các cặp mới: AI không được ghi thành người đã nghe trọn hoặc chuyên gia; giữ D09 và giới hạn bản dịch. Chưa đủ 20 cặp để nghiệm thu.
+
+Các fixture tại `backend/src/test/fixtures/demo/` giữ ledger trước lệnh, idempotency/receipt, chặn tự lặp kết quả không rõ và tách cấu hình/audio ra ngoài Git. Sáu nháp T08 và hồ sơ Ngọ Môn cũ giữ nguyên. Không commit/push, tích thêm checklist hoặc chuyển phục vụ trong mốc này. Phần tiếp tục là năm audio ru khi quota khả dụng, nghe duyệt và xử lý thuật ngữ fr, sau đó kiểm Khách đủ năm điểm/bốn ngôn ngữ trước chuyển bản phục vụ; các điều kiện vận hành ở 2.49 vẫn còn mở.
+
+### 2.51. Dọn thư mục và lưu nguồn cục bộ — 13/11/2026
+
+[Commit-plan 4.23](commit-plan-2026-11-05.md) ghi bảy nhóm T02/T07/T09/T10/T11/T08/T01 và SHA sản phẩm, metadata G02. T08 đã lưu dưới metadata Thành, gồm sáu nháp nguyên trạng và ba tệp v02; trạng thái nháp/giới hạn duyệt giữ nguyên, không coi commit là duyệt nội dung. Đã chuyển build `backend/target` ra bản lưu ngoài dự án, giữ dependencies và bằng chứng, không dọn database/audio hoặc prune Docker.
+
+Nguồn đầy đủ đã kiểm lại 71/71 logic frontend, 8/8 manifest và cú pháp fixture trước commit; full 530/530 backend vẫn là lượt trước của V14. Cây tổng hợp ở T01/T11, không thay main hoặc push/PR/issue/Project. Phần vận hành và nội dung chưa đủ vẫn theo 2.49–2.50; thông tin chưa commit ở các mốc trước được thay bởi mốc lưu local này, không suy đã triển khai V14 lên bản đang phục vụ.
 
 ## 3. Tài liệu bàn giao
 

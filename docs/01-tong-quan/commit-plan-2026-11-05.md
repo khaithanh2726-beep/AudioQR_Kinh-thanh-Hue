@@ -683,6 +683,26 @@ Commit chia theo G02: T02 (Hòa) dữ liệu/region mapping; T04 (Nghĩa) fronte
 
 PR tổng hợp dùng nguồn đã lưu để rà mốc chạy thử; không tự merge, đóng issue hoặc đổi Project. Mô tả PR liệt kê từng commit và tách kết quả CI cũ với lượt kiểm nguồn mới. Khôi phục mã nguồn không tự khôi phục MySQL/audio/epoch; dữ liệu chạy cần bản sao riêng, không rollback ảnh trước V13 trên schema đã nâng.
 
+### 4.23. Commit cục bộ V14 và bộ nội dung nháp — 13/11/2026
+
+Đã rà danh sách/Hash so với checkpoint `4add6a8`, bảo vệ thay đổi tại các worktree và tạo commit theo G02. T08 dùng metadata Thành để lưu chín tệp nội dung/hồ sơ; commit không biến văn bản, bản dịch hoặc audio chờ duyệt thành đã nghiệm thu. Author/committer được đối chiếu riêng, không thay danh tính toàn cục hoặc suy thành tài khoản push.
+
+| Task / metadata | Commit sản phẩm | File | Thay đổi chính |
+|---|---|---:|---|
+| T02 / Hòa | `be8978896c172adab055d2bb935273361ef4b96b` | 3 | Migration V14, repository khóa bảo trì và kiểm schema |
+| T07 / Thành | `359426080a0bb252fd07a8d4c05fcffb77c82923` | 6 | Gate API và bốn runner, lease tác vụ bền |
+| T09 / Hòa | `54953434924c723958a590fb163baa84bd835733` | 53 | Kiểm gate/restore/scheduler, fixture audio, bằng chứng và xác nhận iPhone |
+| T10 / Hòa | `7838625d0fbcb3523112494fe8e6258fe81dbf23` | 4 | CLI bảo trì, manifest backup, restore và retention |
+| T11 / Thành | `14907e04ad0d879afb1c83e676f103aa9a182b5d` | 3 | Hướng dẫn bảo trì/nghiệm thu và đầu vào nội dung |
+| T08 / Thành | `777757a745e1dcb632ef78e60db9d5bafdd6902a` | 9 | Sáu nháp gốc nguyên Hash, bundle/điều chỉnh v02 và hồ sơ bốn vùng demo |
+| T01 / Thành | Commit chứa mục 4.23 này | 7 | Thiết kế, hiện trạng, danh mục Hash và tổng hợp mốc lưu nguồn |
+
+Các nhánh nhận nền tuần tự bằng fast-forward; T01/T11 là cây tổng hợp cuối. SHA sản phẩm khác HEAD khi nhánh nhận thêm phụ thuộc. Không gọi từng commit trung gian là checkout đã build độc lập. Full backend 530/530 là lượt V14 trước; trước commit chạy lại 71/71 logic frontend, 8/8 manifest và kiểm cú pháp fixture đạt. Bộ nội dung vẫn 14/19 audio mới, chưa nghe duyệt đủ D09, còn năm bài ru vướng quota.
+
+Dọn bằng cách chuyển `backend/target` (1.488 tệp, 90.998.648 byte) vào bản lưu ngoài repository, giữ log/build cũ; không xóa nguồn hoặc bằng chứng. Giữ `frontend/node_modules` được ignore để chạy công cụ. Không đụng database/audio/container phục vụ hoặc prune Docker. Khóa, dump, WAV/MP3 và cache không thuộc commit.
+
+Chỉ commit local, chưa push/PR/merge, không đổi main, issue, Project hoặc checklist 23/89. Mốc mã nguồn không tự phục hồi database/audio; snapshot runtime nằm ngoài Git. Chín tệp T08 bảo toàn Hash, trạng thái nháp/giới hạn duyệt giữ nguyên.
+
 ## 5. Dấu vết thay đổi kế hoạch
 
 

@@ -1,5 +1,7 @@
 # TDD — Vòng đời dữ liệu, backup và kế hoạch kiểm chứng
 
+**Bổ sung 13/11:** [gate và công cụ V14](#ops-guard-v14) đã có kiểm thực trên môi trường riêng. Các đoạn trạng thái 04–11/11 bên dưới giữ bằng chứng theo thời điểm; không dùng chúng thay kết quả mới hoặc coi bộ thử đã được áp lên bản phục vụ.
+
 **Phiên bản nội dung:** 0.3; biên tập 11/11/2026. **Trạng thái:** dự thảo cơ chế và cách kiểm; phần backend Bắt đầu có bằng chứng riêng, chưa kiểm toàn bộ vòng đời/vận hành.
 **Mục đích:** giải thích tạo/giữ/vô hiệu/dọn quyền và metadata, tác vụ TTS/file, backup tạm ngừng phục vụ, restore và ma trận kiểm. LIFE-P01 vé ký 24 giờ, LIFE-P02/P03/REC/BKP-P02 đã chốt đúng phần.
 **Nguồn:** [decisions](../02-nghiep-vu/decisions.md), [model](data-model.md), [API](api-transactions.md), [TDD](TDD.md). Hướng đã chọn khác với cơ chế đã kiểm chứng; [điểm dừng thực tế](practice-01-start-session.md#practice-stop) được ghi riêng.
@@ -356,6 +358,18 @@ Scheduler dọn vòng đời **mặc định tắt**. Chỉ môi trường đã 
 Runtime scope bao phủ xử lý và tiến trình con; đầu ra tool qua pipe để Java ghi file, không để tool ghi trực tiếp tên MP3 đích. Marker local tách provider, chỉ nhận CONVERTING bị gián đoạn sau khi task cũ không còn. Metadata READY của WAV/MP3 hoàn chỉnh được giữ dù finalization lỗi. Workspace thành công được dọn theo hạn một giờ, file hoàn chỉnh theo tham chiếu/hạn gốc. MP3 không đủ bằng chứng codec/manifest được giữ; chưa tuyên bố xử lý mọi đầu ra mồ côi hoặc phục hồi toàn máy.
 
 Bộ full có 518/519 ca đạt; ca lỗi fixture đã sửa và chạy lại đạt. Sau siết gợi ý xử lý trên DISCARDED và thêm một ca, nhóm local/TTS 60 ca đạt lúc 2026-11-11T00:44:53+07:00. Ledger đối chiếu 520 ca độc lập từ 49 XML full và 3 XML nhóm cuối, không ghi full exit 1 thành pass hoặc cộng ca lặp. Bộ tích hợp dùng encoder giả/bytes tổng hợp, tiến trình con chỉ là Java fixture; chưa FFmpeg/ffprobe/provider/MP3 nghe thực. Bằng chứng tại API 11.13 và handoff 2.31. Giữ riêng 459 ca ở 6.3 theo thời điểm. V12 chỉ áp trên MySQL tạm, chưa migration/bật cleaner hoặc local runner trên database đang dùng, chưa backup/restore thực.
+
+<a id="ops-guard-v14"></a>
+
+### 6.5. Gate, checkpoint và công cụ V14 — 13/11/2026
+
+`ops_guard` giữ mode/owner bền; API và bốn scheduler nhận activity trong giao dịch có khóa chia sẻ cùng hàng mà lệnh QUIESCING cập nhật. Lượt đã nhận giữ lease tới khi kết thúc; không mở gate khi restart hoặc xóa activity theo tuổi. API dùng mã chung đã có `503 SERVICE_UNAVAILABLE`, không thêm endpoint vận hành. Gate không thay chính sách hết phiên, Q2/Q3 hoặc marker TTS.
+
+CLI quiesce/freeze/backup/resume có owner và mutex tại container DB để ngăn lệnh chồng, kể cả cùng token. Freeze kiểm hoạt động/task/claim/unlink trước stop và xác nhận app đã dừng; backup giữ MySQL, kiểm kết nối/container dùng chung volume, catalog/dump/Hash cùng checkpoint và dung lượng trước copy. COMPLETE được tách với kết quả restore, hạn bảy ngày giữ theo thời điểm tạo; bình thường giữ khóa/epoch. Restore kiểm đúng bộ/ảnh, vào project/volume/schema mới, lọc retention theo mốc gốc, đổi epoch/khóa, khởi động dưới FROZEN và dừng để rà trước phục vụ.
+
+[Hồ sơ kiểm](../06-kiem-thu/operations-guard-20261113/README.md) ghi lượt full cuối sau sửa URL đạt 530/530, nhóm 36 ca sơ bộ, gate cuối 8, manifest 8 và các lượt CLI/Chrome với audio thật. Filter nhận diện servletPath đã giải mã, không chỉ URI thô; HTTP thường/mã hóa đều bị chặn khi đóng gate và hoạt động lại khi mở. Cleanup/retention đã kiểm scheduler trên restore riêng với fixture, chặn quét lúc đóng và xử lý đúng khi mở, giữ audio có tham chiếu và file còn hạn bảo vệ. Không cộng nhóm vào full hoặc suy sang CI Linux mới. [Hướng dẫn](../07-van-hanh/bao-tri-va-sao-luu.md) ghi câu lệnh, đường dẫn và giới hạn.
+
+Chưa áp V14 lên bản Ngọ Môn V13; chưa tự phục hồi mọi lease/claim thiếu căn cứ owner, chưa kiểm provider đang chạy thật khi quiesce, lịch backup/dọn backup hoặc CD-L01. Mutex/gate không fence người có quyền SQL/DDL/Docker đi ngoài quy trình. Từ chối checkpoint chưa rõ tiếp tục là hành vi bắt buộc; không tự sửa phase/claim hoặc xóa khóa theo thời gian để đạt phép kiểm. Provider/local TTS luôn tắt; chỉ bật cleanup/retention trong lượt scheduler của bản sao, sau đó trả về cờ ban đầu. Không gọi TTS hoặc mở tunnel.
 
 ### Nhật ký biên tập
 

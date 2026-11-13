@@ -456,6 +456,18 @@ Không đóng issue hoặc đổi trạng thái Project; không tích các ô kh
 
 Đã đồng bộ đúng ba dấu tích trên issue [#2](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/2), [#9](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/9) và [#11](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/11), đọc lại body sau cập nhật khớp nội dung dự kiến; cả ba issue vẫn mở. Không sửa title, assignee, nhãn, trạng thái Project hoặc các ô khác. Chưa đối chiếu lại tổng dấu tích trên toàn bộ 11 issue GitHub; 23/89 là số đếm local đã kiểm.
 
+### 6.19. Gate và công cụ vận hành V14 — 13/11/2026
+
+[Handoff 2.49](handoff.md#operations-guard-20261113) và [bằng chứng](../06-kiem-thu/operations-guard-20261113/README.md) ghi gate bền, kiểm MySQL, manifest, CLI và Chrome sau restore riêng. Giữ 23/89 dấu tích; chưa nghiệm thu toàn ô vận hành hoặc đổi Project. Nguồn V14 chưa commit và chưa áp vào bản Ngọ Môn V13. Còn cập nhật phục vụ an toàn, crash/backup scheduling, đủ nội dung/vùng đã duyệt, Safari thật và CD-L01.
+
+### 6.20. Nội dung v02 và bốn vùng trong bản riêng — 13/11/2026
+
+[Handoff 2.50](handoff.md#content-review-20261113) ghi bốn vùng đã áp dụng riêng, 14/19 audio mới được tạo/giải mã thật và đối chiếu AI; chưa đủ nghe duyệt D09. Giữ năm bản ru chờ quota và Thái Hòa fr chờ kiểm phát âm, không tự áp cặp mới hoặc chuyển phục vụ. Checklist tiếp tục 23/89; không suy có MP3/ASR thành đạt toàn ô T08 hoặc thay Project.
+
+### 6.21. Mốc commit local sau dọn thư mục — 13/11/2026
+
+[Commit-plan 4.23](commit-plan-2026-11-05.md) ghi nguồn V14, kiểm thử/vận hành và chín tệp T08 đã lưu theo G02; T08 dùng metadata Thành và vẫn là bộ chưa duyệt cuối. Đã chuyển build backend ra bản lưu ngoài dự án, giữ dependencies và bằng chứng. Kiểm lại 71/71 logic frontend, 8/8 manifest đạt; không có lượt full backend mới. Chưa push hoặc thay main/Project/checklist; giữ 23/89 và các điều kiện chạy chính thức còn mở.
+
 ## 7. Nhật ký và snapshot theo thời điểm
 
 
