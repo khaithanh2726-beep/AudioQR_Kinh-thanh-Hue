@@ -24,6 +24,8 @@ Diễn tập restore trên schema, volume và kho audio **mới**, không ghi đ
 
 Đã có [diễn tập offline ngày 11/11](../06-kiem-thu/packaging-20261111/README.md): phục hồi DB/audio riêng, kiểm Hash, lọc retention và chạy ứng dụng với epoch mới. Chưa có OPS_GUARD/drain live hoặc reconcile job/claim đang xử lý; không coi lượt offline là backup môi trường đang phục vụ hoặc bật vận hành dựa riêng vào hướng dẫn này.
 
+Bổ sung 13/11: [bộ V14](../06-kiem-thu/operations-guard-20261113/README.md) triển khai gate bền và đã kiểm CLI freeze/backup/resume, phục hồi riêng và phát MP3 qua Admin. [Công cụ/hướng dẫn](bao-tri-va-sao-luu.md) chỉ nhận môi trường được nhận diện, giữ FROZEN khi chưa rõ. Chưa áp lên bản tập dượt V13; còn đối chiếu claim/lease do crash, lịch backup/dọn bản hết hạn và mốc cập nhật phục vụ. Kết quả này không mở rộng lượt offline cũ thành backup live.
+
 ## 4. CI/CD và tài khoản
 
 Đã push chín nhánh theo G02 và chạy [CI Linux thật ngày 12/11](../06-kiem-thu/release-readiness-20261112/README.md): 520/520 backend, 65/65 frontend, 5/5 manifest và build đạt. Compose riêng đã kiểm giữ dữ liệu qua restart/update/rollback giữa hai ảnh tương thích schema; chưa thay cho kiểm môi trường phục vụ hoặc đường CD. CD cần Tailscale riêng, OpenSSH Windows, SSH host key/khóa đăng nhập, quyền Docker của tài khoản đích và thư mục triển khai. Chưa cấu hình các đầu vào này thì chưa chạy triển khai.
