@@ -1,0 +1,73 @@
+{
+    "note":  "Technical hash checks are not human approval. Current API requires generation via registered jobs; minimum 16 is conditional on a separately approved and tested import path, not currently available.",
+    "potentialAdditionalTtsArticles":  16,
+    "legacyViAudio":  [
+                          {
+                              "place":  "Cổng Ngọ Môn",
+                              "textMatches":  true,
+                              "wavExists":  true,
+                              "mp3Exists":  true,
+                              "wavHashMatches":  true,
+                              "mp3HashMatches":  true,
+                              "humanReview":  "pending",
+                              "audioIsApprovedNgoMonRevision":  false
+                          },
+                          {
+                              "place":  "Điện Thái Hòa",
+                              "textMatches":  true,
+                              "wavExists":  true,
+                              "mp3Exists":  true,
+                              "wavHashMatches":  true,
+                              "mp3HashMatches":  true,
+                              "humanReview":  "pending",
+                              "audioIsApprovedNgoMonRevision":  false
+                          },
+                          {
+                              "place":  "Tử Cấm Thành",
+                              "textMatches":  true,
+                              "wavExists":  true,
+                              "mp3Exists":  true,
+                              "wavHashMatches":  true,
+                              "mp3HashMatches":  true,
+                              "humanReview":  "pending",
+                              "audioIsApprovedNgoMonRevision":  false
+                          },
+                          {
+                              "place":  "Cửu Đỉnh",
+                              "textMatches":  true,
+                              "wavExists":  true,
+                              "mp3Exists":  true,
+                              "wavHashMatches":  true,
+                              "mp3HashMatches":  true,
+                              "humanReview":  "pending",
+                              "audioIsApprovedNgoMonRevision":  false
+                          }
+                      ],
+    "otherPotentiallyReusableViAudio":  3,
+    "texts":  [
+                  {
+                      "language":  "vi",
+                      "draftSections":  5,
+                      "sha256":  "74f371a8f08c0a8b81b5be3a8a249fd2903550bc77679ffea878401c0e183e84"
+                  },
+                  {
+                      "language":  "en",
+                      "draftSections":  5,
+                      "sha256":  "5d9ced2b3850e57a8ead59df5638aeef02c0ecc48469d9db13c035577734e50d"
+                  },
+                  {
+                      "language":  "fr",
+                      "draftSections":  5,
+                      "sha256":  "3e3cd141f44bc01564de63dff3671e0233bac3a68148124a6cd106d175cf58cb"
+                  },
+                  {
+                      "language":  "ru",
+                      "draftSections":  5,
+                      "sha256":  "1e0779cf09a1ef0b6942e23901f05aec90871ebf2ba75771e8b6b671945907b2"
+                  }
+              ],
+    "approvedPairs":  1,
+    "checkedAt":  "2026-11-13T00:30:03.9952756+07:00",
+    "plannedAdditionalTtsWithCurrentApi":  19,
+    "externalAudioImportAvailable":  false
+}

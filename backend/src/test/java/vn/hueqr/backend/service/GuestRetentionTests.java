@@ -55,6 +55,9 @@ class GuestRetentionTests {
 	GuestRetentionService retention;
 
 	@Autowired
+	OperationsGateService operations;
+
+	@Autowired
 	GuestContentRepository content;
 
 	@Autowired
@@ -359,9 +362,9 @@ class GuestRetentionTests {
 		assertThat(context.getBeansOfType(GuestRetentionRunner.class)).isEmpty();
 		UUID sid = session(null);
 		clock.set(EXPIRY.plus(RETENTION));
-		new GuestRetentionRunner(retention, 10).tick();
+		new GuestRetentionRunner(retention, 10, operations).tick();
 		assertThat(retention.clean(sid).state()).isEqualTo(NOT_FOUND);
-		assertThatThrownBy(() -> new GuestRetentionRunner(retention, 0)).isInstanceOf(IllegalArgumentException.class);
+		assertThatThrownBy(() -> new GuestRetentionRunner(retention, 0, operations)).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	private UUID session(Instant ended) {

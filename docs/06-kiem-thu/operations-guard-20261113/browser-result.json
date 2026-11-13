@@ -1,0 +1,12 @@
+{
+  "status": "PASSED",
+  "adminLogin": true,
+  "places": 5,
+  "textLoaded": true,
+  "mp3Checksum": "b236c64424078f960a7dc164d17294b804fd1ff5ffbb800b1f2f988165011354",
+  "actualPlayback": true,
+  "administrativeWrites": [],
+  "tileFixture": true,
+  "realPhoneVerified": false,
+  "providerRequests": 0
+}

@@ -1,0 +1,13 @@
+{
+  "attempts": [
+    {
+      "scope": "first Admin UI preview fixture",
+      "status": "FAILED",
+      "completedVietnamesePreviews": 4,
+      "reason": "Exact language-label locator did not match the rendered select accessible name.",
+      "correction": "Use existing language label prefix; no product code changed.",
+      "countedAsFullPass": false
+    }
+  ],
+  "successfulRun": "admin-review-browser.json"
+}

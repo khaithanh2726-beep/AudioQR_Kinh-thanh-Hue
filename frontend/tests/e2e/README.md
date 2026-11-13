@@ -42,6 +42,10 @@ Kịch bản tạo địa điểm/tài khoản khách có tên riêng, không x�
 
 Hai ca kiểm tải QR/in CSS, nhận map JSON không cookie, đọc/nghe MP3 thật và kết thúc. Tile là fixture; không thay bằng chứng quét QR/thiết bị hoặc mạng thật. Chọn thư mục kết quả mới, không công bố runtime chứa khóa. [Kết quả mốc HTTPS](../../../docs/06-kiem-thu/https-ngo-mon-20261112/README.md).
 
+## Kiểm Admin sau restore V14
+
+`operations-restore.spec.mjs` nhận `HUEQR_OPS_RESTORE_RUNTIME` tới thư mục restore riêng có `browser-private.json` và `restore-result.json` do bộ diễn tập vận hành tạo. Đặt `HUEQR_E2E_URL` đúng URL loopback của bộ đó, `HUEQR_E2E_OUTPUT` tới đích mới; chạy riêng `npm.cmd run test:e2e -- operations-restore.spec.mjs`. Chỉ nhận project `hueqr-ops-check-*`. Ca kiểm đăng nhập Admin, đọc bản văn và phát đúng Hash MP3 từ volume phục hồi, không tạo TTS/duyệt/áp dụng. Tile dùng fixture, không thay kiểm thiết bị thật hoặc HTTPS. Không chia sẻ browser-private.json.
+
 ## Kiểm một lượt provider thật
 
 `provider.spec.mjs` chỉ chạy khi đặt `HUEQR_ALLOW_PROVIDER_TEST=one-vi` và `HUEQR_PROVIDER_RUNTIME` tới thư mục riêng có `provider-runtime.json`. Cấu hình này gồm `project` có tiền tố `hueqr-compose-check-`, `url` là origin localhost, `providerEnabled=true`, `adminLogin`, `adminPassword`; giữ tệp ngoài repository và giới hạn ACL. Backend phải thuộc đúng project thử, đã có năm điểm ẩn/20 slot, tài khoản Admin thử, khóa Gemini được phép sử dụng và hai worker provider/local bật; cleaner/retention tắt. Không dùng runtime đang phục vụ.

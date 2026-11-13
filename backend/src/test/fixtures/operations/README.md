@@ -1,6 +1,21 @@
 # Diễn tập đóng gói và backup/restore tách biệt
 
-Các công cụ tại đây phục vụ kiểm thử, không phải quy trình backup môi trường đang phục vụ. Thiết kế BKP-P02 yêu cầu OPS_GUARD và drain có bằng chứng; nguồn hiện chưa có gate đó. Không dùng việc script chạy đạt để tự bật backup hoặc scheduler live.
+## Bộ kiểm gate V14
+
+`maintenance-rehearsal.mjs` chỉ nhận bản mới do `deploy/prepare-rehearsal.mjs` tạo từ bộ provider đã dừng, dùng ảnh có V14, năm điểm ẩn/20 slot và một audio thật. Không dùng bản Ngọ Môn đã áp dụng/hiển thị. Chạy từ repo:
+
+```powershell
+node backend/src/test/fixtures/operations/maintenance-rehearsal.mjs '<runtime-thu-moi>' '<backup-moi>' '<restore-moi>' '<anh-V14>'
+node --test backend/src/test/fixtures/operations/operations-backup.test.mjs
+```
+
+Ca kiểm tạo đúng một lease fixture để xác nhận chặn freeze, sai owner và không tháo theo tuổi; chỉ xóa lease fixture do chính ca tạo. Sau đó kiểm freeze/backup/resume giữ khóa và epoch; restore sang project mới, gate đóng, Hash audio đích và epoch mới. Bốn fixture phiên/lượt được thêm **vào đích restore**, lọc ba ca hết hạn và giữ nguyên mốc ca còn hạn. Browser chạy riêng bằng `operations-restore.spec.mjs`. Khi đạt công cụ giữ hai bộ thử để kiểm browser; dừng đúng các container ghi trong runtime sau kiểm. Khi lỗi giữ gói/volume và dừng các container thử đã biết, không dọn Docker toàn cục.
+
+[Hướng dẫn công cụ V14](../../../../../docs/07-van-hanh/bao-tri-va-sao-luu.md) tách với các bộ offline cũ bên dưới. Các giới hạn của bộ offline không phủ định kết quả gate mới, và gate mới không tự nâng phạm vi bằng chứng cũ.
+
+`url-gate-rehearsal.mjs` chỉ nhận project restore riêng, kiểm bản sửa URL rồi backup/restore lại với ảnh đúng ID. `scheduler-rehearsal.mjs '<runtime-restore-rieng>'` bật cleanup/retention trên đích restore, không bật TTS; thêm bốn phiên/lượt và hai asset synthetic riêng, kiểm gate chặn quét rồi xử lý sau mở. Không dùng hai asset đó làm audio thuyết minh. Cuối lượt dừng dịch vụ, khôi phục private.env và recreate app ở trạng thái dừng với cờ worker ban đầu. Không chạy bộ này trên bản Ngọ Môn đang phục vụ.
+
+Các bộ offline cũ ở những mục bên dưới phục vụ kiểm thử, không có fence/drain của V14. Không dùng việc các script offline chạy đạt để tự bật backup hoặc scheduler live; kết quả gate mới được ghi riêng theo bộ kiểm và ảnh tương ứng.
 
 ## Diễn tập Compose và quay lại ảnh trước
 

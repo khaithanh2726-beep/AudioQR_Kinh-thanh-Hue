@@ -1,0 +1,11 @@
+{
+  "status": "RESTORE_VERIFIED_CLOSED",
+  "project": "hueqr-ops-check-d35ed1a3",
+  "imageId": "sha256:1e77e1e14ff8a8f4975c8efb16ffbc6ba108e7a884c681c0cbf9c55ed1798488",
+  "files": 2,
+  "gate": "FROZEN",
+  "epochChanged": true,
+  "retentionApplied": true,
+  "public": false,
+  "guestAdminFlowVerified": false
+}

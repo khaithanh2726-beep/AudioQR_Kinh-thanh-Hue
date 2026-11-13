@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-11-12T18:01:05.660Z",
+  "sourceProject": "hueqr-ops-check-62380770",
+  "imageId": "sha256:1e77e1e14ff8a8f4975c8efb16ffbc6ba108e7a884c681c0cbf9c55ed1798488",
+  "status": "PASSED",
+  "providerRequests": 0,
+  "productionUpdated": false,
+  "paths": {
+    "closedNormal": 503,
+    "closedEncoded": 503,
+    "openNormal": 200,
+    "openEncoded": 200
+  },
+  "finalBackupComplete": true,
+  "finalRestore": {
+    "project": "hueqr-ops-check-d35ed1a3",
+    "verifiedClosed": true,
+    "files": 2,
+    "allWorkersDisabled": true,
+    "shellWorkerOverridesIgnored": true
+  },
+  "finishedAt": "2026-11-12T18:02:46.459Z"
+}
