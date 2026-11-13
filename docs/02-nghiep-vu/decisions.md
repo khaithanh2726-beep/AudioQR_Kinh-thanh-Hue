@@ -33,7 +33,7 @@ Mục lục hiện hành tại [docs/README.md](../README.md). Tài liệu này 
 | G03 | [Ghi nhận checklist theo bằng chứng](#g03) | Đã chốt; đối chiếu đúng issue hiện hành, người vận hành trực tiếp cập nhật GitHub |
 | TECH-04 | [Đóng gói, phiên theo tab và audio tải trọn](#tech-04) | Hướng đã chốt 03/11; CD-L01 cập nhật theo TECH-05; cơ chế/ERD mới và tương thích chưa duyệt/kiểm |
 | DATA-02 | [Backup cục bộ cho phiên bản nghiệm thu](#data-02) | Đã bỏ yêu cầu ngoài laptop; giữ hạn/restore DATA-01, không mục tiêu cứu hỏng/mất toàn máy |
-| TECH-05 / CD-L01 | [Kênh CD đã chọn, cần kiểm chứng](#tech-05) | Tailscale riêng + OpenSSH Windows + PowerShell từ Actions; chưa SSH/Docker/CD chạy |
+| TECH-05 / CD-L01 | [Kênh CD và kiểm chứng](#tech-05) | Actions → Tailscale riêng → OpenSSH Windows/PowerShell đã chạy thật; giữ giới hạn vận hành riêng |
 | DATA-03 | [Phạm vi và nhịp backup](#data-03) | DB + WAV/MP3 đang tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema; giữ cục bộ/7 ngày/restore mốc gốc |
 | DATA-04 / LIFE-P01–P03 / REC-P01 / BKP-P02 | [Vòng đời, phục hồi và backup stop phục vụ](#data-04) | 04/11: P02/P03/REC/backup đã duyệt đúng phần; P01 tại DATA-04 chỉ hướng đơn giản, nay DATA-05 chốt vé 24 giờ riêng; chưa toàn thiết kế/kiểm thực |
 | DATA-05 / LIFE-P01 | [Vé Bắt đầu ký 24 giờ và chống lặp](#data-05) | Đã duyệt đúng phần 04/11; không start_generation/context/10 phút, không toàn TDD được duyệt hoặc kiểm |
@@ -184,7 +184,7 @@ Giữ nghiệp vụ đã duyệt: áp dụng cả cặp, điều kiện cặp vi
 
 ### 3.6. TECH-02 — Đầu vào môn học và môi trường
 
-- Chủ đề 2: Backend ba lớp có CI/CD, frontend đầy đủ; giữ Vue theo TECH-01. CI có bằng chứng thực; CD chưa nghiệm thu theo TECH-05.
+- Chủ đề 2: Backend ba lớp có CI/CD, frontend đầy đủ; giữ Vue theo TECH-01. CI có bằng chứng thực; CD thực chạy đạt theo TECH-05; không đồng nghĩa mọi điều kiện vận hành đã hoàn tất.
 - Môi trường phát triển/diễn tập: Windows, VS Code, PowerShell, Docker Desktop/Linux containers. Công cụ và lệnh kiểm tại [môi trường local](../07-van-hanh/moi-truong-local.md).
 - Khách hướng tới điện thoại Android/Chrome và iPhone/Safari; Admin dùng Windows/Chrome với chuột/bàn phím. Cần ghi model, OS, browser và mạng trong ma trận nghiệm thu; báo cáo Android/iPhone chạy được chưa thay toàn bộ ma trận.
 - Hướng trình diễn: laptop có Internet phục vụ qua HTTPS/ngrok, ưu tiên miễn phí. Ngân sách trả phí không tự được cấp từ việc chọn công nghệ.
@@ -256,7 +256,7 @@ Không cố định thông số gói miễn phí vào tiêu chí nghiệp vụ. 
 | Phần | Hướng đã xác nhận | Phạm vi chưa được duyệt/kiểm |
 | --- | --- | --- |
 | Đóng gói | Mã nguồn tách frontend/backend; Vue build rồi phục vụ cùng Spring Boot qua một cổng nội bộ, ngrok đưa ra HTTPS. Backend một ứng dụng chia module, Controller → Service → Repository. | Không duyệt toàn bộ TDD, tên mọi module/chi tiết DEV/API hoặc khẳng định tương thích đã chạy. |
-| CD-L01 | TECH-05 đã chọn Tailscale riêng + OpenSSH Windows, Actions qua PowerShell; ngrok web không Funnel. | Cần kiểm SSH/quyền Docker Desktop trước triển khai đầy đủ, không coi đã chạy hoặc mọi chi tiết CD đã duyệt. |
+| CD-L01 | TECH-05 đã chọn Tailscale riêng + OpenSSH Windows, Actions qua PowerShell; ngrok web không Funnel. | SSH/Docker và CD thực chạy đã có bằng chứng riêng; không coi mọi chi tiết vận hành được duyệt theo lựa chọn kênh. |
 | Phiên theo tab | Hai người mở hai tab rồi bấm bắt đầu thành công có hai ID độc lập, tên có thể trùng. Mỗi tab giữ đúng phiên; đổi ngôn ngữ/kết thúc A không ảnh hưởng B. Mở/tải lại không tự tạo phiên. | TDD phải xử lý tải lại/nhân bản/khôi phục và backend kiểm quyền, không chỉ cookie chung hoặc tin ID client. Không yêu cầu đồng bộ nghiệp vụ giữa tab. |
 | Tải audio | Khi chọn bài còn quyền, tải **trọn MP3 bài hiện tại** rồi giữ tạm cho tab và phát; Blob/object URL hoặc cơ chế tương đương. Không giả định media buffer/cache đã đủ. | Đây là hướng cần cụ thể hóa/kiểm chứng; không kho offline dài hạn, không thay mốc 8 giờ file/30 ngày/8 giờ phiên. |
 | Ngoại lệ hết hạn | Chỉ đúng bài **đang phát tại mốc hết hạn** được giữ dữ liệu đã tải để pause/resume tới cuối; map mờ/khóa/box hết hạn, ngôn ngữ khóa, văn bản vẫn đọc-cuộn. Tua/nghe lại/bài mới/điểm mới khóa. | Đang tải/chưa phát/đã pause trước mốc không có ngoại lệ; phản hồi muộn không tự phát. Không khôi phục nghe tiếp sau reload/đóng tab. Không hứa browser giữ tab/bộ nhớ hoặc autoplay. |
@@ -278,15 +278,15 @@ Không cố định thông số gói miễn phí vào tiêu chí nghiệp vụ. 
 
 <a id="tech-05"></a>
 
-### 3.13. TECH-05 — CD-L01 đã chọn, chưa kiểm chứng
+### 3.13. TECH-05 — CD-L01 đã chọn và có bằng chứng thực chạy
 
 **Đã xác nhận ngày 03/11/2026**, căn cứ [8.1.16](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/decisions-history.md#tech-05-source).
 
 - Chọn Tailscale **mạng riêng** kết hợp OpenSSH trên **Windows** để GitHub Actions triển khai qua PowerShell vào laptop.
 - Ngrok tiếp tục cho khách/Admin truy cập website công khai; không dùng lại Funnel làm đường công khai. URL web không là quyền triển khai.
-- **Cổng kiểm trước triển khai đầy đủ:** SSH qua mạng riêng bằng khóa/host key đã ghim và Docker context của đúng tài khoản đã kiểm; SFTP/receiver riêng đạt. Còn lượt GitHub runner thật sau khi cấp OAuth/secrets; không dùng kết quả kiểm riêng thay CD toàn tuyến.
-- Giữ một Backend/ba lớp, source frontend/backend riêng và Vue build cùng Spring Boot theo TECH-04. Chưa chọn credential/path/port/workflow cụ thể hoặc cấp quyền cài đặt/cấu hình.
-- Kênh đã chọn không đồng nghĩa toàn TDD/API/ERD được duyệt, CI xanh không là bằng chứng CD; bảo toàn DB/audio và xử lý deploy lỗi theo thiết kế được kiểm sau này.
+- **Cổng kiểm trước triển khai đầy đủ:** SSH qua mạng riêng bằng khóa/host key đã ghim và Docker context của đúng tài khoản đã kiểm; SFTP/receiver riêng đạt. [GitHub runner thật](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664) đã build, truyền và triển khai đạt trên nguồn 134ac0d; source/image/runtime được đối chiếu sau chuyển.
+- Giữ một Backend/ba lớp, source frontend/backend riêng và Vue build cùng Spring Boot theo TECH-04. Cấu hình runtime/khóa giữ ngoài source; workflow chủ động đúng SHA và chỉ deploy sau các job kiểm đạt.
+- Kênh đã chọn không đồng nghĩa toàn TDD/API/ERD được duyệt, CI xanh không là bằng chứng CD; bảo toàn DB/audio và đối chiếu backup/restore/rollback cùng phạm vi đã kiểm.
 
 <a id="data-03"></a>
 
@@ -1033,7 +1033,7 @@ Nghiệp vụ D/A/Q/UI/TECH/DATA ở trên giữ nguyên phạm vi. Mã đã tri
 | Vùng/giao diện | Vùng tương tác phục vụ UX, không là ranh giới pháp lý; kiểm dữ liệu áp dụng thực và đầy đủ luồng chồng lấn/chạm/kéo/phóng, Q2/Q3, thiếu nội dung. | P06–P08, UI, báo cáo kiểm |
 | Thiết bị | Android/iPhone đã có báo cáo chạy được; còn ghi model/OS/browser/mạng và đủ ma trận ngoại lệ, tab nền, reload/hết hạn/audio. | IN-P02, T09 |
 | Vận hành | V14/gate/backup/restore đã kiểm riêng và đã chuyển bản phục vụ có backup trước nâng; còn owner sau crash đủ căn cứ, quyền/lịch backup-log và RPO/RTO. | DATA-01–05, operations-design |
-| CD | Tailscale/OpenSSH/PowerShell, quyền Docker Desktop, deploy/health/rollback và bằng chứng workflow trên máy đích chưa nghiệm thu. | TECH-05, T10 |
+| CD/vận hành | CD GitHub đã đạt; còn lịch backup/log, mọi ca crash và khả năng tái lập đầy đủ trên môi trường được bàn giao. | TECH-05, T10 |
 | Hồ sơ | Đối chiếu toàn bộ checklist và tài liệu với bằng chứng; không tích cả ô khi mới đạt một phần. | Roadmap, T11 |
 
 Phân biệt ba nguồn: đặc tả quy định hành vi; mã/migration thể hiện triển khai; báo cáo ghi phép kiểm đã thực chạy. [Bàn giao](../01-tong-quan/handoff.md) và [báo cáo kiểm thử](../06-kiem-thu/README.md) tổng hợp trạng thái mới nhất; nhật ký nguyên bản không là trạng thái hiện hành.

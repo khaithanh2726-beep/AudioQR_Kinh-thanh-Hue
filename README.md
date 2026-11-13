@@ -16,7 +16,7 @@ Mã nguồn đã tích hợp vào main qua [PR #15](https://github.com/khaithanh
 
 Đã có lượt full backend 530/530 đạt; 71/71 logic frontend, build và các lượt Chrome/API/MP3 riêng có bằng chứng. Người kiểm đã báo sử dụng Ngọ Môn vi thành công trên Android và iPhone. Checklist được đối chiếu 62/89; số ô không biểu thị phần trăm hoàn thành đồ án.
 
-Bản tập dượt phục vụ Ngọ Môn tiếng Việt ở schema V14; đã kiểm snapshot/restore V13 trước nâng, backup/restore V14 và giữ nguyên vùng/cặp/audio khi chuyển. Hai scheduler dọn dữ liệu đã bật; TTS vẫn tắt, CD và lịch backup/log chưa hoàn tất. Bốn vùng khác và 14 audio mới vẫn ở môi trường nội dung riêng; năm bài ru và nghe duyệt D09/phát âm Thái Hòa fr còn chờ. Bộ 20 cặp và toàn bộ nghiệm thu chưa hoàn tất.
+Bản tập dượt phục vụ Ngọ Môn tiếng Việt ở schema V14; đã kiểm snapshot/restore V13 trước nâng, backup/restore V14 và giữ nguyên vùng/cặp/audio khi chuyển. Hai scheduler dọn dữ liệu đã bật; TTS vẫn tắt; CD GitHub đã đạt, lịch backup/log còn hoàn thiện. Bốn vùng khác và 14 audio mới vẫn ở môi trường nội dung riêng; năm bài ru và nghe duyệt D09/phát âm Thái Hòa fr còn chờ. Bộ 20 cặp và toàn bộ nghiệm thu chưa hoàn tất.
 
 ## Cấu trúc
 

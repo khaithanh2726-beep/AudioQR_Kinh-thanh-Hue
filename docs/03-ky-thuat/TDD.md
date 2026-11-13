@@ -11,7 +11,7 @@ Mô tả kiến trúc, phân lớp, giao tiếp và các cơ chế kỹ thuật 
 - Bản đồ Leaflet/OSM, mỗi điểm một đa giác kín đơn giản; Admin vẽ/sửa/xem trước/Lưu/Áp dụng. Mã sửa vùng riêng trên Leaflet; Geoman là lựa chọn khảo sát, không là dependency hiện hành. Không GPS/vùng tròn/Haversine.
 - Khách Android/Chrome và iPhone/Safari; Admin Windows/Chrome, máy tính/laptop với chuột/bàn phím. Đã có hai loại điện thoại, chưa ghi model/OS/build thật. Không dùng mốc minh họa Chrome 142/iOS 18.6 trước đây thành yêu cầu; không hứa mọi thiết bị.
 - Gemini gemini-3.8-flash-tts/Charon; WAV nguồn còn tham chiếu, MP3 phục vụ khách, FFmpeg/ffprobe Linux container. Nghe trọn/duyệt từng bài theo D09; kiểm codec/duration không duyệt thay.
-- HTTPS diễn tập qua ngrok đã được kiểm với bài Ngọ Môn vi; trạng thái live cần kiểm tại thời điểm chạy. CD riêng theo TECH-05: Actions → Tailscale riêng → OpenSSH Windows → PowerShell, chưa nghiệm thu.
+- HTTPS diễn tập qua ngrok đã được kiểm với bài Ngọ Môn vi; trạng thái live cần kiểm tại thời điểm chạy. CD riêng theo TECH-05: Actions → Tailscale riêng → OpenSSH Windows → PowerShell đã có lượt CD thực chạy đạt; lịch vận hành còn hoàn thiện.
 - Các quy tắc 8 giờ khách, 30 phút Admin/Q2/Q3, 30 ngày phiên/lượt, 8 giờ file từng áp dụng và DATA-01 giữ đúng từng lớp. Một QR chung, 20 văn bản +20 audio của bộ chuẩn năm điểm; không giới hạn số điểm hệ thống.
 - TDD gồm kiến trúc, mô hình dữ liệu, API/giao dịch, DFD và thiết kế vận hành. DDL V1–V14 và mã API đã có; tài liệu thiết kế không thay bằng chứng nghiệm thu toàn bộ tiêu chí.
 
@@ -454,7 +454,7 @@ flowchart LR
     Health --> Evidence["Run URL / SHA / kết quả<br/>không secret"]
 ```
 
-**CD-L01 ĐÃ CHỌN theo TECH-05, CHƯA KIỂM CHỨNG.** Actions → Tailscale riêng → OpenSSH Windows → PowerShell triển khai vào laptop. Ngrok chỉ website khách/Admin, không Funnel. Trước triển khai đầy đủ phải kiểm SSH và quyền/context Docker Desktop của tài khoản triển khai.
+**CD-L01 theo TECH-05 đã kiểm toàn tuyến.** Actions → Tailscale riêng → OpenSSH Windows → PowerShell triển khai vào laptop. Ngrok chỉ website khách/Admin, không Funnel. SSH bằng khóa/host key và quyền Docker context đã kiểm; job deploy chỉ chạy chủ động sau frontend/backend đạt.
 
 | Câu hỏi người mới | Phương án cụ thể đề xuất / giới hạn |
 | --- | --- |
@@ -464,11 +464,11 @@ flowchart LR
 | Khi deploy lỗi? | Kiểm health/version thật; lỗi trước đổi app thì giữ bản cũ. Nếu app mới lỗi và schema còn tương thích, quay image app trước, giữ volumes. Migration đã thay schema thì không hứa rollback chỉ bằng đổi image; dừng switch/báo lỗi, dùng quy trình phục hồi riêng đã kiểm nếu cần, lọc hạn gốc trước phục vụ. Không ghi đè DB hoặc xóa volumes để làm xanh pipeline. |
 | Quyền và rủi ro? | Mạng riêng chỉ workflow tin cậy → laptop/SSH, không mở WAN SSH/MySQL/Funnel. Quyền Docker có tác động lớn tới máy; cần giới hạn danh tính/nhánh/workflow/secret và kiểm quyền thực, không gọi đó là an toàn tuyệt đối. Tài khoản/điều kiện gói/host key/path chưa chọn. |
 
-Nguồn kiểm 03/11: [Tailscale GitHub Action](https://tailscale.com/docs/integrations/github/github-action), [OpenSSH Windows](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse), [Docker Desktop/WSL](https://docs.docker.com/desktop/features/wsl/). Đây là căn cứ khả năng công cụ và hướng đã chọn, chưa kết nối Windows/WSL/Docker thật.
+Nguồn kiểm 03/11: [Tailscale GitHub Action](https://tailscale.com/docs/integrations/github/github-action), [OpenSSH Windows](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse), [Docker Desktop/WSL](https://docs.docker.com/desktop/features/wsl/). Đây là căn cứ thiết kế; bằng chứng kết nối và triển khai thật nằm trong báo cáo kiểm thử.
 
 Không đặt self-hosted runner lâu dài trên laptop repo public làm mặc định; [GitHub secure use](https://docs.github.com/en/actions/reference/security/secure-use) nêu rủi ro. CD-L01 đã chọn, không lấy ngrok web thành shell/deploy hoặc quay Funnel. **Chưa kiểm SSH/Docker không chặn thiết kế ERD/API**, nhưng chặn việc coi triển khai đầy đủ đã sẵn sàng.
 
-Bằng chứng sau triển khai: run URL, SHA/digest, app version/health, DB/audio vẫn còn, rollback/restore thực và giới hạn; CI xanh/ngrok chạy chưa đủ chứng minh CD. Không gọi TTS thật trong CI hoặc ghi future run thành pass.
+Bằng chứng CD hiện hành: [workflow run 43486032664](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664), nguồn T10 134ac0d, ảnh đã nạp và runtime trùng nguồn, backup trước chuyển, schema/volume/nội dung/khóa/epoch giữ nguyên và HTTPS 200. Rollback/restore đã có lượt riêng; không suy mọi tình huống vận hành đạt chỉ từ một run. Không gọi TTS thật trong CI hoặc ghi future run thành pass.
 
 <a id="tdd-trace"></a>
 
@@ -490,7 +490,7 @@ Các nhóm mã bao phủ kiến trúc, không thay bảng truy vết đầy đ�
 
 ## 16. Trạng thái triển khai và giới hạn
 
-Mã nguồn gồm Vue Khách/Admin, API Spring Boot ba lớp, migrations V1–V14, hàng đợi TTS, chuyển WAV→MP3 và gate bảo trì. CI đã thực thi trên GitHub; CD qua Tailscale/OpenSSH chưa được nghiệm thu. Ngọ Môn vi đã dùng tập dượt HTTPS; bản phục vụ đã nâng V13→V14 có snapshot trước nâng và backup/restore V14 riêng. Hai scheduler dọn đã bật, TTS vẫn tắt. Bộ 20 cặp, các ca thiết bị/lỗi đầy đủ và vận hành cuối còn thiếu theo hồ sơ bàn giao.
+Mã nguồn gồm Vue Khách/Admin, API Spring Boot ba lớp, migrations V1–V14, hàng đợi TTS, chuyển WAV→MP3 và gate bảo trì. CI đã thực thi trên GitHub; CD qua Tailscale/OpenSSH đã có workflow thực chạy đạt, source/image và runtime được đối chiếu sau chuyển. Ngọ Môn vi đã dùng tập dượt HTTPS; bản phục vụ đã nâng V13→V14 có snapshot trước nâng và backup/restore V14 riêng. Hai scheduler dọn đã bật, TTS vẫn tắt. Bộ 20 cặp, các ca thiết bị/lỗi đầy đủ và vận hành cuối còn thiếu theo hồ sơ bàn giao.
 
 Phạm vi triển khai và nghiệm thu được tổng hợp tại [hiện trạng bàn giao](../01-tong-quan/handoff.md); kết quả thực thi tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
 

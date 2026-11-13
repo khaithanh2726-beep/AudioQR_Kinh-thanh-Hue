@@ -12,7 +12,7 @@ Lịch sử được rút gọn để trình bày tiến trình; trạng thái h
 | 13/11 — kỹ thuật | V14 gate/backup/restore/scheduler riêng, lượt full 530 ca đạt; tạo 14 audio mới, dừng phần ru vì quota |
 | 13/11 — lưu nguồn | PR #15 tích hợp vào main tại 601c09a, giữ lịch sử/tác giả; CI của PR đạt |
 | 13/11 — rà tiến độ | Đối chiếu 89 ô, cập nhật GitHub/local 62 ô, giữ 27 ô chưa đủ; Android/iPhone có báo dùng Ngọ Môn cơ bản |
-| 14/11 — vận hành | Snapshot/restore V13, diễn tập nâng V14, chuyển bản Ngọ Môn V14 và kiểm backup/restore; bật scheduler dọn, giữ dữ liệu và URL QR |
+| 14/11 — vận hành | Snapshot/restore V13, diễn tập nâng V14, chuyển bản Ngọ Môn V14 và kiểm backup/restore; bật scheduler dọn, CD GitHub thực chạy đạt, giữ dữ liệu và URL QR |
 
 ## Trạng thái kế thừa
 

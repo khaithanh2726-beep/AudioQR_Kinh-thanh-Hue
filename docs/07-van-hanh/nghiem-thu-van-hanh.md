@@ -16,7 +16,7 @@ Gate/backup/restore và scheduler V14 đã kiểm trên bộ riêng. Snapshot n�
 
 ## 4. CI/CD và khả năng tái lập
 
-CI đã chạy thật trên GitHub và kiểm PR #15 trước merge. CD-L01 đã kiểm khóa/host key, Docker context qua SSH và SFTP/receiver trên restore riêng. Job deploy chủ động đã có, còn OAuth/secrets và lượt triển khai thật từ GitHub runner. Kiểm restart/update/rollback phải giữ volume/khóa theo quy trình và tương thích schema; kết quả receiver riêng chưa thay nghiệm thu pipeline.
+CI đã chạy thật trên GitHub và kiểm PR #15 trước merge. CD-L01 đã kiểm khóa/host key, Docker context qua SSH và SFTP/receiver trên restore riêng. [Job deploy thật](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664) đã đạt, source/image/runtime và Hash audio được đối chiếu sau chuyển. Kiểm restart/update/rollback phải giữ volume/khóa theo quy trình và tương thích schema; receiver riêng và workflow thật là hai lượt bằng chứng phân biệt; lịch backup/log còn mở.
 
 ## 5. Hồ sơ bàn giao
 

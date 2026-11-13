@@ -25,7 +25,9 @@ Nguồn đã tích hợp qua [PR #15](https://github.com/khaithanh2726-beep/Audi
 
 ## 3. Kiểm chứng
 
-Full backend 530/530, 71/71 logic frontend, build và CI có kết quả đạt theo từng lượt. Đợt vận hành bổ sung đạt 20 ca Node cục bộ (5 manifest + 12 integrity + 3 runtime-env), snapshot/restore V13 và nâng V13→V14 riêng, backup/restore 30 tệp nội dung và hai tệp bản phục vụ. Ảnh V14 mới build frontend 71/71 và đóng gói JAR đạt, backend tests không chạy trong bước package. Hai scheduler dọn đã bật trên bản phục vụ sau kiểm riêng. Android/iPhone từng dùng Ngọ Môn cơ bản; chưa kiểm lại toàn ma trận sau cập nhật. CD, lịch backup/log và một số ca crash vẫn còn mở.
+Full backend 530/530, 71/71 logic frontend, build và CI có kết quả đạt theo từng lượt. Đợt vận hành bổ sung đạt 20 ca Node cục bộ (5 manifest + 12 integrity + 3 runtime-env), snapshot/restore V13 và nâng V13→V14 riêng, backup/restore 30 tệp nội dung và hai tệp bản phục vụ. Ảnh V14 mới build frontend 71/71 và đóng gói JAR đạt, backend tests không chạy trong bước package. Hai scheduler dọn đã bật trên bản phục vụ sau kiểm riêng. Android/iPhone từng dùng Ngọ Môn cơ bản; chưa kiểm lại toàn ma trận sau cập nhật. CD toàn tuyến đã đạt; lịch backup/log và một số ca crash vẫn còn mở.
+
+[CD thật ngày 14/11](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664) đạt cả frontend/backend/deploy trên nguồn T10 `134ac0d`: backend 530/530, frontend 71/71 và 20 ca backup/cấu hình. Bản phục vụ dùng ảnh `hueqr-local:ci-134ac0d496c1646dd5d96a0b66bd59e3d6648c87`, có backup trước chuyển. Đã đọc lại runtime: schema V14, volume/vùng/cặp/khóa/epoch giữ nguyên, hai Hash audio thật khớp và local/HTTPS trả 200. Đây là phép kiểm kỹ thuật; chưa phải lượt nghe mới trên điện thoại.
 
 Chi tiết tại [báo cáo kiểm thử](../06-kiem-thu/README.md). Checklist đã đối chiếu **62/89**, còn **27 ô** chưa đủ toàn điều kiện; [roadmap](roadmap.md) giữ nguyên các ô và phân công.
 
@@ -34,7 +36,7 @@ Chi tiết tại [báo cáo kiểm thử](../06-kiem-thu/README.md). Checklist �
 1. Tạo năm audio ru khi quota khả dụng, đối chiếu đúng revision/ngôn ngữ và bảo quản file/Hash.
 2. Nghe trọn và duyệt từng cặp theo D09; kiểm thuật ngữ Thái Hòa fr; giữ giới hạn bản dịch chưa thẩm định chuyên gia.
 3. Áp dụng cặp đạt duyệt, kiểm Khách đủ năm điểm/bốn ngôn ngữ và các ca lỗi/time/tab/thiết bị còn thiếu.
-4. Hoàn thiện ma trận truy vết, lượt CD thật từ GitHub runner, các tình huống claim/lease sau crash và lịch log/backup. SSH/Tailscale, host key, Docker context và SFTP/receiver riêng đã kiểm đạt; còn cấu hình OAuth/secrets để chạy pipeline.
+4. Hoàn thiện ma trận truy vết, các tình huống claim/lease sau crash và lịch log/backup. CD thật từ GitHub runner đã đạt, xem bằng chứng mục 3.
 5. Duy trì backup/restore đã kiểm, chốt lịch backup/log và hoàn tất nghiệm thu/bàn giao. Bản phục vụ đã chuyển V14; không tự hạ về V13 trên schema V14.
 
 ## 5. Nguồn tài liệu chính

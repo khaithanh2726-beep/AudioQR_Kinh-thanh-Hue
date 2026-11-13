@@ -34,7 +34,7 @@ Lượt ngày 11/11 đã đạt các kiểm media trên Linux nêu trên; giữ 
 
 Workflow `.github/workflows/ci.yml` chạy kiểm frontend và backend cho pull request, các nhánh task và khi kích hoạt thủ công. Frontend dùng lockfile, chạy test và build. Backend dùng Java 21, Maven Wrapper và Testcontainers MySQL, xuất báo cáo Surefire.
 
-Job Node kiểm thêm manifest backup bằng năm ca độc lập. [CI PR #15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43406790912) đạt 530/530 backend, 71/71 logic frontend, 5/5 manifest và build. Bộ kiểm manifest V14 mở rộng đạt 8/8 cục bộ là lượt khác. Artifact gồm Surefire, JAR và frontend dist; workflow chưa có CD hoặc build/publish ảnh release. Không gọi provider hay dùng database phục vụ trong CI.
+Job Node kiểm thêm manifest backup bằng năm ca độc lập. [CI PR #15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43406790912) đạt 530/530 backend, 71/71 logic frontend, 5/5 manifest và build. Bộ kiểm manifest V14 mở rộng đạt 8/8 cục bộ là lượt khác. Artifact gồm Surefire, JAR và frontend dist; đó là mốc CI trước khi bổ sung CD. Workflow hiện có deploy chủ động bằng ảnh truyền qua SSH, không publish registry; các job kiểm không gọi provider hoặc dùng database phục vụ.
 
 T10 `5ef599c` đã push và [CI đạt](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43469439941). Bộ kiểm cục bộ mới mở rộng thành 20 ca (5 manifest, 12 integrity V13/V14, 3 đọc runtime-env); workflow bổ sung các suite này, kết quả GitHub của mốc bổ sung được ghi riêng khi chạy.
 
@@ -57,7 +57,7 @@ node deploy/check-host.mjs
 node deploy/check-host.mjs --require-cd
 ```
 
-Công cụ báo Node, Docker/Compose, Linux Engine và trạng thái dịch vụ Windows OpenSSH/Tailscale; không cài, đăng nhập, mở cổng hoặc khởi động dịch vụ. Cờ `--require-cd` trả mã lỗi khi thiếu điều kiện máy. Trường kiểm từ xa của công cụ chỉ đọc không thay kết quả diễn tập riêng. Máy đích đã có Tailscale/OpenSSH chạy; đăng nhập bằng khóa, ghim host key, Docker context qua SSH và SFTP/receiver trên restore riêng đã đạt. Chưa có lượt deploy thật từ GitHub runner.
+Công cụ báo Node, Docker/Compose, Linux Engine và trạng thái dịch vụ Windows OpenSSH/Tailscale; không cài, đăng nhập, mở cổng hoặc khởi động dịch vụ. Cờ `--require-cd` trả mã lỗi khi thiếu điều kiện máy. Trường kiểm từ xa của công cụ chỉ đọc không thay kết quả diễn tập riêng. Máy đích đã có Tailscale/OpenSSH chạy; đăng nhập bằng khóa, ghim host key, Docker context qua SSH và SFTP/receiver trên restore riêng đã đạt. [Lượt deploy thật từ GitHub runner](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664) đã đạt, runtime được đọc lại sau chuyển.
 
 Đường CD đã chọn là GitHub Actions qua Tailscale riêng đến OpenSSH trên Windows, chạy PowerShell với context Docker Desktop của tài khoản triển khai. Cần cấu hình danh tính Tailscale, máy đích, SSH host key, khóa SSH, tài khoản và thư mục triển khai trước khi tạo bước phát hành thực thi.
 
@@ -99,4 +99,4 @@ Workflow `ci.yml` có input `deploy_source_sha`. Push/PR hoặc input rỗng ch�
 
 Job build ảnh Linux gắn SHA, tính Hash tar/JAR/bộ công cụ, kết nối Tailscale rồi chuyển bằng SFTP qua SSH ghim host key. Máy đích kiểm Hash trước khi nạp ảnh, đối chiếu SHA nhãn và Hash JAR sau nạp, gọi update-image với backup trước chuyển. Runtime config/khóa và database/audio không đi qua artifact. Các file trung chuyển tar/JAR được bỏ sau deploy đạt; giữ báo cáo/Hash/ảnh và backup theo chính sách riêng.
 
-Lượt kiểm SFTP/receiver trên restore riêng đã đạt, gồm nạp ảnh, backup, đổi ảnh, gate/health, giữ volume/khóa/epoch. Đó là kiểm giao thức trên máy đích, **chưa thay lượt CD thật từ GitHub Actions**. Mốc còn chờ OAuth/secrets phải giữ rõ cho đến khi có URL workflow deploy và kết quả máy đích tương ứng.
+Lượt SFTP/receiver riêng và [workflow CD thật](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664) đều đã đạt, được ghi riêng. Run 43486032664 triển khai nguồn 134ac0d sau backend 530/530, frontend 71/71 và 20 ca backup/cấu hình; target đọc lại đúng SHA/ảnh, V14, volume/khóa/epoch và hai Hash audio giữ nguyên, local/HTTPS 200. GitHub giữ artifact deployment-result; báo cáo máy đích và log chi tiết được bảo quản riêng. Lượt CD này không thay kiểm toàn ma trận thiết bị, dữ liệu mẫu hoặc lịch backup/log.
