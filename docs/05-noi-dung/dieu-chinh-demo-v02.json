@@ -1,0 +1,25 @@
+{
+  "scope": "course-demo-source-and-language-review",
+  "preserveOriginalFiles": true,
+  "overrides": {
+    "cuu-dinh": {
+      "vi": "Cửu Đỉnh gồm chín chiếc đỉnh bằng đồng lớn được đúc dưới thời vua Minh Mạng, đặt trước sân Thế Miếu trong Hoàng thành Huế. Mỗi đỉnh mang một tên riêng có ý nghĩa tượng trưng. Trên các đỉnh là 162 hình chạm nổi về núi sông, sản vật và đời sống của đất nước. Bộ đỉnh được ví như một bách khoa thư bằng đồng, thể hiện sự giàu đẹp, thống nhất của lãnh thổ và khát vọng trường tồn của vương triều.",
+      "en": "The Nine Dynastic Urns are nine large bronze vessels cast during Emperor Minh Mang’s reign and placed in front of The Mieu Temple within Hue Imperial City. Each urn has its own symbolic name. Their 162 relief designs depict the country’s landscapes, local products and daily life. Often described as an encyclopedia in bronze, the urns express the richness and unity of the territory and the dynasty’s wish for lasting prosperity.",
+      "fr": "Les Neuf urnes dynastiques sont neuf grands vases en bronze fondus sous le règne de l’empereur Minh Mang et disposés devant le temple The Mieu, dans la Cité impériale de Hué. Chaque urne porte un nom symbolique qui lui est propre. Leurs 162 motifs en relief représentent les paysages, les produits locaux et la vie du pays. Souvent décrit comme une encyclopédie de bronze, cet ensemble exprime la richesse et l’unité du territoire ainsi que le souhait de pérennité de la dynastie.",
+      "ru": "Девять династических урн — это девять больших бронзовых сосудов, отлитых при императоре Минь Манге и установленных перед храмом Тхемиеу в Императорском городе Хюэ. Каждая урна имеет собственное символическое название. На урнах представлены 162 рельефных изображения гор, рек, местных продуктов и повседневной жизни страны. Этот ансамбль называют бронзовой энциклопедией. Он выражает богатство и единство территории, а также стремление династии к долговечности."
+    },
+    "dien-tho": {
+      "vi": "Cung Diên Thọ là quần thể kiến trúc trong Hoàng thành Huế, từng là nơi ở và sinh hoạt của các Hoàng thái hậu và Thái hoàng thái hậu triều Nguyễn. Những công trình còn lại cùng nghệ thuật trang trí gỗ, sành sứ giúp du khách hình dung không gian sống của các bà hoàng. Trải qua thời gian, chiến tranh và các đợt trùng tu, Diên Thọ vẫn lưu giữ nhiều giá trị của kiến trúc cung đình. Nơi đây cũng gợi nhắc truyền thống coi trọng đạo hiếu trong đời sống hoàng gia.",
+      "en": "Dien Tho Residence is an architectural complex within Hue Imperial City, once used as the home of the Nguyen dynasty’s empress dowagers and grand empress dowagers. Its surviving buildings, decorated with carved wood and ceramic mosaics, offer a glimpse of their living spaces. Despite the passage of time, wartime damage and later restorations, the complex preserves important qualities of royal architecture. It also recalls the place of filial piety in the life of the royal family.",
+      "fr": "La résidence Dien Tho est un ensemble architectural de la Cité impériale de Hué. Elle accueillait les impératrices douairières et les grandes impératrices douairières de la dynastie Nguyen. Ses édifices conservés, ornés de bois sculpté et de mosaïques de céramique, évoquent leur cadre de vie. Malgré le temps, les dommages de guerre et les restaurations successives, l’ensemble conserve d’importantes valeurs de l’architecture impériale. Il rappelle aussi la place de la piété filiale dans la vie de la famille royale.",
+      "ru": "Резиденция Дьентхо — архитектурный комплекс в Императорском городе Хюэ, где жили вдовствующие императрицы и старшие вдовствующие императрицы династии Нгуен. Сохранившиеся здания, украшенные резьбой по дереву и керамической мозаикой, помогают представить их повседневную жизнь. Несмотря на влияние времени, военные разрушения и последующие реставрации, комплекс сохраняет важные черты дворцовой архитектуры. Он также напоминает о значении почтения к родителям в жизни императорской семьи."
+    }
+  },
+  "sources": [
+    {"topic":"Thai Hoa","url":"https://huetourism.gov.vn/Dien-Thai-Hoa.html/?pid=MjAzMDN8Y3NkbGRs0"},
+    {"topic":"Forbidden Purple City","url":"https://huetourism.gov.vn/Quan-the-di-tich-co-do-Hue-Di-san-van-hoa-the-gioi.html/?pid=MjAzMDR8Y3NkbGRs0"},
+    {"topic":"Urn names","url":"https://huetourism.gov.vn/Cuu-Dinh-trong-kinh-thanh-Hue.html/?pid=MTk4NTJ8Y3NkbGRs0"},
+    {"topic":"162 reliefs","url":"https://vietnamtourism.gov.vn/post/56218"},
+    {"topic":"Dien Tho","url":"https://huetourism.gov.vn/Nghe-thuat-trang-tri-cung-Dien-Tho.html/?pid=MjA0ODl8Y3NkbGRs0"}
+  ]
+}

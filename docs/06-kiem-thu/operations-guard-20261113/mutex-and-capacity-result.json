@@ -1,0 +1,10 @@
+{
+    "status":  "COMPLETE",
+    "disk":  {
+                 "availableBytesAtCopy":  "150855675904",
+                 "requiredBytes":  "1335518"
+             },
+    "files":  2,
+    "backupDurationMs":  5402,
+    "sameOwnerConcurrentResumeRejected":  true
+}

@@ -1,0 +1,90 @@
+{
+  "scope": "frontend only; authorized integration after self-review; no Git/GitHub, backend or shared docs writes",
+  "testsPassed": 51,
+  "guestAndDependencyFilesPreserved": [
+    "frontend/.gitignore",
+    "frontend/index.html",
+    "frontend/package.json",
+    "frontend/src/App.vue",
+    "frontend/src/main.js",
+    "frontend/src/style.css",
+    "frontend/tests/playback.test.mjs",
+    "frontend/src/components/GuestMap.vue",
+    "frontend/src/guest/api.js",
+    "frontend/src/guest/messages.js",
+    "frontend/src/guest/owner.js",
+    "frontend/src/guest/playback.js"
+  ],
+  "files": [
+    {
+      "path": "frontend/admin.html",
+      "baselineSha256": null,
+      "outputSha256": "cf5d4982e8ef0da56c590e26cd442c54bbee521d6ac321a05cdb7a3a42063bea"
+    },
+    {
+      "path": "frontend/src/admin/main.js",
+      "baselineSha256": null,
+      "outputSha256": "2d27063caec9e6f7c40397089dac640e9d1f24633050a5b84a2dd019c2b24156"
+    },
+    {
+      "path": "frontend/src/admin/AdminApp.vue",
+      "baselineSha256": null,
+      "outputSha256": "c76f11f5787d72bafa7eadc8bbbf9f58febc79bcd3e8a1dffb9504b341b1dbea"
+    },
+    {
+      "path": "frontend/src/admin/admin.css",
+      "baselineSha256": null,
+      "outputSha256": "83663efebbba73e392aa5bbd65b73e6783974a3b6c697282addfd763528755f1"
+    },
+    {
+      "path": "frontend/src/admin/api.js",
+      "baselineSha256": null,
+      "outputSha256": "dd5947baa7fc550480d00848068dec90d7b756cf7051515e2c6a819757ecd8dd"
+    },
+    {
+      "path": "frontend/src/admin/workspace.js",
+      "baselineSha256": null,
+      "outputSha256": "66a3a512e98c4fdaff1f0d3e480867d33d5841db6575faaa718ba17009209470"
+    },
+    {
+      "path": "frontend/src/admin/RegionEditor.vue",
+      "baselineSha256": null,
+      "outputSha256": "9ca53f8b5e33e06cda5c0b271e975d719c86c0f321ab6a5a25a267243e8222db"
+    },
+    {
+      "path": "frontend/src/admin/ContentEditor.vue",
+      "baselineSha256": null,
+      "outputSha256": "3efbeca2e098dfddccb8a7ecef842b1de15c8f6386ec9c656938e727df62d635"
+    },
+    {
+      "path": "frontend/src/admin/geometry.js",
+      "baselineSha256": null,
+      "outputSha256": "3bee94d77916ea69ce0bd1f126d5f5548aec66888442fee6dec9bc4cea131a7f"
+    },
+    {
+      "path": "frontend/tests/admin-workspace.test.mjs",
+      "baselineSha256": null,
+      "outputSha256": "74aba9247f2fdadaa06f069b8f14092d3b261aae4bbf553dbc6e4edcde32e0bf"
+    },
+    {
+      "path": "frontend/tests/admin-editors.test.mjs",
+      "baselineSha256": null,
+      "outputSha256": "676b63c7c7ff881183539670f942ac7e1e4e1158e22448ef8e37a69792930ab2"
+    },
+    {
+      "path": "frontend/vite.config.js",
+      "baselineSha256": "05670772d15e4ec05b4ddcc549f16bc726335c3f37f6961a4abe23c7bc5ce7f8",
+      "outputSha256": "98186b4ada205b134bd8bab04cc31c9b0c1f63c49704762b5dc4c378d609e803"
+    },
+    {
+      "path": "frontend/README.md",
+      "baselineSha256": "9c060133c2625e4e4c3deb761fe1abc9c21c45f2a53454f7e5c10577fdec46bb",
+      "outputSha256": "05ff5b7e08ed713e2c055864caa33bb9f570b1cfee395fe6e565a74afcd2fdf0"
+    },
+    {
+      "path": "frontend/verification-admin.json",
+      "baselineSha256": null,
+      "outputSha256": "d30a0ab80bb060b98cf8d7487c6638a60aa773bf498dabdb2ca1b6080bf606df"
+    }
+  ]
+}

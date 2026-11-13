@@ -1,0 +1,18 @@
+﻿[
+    {
+        "path":  "frontend/src/components/GuestMap.vue",
+        "sha256":  "55b934534ebc5defdae1139c9da267a1b08e91c5bc78790d7be97154849e9405"
+    },
+    {
+        "path":  "frontend/src/admin/RegionEditor.vue",
+        "sha256":  "9ca53f8b5e33e06cda5c0b271e975d719c86c0f321ab6a5a25a267243e8222db"
+    },
+    {
+        "path":  "frontend/src/admin/CompletenessPanel.vue",
+        "sha256":  "7e6e4c15fc3a854b246cbdd881f6ba225f26e235bd5488ed72eba121ae499b8a"
+    },
+    {
+        "path":  "frontend/src/style.css",
+        "sha256":  "ad5c115a7ea33887080604aba44617f01aaa23a1f34a92be8713bba19e004176"
+    }
+]

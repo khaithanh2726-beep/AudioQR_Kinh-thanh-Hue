@@ -1,0 +1,559 @@
+{
+  "checkedAt": "2026-11-13T09:21:49.700Z",
+  "baselineTag": "checkpoint-20261112-https-ngo-mon",
+  "baselineCommit": "4add6a8ad0d34ff89325621a5596c524513c1c8d",
+  "sourceFilesScanned": 561,
+  "files": [
+    {
+      "path": "backend/src/main/java/vn/hueqr/backend/config/OperationsGateFilter.java",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "44d8a3e150b85168ee07ab9c82e08888e9638511",
+      "sha256": "cc5fc6c157dd4e47ecceed06ea061fb2c1509ac63f4456d63dc28d6b27fa808b"
+    },
+    {
+      "path": "backend/src/main/java/vn/hueqr/backend/repository/OperationsGuardRepository.java",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "8d67fb465a6d2c8e4d736920b8df492a892ecce2",
+      "sha256": "a9407c52f59346ddc671fd1d743ed1115e51c7ecd4f56dce6242f60b1a858b0d"
+    },
+    {
+      "path": "backend/src/main/java/vn/hueqr/backend/service/GuestRetentionRunner.java",
+      "status": "modified",
+      "baselineGitBlob": "11dd04a27c0dc0fcd1cafa3f597584d878eff74d",
+      "gitBlob": "431485c4369e00ec2f66ed19123ae6eceb670e90",
+      "sha256": "2f2f00aef60f6e12a67a0a87c1bd969212a006a2b6f7d55aebddc1500c23ef29"
+    },
+    {
+      "path": "backend/src/main/java/vn/hueqr/backend/service/LifecycleCleanupRunner.java",
+      "status": "modified",
+      "baselineGitBlob": "f55a26e70e72d490056c17e1b61a92268094414f",
+      "gitBlob": "9b386479e34bfba580bc75a53b731fac29b30422",
+      "sha256": "e707aeeda0fd18556bbd38b40e695b8d8082db6132b118209fb5d00773da8e50"
+    },
+    {
+      "path": "backend/src/main/java/vn/hueqr/backend/service/LocalAudioRunner.java",
+      "status": "modified",
+      "baselineGitBlob": "bedb7a349883b21f361f57de6cc91f08ac587480",
+      "gitBlob": "d14ebf1c63cfb68ba8d0eafb0c73d8bcc2582ffd",
+      "sha256": "9a6291feb37def6d9f91f6393e8a89fa5d0a0c83fcd8897e3f069a92bacde386"
+    },
+    {
+      "path": "backend/src/main/java/vn/hueqr/backend/service/OperationsGateService.java",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "a07223088da813ad49101b1754884f42bebbeea2",
+      "sha256": "54a78a61d40fd3cfe1a6a2e80612de97924c39c6d68a9118ae5b2c8afe82767a"
+    },
+    {
+      "path": "backend/src/main/java/vn/hueqr/backend/service/TtsQueueRunner.java",
+      "status": "modified",
+      "baselineGitBlob": "26aa6c5c54ed336b35268f638240253719788aa3",
+      "gitBlob": "cbeb88e28026328dead373a3a6a717387ce68450",
+      "sha256": "85ceca34a9622145126a7bc0f05505386a5355a8047ab153e99dee603ea30170"
+    },
+    {
+      "path": "backend/src/main/resources/db/migration/V14__create_operations_guard.sql",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "1d5ea9fa4043dccf352038cc09714d091b7e5e52",
+      "sha256": "d2336cc111406f59bed4445ded28bd90f894413ca887ba5703006da5be0c5408"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/apply-reviewed-regions.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "9ff16cd7f6f67b6ed5fcde0bc47c06d91e1cf4a4",
+      "sha256": "cf518f4bd4e1c52ea86b6d4c24a7ce81abcad458f9bd9b677c8714ea53a741a4"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/content-admin-commands.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "734562689d48183f85cbc7b6628e675eeb3051d6",
+      "sha256": "5bd992672ebfa70d4baafeec08ef1f6aa613f86366c9adaa440bdf59172b7a2a"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/content-admin-session.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "01460728882ba085f74db9631b80e83ba8f76156",
+      "sha256": "05c575c95e55f8f05db63eb67bd8e8a207644bd501706a6f59e76c9fdca11144"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/gemini-audio-review.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "48bb7ffd3890ad622904ec8b75528f75cff2e4d2",
+      "sha256": "65125ad7773fcd1943b8fca18d5e70960fbe02d9dd696b70bbd8d593b1ac5721"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/generate-content-batch.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "ea36638197636d6ce12f960d5978e47d45721638",
+      "sha256": "86a6c5985bf8479aece8a7bbcdf6367ebec64cf5f65e88070cd3f8021a277844"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/prepare-content-review.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "d55351fa8dcbb417e7b9c0870bbf3e71218f1584",
+      "sha256": "07923fd6b18c10c7c5bfacf97f622cd4a63f42652627616a28b594d031fa9adc"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/prepare-content-stage.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "400e659c61af172169a9bfa3f95bbc3cfb81ac3a",
+      "sha256": "d233bb4b344da2b1b396c4eca6ea5906f2c957c3a38a30df861368dc8ec9bab0"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/preserve-content-stage.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "1c2b80f2d410bf9ca3b9e1c0330051f7613948c4",
+      "sha256": "980b5dcebba63663264fca192a77eedc409fc3ad04fa47535e7c0ac7a098c53a"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/probe-generated-audio.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "42fb6856c8d6e6b7cf0365c45bb0b8aa8cd78900",
+      "sha256": "92959ebf2cd3e959d1932257020b7926cbc0030e6a50cc0fa14a6b3dbdd86180"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/publish-content-review.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "e484f6fc709e5c022960ec9dfed62f8a07de6f09",
+      "sha256": "faade9bd40cc1043777ef2ba39d96eaad5d5c96232c399648fa75fe3c3daa3f4"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/retry-content-quota-once.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "0b5b222319da90208f8b8cf1d0233db648db03df",
+      "sha256": "1c531fb2435f0341801f670257d1c75f1754fb12f89e1652ce2d232d012a1ce0"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/review-content-audio-batch.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "d71bb079b2545f4a15562c2fe23d3b20c7600ee2",
+      "sha256": "3a7da21a5a96a795bc42f6ca8449c212af4cc4ed6acf80f20e10970ac6d5b916"
+    },
+    {
+      "path": "backend/src/test/fixtures/demo/verify-content-admin.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "492458338c4674154dc02aba4a87d82c71964177",
+      "sha256": "b2f9408c87851008e43e2a2db16b0fc8f7aab6d525a313bceb50d254717a2a0a"
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/README.md",
+      "status": "modified",
+      "baselineGitBlob": "161f001cfac0381fd879ea4f94e865146f89a43b",
+      "gitBlob": "4ec31a0567a2ee08f8616bcb07f7cffdafc59256",
+      "sha256": "bd8d11fb9d5f63657b42fb34eb5c06eea9491af87d118c962401415c219c8906"
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/maintenance-rehearsal.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "ae72ad4b41c607bec5287569bc83b320f58970d0",
+      "sha256": "6903ecfd1e2e4ada647f1e60c934c7997d17ce2bded74e4af47634ddde68d323"
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/operations-backup.test.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "9b4f72dfb2d3986607e1f9a3d84a4b7d6e7c378c",
+      "sha256": "f5e9e94d292a53ee3f0deaa0d04585da55f9770719e44ec8ebd319e8e5a3814b"
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/scheduler-rehearsal.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "1b657044d8a5750455caae48de8364615b39bb03",
+      "sha256": "8345449312334ba88a349e33a45b1d4683f77eaab17d0b7635f2ae246544a280"
+    },
+    {
+      "path": "backend/src/test/fixtures/operations/url-gate-rehearsal.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "c988a6ce1b6f2f5e905f31022928a7852109300d",
+      "sha256": "2f7f138f23ab1bbbd8a7edad652cdcbb1cc1d6b28b6454446b5dafd2b12cd336"
+    },
+    {
+      "path": "backend/src/test/java/vn/hueqr/backend/schema/PlaceRegionSchemaTests.java",
+      "status": "modified",
+      "baselineGitBlob": "5ea49c03f4bde3f440d405619aa96ef08c481a82",
+      "gitBlob": "91ef2010690ae9efaab4bf769df0b1d02f39a847",
+      "sha256": "8b66c332ce9a1c6e7fcef7356030aae3d305e84e06e34d782762aabc49b75ec6"
+    },
+    {
+      "path": "backend/src/test/java/vn/hueqr/backend/service/GuestRetentionTests.java",
+      "status": "modified",
+      "baselineGitBlob": "924ff89358dd816ff540f93fe707e8cb6093b697",
+      "gitBlob": "c5c60493f0207ef5b17953b4ace1120a0d09bfdb",
+      "sha256": "8e44c4dc281225a4822d0c47992f7050ad64d5bbbac5243e842b5a269eb5fbd8"
+    },
+    {
+      "path": "backend/src/test/java/vn/hueqr/backend/service/OperationsGateTests.java",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "9b2cc15ed695439a78916c139d60d8336114965f",
+      "sha256": "31fbf6642d7d4b8dfc3a903acf3271dab5104c1252026f283ff3d3cb1ea04c7d"
+    },
+    {
+      "path": "deploy/maintenance.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "3621fea7e351ae0e21487f08142697bca560c530",
+      "sha256": "eb3cc9db8e5ac4a5cb3391d21b2429fccff793694fde4f7690fa568c40c42139"
+    },
+    {
+      "path": "deploy/operations-backup.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "6b09249ac6a376260242a39a1163c004782a02a7",
+      "sha256": "49d7473dac7b1f1d41f22ec748684e8469c022d3323f4315d37c30aebcf5c50a"
+    },
+    {
+      "path": "deploy/restore-backup.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "fb6510ba89242228556745e2e6623504e1080aa8",
+      "sha256": "7d9c3fc2151fc183de533df94e954bf6f56aefcf39ad765e7b199e50b6f393f2"
+    },
+    {
+      "path": "deploy/restore-retention.sql",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "511887badda597e3b57f77146179abfa4fb08c8e",
+      "sha256": "ecc4023626c4ee13df124cb51002e031097f87de01c76bd02700db9005b8fe2a"
+    },
+    {
+      "path": "docs/05-noi-dung/demo-content-v02.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "42fc116f7350af400e1fcce4b122919ae8dd327e",
+      "sha256": "357cc13e26a376ab0b92a25bf30d5617f8012cdad5a7d4f21c245d6e19ea9554"
+    },
+    {
+      "path": "docs/05-noi-dung/dieu-chinh-demo-v02.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "11bb7c715cdc9a4d1cf3507e46b87ba85c2ce2b0",
+      "sha256": "2ee726c9c400d20105e4ca5fdb730adc8f6b8833c4dab43042d03dd6becc0511"
+    },
+    {
+      "path": "docs/05-noi-dung/duyet-vung-demo-v02.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "b44d8be015ce8981f8661d3a89105ace0492a7f8",
+      "sha256": "e35e0c1ec1aa6dda4598a91cd0ee39c1a65a21ebe01349a1110cb7e1519bfd7f"
+    },
+    {
+      "path": "docs/05-noi-dung/san-sang-noi-dung-20261113.md",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "26c6cf9d22a6bfb5de6fcdf37d91d581675aa853",
+      "sha256": "2211a64fc5e1b05a74f53bbe40bde8d69d5a7e2d91f4bf8ae4bcafeea11da235"
+    },
+    {
+      "path": "docs/06-kiem-thu/content-review-20261113/README.md",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "913b77200e7b8bf36f5956ec497d8915b9bf9506",
+      "sha256": "dfd9b2295a6b133a16120119de55adff56acf34fe16c83ff13136bac8ef835d5"
+    },
+    {
+      "path": "docs/06-kiem-thu/content-review-20261113/admin-pronunciation-review.png",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "1ab226e9dbfb258a4ce5a7b19f20dc5f702613ef",
+      "sha256": "d0e08fccb9fa6699b7731d26e491742d8404bf8e22a28337a02ad517e8cb9172"
+    },
+    {
+      "path": "docs/06-kiem-thu/content-review-20261113/admin-review-browser.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "66ddf9d212f0dacd7e5cf20cbc9bffa5a37ffdc9",
+      "sha256": "a5d66d2dd474d1157f10ab2fc30724ef960b3ffbbe3d2471207f4f1b4cced8a3"
+    },
+    {
+      "path": "docs/06-kiem-thu/content-review-20261113/audio-technical-check.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "c531eb87e74947217eb5695997d71055fd73cfd5",
+      "sha256": "a85bf9983fef85f710f1abaf7af4fcdd6299d3b86a2c40292ff87183481d9027"
+    },
+    {
+      "path": "docs/06-kiem-thu/content-review-20261113/audio-transcripts.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "e0f58c5bd83fcee16d17174162386ec04d774d36",
+      "sha256": "b95c01b5fe407f9ff515c4e982268e8afa41f242f55f08a409862cdb0b1565f5"
+    },
+    {
+      "path": "docs/06-kiem-thu/content-review-20261113/browser-attempts.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "d57354ca5a3ec923ec540e3549595a9ab0c5c82a",
+      "sha256": "00d66f57fe1e14ccfc4c052fabf811fadcf07a5ca696c496935e1bf35c4d2e27"
+    },
+    {
+      "path": "docs/06-kiem-thu/content-review-20261113/content-preservation.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "6065abf2bd1dfc30279b59fb7a98e799e82fb549",
+      "sha256": "89203877e08ae5f415ecf96384ab3e1f9aaf8e4ae103f9870ef0732280cbeefb"
+    },
+    {
+      "path": "docs/06-kiem-thu/content-review-20261113/result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "151c1a711321531d037583e43324023d69a1cc67",
+      "sha256": "d70c212bdaf7dd04ee523e0de348ceee4e7121b9c9bbfe53be3faf27229beca4"
+    },
+    {
+      "path": "docs/06-kiem-thu/https-ngo-mon-20261112/README.md",
+      "status": "modified",
+      "baselineGitBlob": "80084ec161863ee0d2a02a11959f36650d18bc97",
+      "gitBlob": "65b095b762817f244b7a9c004b5ef724c6f72316",
+      "sha256": "d04c1c6f0e113932d3cf600459b4ea50d35c3a9c42eac4c0cd672be2b5854028"
+    },
+    {
+      "path": "docs/06-kiem-thu/https-ngo-mon-20261112/iphone-manual-20261113.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "46b9d29d30bff306e90dcada956eb18ae6db9e99",
+      "sha256": "bf879cdae467aa5de164eaec68a65ebbac7268d2c759b1ed68640bec065170cd"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/README.md",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "2465c88dd29e829ff68fa339ef67244990342469",
+      "sha256": "d9745cc67fb1b6f33de9ec27e60fe4abc164fb31ccd1950359a5da62f0b54ada"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/backend-suite-summary.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "6d418a9ddbdeef7808e697a68a0533c46c9c7bd1",
+      "sha256": "304bc56a396a3864e27352a184228595ba247df5a039379f624370f0700dbdf3"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/browser-after-url-fix.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "cff41f3d9dd8ef7899873ffa5f3a134996676d5d",
+      "sha256": "7ec76c0733da45063a2d88b26b47042ad0f211efff953fe5ebff9ea93c1d7d2b"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/browser-result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "cff41f3d9dd8ef7899873ffa5f3a134996676d5d",
+      "sha256": "7ec76c0733da45063a2d88b26b47042ad0f211efff953fe5ebff9ea93c1d7d2b"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/capacity-backup-result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "abca62069a3c4cd699c834bd623a954a4559447b",
+      "sha256": "9b35a2673eff92fe0aa3454ed0bd262cb7e83357c901f73d3e9a9b3e9345a135"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/cd-preflight.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "9204f01fe1d3b3ae71d12580ba4978ec873c756b",
+      "sha256": "efa590cacb642915d83ea3521d512de6c304d7e87f58813c4a50985e99755b47"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/content-readiness.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "e0068c47bd6653fb6d2eb0c857015a763106737c",
+      "sha256": "46cc168b8a4f1a8d8302eee3415e7dd1109fc9c48f349b85f56f4122a9de26ef"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/final-restore-result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "94c89bf1b406bdd4fddcee32692cadb983aced13",
+      "sha256": "c3280fe33ab55afd31d1a6fa65a259f075156b498745df2deffebbbb7a045cb4"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/maintenance-rehearsal-result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "f398cff0b6afd06754f8c4f8a1bad78ccf9f0ca6",
+      "sha256": "3e67f5078c0eef4dd0d1d80bffa307a73c2821f5188cfc8f425ed6de75153edb"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/mutex-and-capacity-result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "2371b70cdf2729dfe5540bd492c30653625833e8",
+      "sha256": "55d547284f9180d72ceb20d9902bc5fe6d41f58d9fe706f44044b29d0acc1e70"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/normalization-before.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "a44788663170c83a4e8fba7f9b571589bbbeeb12",
+      "sha256": "2c0e4594f7a8b9a1533ad39ccfac063b8351fa0afed1acecfe7ef4f2168e048b"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/recovery-rights-attempts.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "9f51e29aa92b3a08e7c167c80b924b110b114354",
+      "sha256": "b7da1243fdadde45398d7f66aced2ed7ad41c07213dec3d1bbec5f4c696cd1d3"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/recovery-rights-result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "4ba58206472117588d2e5924b37e3abfa4fc1cf5",
+      "sha256": "fa94fa7b05790c581054501636fec48665dc38a93882b6d02b850086651d61de"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/restore-result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "dbc11f389edc83f6fe71ed12fa36e76c66fff40b",
+      "sha256": "0b2bc5ece22d61ac4194c9ed8336ba6826d44dadbdb1817c4d247c24cde0694e"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/restored-admin-after-url-fix.png",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "7bd227971cb9166ca25616c49c6b757d0bc4f323",
+      "sha256": "11fe4ac2657ea284dedc66852a917039ec8979d8fb0e01ed797c6421c5ef7f48"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/restored-admin-audio.png",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "15152417bf6363a2d9accdc0344b82006d67a7c6",
+      "sha256": "99de649ac8b1e9fd077c6efa918576f180c0fafd2071c19156d7ce406fc630a3"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/result-before-url-fix.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "7db2cdc21ddc9ae03b97ee4e7285742c1cc24770",
+      "sha256": "477ca99a0359e6d50793de5a1f94b554bf279487872e9d9315f8c221e1b4014f"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "4dcc4b594ac6db057732d808f3147d454381464b",
+      "sha256": "efd4c7c6468feac2c62ba414407c09ebe0cd308ea81749e40e5bc99b93545307"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/scheduler-result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "389a3f3bc8663f3bfc44766e31a40c908d966bf3",
+      "sha256": "73952bbf52289a6c9136a5e039c256fa7613e288d60f329d19dfb301a0833373"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/stable-runtime-resume.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "43183a55d18b483bff16b0a3e153a156d7af275f",
+      "sha256": "2c245d0eb5d97fe3484fe858f34d435443b1b3f3b895e552f34fabe97c4d7198"
+    },
+    {
+      "path": "docs/06-kiem-thu/operations-guard-20261113/url-gate-result.json",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "7710cec67e5d4de742295adfe298db7a22a9ac25",
+      "sha256": "f89a2d0345d8bcdfade5788f861fb618ac99a6a0e443d410731c52ecb9ba793b"
+    },
+    {
+      "path": "docs/07-van-hanh/bao-tri-va-sao-luu.md",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "09aa13770c060902f8f0a6ba3c49bbbf0cf0f480",
+      "sha256": "69eb3b20d5ee00be9f54dab22ca62261a83f89e12b5a5937d9d6904f69844f33"
+    },
+    {
+      "path": "docs/07-van-hanh/nghiem-thu-van-hanh.md",
+      "status": "modified",
+      "baselineGitBlob": "900a6863148b2fdf849e7e773b9854ea5b5e31cc",
+      "gitBlob": "871c8b92982828308f4f858fb8b1f731dce2a317",
+      "sha256": "ea5d8b212d03fc50581da1228ea62cb315b6345abf2a7809853231761f29b2ba"
+    },
+    {
+      "path": "frontend/tests/e2e/README.md",
+      "status": "modified",
+      "baselineGitBlob": "acc2347bd9e19bfb82b025f148f65b62330ebdc1",
+      "gitBlob": "5d2b9035f3ae9bab62b9c2057427a7328b0f675d",
+      "sha256": "23b6c195617b5902c52b3934b5843d397c772e7d233e620f840912029c5fde38"
+    },
+    {
+      "path": "frontend/tests/e2e/operations-restore.spec.mjs",
+      "status": "new",
+      "baselineGitBlob": null,
+      "gitBlob": "1bfefb809f6743a1f89379365b202a27d25640d9",
+      "sha256": "c9e240d026ff0e02109a5db962461fc2a0113490f116c6f9c8aad006ddcdacf3"
+    },
+    {
+      "path": "docs/01-tong-quan/commit-plan-2026-11-05.md",
+      "status": "modified",
+      "baselineGitBlob": "24a2c193cfedf62fc43ae0567f1aff26e61d2655",
+      "gitBlob": "f49d294ee7748cc670c1114a68aab70f2a5c31b3",
+      "sha256": "f43a127c40e215e500abe79be2a5970fd04e82a787e96af5ba98caedbf3cbe06"
+    },
+    {
+      "path": "docs/01-tong-quan/handoff.md",
+      "status": "modified",
+      "baselineGitBlob": "b881050404b74f13d85669b2e3ee70d44ec09b89",
+      "gitBlob": "6e2f44535ee670cc133afd43c09059040c4d0ea4",
+      "sha256": "4d60623d5f5b89faf2a8e306d0bb1f2ce7f7d4ab5fc6fe0099c6dbb9ac549b40"
+    },
+    {
+      "path": "docs/01-tong-quan/roadmap.md",
+      "status": "modified",
+      "baselineGitBlob": "d874e090f6e6fb00e06117c9c16b1da051908e02",
+      "gitBlob": "82626380a2578360793c4273845fe13f106b961e",
+      "sha256": "623b3acb431736e41df67369beabd5c4b27970acbab78f659d869ad6bd957632"
+    },
+    {
+      "path": "docs/03-ky-thuat/data-model.md",
+      "status": "modified",
+      "baselineGitBlob": "c21bdd796a13d609cd63dd35756288832e32d777",
+      "gitBlob": "5e12d89c58e85f442d43e273ad6b9229f15df63f",
+      "sha256": "4f08e6e65e1e45d020918dd6eed1a06981a5fcac1a6b3fa403128bbf6bfa9fab"
+    },
+    {
+      "path": "docs/03-ky-thuat/operations-design.md",
+      "status": "modified",
+      "baselineGitBlob": "e9fd20316a298863b00567ffd95781b110ad1c65",
+      "gitBlob": "802a93b60e24bced962bdecb2e4fce1e716f2c53",
+      "sha256": "c6e307383c8868230fcf66ab3c681a09928a95676a4db9ec9813a7753f142463"
+    },
+    {
+      "path": "docs/README.md",
+      "status": "modified",
+      "baselineGitBlob": "49f1f3f69d07fba484fea3ecc92e17fd44e82a63",
+      "gitBlob": "d91cfc8f0b316a2474e95a1ed716c081d5144b45",
+      "sha256": "676ed57c4373aae031c6702fe35b3e3ef19ceccc43661d112c0c2cda579d77df"
+    }
+  ],
+  "heldDraftsUnchanged": 6,
+  "indexEmpty": true,
+  "secretMatches": [],
+  "trailingWhitespace": [],
+  "note": "Inventory excludes itself. Git blobs compare normalized repository content; SHA256 records current raw file bytes. Historical evidence logs inherited from the baseline remain unchanged."
+}

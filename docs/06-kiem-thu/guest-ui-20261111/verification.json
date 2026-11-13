@@ -1,0 +1,88 @@
+{
+  "recordedAt": "2026-11-11T12:06:42.101Z",
+  "scope": "Guest typography and layout; map background/data not completed",
+  "frontend": {
+    "tests": 60,
+    "passed": 60,
+    "exit": 0,
+    "buildExit": 0
+  },
+  "docker": {
+    "buildExit": 0,
+    "image": "sha256:61722bfc150a04e38013ef7f31fb271f60d2ca21cda155b9359b213079065bf1",
+    "tag": "hueqr-local:20261111-guest-ui",
+    "backendTestsSkippedInImage": true
+  },
+  "browser": {
+    "runner": "Playwright with installed Chrome and real isolated API",
+    "tests": 7,
+    "passed": 7,
+    "exit": 0,
+    "seconds": 54.5,
+    "viewports": [
+      [
+        1280,
+        800
+      ],
+      [
+        960,
+        600
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        320,
+        568
+      ]
+    ],
+    "fontLanguages": [
+      "vi",
+      "en",
+      "fr",
+      "ru"
+    ],
+    "platformFontAfter": "Segoe UI",
+    "fullPageScrollDuringRead": false,
+    "overlapCancelVisible": true,
+    "cancelKeepsPausedPosition": true,
+    "audioFailureAndRetry": true,
+    "adminGuestRegression": true,
+    "domStressTextOnly": true
+  },
+  "computerUse": {
+    "app": "VS Code integrated browser",
+    "fontVisuallyChecked": true,
+    "verticalLayoutChecked": true,
+    "overlapCancelChecked": true,
+    "reloadPausedAtFiveSecondsChecked": true,
+    "adminPasswordEntered": false
+  },
+  "runtime": {
+    "recordedAt": "2026-11-11T11:58:47.101Z",
+    "previousApplication": "hueqr-packaged-ca46928e",
+    "application": "hueqr-packaged-ui-426f3b91",
+    "image": "sha256:61722bfc150a04e38013ef7f31fb271f60d2ca21cda155b9359b213079065bf1",
+    "url": "http://localhost:18081",
+    "sameDatabase": true,
+    "sameAudioRoot": true,
+    "sameEpochAndSigningKey": true,
+    "providerEnabled": false,
+    "ready": true,
+    "applicationLeftRunning": true,
+    "viteHelperStopped": true
+  },
+  "limits": {
+    "mapReadyForDemo": false,
+    "mapDataIsE2E": true,
+    "realPhoneTested": false,
+    "fullAdminUiReviewed": false,
+    "httpsQrTested": false,
+    "providerWorkerEndToEndTested": false
+  },
+  "git": {
+    "mutations": false,
+    "checklistChanges": false
+  }
+}

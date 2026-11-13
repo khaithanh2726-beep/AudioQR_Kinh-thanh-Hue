@@ -89,4 +89,9 @@ public class Place {
 		this.activeRegionRevisionId = activeRegionRevisionId;
 		this.updatedAt = updatedAt;
 	}
+
+	public void setVisible(boolean visible, Instant updatedAt) {
+		this.visible = visible;
+		this.updatedAt = updatedAt;
+	}
 }

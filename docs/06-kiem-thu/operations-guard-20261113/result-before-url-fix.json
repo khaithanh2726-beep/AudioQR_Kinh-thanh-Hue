@@ -1,0 +1,34 @@
+{
+    "checkedAt":  "2026-11-13T00:42:52.2935768+07:00",
+    "fullBackend":  {
+                        "singleFullRun":  true,
+                        "exitCode":  0,
+                        "errors":  0,
+                        "tests":  529,
+                        "failures":  0,
+                        "skipped":  0,
+                        "platform":  "Windows Java 21 + MySQL 8.4.13 Testcontainers"
+                    },
+    "focusedBackend":  {
+                           "addedToFull":  false,
+                           "tests":  36,
+                           "passed":  36
+                       },
+    "manifestTests":  {
+                          "passed":  8,
+                          "tests":  8
+                      },
+    "frontend":  {
+                     "logicTests":  71,
+                     "dockerBuildPassed":  true,
+                     "passed":  71
+                 },
+    "browserAfterRestore":  {
+                                "tests":  1,
+                                "tileFixture":  true,
+                                "passed":  1
+                            },
+    "iosSafariVerified":  false,
+    "originalRehearsalSchema":  13,
+    "newSourceCommitted":  false
+}

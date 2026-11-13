@@ -1,0 +1,29 @@
+﻿#1 transferring dockerfile: 2.01kB 0.0s done
+#22 2.272 ℹ tests 60
+#22 2.272 ℹ pass 60
+#22 2.272 ℹ fail 0
+#22 6.105 ✓ built in 1.61s
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#25 146.8 [INFO] BUILD SUCCESS
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#30 [backend 7/7] RUN mvn -B -DskipTests package
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#30 [backend 7/7] RUN mvn -B -DskipTests package
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#30 [backend 7/7] RUN mvn -B -DskipTests package
+#30 25.70 [INFO] Tests are skipped.
+#30 28.40 [INFO] BUILD SUCCESS
+#27 [audio 4/4] RUN curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-9.0.2.tar.xz -o ffmpeg.tar.xz  
+#34 exporting manifest sha256:aab4e2b3d2de414ff6f18b4a73f8f800e99fb6e7aec68aa37f98c7bf2695d498 0.0s done
+#34 exporting manifest list sha256:b73222550f18789076d94b4c6bfa86cb099e4d7aaef32a53b20bfa2a453d88b7 0.0s done
+#34 naming to docker.io/library/hueqr-local:20261111 done

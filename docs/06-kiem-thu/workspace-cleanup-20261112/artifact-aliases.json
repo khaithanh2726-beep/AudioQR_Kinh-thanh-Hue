@@ -1,0 +1,96 @@
+{
+  "recordedAt": "2026-11-11T17:15:26.414Z",
+  "note": "Exact byte duplicates; originalPath in historical hash ledgers retains the former storage location.",
+  "aliases": [
+    {
+      "path": "docs/06-kiem-thu/osm-map-20261111/start-en.png",
+      "sha256": "0ececd6feb104c4287325c5d998441e1cb09f0bd8c217e544bd64e7d75e0a7f0",
+      "bytes": 22253,
+      "canonicalPath": "docs/06-kiem-thu/ui-reference-20261111/start-en.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-pin-20261111/start-en.png",
+      "sha256": "0ececd6feb104c4287325c5d998441e1cb09f0bd8c217e544bd64e7d75e0a7f0",
+      "bytes": 22253,
+      "canonicalPath": "docs/06-kiem-thu/ui-reference-20261111/start-en.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/osm-map-20261111/start-fr.png",
+      "sha256": "d9cdf19b6565b10e3ed5cebaa3f70bc6b49f854f13f68bf560778c8c5f706247",
+      "bytes": 24279,
+      "canonicalPath": "docs/06-kiem-thu/ui-reference-20261111/start-fr.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-pin-20261111/start-fr.png",
+      "sha256": "d9cdf19b6565b10e3ed5cebaa3f70bc6b49f854f13f68bf560778c8c5f706247",
+      "bytes": 24279,
+      "canonicalPath": "docs/06-kiem-thu/ui-reference-20261111/start-fr.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/osm-map-20261111/start-ru.png",
+      "sha256": "baf61d7280a590c8f216d4ed4ae85e5894553ddfa48575797d3fa3be35e4889d",
+      "bytes": 25519,
+      "canonicalPath": "docs/06-kiem-thu/ui-reference-20261111/start-ru.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-pin-20261111/start-ru.png",
+      "sha256": "baf61d7280a590c8f216d4ed4ae85e5894553ddfa48575797d3fa3be35e4889d",
+      "bytes": 25519,
+      "canonicalPath": "docs/06-kiem-thu/ui-reference-20261111/start-ru.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/osm-map-20261111/start-vi.png",
+      "sha256": "5c5e7f1a28dae39cd346221e93c81d211e7a010b13dad097925ff7870f923874",
+      "bytes": 22561,
+      "canonicalPath": "docs/06-kiem-thu/ui-reference-20261111/start-vi.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-pin-20261111/start-vi.png",
+      "sha256": "5c5e7f1a28dae39cd346221e93c81d211e7a010b13dad097925ff7870f923874",
+      "bytes": 22561,
+      "canonicalPath": "docs/06-kiem-thu/ui-reference-20261111/start-vi.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/map-pin-20261111/visit-fixture-960.png",
+      "sha256": "20a7b5aedbb0cda93a9d32bc1753e7d9a73ad3b25a552edc5e6f60b638447765",
+      "bytes": 39994,
+      "canonicalPath": "docs/06-kiem-thu/osm-map-20261111/visit-fixture-960.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/ui-reference-20261111/assertions.json",
+      "sha256": "96a7bdc39b3887195641107c3ae9f628e5115024c12c29cb286d35bcbcdef505",
+      "bytes": 228,
+      "canonicalPath": "docs/06-kiem-thu/map-preview-20261111/assertions.json"
+    },
+    {
+      "path": "docs/06-kiem-thu/osm-map-20261111/assertions.json",
+      "sha256": "96a7bdc39b3887195641107c3ae9f628e5115024c12c29cb286d35bcbcdef505",
+      "bytes": 228,
+      "canonicalPath": "docs/06-kiem-thu/map-preview-20261111/assertions.json"
+    },
+    {
+      "path": "docs/06-kiem-thu/ui-reference-20261111/completeness-failed.png",
+      "sha256": "e44d5ddaae5c268a8c4a5acab90379e165de86137fa2603ec8ef8954c45ad0c2",
+      "bytes": 27909,
+      "canonicalPath": "docs/06-kiem-thu/map-preview-20261111/completeness-failed.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/osm-map-20261111/completeness-failed.png",
+      "sha256": "e44d5ddaae5c268a8c4a5acab90379e165de86137fa2603ec8ef8954c45ad0c2",
+      "bytes": 27909,
+      "canonicalPath": "docs/06-kiem-thu/map-preview-20261111/completeness-failed.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/ui-reference-20261111/completeness-retried.png",
+      "sha256": "428f3b90554206acd61dfcfdf959b1ddfb1e89b51942ce73bd84494a23add5f4",
+      "bytes": 63488,
+      "canonicalPath": "docs/06-kiem-thu/map-preview-20261111/completeness-retried.png"
+    },
+    {
+      "path": "docs/06-kiem-thu/osm-map-20261111/completeness-retried.png",
+      "sha256": "428f3b90554206acd61dfcfdf959b1ddfb1e89b51942ce73bd84494a23add5f4",
+      "bytes": 63488,
+      "canonicalPath": "docs/06-kiem-thu/map-preview-20261111/completeness-retried.png"
+    }
+  ]
+}

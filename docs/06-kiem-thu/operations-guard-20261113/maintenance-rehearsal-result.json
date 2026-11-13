@@ -1,0 +1,30 @@
+{
+  "startedAt": "2026-11-12T17:21:05.021Z",
+  "sourceProject": "hueqr-rehearsal-c752c9eb",
+  "status": "PASSED_API_AND_STORAGE",
+  "providerRequests": 0,
+  "originalRehearsalModified": false,
+  "guard": {
+    "blocksApi": true,
+    "blocksFreezeWithActivity": true,
+    "rejectsWrongOwner": true,
+    "noTimeoutReap": true
+  },
+  "backup": {
+    "status": "COMPLETE",
+    "files": 2,
+    "reopened": true,
+    "runtimeKeysAndEpochPreserved": true
+  },
+  "restore": {
+    "project": "hueqr-ops-check-178d2b02",
+    "filesVerifiedFromTarget": 2,
+    "epochChanged": true,
+    "reopened": true,
+    "retentionFixturesAddedAfterImport": 4,
+    "expiredFixturesPurged": 3,
+    "retainedFixture": 1,
+    "originalAnchorsPreserved": true
+  },
+  "finishedAt": "2026-11-12T17:24:30.532Z"
+}

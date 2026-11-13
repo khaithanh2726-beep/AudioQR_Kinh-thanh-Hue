@@ -1,0 +1,26 @@
+[
+    {
+        "attempt":  1,
+        "status":  "FAILED_FIXTURE",
+        "backendChanged":  false,
+        "stage":  "guard",
+        "cause":  "Start request used a new key instead of the requestId bound to the issued ticket"
+    },
+    {
+        "attempt":  2,
+        "status":  "FAILED_SYNTAX_CHECK",
+        "runtimeWrites":  false,
+        "cause":  "Duplicate ready identifier in expanded fixture"
+    },
+    {
+        "attempt":  3,
+        "status":  "FAILED_FIXTURE",
+        "cause":  "K02 intentionally returns 401 GUEST_CREDENTIAL_INVALID, not the expected 403"
+    },
+    {
+        "attempt":  4,
+        "status":  "PASSED",
+        "result":  "recovery-rights-result.json",
+        "backendChanged":  false
+    }
+]

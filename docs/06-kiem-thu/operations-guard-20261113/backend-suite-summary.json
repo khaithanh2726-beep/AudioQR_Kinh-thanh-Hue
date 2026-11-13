@@ -1,0 +1,461 @@
+[
+    {
+        "name":  "vn.hueqr.backend.BackendApplicationTests",
+        "tests":  1,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  120.795,
+        "xmlSha256":  "fa7a12414680c12308252672a93232d1d9ba86b64cd6d6856569bd982bd243a6"
+    },
+    {
+        "name":  "vn.hueqr.backend.config.GuestRuntimeConfigurationTests",
+        "tests":  6,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  3.414,
+        "xmlSha256":  "d67e0bc3015ece4316ddac1d09d29c78ef7c2fad9e7180991c39b51b37770b69"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminAudioPreviewTests",
+        "tests":  16,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  150.657,
+        "xmlSha256":  "44b9b1a641d4eb70c4a9145ef380abf342eaac886f49532b033b588e3107fee0"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminAuthApiTests",
+        "tests":  16,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  84.539,
+        "xmlSha256":  "750492a8679850f104152c58938ff3dc2b592eb0ec50b08230b2f27da7ca2cd6"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminAuthHttpTests",
+        "tests":  2,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  55.706,
+        "xmlSha256":  "607b0b6ead19356d94ce3174c9d3a5dc38f1a1a00f90eefb40757bad80d355a0"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminCommandApiTests",
+        "tests":  16,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  23.654,
+        "xmlSha256":  "197e258bbf2ee7f4e6e96acdd2d50dc5bcb2a047aaff57c5ac20a46b8c3ef21d"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminContentApiTests",
+        "tests":  23,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  101.186,
+        "xmlSha256":  "312025258c38c7ab618c8774fb5b4b9a43699289bf673aa6cf49f8de293b0b1e"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminGuestSessionApiTests",
+        "tests":  11,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  12.372,
+        "xmlSha256":  "e7b6c4e561dd1f6de91fa8d5979d033f47cb31cf1b45646cf62c49ee4c57e1de"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminPairApiTests",
+        "tests":  30,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  122.791,
+        "xmlSha256":  "50a6585228a9d66a2b98efbd9a52bf4fc27b87829147f816d2640517caec44e5"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminPlaceApiTests",
+        "tests":  20,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  67.755,
+        "xmlSha256":  "996e565d3244aeed8bd0c97d2f0866fbfe6fc055dcce7db4425e55abffe8ac1f"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminPlaceDeletionTests",
+        "tests":  7,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  56.695,
+        "xmlSha256":  "ee3d21c09783f37526b1ce6aed0e1cb139eddd4372cdf8f4686b10e120663ace"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminRegionApiTests",
+        "tests":  23,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  32.588,
+        "xmlSha256":  "8bfd8d8c0ba29e3f3364a21482adb271018399e5c714ab71a6aa03509db54397"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.AdminTtsApiTests",
+        "tests":  21,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  43.421,
+        "xmlSha256":  "bad661cf04b6cf07c9a6be0cfc80ff4c6439c055a2c023c32f9ac93812ffe6ad"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.GuestContentApiTests",
+        "tests":  26,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  83.823,
+        "xmlSha256":  "43adce5ebaadd2fbf07fd49bd3e922870b780ecc845924bddd658bb558063e1c"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.GuestSessionApiTests",
+        "tests":  14,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  4.493,
+        "xmlSha256":  "87d7f69e8e88f07c2ef8c7450062a89f03fe4ae660169466a2704e5ad7ddf9f2"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.GuestSessionEndApiTests",
+        "tests":  12,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  4.248,
+        "xmlSha256":  "3143ad56e945114cddf8ab79af89fb2c204fd543eb77fd34a1eb7310ba011d52"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.LocalAudioIntegrationTests",
+        "tests":  24,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  71.887,
+        "xmlSha256":  "08dd4de8b46a05a7836db8fa009926a6c2187f0938337c2ed916d9cc43853c97"
+    },
+    {
+        "name":  "vn.hueqr.backend.controller.TtsWorkerIntegrationTests",
+        "tests":  15,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  80.027,
+        "xmlSha256":  "4d9b5de0c8d21f47275ccbec881ae53b3b6e96bf90a346bd81ca87fd6daf6654"
+    },
+    {
+        "name":  "vn.hueqr.backend.repository.AudioPairRepositoryTests",
+        "tests":  4,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  43.591,
+        "xmlSha256":  "d15f441f74e242fa8886de02a899928dabb66b564613349d1fdd842142294591"
+    },
+    {
+        "name":  "vn.hueqr.backend.repository.GuestSessionRepositoryTests",
+        "tests":  2,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.318,
+        "xmlSha256":  "db5a43ec9e61b3dc7e3407c5997e55b193fd464d9fdbbeefcbfb7d1525484b1d"
+    },
+    {
+        "name":  "vn.hueqr.backend.repository.PlaceRegionRepositoryTests",
+        "tests":  5,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.396,
+        "xmlSha256":  "f55164c0f436b6c7fc39901690fa46ade6297cff40a09efbf62dcb7a27d75ea0"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.AdminCommandSchemaTests",
+        "tests":  4,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.606,
+        "xmlSha256":  "16047a359845aa0ca2e0452e551f17987c9ab13a379ec001e5d9a45071bbbc9e"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.AudioPairSchemaTests",
+        "tests":  10,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  47.416,
+        "xmlSha256":  "a173d698e8879b6e6e15b834f330ac9361082b570e6cb15550fc1c394baf906c"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.ContentSchemaTests",
+        "tests":  6,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  86.684,
+        "xmlSha256":  "064dc5fc83a9ffdf55a36256da7f6ec3d79a4b1715418c0b78efa61f5c4318d9"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.GuestContentSchemaTests",
+        "tests":  5,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  35.481,
+        "xmlSha256":  "bfc27e196d0d35e78ee277a34ea5e8bc37c19be6532da67c6d7484f2b5bff28b"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.GuestSessionSchemaTests",
+        "tests":  4,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.233,
+        "xmlSha256":  "081c274f7fb08101e71064ba0ee5efd720ecab8b4540aad7e391f8e360f5e314"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.InitialPlaceDataTests",
+        "tests":  4,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  69.335,
+        "xmlSha256":  "385cf354eee51958c489fb4244247f3a8131d1f0c0254eef1dfdf72b9538abb1"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.LocalAudioMigrationTests",
+        "tests":  1,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  36.55,
+        "xmlSha256":  "122bc44cf962ead24d6a2463072b4fd266c2983e5d72163c3d9b189454820feb"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.PlaceRegionSchemaTests",
+        "tests":  11,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  30.8,
+        "xmlSha256":  "f0542b5942998b2aa7c60fe5ab102eb02d9ebae1553f49d110e0b7febef6c87e"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.PlaceViewSchemaTests",
+        "tests":  3,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.443,
+        "xmlSha256":  "311355287ff4877a83dec6f82a138b905b167aa9cf01438645752b1a3aba07b4"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.RegionPrecisionMigrationTests",
+        "tests":  1,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  34.969,
+        "xmlSha256":  "b7539867945838c60dc3e46265f64db4ffc8d4c9dce5efd64cb84b8ae71adf11"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.TtsJobSchemaTests",
+        "tests":  6,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  30,
+        "xmlSha256":  "b768c4a47e80b98865172ba7b647dea7cf1c0d01d3573bcf7a26be9b43c7bbb1"
+    },
+    {
+        "name":  "vn.hueqr.backend.schema.TtsWavSchemaTests",
+        "tests":  4,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  40.233,
+        "xmlSha256":  "49b965e311bd6eebfcb9c811a5be41d52ac97de14108f05e77f1a307765ad5ee"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.AdminAudioPreviewStreamTests",
+        "tests":  8,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  2.813,
+        "xmlSha256":  "8702d43c2ee23846784b17eded3d81cfa8255890bf1a899439bab61283734d4a"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.AdminCommandTransactionTests",
+        "tests":  6,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  100.305,
+        "xmlSha256":  "5500f54d55325e6d70ad1be4837d8a588f81948752c015035f381e6e4a89e672"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.AdminDateRangeTests",
+        "tests":  4,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.033,
+        "xmlSha256":  "c94ec254aacecb854d98579f7683ad001ccf3a6c4405e5bc99446cc30795311e"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.ContentTextPolicyTests",
+        "tests":  7,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.049,
+        "xmlSha256":  "f2799e2678cbee2f446bfad4f648af88bb09a0a9d517dc679c16a224a92c3090"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.FfmpegMp3EncoderTests",
+        "tests":  5,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.067,
+        "xmlSha256":  "9ada494ae00a3d6abb296e2e9430af5360160a33b0a00d6ecb854231a3a187d2"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.GeminiTtsProviderTests",
+        "tests":  6,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  1.514,
+        "xmlSha256":  "db3c3c8180ea9b0418f0007965695e47148bd40aa4f72eeed15ab40d16645f1c"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.GuestInputPolicyTests",
+        "tests":  6,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.034,
+        "xmlSha256":  "09b489a54b14cbe849d317e19b8aac9fd4d5a2fd3328be08bf0211ffa7fff14b"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.GuestRetentionPolicyTests",
+        "tests":  7,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.034,
+        "xmlSha256":  "1660704505b3ee9ce159fa3abe71f76f414822e9b623ffc8b019e7f74c96cc17"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.GuestRetentionTests",
+        "tests":  17,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  104.337,
+        "xmlSha256":  "4311fc99705da516dd8e0790ec25efd071f67dca7b89a98658876a1bf608e457"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.GuestSessionEndTests",
+        "tests":  12,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  4.311,
+        "xmlSha256":  "146a412b95753dbac2b82710ff0ab942afbfcd459445ed26e9367d26d93e81d4"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.LifecycleCleanupTests",
+        "tests":  31,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  82.705,
+        "xmlSha256":  "e338537d7abd7f58bbcacb67e58c695068e9d6ff509fcb7043827ece0a843273"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.MediaToolProcessTests",
+        "tests":  7,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  11.232,
+        "xmlSha256":  "924685b3cce39fc77a67ff3d8b58551650a3b68e6347bf4008a03fe7f0010545"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.OperationsGateTests",
+        "tests":  8,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  59.05,
+        "xmlSha256":  "09181a1f50e8e8c6bb1923f8d3d997acdfee7f854449e8a512c278730d585f1e"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.RegionGeometryPolicyTests",
+        "tests":  14,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.454,
+        "xmlSha256":  "bb9eb7a2c1366d6ea2db201f54f127dd6a0aec92638beb45be8e6ae2c27359a9"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.StartTicketCodecTests",
+        "tests":  14,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.303,
+        "xmlSha256":  "10ade146afa867a7faad4c585729d25d3ac661c0ef7bd72cbc08b531500bf547"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.StartTicketSignerTests",
+        "tests":  9,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.114,
+        "xmlSha256":  "74fd0d82e6a655a1a5cb41fafe735665c7c018dd888c17acaec1cf7072052705"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.StartTicketTimePolicyTests",
+        "tests":  8,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  0.131,
+        "xmlSha256":  "56f07aad17dfc163749cabb34685724a7c35247fdf0d3c2099890bd2ec85430d"
+    },
+    {
+        "name":  "vn.hueqr.backend.service.WavResultStoreTests",
+        "tests":  8,
+        "failures":  0,
+        "errors":  0,
+        "skipped":  0,
+        "seconds":  1.129,
+        "xmlSha256":  "1e7f4271bdc7f5053d053d8ffcbaa46aca4fa75cd8c56be162bfe3a4727d9301"
+    }
+]

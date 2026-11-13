@@ -1,6 +1,7 @@
 # Roadmap — Backlog 11 issue và tiến độ theo bằng chứng
 
-**Phiên bản nội dung:** 0.11, rà soát bàn giao 08/11/2026. **Trạng thái:** backlog 11 issue/89 ô/18 dấu tích đã được duyệt theo G02. Issue #1–#11 được tạo và đọc lại ngày 08/11. Project có đủ 11 issue, 6 In Progress/5 Todo/0 Done theo xác nhận vận hành ngày 08/11, chưa có lần kiểm trực tiếp mới. Phân công không chứng minh thành viên đã thực hiện hoặc hoàn thành task.
+**Phiên bản nội dung:** 0.12, cập nhật sản phẩm backend 11/11/2026. **Trạng thái:** backlog 11 issue/89 ô/18 dấu tích đã được duyệt theo G02. Issue #1–#11 được tạo và đọc lại ngày 08/11. Project có đủ 11 issue, 6 In Progress/5 Todo/0 Done theo xác nhận vận hành ngày 08/11, chưa có lần kiểm trực tiếp mới. Phân công không chứng minh thành viên đã thực hiện hoặc hoàn thành task.
+**Checklist local hiện hành ngày 12/11:** 89 ô/23 dấu tích sau khi ghi nhận thêm ba ô T02/T09/T11 tại [mục 6.18](#checklist-20261112). Mốc 09/11 là 20 dấu tích tại [mục 6.5](#local-checklist-20261109); trạng thái GitHub ghi riêng theo kết quả đồng bộ.
 **Mục đích:** tra phạm vi, phân công, phụ thuộc và lịch dự kiến. Bảng tổng quan cập nhật theo bằng chứng backend và xác nhận Project ngày 08/11/2026, các snapshot cũ giữ theo thời điểm. Điểm dừng và bằng chứng mới nhất ở [handoff](handoff.md#next-step).
 **Giới hạn:** checklist và thiết kế không thay bằng chứng phần mềm. Quy trình phối hợp, quyền thao tác và mốc bàn giao tại [handoff mục 7](handoff.md#guidance-protocol). Trạng thái Git và sản phẩm được cập nhật theo kết quả thực tế, không theo kế hoạch dự kiến.
 
@@ -18,7 +19,7 @@ Dự án đã có nhiều kết quả phân tích và tài liệu trước khi t
 | Cây làm việc và Git | Ba commit/push T10/T01 tại repository hiện có đã được đối chiếu qua đầu ra Terminal; nguồn và giới hạn tại [handoff mục 2.2](handoff.md#bootstrap-result). Comment và hình Use Case đã được bổ sung ngày 08/11; đích chính thức đã nhận, trạng thái Git/issue cần được đối chiếu trước hướng dẫn tiếp theo. |
 | Sản phẩm kỹ thuật và hướng dẫn vận hành | TDD/model/API/operations theo DATA-05, V1–V4, K11/K01/K02/K04, xác thực Admin, A31/A06/tạo điểm ẩn A08 và phần đọc/sửa tên A07/A09 đã có kiểm chứng trong bộ 168 test. [Bằng chứng ngày 08/11](../03-ky-thuat/api-transactions.md#admin-place-test-result). Chưa toàn TDD/schema/T03/T05 hoặc môi trường phục vụ |
 | [D06 — năm nháp vi](../02-nghiep-vu/decisions.md#d06) | Đã có báo cáo về năm bản nháp tiếng Việt; chưa xác nhận bản lưu trong repo, chưa có bằng chứng rà soát/duyệt. Không tự dựng lại hoặc tích hoàn tất T08. |
-| TTS, URL demo và bằng chứng phần mềm | Đã khảo sát chính thức, chọn model/Charon/WAV-MP3/Linux; chọn thử ngrok, chưa URL thật/usage/quota tài khoản hoặc pipeline/test. Không dùng sáu MP3 demo làm bằng chứng hệ thống chính. |
+| TTS, URL demo và bằng chứng phần mềm | Đã khảo sát chính thức, chọn model/Charon/WAV-MP3/Linux; chọn thử ngrok, chưa URL thật/usage/quota tài khoản hoặc pipeline/provider thật. Worker/WAV/Check/Retry có bằng chứng backend riêng; chưa provider/quota thật hoặc FFmpeg/MP3/audio hoàn chỉnh. Không dùng sáu MP3 demo làm bằng chứng hệ thống chính. |
 
 Nguồn FR/UC/AC/NFR vẫn ở PRD. Bằng chứng checklist GitHub ở mục 6 được ghi theo ngày đối chiếu, không mặc định đã được kiểm lại. Phân công và người commit theo G02; tiến độ xác định bằng sản phẩm và bằng chứng.
 
@@ -31,12 +32,12 @@ Nguồn FR/UC/AC/NFR vẫn ở PRD. Bằng chứng checklist GitHub ở mục 6 
 | Mã task | Người phụ trách theo G02 | Người commit theo kế hoạch nhóm | Tiến độ công việc theo bằng chứng | Căn cứ ngắn |
 | --- | --- | --- | --- | --- |
 | [T01](#t01) | Thành | Thành | Đang thực hiện | Nghiệp vụ/PRD/hướng UI và công nghệ nền đã chốt; tương thích/môi trường/TDD/roadmap triển khai chưa hoàn tất. |
-| [T02](#t02) | Hòa | Hòa | Đang thực hiện | V1–V4 gồm phiên khách, địa điểm/vùng, tài khoản và window/receipt; FK/UK/mapping và nâng V1 có dữ liệu lên V2 đã kiểm. Toàn schema/FK/seeds chưa hoàn tất, xem handoff mục 2.6–2.8 |
-| [T03](#t03) | Thành | Thành | Đang thực hiện | K11/K01/K02 và phần kết thúc K04 đã kiểm, tiếp tục có hồi quy trong bộ backend mới. Còn grant/nội dung/audio/lượt xem và các ca tích hợp |
-| [T04](#t04) | Nghĩa | Nghĩa | Chưa bắt đầu | Có thiết kế tại T01, chưa có giao diện ứng dụng hoạt động. |
-| [T05](#t05) | Thành | Thành | Đang thực hiện | Đã kiểm xác thực/CSRF/Q3, window/receipt, tạo điểm ẩn, đọc cơ bản và sửa tên/If-Match. Còn Q2 frontend, điều kiện bật hiện, vùng/cặp, ẩn/hiện/xóa và nghiệp vụ quản trị khác |
+| [T02](#t02) | Hòa | Hòa | Đang thực hiện | V1–V10 gồm phiên, nội dung/audio/cặp, opening/grant/READ claim; seed riêng 5 điểm/20 ngăn trống đã kiểm. Còn dọn vòng đời/nội dung được duyệt, xem [handoff 2.24](handoff.md#guest-content-frontend-result) |
+| [T03](#t03) | Thành | Thành | Đang thực hiện | K03/K05–K10, grant/ACK/tải MP3 và thu hồi quyền đã kiểm cùng nền phiên. D08/claim có mốc mới tại [mục 6.8](#lifecycle-cleanup-progress); còn browser/Blob/owner và vận hành theo [bằng chứng](../03-ky-thuat/api-transactions.md#guest-content-test-result) |
+| [T04](#t04) | Nghĩa | Nghĩa | Đang triển khai nguồn, chưa build/kiểm browser | Có [nguồn Vue khách](../../frontend/README.md); 13 ca Playback V8 đạt, chưa Node/npm/lockfile/build hoặc giao diện hoạt động được kiểm chứng. |
+| [T05](#t05) | Thành | Thành | Đang thực hiện | Đã kiểm xác thực/CSRF/Q3, window/receipt, địa điểm/vùng/nháp/hồ sơ, áp dụng cặp/bật-ẩn/mức đầy đủ và báo cáo. A11 và dọn vòng đời đã kiểm theo [mục 6.8](#lifecycle-cleanup-progress). Còn Q2/frontend, MP3/preview/nội dung thật và vận hành; [bằng chứng](../03-ky-thuat/api-transactions.md#admin-pair-visibility-test-result) |
 | [T06](#t06) | Nghĩa | Nghĩa | Chưa bắt đầu | Hướng thiết kế đã chốt, chưa có UI Admin hoạt động. |
-| [T07](#t07) | Thành | Thành | Đang thực hiện | Đã chọn model/giọng và khảo sát chính thức; tích hợp/thử thật/quota và bốn ngôn ngữ chưa kiểm chứng. |
+| [T07](#t07) | Thành | Thành | Đang thực hiện | Đã chọn model/giọng; worker/WAV/Check/Retry được kiểm theo [bằng chứng 09/11](../03-ky-thuat/api-transactions.md#worker-report-test-result). Provider/MP3/pipeline/quota và bốn ngôn ngữ thật chưa kiểm chứng. |
 | [T08](#t08) | Thành, Nghĩa, Hòa | Thành, Nghĩa, Hòa theo phần phụ trách | Đang thực hiện | Đã có báo cáo về năm bản nháp vi; chưa xác minh bản lưu trong repo hoặc rà soát/duyệt; chưa tích hoàn tất nội dung. |
 | [T09](#t09) | Hòa | Hòa | Chưa bắt đầu nghiệm thu toàn hệ thống | Có bằng chứng kiểm thử nền/backend; chưa phải bộ nghiệm thu FR/UC/AC toàn hệ thống của T09. |
 | [T10](#t10) | Hòa | Hòa | Đang thực hiện | Đã có quy ước Txx/commit tiếng Việt và commit/push khởi tạo main theo handoff mục 2.2. Còn chờ xác nhận liên kết tài khoản trên GitHub; CI/CD và demo chưa có bằng chứng đạt. |
@@ -50,7 +51,7 @@ Nguồn FR/UC/AC/NFR vẫn ở PRD. Bằng chứng checklist GitHub ở mục 6 
 
 ## 3. Nội dung 11 issue — kế thừa bản đã duyệt, thay đổi local ghi rõ
 
-Mỗi issue gồm **Description và một Checklist**. Giữ nguyên 11 task/89 ô/18 dấu tích và phân công đã duyệt; không tách thành từng file/class/hàm. Các dấu tích chỉ ghi nhận kết quả trong phạm vi có căn cứ, không xác nhận tích hợp/vận hành toàn hệ thống và không biểu thị phần trăm hoàn thành đồ án. Phần checklist giữ nguyên văn đã đối chiếu với issue; hai cách gọi bàn giao cũ trong T01/T08 được giữ để không thay nội dung issue trong đợt biên tập này.
+Mỗi issue gồm **Description và một Checklist**. Giữ nguyên 11 task/89 ô và phân công đã duyệt; bản local hiện có 23 dấu tích theo mục 6.18. Không tách thành từng file/class/hàm hoặc tự sửa các dấu tích ngoài phạm vi đã xác nhận. Các dấu tích chỉ ghi nhận kết quả trong phạm vi có căn cứ, không xác nhận tích hợp/vận hành toàn hệ thống và không biểu thị phần trăm hoàn thành đồ án. Phần checklist giữ nguyên văn đã đối chiếu với issue; hai cách gọi bàn giao cũ trong T01/T08 được giữ để không thay nội dung issue trong đợt biên tập này.
 
 <a id="t01"></a>
 
@@ -92,9 +93,9 @@ Thiết kế và xây dựng cấu trúc dữ liệu theo T01/TDD, cung cấp đ
 #### Checklist
 
 - [ ] Thiết kế bảng/quan hệ cho địa điểm, vùng, văn bản, audio/cặp, hồ sơ, yêu cầu tạo, phiên và lượt xem; đã có ERD logic dự thảo tại data-model hiện hành, chờ rà soát/mapping.
-- [ ] Giữ định danh độc lập tên và thông tin nhận biết lịch sử địa điểm đã xóa, không gộp điểm trùng tên.
+- [x] Giữ định danh độc lập tên và thông tin nhận biết lịch sử địa điểm đã xóa, không gộp điểm trùng tên.
 - [ ] Thiết lập ràng buộc và khóa ngoại chặn xóa trực tiếp khi còn tham chiếu ở quan hệ cần chặn; không dùng ON DELETE CASCADE tại đó.
-- [ ] Viết migrations và dữ liệu khởi tạo tái tạo được cho năm điểm/bốn ngôn ngữ; không phục vụ nội dung chưa duyệt hoặc đưa secret vào repo.
+- [x] Viết migrations và dữ liệu khởi tạo tái tạo được cho năm điểm/bốn ngôn ngữ; không phục vụ nội dung chưa duyệt hoặc đưa secret vào repo.
 - [ ] Kiểm tra migrations, khởi tạo và ràng buộc; lưu bằng chứng phù hợp TDD, bàn giao cho Backend và T09.
 
 <a id="t03"></a>
@@ -224,7 +225,7 @@ Hòa phụ trách kiểm thử tích hợp/nghiệm thu theo PRD và môi trư�
 - [ ] Kiểm tra phiên khách 8 tiếng/cảnh báo 5 phút/ngoại lệ nghe tiếp, Admin 30 phút/Q2/Q3, tải lại, mạng lỗi và kết quả chưa rõ/đến muộn.
 - [ ] Kiểm tra áp dụng cả cặp, gate cặp vi, xóa giao dịch/giữ lịch sử, dọn file tách database và xóa dữ liệu 30 ngày.
 - [ ] Kiểm tra bộ 20+20, số đếm/hai bảng thống kê và QR/URL/PNG/bản in thực tế trên môi trường T10.
-- [ ] Lưu báo cáo/bằng chứng với kết luận đạt, chưa đạt hoặc chưa kiểm tra; kiểm tra lại sau sửa, không coi hàng chờ là đã xóa hoặc yêu cầu in là đã in.
+- [x] Lưu báo cáo/bằng chứng với kết luận đạt, chưa đạt hoặc chưa kiểm tra; kiểm tra lại sau sửa, không coi hàng chờ là đã xóa hoặc yêu cầu in là đã in.
 
 <a id="t10"></a>
 
@@ -237,7 +238,7 @@ Hòa phụ trách quy trình cộng tác, CI/CD và môi trường demo, cung c�
 #### Checklist
 
 - [x] Ghi nhận nền repo cục bộ có .git và .gitignore gốc; chỉ xác minh sự hiện diện.
-- [ ] Kiểm tra hiện trạng Git/remote/nhánh và thống nhất quy trình cộng tác khi được giao; chưa suy ra từ tên người hoặc file hiện có.
+- [x] Kiểm tra hiện trạng Git/remote/nhánh và thống nhất quy trình cộng tác khi được giao; chưa suy ra từ tên người hoặc file hiện có.
 - [x] Ghi phương án thử ngrok Free/TECH-03 và nguồn domain-quota-trang trung gian tại technical-inputs mục 5; không đăng ký/cài/triển khai.
 - [x] Ghi TECH-05/DATA-03: CD-L01 Tailscale riêng + OpenSSH Windows/PowerShell và phạm vi-nhịp backup đã chọn, chưa kiểm.
 - [ ] Kiểm SSH và quyền/context Docker Desktop của tài khoản triển khai trước triển khai đầy đủ; kiểm ngrok/URL/HTTPS/QR khác mạng/quota/persistence.
@@ -256,7 +257,7 @@ Thành tổng hợp hướng dẫn và bàn giao theo sản phẩm thực tế; 
 
 #### Checklist
 
-- [ ] Soạn hướng dẫn chạy, cấu hình và khởi tạo theo sản phẩm/môi trường thực tế; ghi điều kiện, giới hạn, không đưa secret vào tài liệu.
+- [x] Soạn hướng dẫn chạy, cấu hình và khởi tạo theo sản phẩm/môi trường thực tế; ghi điều kiện, giới hạn, không đưa secret vào tài liệu.
 - [ ] Hoàn thiện hướng dẫn khách, Admin và trình diễn theo chức năng đã chạy, gồm phiên, vùng, cặp nội dung, lỗi, thống kê và QR.
 - [ ] Tập hợp hồ sơ nguồn/duyệt T08, kết quả kiểm thử T09 và vận hành T10; phân biệt đã kiểm chứng với chưa kiểm chứng.
 - [ ] Đồng bộ phiên bản, liên kết, trạng thái và giới hạn cuối; chuẩn bị bàn giao đúng đường dẫn và việc tiếp theo.
@@ -295,12 +296,12 @@ Cổng 07/11 hoặc 10/11 trễ: báo thiếu sản phẩm nào, phụ thuộc v
 
 ### 6.1. Bản đã duyệt và dấu tích có căn cứ
 
-Nguồn của tiêu đề, Description và Checklist là **mục 3**. Backlog 89 ô/18 dấu tích được duyệt ngày 06/11/2026; trạng thái kiểm chứng được ghi theo từng task.
+Nguồn của tiêu đề, Description và Checklist là **mục 3**. Backlog 89 ô/18 dấu tích được duyệt ngày 06/11/2026; bảng dưới giữ số đếm tại mốc đó. Hai dấu tích local bổ sung ngày 09/11 được ghi riêng tại mục 6.5, chưa suy thành GitHub đã cập nhật.
 
 | Task | Tổng ô | Đã tích | Phạm vi của dấu tích |
 | --- | --- | --- | --- |
 | T01 | 18 | 12 | Bảy kết quả phân tích/tài liệu cũ và năm mục ghi công nghệ, đầu vào, khảo sát, mốc phiên bản, chính sách đã chọn; chưa toàn TDD/môi trường/roadmap triển khai |
-| T02 | 5 | 0 | V1/V2 phiên khách và địa điểm/vùng đã kiểm, chưa đủ toàn mô hình/FK/migrations/seeds |
+| T02 | 5 | 0 | V1–V9/audio/cặp và seed riêng đã kiểm, bằng chứng tại data-model 7.5; các dấu tích giữ nguyên bản đã đối chiếu, chưa toàn mô hình/quyền hoặc dữ liệu duyệt |
 | T03 | 6 | 0 | K11/K01/K02 và phần kết thúc K04 đã kiểm backend, còn grant/nội dung/audio/lượt xem và điều kiện toàn ô |
 | T04 | 7 | 0 | Chưa frontend khách được kiểm |
 | T05 | 9 | 0 | Xác thực/Q3, window/receipt, tạo/đọc/sửa tên có bằng chứng; chưa đủ Q2 tích hợp hoặc toàn ô nghiệp vụ quản trị |
@@ -361,6 +362,111 @@ Phân loại này được đề xuất theo bằng chứng sản phẩm và đ�
 Sau khi nền xác thực Admin có kết quả tại [handoff mục 2.7](handoff.md#admin-auth-result), đề xuất chuyển riêng T05/#5 từ Todo sang In Progress. Nếu được cập nhật, Project sẽ có 7 In Progress và 4 Todo. Chưa có xác nhận thao tác này, bảng trên tiếp tục giữ trạng thái thực tế được báo cáo gần nhất.
 
 Issue #1–#11 đã được tạo và đối chiếu theo hai URL chính thức, đã thêm vào Project theo xác nhận vận hành. Mọi thao tác sửa/tích/đóng issue tiếp tục do người vận hành thực hiện trừ hành động cụ thể được giao thêm. Nguồn phát hành tiếp tục là mục 3, giữ nguyên 89 ô/18 dấu tích.
+
+<a id="local-checklist-20261109"></a>
+
+### 6.5. Checklist local ngày 09/11/2026
+
+Bản lưu được đọc đầu đợt V9 đã có 89 ô/20 dấu tích: T01 12, T02 1, T07 3, T10 4; các task khác 0. Hai ô bổ sung so với mốc đối chiếu GitHub là T02 ô 2 (định danh/lịch sử địa điểm) và T10 ô 2 (kiểm Git/remote/nhánh và quy trình cộng tác), đúng hai kết quả đã được rà trước đó. Giữ nguyên toàn bộ tiêu đề, Description, Checklist và dấu tích của bản lưu; đợt V9 không tự tích thêm ô.
+
+V9/audio/cặp và seed năm điểm/20 ngăn có bằng chứng tại [data-model 7.5](../03-ky-thuat/data-model.md#model-audio-pair-result); không tự coi toàn T02 hoàn tất. Bảng 6.1 và các kết quả 06–08/11 giữ mốc 18 dấu tích. Chưa đọc lại nội dung issue/Project trong lượt này, không khẳng định GitHub cũng đã có 20 dấu tích hoặc đổi Status. Không quy đổi số ô thành phần trăm hoàn thành đồ án.
+
+
+<a id="guest-content-progress"></a>
+
+### 6.6. Mốc backend nội dung khách và nguồn frontend ngày 09/11
+
+[Handoff 2.24](handoff.md#guest-content-frontend-result) và [bằng chứng API](../03-ky-thuat/api-transactions.md#guest-content-test-result) ghi V10/K03/K05–K10, kiểm backend và nguồn Vue khách chưa build. Giữ nguyên toàn mục 3 và 89 ô/20 dấu tích; chưa coi các ca backend hoặc nguồn frontend là đủ nghiệm thu một ô T03/T04. Không cập nhật GitHub trong đợt này.
+
+Theo sản phẩm hiện có, đề xuất thêm T04/#4 vào In Progress cùng đề xuất T05/#5 trước đó. Nếu cả hai được đặt thì có 8 In Progress/3 Todo/0 Done. Đây là đề xuất; trạng thái được xác nhận gần nhất ở mục 6.4 vẫn 6 In Progress/5 Todo/0 Done, không ghi kế hoạch thành thao tác đã làm.
+
+<a id="guest-retention-progress"></a>
+
+### 6.7. Dọn metadata và phiên/lượt D08 ngày 10/11
+
+[Handoff 2.26](handoff.md#guest-retention-result) dẫn tới nguồn/test retention mới: hết phiên dọn context, tới anchor gốc +30 ngày xóa phiên/lượt trong TX, giữ an toàn READ claim. 24 ca mới đạt và hồi quy toàn cây có [bằng chứng](../03-ky-thuat/operations-design.md#ops-guest-retention-result). Chưa bật scheduler vận hành, xử lý claim rò hoặc đủ toàn ô tự xóa/nghiệm thu T05; chưa hoàn tất cơ chế file/window/receipt/job/backup/restore. Giữ nguyên mục 3, 89 ô/20 dấu tích; không tự sửa issue/Project.
+
+<a id="lifecycle-cleanup-progress"></a>
+
+### 6.8. Xóa địa điểm và dọn vòng đời ngày 10/11
+
+Đã có A11, dọn window/receipt/job, registry owner/claim và dọn file theo hạn đã duyệt, với [bằng chứng backend](../03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result). [Handoff 2.27](handoff.md#lifecycle-cleanup-result) ghi điểm tiếp tục. Chưa bật scheduler hoặc áp V11 trên môi trường phục vụ, chưa backup/restore/provider/FFmpeg/browser; chưa đủ toàn ô nghiệm thu T05/T07. Giữ nguyên tiêu đề, Description, Checklist mục 3 và 89 ô/20 dấu tích, không thay issue/Project trong đợt này.
+
+<a id="local-audio-progress"></a>
+
+### 6.9. Local audio sau WAV — 11/11/2026
+
+[Handoff 2.31](handoff.md#local-audio-result) và [API 11.13](../03-ky-thuat/api-transactions.md#local-audio-implementation-result) ghi V12/CONVERTING/SUCCEEDED, đăng ký audio, Check và Retry dùng WAV cũ; ledger đối chiếu 520 ca qua full và nhóm local/TTS chạy lại. Test dùng encoder giả/Java process fixture, chưa FFmpeg/MP3/provider thật hoặc nghe duyệt; chưa đủ toàn T07. Frontend T04/T06 vẫn triển khai độc lập theo 2.30. Giữ nguyên mục 3/89 ô/20 dấu tích, không sửa issue/Project hoặc suy test thành hoàn tất task. Các snapshot trước giữ phạm vi/thời điểm riêng.
+
+### 6.10. Frontend và luồng local ngày 11/11
+
+[Handoff 2.33](handoff.md#local-e2e-20261111) đối chiếu Admin đã ghép vào nguồn chính và các màn TTS/mức đầy đủ/phiên/thống kê/QR mới. Frontend đạt 60 ca npm và build Vue; Chrome/API/MySQL riêng đã chạy áp dụng cặp, phát MP3 thật và ca lỗi mạng. [Hồ sơ kiểm](../06-kiem-thu/local-20261111/README.md) phân biệt lượt đầu, hồi quy cuối, full backend và các giới hạn.
+
+Có 15 bản dịch nháp và bốn audio vi thật chưa duyệt; bài Diên Thọ gặp HTTP 503. Chưa đủ 20 cặp đã duyệt, vùng/nền chính thức, thiết bị thật, HTTPS/QR, CI/CD hoặc backup/restore. Docker/CI hiện là nguồn cấu hình, chưa phải nghiệm thu môi trường. Giữ nguyên mục 3, 89 ô/20 dấu tích; không cập nhật issue/Project từ mốc kiểm local.
+
+### 6.11. Đóng gói Linux và restore offline ngày 11/11
+
+[Handoff 2.34](handoff.md#packaging-restore-20261111) và [hồ sơ đóng gói](../06-kiem-thu/packaging-20261111/README.md) ghi Docker build đạt, FFmpeg Unicode/giải mã MP3 thật, phục hồi riêng 12 audio có Hash, lọc retention và Chrome sau restore với epoch mới. Năm ca kiểm manifest đạt; không đổi số đếm backend full 520/520 ở mốc trước thành full Linux.
+
+Chưa có OPS_GUARD/drain live, phục hồi job/claim đang xử lý, Compose update/rollback, HTTPS/thiết bị hoặc CI/CD thật. Đây là diễn tập trên dữ liệu thử, không đủ toàn ô backup/restore/vận hành T09/T10. Giữ nguyên mục 3, 89 ô/20 dấu tích; không cập nhật issue/Project hoặc suy phân công G02 từ người thao tác.
+
+### 6.12. Chữ và bố cục Khách ngày 11/11
+
+[Handoff 2.35](handoff.md#guest-ui-fix-20261111) ghi sửa phông, bố cục dọc, ô văn bản cuộn riêng và Hủy luôn thấy theo UI-K01–UI-K04. 60 ca logic/build và 7 ca Chrome trên ảnh Docker mới đạt; có quan sát trực tiếp trong VS Code. [Hồ sơ kiểm](../06-kiem-thu/guest-ui-20261111/README.md) phân biệt bản văn thật với đoạn DOM dùng ép cuộn.
+
+Bản đồ lưới/các tam giác E2E trùng nhau vẫn chưa đạt demo; chưa tích hợp nền/vùng được duyệt hoặc chuẩn bị xong dữ liệu demo riêng. Kiểm API/audio trước đó không tự chứng minh giao diện được nghiệm thu. Giữ nguyên checklist mục 3 và 89 ô/20 dấu tích; không sửa issue/Project, phân công G02 hoặc tự hoàn tất T04/T06.
+
+### 6.13. Bản đồ xem trước và bộ nháp riêng ngày 11/11
+
+[Handoff 2.37](handoff.md#map-preview-dataset-20261111) ghi nền OSM offline/năm vùng đề xuất, nguồn/ghi công và cờ preview mặc định tắt; database mới có 5 điểm/20 slot/5 bản vi nháp còn ẩn, không review-ref/cặp giả. Lỗi tải/lỗi của Mức đầy đủ đã sửa và kiểm ba ca Chrome trên ảnh cuối; 60 ca logic/build đạt. [Hồ sơ](../06-kiem-thu/map-preview-20261111/README.md) phân biệt trang xem vùng với phiên Khách và các phần chưa kiểm.
+
+[Bảng theo dõi issue](issue-follow-up-2026-11-11.md) cụ thể hóa đầu ra còn mở theo G02, chưa sửa GitHub hoặc checklist. Nền/vùng vẫn chờ duyệt, bộ audio và QR/HTTPS chưa đủ; không hoàn tất T02/T04/T06/T08 hoặc các ô nghiệm thu từ việc seed/mở preview. Giữ nguyên mục 3, 89 ô/20 dấu tích và trạng thái Project chưa kiểm mới.
+
+### 6.14. Nền raster OSM và khôi phục preview — 11/11
+
+[Handoff 2.40](handoff.md#osm-map-20261111) ghi lớp nền OSM/ghi công/tải-lỗi-thử lại cho Khách/Admin, build Docker và preview 18082 được khôi phục với DNS Docker riêng. 65 ca logic, 11 ca Chrome trên ảnh mới và 3 ca offline riêng đạt; 229 file baseline backend khớp Hash. Browser dùng tile kiểm; kết nối tile thật đang reset, chưa có bằng chứng hình ảnh nền thực. Năm vùng/bộ nội dung vẫn chờ duyệt, không áp dụng cặp hoặc bật điểm giả. Không thay 89 ô/20 dấu tích, G02 hoặc trạng thái GitHub Project; [bảng issue](issue-follow-up-2026-11-11.md) giữ các đầu việc chưa hoàn tất.
+
+### 6.15. Push, CI Linux, Compose và TTS thật — 12/11/2026
+
+[Handoff 2.45](handoff.md#push-ci-20261112) và [hồ sơ kiểm](../06-kiem-thu/release-readiness-20261112/README.md) ghi chín nhánh task đã push; một lượt full CI Linux đạt 520/520 backend, 65/65 logic frontend, 5/5 manifest và build. Diễn tập Compose giữ dữ liệu qua seed lặp/restart/update/rollback trên hai ảnh cùng schema đạt; một lượt Chrome từ Admin qua provider/converter đến nghe thử MP3 thật đạt, chưa duyệt/áp dụng cặp.
+
+Giữ 89 ô/20 dấu tích, không cập nhật issue hoặc Project từ các phép kiểm bộ phận. T08 thuộc cả nhóm và còn nháp chưa commit. HTTPS/QR, đủ 20 cặp được duyệt, thiết bị thật, gate/drain/scheduler/backup live và CD còn mở. Nguồn kiểm/Compose và tài liệu mới chờ rà trước mốc commit tiếp theo.
+
+### 6.16. Bản tập dượt riêng — 12/11/2026
+
+[Handoff 2.46](handoff.md#rehearsal-runtime-20261112) ghi môi trường mới 18083, image không chứa trang preview, tài khoản/khóa/volume riêng và bảo quản một bản văn/audio Gemini thật. [Hồ sơ](../06-kiem-thu/rehearsal-20261112/README.md) ghi 65 logic, build thường/preview, hai ca Chrome trước và sau restart, Hash và encode/probe/giải mã audio đạt. Một tile OSM thật tải được trong Chrome; chưa chốt toàn map/thiết bị. Các điểm vẫn ẩn, 0 cặp áp dụng; HTTPS/QR và duyệt bộ Ngọ Môn còn chờ đầu vào. T08 giữ nháp, chưa commit nguồn mới hoặc đổi 89 ô/20 dấu tích/Project.
+
+### 6.17. HTTPS Ngọ Môn — 12/11/2026
+
+[Handoff 2.47](handoff.md#https-ngo-mon-20261112) và [bằng chứng](../06-kiem-thu/https-ngo-mon-20261112/README.md): một cặp vi đã áp dụng/hiển thị, QR PNG thật, 71 logic frontend và 2 ca Chrome HTTPS đạt. V13 sửa precision vùng; API Khách ngrok vẫn không gửi cookie. Backend và lượt chạy lại được báo riêng trong hồ sơ. Còn thiết bị/QR thực, 20 cặp đã duyệt và vận hành live. Giữ nguyên checklist mục 3 và trạng thái GitHub chưa đối chiếu mới; chưa hoàn tất issue từ mốc một điểm.
+
+<a id="checklist-20261112"></a>
+
+### 6.18. Ghi nhận ba ô checklist — 12/11/2026
+
+Checklist local có 23/89 ô đã tích, tăng ba ô so với mốc 09/11, theo phạm vi đã được xác nhận:
+
+| Ô | Căn cứ |
+|---|---|
+| T02 — migrations và seed năm điểm/bốn ngôn ngữ | [Diễn tập Compose](../06-kiem-thu/release-readiness-20261112/README.md): seed hai lần vẫn 5 điểm/20 slot, điểm chưa duyệt giữ ẩn; không đưa secret vào bộ seed. |
+| T09 — báo cáo, phân loại kết quả và kiểm lại sau sửa | [Hồ sơ HTTPS](../06-kiem-thu/https-ngo-mon-20261112/README.md) tách full, chạy lại, fixture và kiểm thủ công; không suy yêu cầu in thành đã in. |
+| T11 — hướng dẫn chạy/cấu hình/khởi tạo | [Đóng gói](../07-van-hanh/dong-goi-va-ci.md) và [tập dượt](../07-van-hanh/tap-duot.md) ghi môi trường, cấu hình riêng, khởi động lại và giới hạn. |
+
+Không đóng issue hoặc đổi trạng thái Project; không tích các ô khác từ kết quả bộ phận. Các số đếm cũ ở mục 6.5–6.17 giữ theo thời điểm.
+
+Đã đồng bộ đúng ba dấu tích trên issue [#2](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/2), [#9](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/9) và [#11](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/11), đọc lại body sau cập nhật khớp nội dung dự kiến; cả ba issue vẫn mở. Không sửa title, assignee, nhãn, trạng thái Project hoặc các ô khác. Chưa đối chiếu lại tổng dấu tích trên toàn bộ 11 issue GitHub; 23/89 là số đếm local đã kiểm.
+
+### 6.19. Gate và công cụ vận hành V14 — 13/11/2026
+
+[Handoff 2.49](handoff.md#operations-guard-20261113) và [bằng chứng](../06-kiem-thu/operations-guard-20261113/README.md) ghi gate bền, kiểm MySQL, manifest, CLI và Chrome sau restore riêng. Giữ 23/89 dấu tích; chưa nghiệm thu toàn ô vận hành hoặc đổi Project. Nguồn V14 chưa commit và chưa áp vào bản Ngọ Môn V13. Còn cập nhật phục vụ an toàn, crash/backup scheduling, đủ nội dung/vùng đã duyệt, Safari thật và CD-L01.
+
+### 6.20. Nội dung v02 và bốn vùng trong bản riêng — 13/11/2026
+
+[Handoff 2.50](handoff.md#content-review-20261113) ghi bốn vùng đã áp dụng riêng, 14/19 audio mới được tạo/giải mã thật và đối chiếu AI; chưa đủ nghe duyệt D09. Giữ năm bản ru chờ quota và Thái Hòa fr chờ kiểm phát âm, không tự áp cặp mới hoặc chuyển phục vụ. Checklist tiếp tục 23/89; không suy có MP3/ASR thành đạt toàn ô T08 hoặc thay Project.
+
+### 6.21. Mốc commit local sau dọn thư mục — 13/11/2026
+
+[Commit-plan 4.23](commit-plan-2026-11-05.md) ghi nguồn V14, kiểm thử/vận hành và chín tệp T08 đã lưu theo G02; T08 dùng metadata Thành và vẫn là bộ chưa duyệt cuối. Đã chuyển build backend ra bản lưu ngoài dự án, giữ dependencies và bằng chứng. Kiểm lại 71/71 logic frontend, 8/8 manifest đạt; không có lượt full backend mới. Chưa push hoặc thay main/Project/checklist; giữ 23/89 và các điều kiện chạy chính thức còn mở.
 
 ## 7. Nhật ký và snapshot theo thời điểm
 

@@ -1,0 +1,110 @@
+{
+  "checkedAt": "2026-11-13T03:25:00.698Z",
+  "status": "PASSED",
+  "cases": 14,
+  "results": [
+    {
+      "article": "thai-hoa/vi",
+      "checksum": "2f0e7748667ae871181ddb3ae19f79a42dc2c2689b3b530be6f4942845236d8e",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.175698
+    },
+    {
+      "article": "tu-cam-thanh/vi",
+      "checksum": "abcdeb30f007cd4c3acde0c05a4e409ad4d38e370aab88c838100bf58f120fab",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.072968
+    },
+    {
+      "article": "cuu-dinh/vi",
+      "checksum": "c4576ceeff2e057a494f3d22a58ae0c5f0006ef536a953b54b28e530fb66d522",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.003585
+    },
+    {
+      "article": "dien-tho/vi",
+      "checksum": "bd0883388ee7c14fec6c9489785c1fdb96c072cba47f5ee2587e25f1c79d6484",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.066271
+    },
+    {
+      "article": "ngo-mon/en",
+      "checksum": "0ac9883e68c6384029af6e57dd2ca8532264cc55f36ebe0e44e6c0a292b032ed",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.017831
+    },
+    {
+      "article": "thai-hoa/en",
+      "checksum": "2f86886dd9cd1250ff710e62053dd0176fe1c851ce65fbb8bbb96fcb3f7d51b6",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.001562
+    },
+    {
+      "article": "tu-cam-thanh/en",
+      "checksum": "b84214a40b4a7a1b1f10518bd41d715ee2c3e094ce6677b17b6b1ea5c2c54a0b",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.003935
+    },
+    {
+      "article": "cuu-dinh/en",
+      "checksum": "1d4bc2c2442b8dc74bb2ef1bcd6302de2390401e7b32f872b08989071f750d8c",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.018306
+    },
+    {
+      "article": "dien-tho/en",
+      "checksum": "f7710d0f81c2e60dd2e64674962239dfd20e113312d2ff942ab2401fd5cbe9bf",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.039818
+    },
+    {
+      "article": "ngo-mon/fr",
+      "checksum": "dc758b15e8eb6ad647598da5dc062ad0a7dd1f44c7bf4a58cc925550b6106bd9",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.017825
+    },
+    {
+      "article": "thai-hoa/fr",
+      "checksum": "049e51d507398d5661d078e7839066dd0b2fee515840f98be7a0c3269c3894ce",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.022618
+    },
+    {
+      "article": "tu-cam-thanh/fr",
+      "checksum": "93e83db27ead2696cbbedee14a045d12eb281a9cdf45b9d81e0d0b8628b8092c",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.005319
+    },
+    {
+      "article": "cuu-dinh/fr",
+      "checksum": "709f734f281734024a97df112e1902220818a83d8179016f5cd9ba05bd96468b",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.018778
+    },
+    {
+      "article": "dien-tho/fr",
+      "checksum": "8e7fae95a833800ee782e69e7465ba0f7165b84ccf487314b2e358bc8cfc5baf",
+      "textMatches": true,
+      "actualPlaybackStarted": true,
+      "playedSeconds": 0.006355
+    }
+  ],
+  "administrativeBusinessWrites": [],
+  "appliedPairsUnchanged": true,
+  "fullHumanListeningClaimed": false,
+  "realPhoneVerified": false,
+  "externalTilesBlocked": true
+}

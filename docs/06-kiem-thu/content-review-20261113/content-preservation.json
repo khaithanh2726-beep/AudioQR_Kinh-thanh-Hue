@@ -1,0 +1,12 @@
+{
+  "recordedAt": "2026-11-13T03:27:31.816Z",
+  "status": "FROZEN_BACKED_UP_ALL_WORKERS_DISABLED",
+  "files": 30,
+  "backupVerified": true,
+  "restoreOfThisSnapshotTested": false,
+  "providerKeyRemovedFromStageConfiguration": true,
+  "newPairsApplied": 0,
+  "originalServingRuntimeModified": false,
+  "applicationStopped": true,
+  "databaseStopped": true
+}

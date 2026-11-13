@@ -1,0 +1,65 @@
+{
+    "checkedAt":  "2026-11-13T08:43:38.1898938+07:00",
+    "fullBackend":  {
+                        "tests":  530,
+                        "failures":  0,
+                        "errors":  0,
+                        "skipped":  0,
+                        "uniqueCases":  530,
+                        "singleFullRun":  true,
+                        "exitCode":  0,
+                        "sourceStage":  "after-encoded-path-fix",
+                        "platform":  "Windows Java 21 + MySQL 8.4.13 Testcontainers",
+                        "forks":  2,
+                        "heapMiBPerFork":  1536,
+                        "contextCachePerFork":  2
+                    },
+    "focusedBackend":  {
+                           "addedToFull":  false,
+                           "tests":  36,
+                           "passed":  36,
+                           "sourceStage":  "before-encoded-path-fix"
+                       },
+    "manifestTests":  {
+                          "passed":  8,
+                          "tests":  8
+                      },
+    "frontend":  {
+                     "logicTests":  71,
+                     "dockerBuildPassed":  true,
+                     "passed":  71
+                 },
+    "browserAfterRestore":  {
+                                "tests":  1,
+                                "tileFixture":  true,
+                                "passed":  1
+                            },
+    "iosSafariVerified":  false,
+    "originalRehearsalSchema":  13,
+    "newSourceCommitted":  false,
+    "status":  "PASSED_FINAL_VERIFICATION",
+    "finalGate":  {
+                      "sourceStage":  "after-encoded-path-fix",
+                      "tests":  8,
+                      "passed":  8,
+                      "includedInFinalFull":  true
+                  },
+    "scheduler":  {
+                      "closedGuardBlocksSweep":  true,
+                      "expiredSessionsPurged":  3,
+                      "providerRequests":  0,
+                      "realAudioHashesPreserved":  2,
+                      "status":  "PASSED",
+                      "productionUpdated":  false
+                  },
+    "finalImage":  {
+                       "id":  "sha256:1e77e1e14ff8a8f4975c8efb16ffbc6ba108e7a884c681c0cbf9c55ed1798488",
+                       "tag":  "hueqr-local:20261113-ops-guard-urls"
+                   },
+    "browserAfterUrlFix":  {
+                               "actualPlayback":  true,
+                               "tests":  1,
+                               "tileFixture":  true,
+                               "passed":  1
+                           }
+}

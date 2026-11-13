@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-11-11T16:49:38.067Z",
+  "previous": "hueqr-osm-preview-21a39bd3",
+  "application": "hueqr-osm-preview-f620552b",
+  "database": "hueqr-preview-mysql-91b4feca",
+  "network": "hueqr-preview-91b4feca",
+  "image": "hueqr-local:20261111-osm-map",
+  "url": "http://127.0.0.1:18082",
+  "status": "ready",
+  "countsBefore": "5\n20\n5",
+  "imageId": "sha256:5d49ffaea21b1a0bd457b050e836f975af230a9cd03b4d7abe8574827610896b",
+  "workersEnabled": false,
+  "sameAudioMounts": true,
+  "sameDatabase": true,
+  "pageHttp": 200,
+  "countsAfter": [
+    5,
+    20,
+    5,
+    0
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "place": "Cổng Ngọ Môn",
+    "language": "vi",
+    "textVersion": "thuyet-minh-vi-v01",
+    "textHash": "d78e71e427aebe1552575ff4f5e6e62c3b27de904ce6d1450c802bf11dd66177",
+    "wavFile": "vi-01.wav",
+    "wavHash": "24d0f4a0abaa2d4c6dd1b692d0d49354c6a59ed3c4e27ad66687ad82c23b71a2",
+    "bytes": 1219556,
+    "model": "gemini-3.8-flash-tts",
+    "voice": "Charon",
+    "review": "pending",
+    "mp3File": "vi-01.mp3",
+    "mp3Hash": "2a77703a507e45d5b3138bfca23577643daf5764362bb9624cd9fb965700bc7a",
+    "durationSeconds": 25.28
+  },
+  {
+    "place": "Điện Thái Hòa",
+    "language": "vi",
+    "textVersion": "thuyet-minh-vi-v01",
+    "textHash": "f1b7ae246191a00356103c99d5550cb043c5dd6b2785abe68ad61bf46800d111",
+    "wavFile": "vi-02.wav",
+    "wavHash": "cd5fc30ffecaf0e348a3a6adb5bce703e96d4e0e671bafaf7639683363c1a01c",
+    "bytes": 950756,
+    "model": "gemini-3.8-flash-tts",
+    "voice": "Charon",
+    "review": "pending",
+    "mp3File": "vi-02.mp3",
+    "mp3Hash": "d9100345015daea69fa1a9dd8808188f07605eb9db8748da14283283060b09bb",
+    "durationSeconds": 19.68
+  },
+  {
+    "place": "Tử Cấm Thành",
+    "language": "vi",
+    "textVersion": "thuyet-minh-vi-v01",
+    "textHash": "cf4f4c0d7042999ca11fb9304c18f4f0856a877a8e55ea099bc53be1297f19ba",
+    "wavFile": "vi-03.wav",
+    "wavHash": "909d03b0431a6a494639cb4d235e1be92cffa86d14f3bb0d1c16926e196c5760",
+    "bytes": 994916,
+    "model": "gemini-3.8-flash-tts",
+    "voice": "Charon",
+    "review": "pending",
+    "mp3File": "vi-03.mp3",
+    "mp3Hash": "be17b851acd724b55f542032f6d4c6d311c16b09ab16fcab02b313459f5ca834",
+    "durationSeconds": 20.6
+  },
+  {
+    "place": "Cửu Đỉnh",
+    "language": "vi",
+    "textVersion": "thuyet-minh-vi-v01",
+    "textHash": "0ef92f441d92a71acae3e23f9d5ce037d4890d48e298962d97ede72db7b8ca56",
+    "wavFile": "vi-04.wav",
+    "wavHash": "f500593cf1c13f5c2cde740a0ecf56170a5b3bc668afd307682be89b2af6a7e1",
+    "bytes": 943076,
+    "model": "gemini-3.8-flash-tts",
+    "voice": "Charon",
+    "review": "pending",
+    "mp3File": "vi-04.mp3",
+    "mp3Hash": "6cab0044e03cf062dff36677b49220341f2b42e38029cb57b700714cc78e5c03",
+    "durationSeconds": 19.52
+  }
+]

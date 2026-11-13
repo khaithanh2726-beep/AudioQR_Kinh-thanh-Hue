@@ -1,6 +1,6 @@
 # TDD — Thiết kế kỹ thuật theo từng phần
 
-**Phiên bản nội dung:** 0.7; biên tập 08/11/2026. **Trạng thái:** dự thảo; các hướng đã xác nhận theo [TECH/DATA trong decisions](../02-nghiep-vu/decisions.md) không đồng nghĩa duyệt toàn TDD hoặc đã chạy tương thích.
+**Phiên bản nội dung:** 0.7; biên tập 11/11/2026. **Trạng thái:** dự thảo; các hướng đã xác nhận theo [TECH/DATA trong decisions](../02-nghiep-vu/decisions.md) không đồng nghĩa duyệt toàn TDD hoặc đã chạy tương thích.
 **Mục đích:** giải thích kiến trúc/module/ba lớp, API-quyền, tab/audio, môi trường và CI/CD; dẫn tới mô hình, DTO, vận hành và kiểm chứng chi tiết.
 **Trạng thái triển khai:** sản phẩm và bằng chứng xem [mục 16](#tdd-open); điểm bàn giao/Git có nguồn chính tại [handoff](../01-tong-quan/handoff.md#next-step). Phần thiết kế dưới đây giữ rõ các mục đã chốt và còn dự thảo.
 **Đọc cùng:** [PRD](../02-nghiep-vu/PRD.md), [đầu vào](../01-tong-quan/technical-inputs.md), [data-model](data-model.md), [API](api-transactions.md), [operations](operations-design.md), [DFD](dfd.md), [UI](../04-giao-dien/ui-design.md).
@@ -259,7 +259,7 @@ Guest/Admin có thông báo/cách phục hồi khác nhau theo nguồn; Admin h�
 
 ## 6. Vai trò MySQL, giao dịch và tác vụ TTS
 
-MySQL là nguồn dữ liệu nghiệp vụ và trạng thái bền cho địa điểm/mã, vùng nháp-hiện hành, bản văn/ngôn ngữ/hồ sơ/cặp, metadata file, yêu cầu tạo, phiên/lượt và nhận biết điểm đã xóa. ERD/trường logic tại mục 7–8. V1 phiên khách, V2 địa điểm/vùng, V3 tài khoản và V4 window/receipt đã có migration/mapping; các bảng còn lại tiếp tục theo phụ thuộc. Dữ liệu lớn WAV/MP3 để kho file. [Phạm vi dữ liệu đã kiểm](data-model.md#model-place-region-result)
+MySQL là nguồn dữ liệu nghiệp vụ và trạng thái bền cho địa điểm/mã, vùng nháp-hiện hành, bản văn/ngôn ngữ/hồ sơ/cặp, metadata file, yêu cầu tạo, phiên/lượt và nhận biết điểm đã xóa. ERD/trường logic tại mục 7–8. V1–V9 đã có migration/mapping cho phiên, địa điểm/vùng, tài khoản/window/receipt, văn bản, job, file, lượt và audio/cặp; script riêng khởi tạo năm điểm ẩn/20 ngăn trống đã được kiểm. Opening/grant/claims và các bảng vận hành còn tiếp tục theo phụ thuộc; schema không thay quyền áp dụng hoặc nội dung được duyệt. Dữ liệu lớn WAV/MP3 để kho file. [Phạm vi dữ liệu mới nhất và giới hạn](data-model.md#model-audio-pair-result)
 
 - Flyway quản lý thay đổi schema khi triển khai được giao; JPA không tự đổi schema trái migrations. MySQL/Flyway/Testcontainers đúng bộ phiên bản phải kiểm thật trước dùng.
 - Áp dụng cả cặp là một thay đổi DB nhất quán. Xóa điểm do ứng dụng xử lý dữ liệu riêng trước trong cùng giao dịch; FK chặn xóa trực tiếp khi còn tham chiếu ở quan hệ đã yêu cầu, không ON DELETE CASCADE ở đó. Giữ lịch sử A02.2 và hồ sơ tài liệu ngoài hệ thống.
@@ -495,7 +495,7 @@ Các nhóm mã bao phủ kiến trúc, không thay bảng truy vết đầy đ�
 
 ## 16. Phần đã chốt, thiết kế tiếp và cổng kiểm chứng
 
-**Bằng chứng hiện tại.** Lần `mvnw.cmd -o test` ngày 08/11 kết thúc 20:16:49+07 đạt 168 ca, 0 lỗi/bỏ qua, BUILD SUCCESS và exit 0, khớp 19 báo cáo Surefire. Có MySQL tạm, MockMvc, kiểm đồng thời/rollback và Servlet HTTP localhost. Các mốc 64/88/104/122/147 ca giữ theo thời điểm, browser/HTTPS-proxy thực, toàn schema và vận hành còn cần kiểm chứng. [Bằng chứng đọc/sửa tên địa điểm](api-transactions.md#admin-place-test-result)
+**Bằng chứng hiện tại.** Backend V1–V10, nội dung khách/grant/ACK/tải MP3/READ claim và nền Admin/worker có [bằng chứng chính tại API 11.9](api-transactions.md#guest-content-test-result). Nguồn frontend Vue khách tại [frontend/README](../../frontend/README.md) chưa resolve/build hoặc kiểm browser; 13 ca Playback V8 không thay kiểm DOM/Web Locks/codec. Các mốc 64–366 test giữ đúng thời điểm. Không suy môi trường phục vụ, toàn TDD hoặc nghiệm thu hệ thống đã đạt.
 
 Không hỏi lại DATA-05/DATA-04/TECH-05/DATA-03 hoặc hành vi đã duyệt. Các chi tiết kỹ thuật là dự thảo để triển khai theo từng bước.
 
@@ -508,7 +508,14 @@ Không hỏi lại DATA-05/DATA-04/TECH-05/DATA-03 hoặc hành vi đã duyệt.
 | Cổng thực tế | V-TAB owner/reload, V-AUDIO Blob/expiry/freeze, V-TX/FK/lock/replay, V-TTS/backup/restore/SSH account Docker | Người dùng thực hiện sau; không suy từ ERD/tài liệu thành đã đạt |
 | Nội dung/vùng/đánh giá | Các phần nguồn/hồ sơ/ranh giới/quota/ngưỡng đã ghi mở | Tiếp tục đúng phạm vi, không tự thêm điều kiện nghiệm thu hoặc đóng R06 |
 
-LIFE-P01 giữ vé 24 giờ ngắn hơn thời điểm purge ledger D08, phương án generation tiếp tục được loại khỏi thiết kế theo DATA-05. K11/K01/K02/K04, nền xác thực Admin, window/receipt, tạo điểm ẩn và đọc/sửa tên đã kiểm hồi quy trong bộ 168 ca. Cấu hình key/epoch thật, restart/restore/D08/browser và các phần grant/nội dung/audio còn cần triển khai hoặc kiểm chứng. Tiến độ, quyền test/Git và điểm dừng theo [handoff](../01-tong-quan/handoff.md#guidance-protocol), bằng chứng mới tại [API](api-transactions.md#admin-place-test-result). Các ô T03/T05 giữ điều kiện nghiệm thu toàn ô.
+LIFE-P01 giữ vé 24 giờ ngắn hơn thời điểm purge ledger D08, phương án generation tiếp tục được loại khỏi thiết kế theo DATA-05. K11/K01/K02/K04, nền xác thực Admin, window/receipt, tạo điểm ẩn và đọc/sửa tên đã kiểm hồi quy trong bộ 168 ca. Cấu hình key/epoch thật, restart/restore/D08/browser và dọn grant/metadata, owner/Blob/clock/browser còn cần triển khai hoặc kiểm chứng. Tiến độ, quyền test/Git và điểm dừng theo [handoff](../01-tong-quan/handoff.md#guidance-protocol), bằng chứng mới tại [API](api-transactions.md#guest-content-test-result). Các ô T03/T05 giữ điều kiện nghiệm thu toàn ô.
+
+
+<a id="tdd-lifecycle-cleanup-result"></a>
+
+### 16.1. Triển khai vòng đời ngày 10/11/2026
+
+A11 và cơ chế dọn vòng đời tiếp tục theo Controller → Service → Repository. Receipt/giao dịch xóa địa điểm tách khỏi unlink; scope runtime giữ an toàn công việc đọc/ghi file bên ngoài TX. Cleaner mặc định tắt và không dùng TTL để kết luận tiến trình chết. Không thêm tầng trung gian hoặc đổi kiến trúc Vue + Spring Boot. Nguồn quy tắc, kiểm chứng và phần còn mở tại [operations 6.3](operations-design.md#ops-lifecycle-cleanup-result), cấu trúc V11 tại [data-model 7.9](data-model.md#model-lifecycle-cleanup-result).
 
 <a id="tdd-guide"></a>
 
@@ -524,6 +531,12 @@ Câu hỏi ôn tập:
 5. Vì sao volume không là backup, và restore phải lọc theo mốc gốc trước phục vụ?
 6. Vì sao ngrok có URL công khai chưa chứng minh CI/CD, hoặc MP3 nghe được chưa chứng minh 20 cặp được duyệt?
 
+
+### 16.2. Local audio theo ba lớp — 11/11/2026
+
+Không thêm endpoint/tầng trung gian. Controller TTS và session/receipt hiện hành gọi Service điều phối local/Check/Retry; LocalAudioRepository xử lý marker/job/audio trong giao dịch, Mp3ResultStore/Encoder xử lý bytes/tool ngoài giao dịch. Finalize kiểm lại đích/token/metadata rồi commit audio/job/pointer, Check gắn kết quả cùng receipt. Bổ sung result đã có trong thiết kế API 9.4, giữ trường cũ để frontend nối hợp đồng.
+
+[API 11.13](api-transactions.md#local-audio-implementation-result) là nguồn chính về trạng thái, cấu hình mặc định tắt và giới hạn kiểm; [model 7.10](data-model.md#model-local-audio-result) ghi V12. Ledger 520 ca có bằng chứng đạt qua full và nhóm local/TTS chạy lại, không suy encoder giả/Java subprocess thành FFmpeg, MP3, provider hoặc browser thật. Cấu hình/migration trên môi trường phục vụ và frontend không thay trong lượt này.
 
 ### Nhật ký biên tập
 

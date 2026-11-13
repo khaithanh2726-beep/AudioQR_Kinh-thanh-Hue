@@ -1,8 +1,53 @@
 # Mục lục tài liệu dự án
 
-**Biên tập:** 08/11/2026. Nghiệp vụ/phạm vi PRD và các hướng UI/công nghệ được xác nhận đúng phần; toàn TDD, ranh giới, nội dung và bằng chứng phần mềm chưa được duyệt theo gói. Áp dụng [quy trình phối hợp tại handoff](01-tong-quan/handoff.md#guidance-protocol).
+**Mốc lưu nguồn 13/11:** [commit-plan 4.23](01-tong-quan/commit-plan-2026-11-05.md) ghi các commit local V14, kiểm thử/vận hành và bộ T08 dưới metadata Thành. Nguồn tổng hợp ở T01/T11, chưa push. Đã dọn build backend ra bản lưu ngoài dự án, giữ mã nguồn/dependencies/bằng chứng; trạng thái chưa commit trong các mốc lịch sử bên dưới được thay bởi mốc này. Không coi commit là duyệt đủ 20 cặp hoặc đã chuyển V14 sang bản phục vụ.
+
+**Vận hành 13/11:** [gate và backup/restore V14](06-kiem-thu/operations-guard-20261113/README.md), [hướng dẫn](07-van-hanh/bao-tri-va-sao-luu.md) và [đầu vào nội dung](05-noi-dung/san-sang-noi-dung-20261113.md). Đã kiểm nhóm backend, chu trình CLI và phát MP3 từ bản phục hồi riêng; lượt full có kết quả riêng trong hồ sơ. Chưa áp V14 lên bản Ngọ Môn V13, chưa đủ 20 cặp hoặc CD/Safari. Mốc mã nguồn trước được lưu ở tag `checkpoint-20261112-https-ngo-mon` (`4add6a8`); nguồn V14 đang chờ rà, chưa commit.
+
+**HTTPS Ngọ Môn 12/11:** [hồ sơ kiểm hiện hành](06-kiem-thu/https-ngo-mon-20261112/README.md) và [QR/hướng dẫn](07-van-hanh/tap-duot.md): một cặp vi đã áp dụng, Chrome HTTPS 2/2 và frontend 71/71 đạt. V13 giữ chính xác tọa độ; transport Khách xử lý cảnh báo ngrok mà vẫn không gửi cookie. Kiểm điện thoại thật và bộ 20 cặp còn mở. Các mốc bên dưới giữ kết quả lịch sử; nguồn mới chưa commit.
+
+**Bản tập dượt 12/11:** [hồ sơ mới](06-kiem-thu/rehearsal-20261112/README.md) và [hướng dẫn](07-van-hanh/tap-duot.md) ghi môi trường riêng 18083, tài khoản/volume riêng và audio Gemini đã giữ Hash. Đã đạt 65 logic, hai chế độ build, Docker, hai ca Chrome trước/sau restart và kiểm media; preview không đóng gói trong bản thường. Một tile thật tải được trong Chrome; toàn bản đồ/điện thoại chưa kiểm. Chưa public hoặc mở điểm khi chưa duyệt; T08 giữ nháp. Nguồn mới chờ rà, chưa commit.
+
+**Mốc 12/11:** [push task, CI Linux, Compose và TTS thật](06-kiem-thu/release-readiness-20261112/README.md): chín nhánh đã push, một lượt CI đạt 520/520 backend +65/65 frontend +5/5 manifest/build; bốn chặng Compose và một lượt Admin → Gemini → MP3/nghe thử đạt. T08 giữ nháp chưa commit. Chưa mở public; còn HTTPS/QR, duyệt vùng/20 cặp, thiết bị thật và vận hành. Các bản ghi bên dưới giữ kết quả đúng thời điểm; trạng thái push hiện hành tại [commit-plan 4.21](01-tong-quan/commit-plan-2026-11-05.md#push-ci-20261112).
+
+**Chuẩn bị Git:** [dọn thư mục ngày 12/11](06-kiem-thu/workspace-cleanup-20261112/README.md) đã chuyển kết quả test/dist ra ngoài repo và gom bằng chứng trùng có giữ Hash/đường dẫn gốc. 456 mục Source Control trên T01 không phải 456 file mới; 208 file backend khớp các nhánh task local. Giữ mã ứng dụng/kiểm thử; chưa stage/commit/push.
+
+**Preview mới nhất:** [ghim đúng vị trí nhấn và thu gọn trang](06-kiem-thu/map-pin-20261111/README.md) đã lên cổng 18082; 65 ca logic/build và 14 ca Chrome trên ảnh cuối đạt. Chỉ một ghim, không GPS; tile Chrome là ảnh kiểm, chưa xác nhận kết nối nền thật. Các mốc runtime bên dưới giữ đúng lịch sử.
+
+**UI/runtime hiện tại:** [nền raster OSM theo mẫu](04-giao-dien/ui-design.md#ui-reference-red) và UI đỏ sẫm đã vào Docker 18082; [hồ sơ mới](06-kiem-thu/osm-map-20261111/README.md) ghi 65 ca logic, build, 11 ca Chrome trên ảnh mới và 3 ca offline riêng đạt. Tile Chrome là ảnh kiểm; kết nối tới tile thật bị reset nên chưa xác nhận nền thật hiển thị. [Bảng issue/lỗi](01-tong-quan/issue-follow-up-2026-11-11.md) giữ checklist còn lại T01–T11, chưa cập nhật GitHub. Các mốc bên dưới giữ đúng kết quả lịch sử.
+
+**Biên tập:** 11/11/2026. Nghiệp vụ/phạm vi PRD và các hướng UI/công nghệ được xác nhận đúng phần; toàn TDD, ranh giới, nội dung và bằng chứng phần mềm chưa được duyệt theo gói. Áp dụng [quy trình phối hợp tại handoff](01-tong-quan/handoff.md#guidance-protocol).
+
+**Hiện trạng cần ưu tiên:** [rà soát thiếu sót toàn hệ thống](06-kiem-thu/review-20261111/README.md) đối chiếu PRD/UI, nguồn, runtime và bằng chứng; ghi mười nhóm còn mở, gồm HTTPS/QR, bản đồ/bộ demo, nội dung/TTS, Admin/thiết bị và vận hành/nghiệm thu. Bản đang chạy là môi trường kiểm kỹ thuật, chưa đạt demo hoàn chỉnh hoặc toàn đồ án. Các kết quả bên dưới chỉ có hiệu lực trong phạm vi từng lượt.
+
+**Mốc đang rà:** [bản đồ offline và bộ nháp riêng](06-kiem-thu/map-preview-20261111/README.md) đã có trang xem trước năm vùng, seed 5 điểm/20 slot/5 nháp vi còn ẩn và sửa lỗi trạng thái Mức đầy đủ; 60 ca logic, build và 3 ca Chrome trên ảnh cuối đạt. [Theo dõi issue T01–T11](01-tong-quan/issue-follow-up-2026-11-11.md) giữ phạm vi/G02, chưa sửa GitHub. Preview 18082 chờ rà; bản E2E 18081 đang dừng để giảm RAM. Không suy preview thành duyệt vùng hoặc demo Khách có QR/audio hoàn chỉnh.
+
+**Dọn môi trường thử:** [kết quả Docker](06-kiem-thu/docker-cleanup-20261111/README.md) ghi đã xóa 6 container cũ và 3 image ứng dụng cũ, giữ toàn bộ volume/audio/bằng chứng và bản preview 18082. Container cũ đã xóa không thể dùng lại bằng `docker start`; cần đối chiếu volume/cấu hình khi dựng lại. Các hồ sơ theo mốc bên dưới giữ nguyên kết quả lịch sử.
+
+**Mốc chạy local 11/11:** frontend khách/Admin đã resolve, 60 ca npm đạt và build thành công; có kiểm Chrome/API/MySQL riêng với MP3 thật. Phạm vi, kết quả và giới hạn tại [hồ sơ kiểm](06-kiem-thu/local-20261111/README.md). Bộ nội dung có [15 bản dịch nháp](05-noi-dung/doi-chieu-van-ban-audio.md) và [bốn audio vi nháp](05-noi-dung/audio-vi-v01.json), chưa duyệt. [Đóng gói/CI](07-van-hanh/dong-goi-va-ci.md) đã có cấu hình nguồn; HTTPS/CD và thiết bị thật chưa kiểm. Các mốc lịch sử bên dưới giữ nguyên kết quả tại thời điểm ghi.
+
+**Mốc đóng gói/restore 11/11:** [ảnh Linux và diễn tập offline](06-kiem-thu/packaging-20261111/README.md) đã kiểm build, FFmpeg Unicode, 12 file audio có Hash, lọc retention, epoch mới và phát MP3 từ ứng dụng phục hồi chung origin. Chưa có OPS_GUARD/drain live, Compose update/rollback, HTTPS hoặc CI/CD thật. Không tự mở rộng kết quả offline thành hoàn tất vận hành.
+
+**Mốc sửa UI Khách 11/11:** [chữ/bố cục và bằng chứng](06-kiem-thu/guest-ui-20261111/README.md) ghi sửa fallback phông, bố cục dọc, văn bản cuộn riêng và Hủy luôn thấy; 60 ca logic, build và 7 ca Chrome trên bản Docker đạt, đã quan sát trong VS Code. Bản đồ nền lưới/các tam giác E2E vẫn chưa đạt demo; cần chuẩn bị dữ liệu và bản xem trước nền/vùng để duyệt. Không suy kiểm API/audio trước đó thành UI được nghiệm thu.
+
+**Checklist local ngày 09/11:** 89 ô/20 dấu tích theo [roadmap 6.5](01-tong-quan/roadmap.md#local-checklist-20261109). Mốc issue đã đối chiếu có 18 dấu tích; chưa kiểm lại GitHub. Các bản ghi theo ngày giữ nguyên phạm vi và số đếm cũ.
 
 **Tổ chức dự án:** Thành, Hòa và Nghĩa phụ trách theo [G02](02-nghiep-vu/decisions.md#g02), làm việc trên ba máy riêng và bàn giao qua repository chung. Quy trình phối hợp và kiểm chứng tại [handoff mục 7](01-tong-quan/handoff.md#guidance-protocol).
+
+**Bàn giao Git ngày 09/11:** bộ nguồn đã kiểm của Thành/Hòa được chốt và commit theo task; kết quả push, phụ thuộc và điểm dừng trước phần Nghĩa tại [handoff 2.25](01-tong-quan/handoff.md#commit-push-20261109) và [commit-plan 4.12](01-tong-quan/commit-plan-2026-11-05.md#commit-push-result-20261109). File phát sinh sau mốc chốt thuộc lượt tiếp theo; commit không tự hoàn thành issue.
+
+
+**Mốc nội dung khách và frontend ngày 09/11:** V10/K03/K05–K10, grant/ACK/tải MP3/READ claim và kết quả kiểm tại [API 11.9](03-ky-thuat/api-transactions.md#guest-content-test-result). [Frontend khách](../frontend/README.md) có nguồn Vue, 13 ca logic Playback V8 đạt, chưa resolve/lockfile/build hoặc browser. Điểm tiếp tục tại [handoff 2.24](01-tong-quan/handoff.md#guest-content-frontend-result); không coi source có sẵn là hoàn tất T03/T04.
+
+**Mốc D08 ngày 10/11:** đã bổ sung dọn context và phiên/lượt theo hạn gốc; [operations 6.2](03-ky-thuat/operations-design.md#ops-guest-retention-result) giữ kết quả và giới hạn scheduler/claim rò. Điểm bàn giao tại [handoff 2.26](01-tong-quan/handoff.md#guest-retention-result).
+
+**Mốc vòng đời ngày 10/11:** A11 và cơ chế dọn window/receipt/job/claim/file có [bằng chứng và giới hạn](03-ky-thuat/operations-design.md#ops-lifecycle-cleanup-result); [handoff 2.27](01-tong-quan/handoff.md#lifecycle-cleanup-result) ghi điểm tiếp tục. Cleaner mặc định tắt, chưa áp V11 trên database đang dùng và chưa đủ nghiệm thu toàn issue.
+
+**Mốc A22 ngày 10/11:** [handoff 2.28](01-tong-quan/handoff.md#admin-preview-prepared) ghi backend nghe thử Admin đã nhận vào dự án và dừng để nhóm rà. [API 11.12](03-ky-thuat/api-transactions.md#admin-preview-prepared-result) giữ kết quả 111 ca liên quan đạt, giới hạn MP3 thực/frontend và bằng chứng. Chưa stage/commit/push hoặc đánh dấu hoàn thành toàn issue.
+
+**Bàn giao cục bộ ngày 10/11:** 29 file backend vòng đời/A22 đã commit theo task; 8 tài liệu thuộc nhóm T01. [Handoff 2.29](01-tong-quan/handoff.md#local-commits-lifecycle-preview) và [commit-plan 4.16](01-tong-quan/commit-plan-2026-11-05.md#lifecycle-preview-local-commits) là trạng thái Git mới nhất, thay điểm dừng trước commit ở các mốc kiểm bên dưới. Chưa push lượt này, chưa thay main/issue/Project hoặc checklist.
+
+**Mốc local audio ngày 11/11:** [handoff 2.31](01-tong-quan/handoff.md#local-audio-result) ghi nguồn V12/chuyển đổi/đăng ký audio, Check/Retry và điểm dừng để rà. [API 11.13](03-ky-thuat/api-transactions.md#local-audio-implementation-result) ghi ledger 520 ca từ full và nhóm local/TTS chạy lại, cùng giới hạn encoder giả/FFmpeg/MP3 thực. Chưa stage/commit/push mốc mới hoặc thay checklist; frontend vẫn làm riêng theo 2.30.
 
 **Thứ tự đọc từ tổng quan đến triển khai:** README gốc → Business Flow → PRD và các quyết định liên quan → UI → TDD → mô hình dữ liệu/API/vận hành. Sau đó dùng roadmap để chọn công việc, handoff để xác định trạng thái và quyền thao tác, commit-plan để bàn giao qua nhánh/PR. Mục 1 phục vụ tìm nhanh; mục 2 xác định nguồn chính; mục 3 kiểm kê sơ đồ. Lịch sử chỉ tra khi cần đối chiếu căn cứ, không thay nguồn hiện hành.
 
@@ -24,6 +69,8 @@
 | UI khách / Admin | [Khách](04-giao-dien/ui-design.md#ui-screens), [địa điểm/vùng](04-giao-dien/ui-design.md#ui-admin-round1), [nội dung/audio](04-giao-dien/ui-design.md#ui-admin-round2), [phiên/thống kê/QR](04-giao-dien/ui-design.md#ui-admin-round3) |
 | Công nghệ, TTS, phiên bản và thiết bị | [Đầu vào](01-tong-quan/technical-inputs.md#inputs-confirmed), [TTS](01-tong-quan/technical-inputs.md#tts-research), [bộ phiên bản](01-tong-quan/technical-inputs.md#version-proposal) |
 | CI/CD, backup/restore và vòng đời | [CI/CD dự thảo](03-ky-thuat/TDD.md#tdd-cicd), [backup](03-ky-thuat/operations-design.md#ops-backup), [restore](03-ky-thuat/operations-design.md#ops-restore), [vòng đời](03-ky-thuat/operations-design.md#ops-lifecycle) |
+| Chạy thử một địa điểm | [Hướng dẫn và cấu hình mẫu](07-van-hanh/chay-thu/README.md), [bằng chứng](06-kiem-thu/chay-thu-mot-dia-diem.json), [bảng đối chiếu 20 bản](05-noi-dung/doi-chieu-van-ban-audio.md) |
+| Công cụ local đã cài | [Phiên bản, nguồn tải và phép kiểm Windows](07-van-hanh/moi-truong-local.md) |
 | Tiến độ / checklist / lịch có giả định | [11 task](01-tong-quan/roadmap.md#t01), [lịch](01-tong-quan/roadmap.md#target-1711), [mapping hiện có](01-tong-quan/roadmap.md#github-checklist-review), [bộ issue cho đích mới](01-tong-quan/roadmap.md#new-project-ready) |
 | Kết luận rà soát và R06 | [Trạng thái phát hiện](02-nghiep-vu/prd-review.md), [phụ thuộc còn mở](02-nghiep-vu/prd-review.md#review-open-final) |
 | Dừng thực hành ở đâu / bàn giao công việc | [Điểm dừng backend](03-ky-thuat/practice-01-start-session.md#practice-stop), [điểm bàn giao hiện hành](01-tong-quan/handoff.md#new-target-pending), [kết quả chỉnh comment](01-tong-quan/handoff.md#comment-audit-20261108) |
@@ -41,17 +88,17 @@ Phiên bản dưới đây là **mốc nội dung**, không coi đợt biên t�
 | [01-tong-quan/roadmap.md](01-tong-quan/roadmap.md) | T01–T11, phân công G02, checkbox có căn cứ, phụ thuộc/lịch và snapshot issue | Lập kế hoạch/ghi tiến độ. 0.11; đã tạo và đối chiếu đủ 11 issue #1–#11, khớp 89 ô/18 dấu tích; mapping tại mục 6, người dùng xác nhận Project đủ 11 issue và đã đặt Status: 6 In Progress, 5 Todo, 0 Done; chưa có lần kiểm tra trực tiếp mới. |
 | [01-tong-quan/technical-inputs.md](01-tong-quan/technical-inputs.md) | Đầu vào đã xác nhận, khảo sát TTS/ngrok có ngày, bộ phiên bản, chính sách và đầu vào TDD | Trước thiết kế/cấu hình phần tương ứng. 0.7; đã chọn khác đã chạy thử; khảo sát dịch vụ giữ mốc 03/11, chưa có lần kiểm chứng nguồn mới. |
 | [01-tong-quan/handoff.md](01-tong-quan/handoff.md) | Đường đọc, trạng thái, quyết định chính, bằng chứng và điểm dừng backend | Khi bàn giao hoặc tiếp tục công việc; file sống được cập nhật cùng mốc triển khai. |
-| [01-tong-quan/commit-plan-2026-11-05.md](01-tong-quan/commit-plan-2026-11-05.md) | Phân nhóm 33 file tài liệu/86 file backend, nhánh Txx, tài khoản theo G02 và các mốc bàn giao | Đã khôi phục file và rà lại. T10 nền đã push, nhóm tiếp theo là tài liệu T01; chưa stage/commit T01. |
+| [01-tong-quan/commit-plan-2026-11-05.md](01-tong-quan/commit-plan-2026-11-05.md) | Phân nhóm sản phẩm theo task, nhánh Txx, tài khoản G02 và các mốc bàn giao | Đã merge nền T01/T02; tiếp tục commit/push phần Thành/Hòa theo quyền tại handoff mục 7, dừng trước phần Nghĩa. Trạng thái nguồn tại handoff mục 2.24; PR/merge cần được giao riêng. |
 | [02-nghiep-vu/business-flow.md](02-nghiep-vu/business-flow.md) | Luồng khách/Admin, ngoại lệ và liên quan hai vai trò | Hiểu hệ thống; nghiệp vụ đã duyệt đúng phạm vi BF và bổ sung riêng. |
 | [02-nghiep-vu/decisions.md](02-nghiep-vu/decisions.md) | Quyết định hiện hành G/BF/PRD/D/BS/P/A/Q/UI/TECH/DATA và phần mở | Xác định căn cứ/giải quyết khác biệt; lịch sử và nguồn dài dẫn sang lưu trữ. |
 | [02-nghiep-vu/PRD.md](02-nghiep-vu/PRD.md) | BR/DR, 23 FR, 14 UC dạng mô tả và hình tổng quan, 6 NFR, 50 AC và truy vết | Triển khai/đánh giá một hành vi. 0.8.8; kế thừa PRD-01 và xác nhận riêng, phần mở loại trừ. |
 | [02-nghiep-vu/prd-review.md](02-nghiep-vu/prd-review.md) | Phát hiện R/S, kết luận, bao phủ và phụ thuộc hiện hành | Rà soát yêu cầu, tra R06; R01–R05/R07/S01/S02 đã xử lý tài liệu, R06 còn mở một phần. |
 | [03-ky-thuat/TDD.md](03-ky-thuat/TDD.md) | Kiến trúc, module/ba lớp, xác thực, tab/audio, môi trường/CI-CD, đường đọc chi tiết | Học nền và nối yêu cầu với cách làm. 0.7 dự thảo. |
-| [03-ky-thuat/data-model.md](03-ky-thuat/data-model.md) | Ba ERD logic, định danh/quan hệ/khóa/xóa, bằng chứng V2 và dẫn tới V3/V4 | 0.3 còn dự thảo toàn mô hình, V1–V4 và mapping có bằng chứng theo từng mốc, chưa toàn schema/seeds. |
-| [03-ky-thuat/api-transactions.md](03-ky-thuat/api-transactions.md) | API/DTO/quyền/giao dịch, xác thực, địa điểm và bằng chứng | 0.4 hợp đồng tổng thể còn dự thảo, đã kiểm K11/K01/K02/K04, A01–A05, A31/A06/tạo điểm ẩn A08 và phần đọc/sửa tên A07/A09. |
-| [03-ky-thuat/operations-design.md](03-ky-thuat/operations-design.md) | Vòng đời, trạng thái TTS, file, backup/restore và V-* | 0.3 dự thảo; phần backend Bắt đầu có bằng chứng thực hành riêng, chưa toàn vận hành. |
+| [03-ky-thuat/data-model.md](03-ky-thuat/data-model.md) | Ba ERD logic, định danh/quan hệ/khóa/xóa, bằng chứng V2 và dẫn tới V3–V9 | 0.4 còn dự thảo toàn mô hình; V9/audio/cặp/seed có bằng chứng riêng, chưa toàn schema/quyền hoặc nội dung được duyệt. |
+| [03-ky-thuat/api-transactions.md](03-ky-thuat/api-transactions.md) | API/DTO/quyền/giao dịch, xác thực, địa điểm/vùng và bằng chứng | 0.4 hợp đồng tổng thể còn dự thảo; đã kiểm các API phiên khách/xác thực/cửa sổ/địa điểm nêu ở handoff cùng A12–A14 và phần nháp/hồ sơ A15–A17. Mục 9.8–9.14 giữ hợp đồng vùng/văn bản/worker/Admin/cặp và nội dung khách; 11.9 là nguồn kết quả mới nhất ngày 09/11, mốc 366 test ở 11.8 và các mốc trước giữ riêng. |
+| [03-ky-thuat/operations-design.md](03-ky-thuat/operations-design.md) | Vòng đời, trạng thái TTS, file, backup/restore và V-* | 0.3 dự thảo; phần Bắt đầu/hàng đợi có bằng chứng riêng, chưa toàn vận hành. |
 | [03-ky-thuat/dfd.md](03-ky-thuat/dfd.md) | Năm DFD và từ điển/cân bằng cha–con | Học dữ liệu vào/ra hoặc đưa báo cáo; 0.3 dự thảo. SVG mức 1 xuất cùng nguồn, giữ giới hạn khổ giấy. |
-| [03-ky-thuat/practice-01-start-session.md](03-ky-thuat/practice-01-start-session.md) | Các chặng nhỏ, bằng chứng, lỗi/ôn tập và dẫn tới điểm dừng hiện hành | Giữ các mốc kiểm phiên khách/K04, dẫn tới bằng chứng 168 test và handoff mục 2.9; chưa toàn T03/T05. |
+| [03-ky-thuat/practice-01-start-session.md](03-ky-thuat/practice-01-start-session.md) | Các chặng nhỏ, bằng chứng, lỗi/ôn tập và dẫn tới điểm dừng hiện hành | Giữ các mốc phiên khách/K04 và dẫn tới bằng chứng mới nhất ở API mục 11.9/handoff mục 2.24; chưa toàn T03/T05. |
 | [04-giao-dien/ui-design.md](04-giao-dien/ui-design.md) | UI khách/Admin, sơ đồ chữ/trạng thái/truy vết và phần còn thiết kế | Triển khai giao diện/đối chiếu thao tác. 0.7.8, hướng đã chốt đúng phần; toàn bộ UI đứng trước nhật ký. |
 | [04-giao-dien/design-assets/README.md](04-giao-dien/design-assets/README.md) | Nguồn, phương pháp và giới hạn PNG/SVG/OSM/GeoJSON | Trước dùng/đánh giá nền-vùng. Tài sản 0.2 đề xuất, chưa duyệt nền/vị trí/ranh giới. |
 | [99-luu-tru/README.md](99-luu-tru/README.md) và các file được liệt kê | Bản UI/mô hình cũ, dấu vết quyết định/khảo sát/rà soát/nhật ký | Chỉ khi cần căn cứ hoặc lịch sử; không là nguồn triển khai song song. |
@@ -100,18 +147,20 @@ Nguồn .drawio là bản chỉnh sửa chính của hình Use Case, SVG đượ
 
 ## 5. Hiện trạng và phần chưa được chứng minh
 
-Mốc hồi quy backend gần nhất là **168 test đạt**, 0 lỗi/bỏ qua, lúc 20:16:49+07 ngày 08/11/2026 trên MySQL tạm và HTTP localhost. [Bằng chứng và giới hạn](03-ky-thuat/api-transactions.md#admin-place-test-result) là nguồn chính; các mốc 64/88/104/122/147 test giữ nguyên theo thời điểm tại từng hồ sơ.
+Mốc hồi quy backend gần nhất: **421 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**, 2026-11-10T00:32:58+07:00, trên MySQL tạm. [Bằng chứng D08 và giới hạn](03-ky-thuat/operations-design.md#ops-guest-retention-result) là nguồn chính; mốc 397 test nội dung khách và các mốc trước giữ nguyên theo thời điểm tại từng hồ sơ.
 
 | Sản phẩm hiện có | Phạm vi chưa hoàn tất |
 | --- | --- |
-| V1–V4, Entity/Repository và ràng buộc dữ liệu đã kiểm | Toàn schema/seeds, dữ liệu phục vụ và migration trên môi trường vận hành |
-| K11/K01/K02/K04, binding/ledger/replay/expiry và đồng thời | Grant/nội dung/audio/lượt xem, owner/browser, runtime bền vững, D08 và restore |
-| A01–A05, window/receipt, tạo điểm ẩn, đọc cơ bản và sửa tên/If-Match | Q2 frontend, điều kiện bật hiện, vùng/cặp, ẩn/hiện/xóa và phần quản trị còn lại |
+| V1–V10, audio/cặp, opening/grant/READ claim, seed riêng 5 điểm/20 ngăn và ràng buộc đã kiểm | Nội dung được duyệt, vòng đời file/job và migration/seed trên môi trường vận hành |
+| K03/K05–K10, K11/K01/K02/K04, grant/nội dung/audio/ACK, ledger/replay/expiry và đồng thời | Owner/browser, runtime bền vững, claim rò và restore |
+| A01–A05, window/receipt, địa điểm/vùng/nháp/hồ sơ; hồ sơ audio/áp dụng cặp/bật-ẩn/mức đầy đủ A10/A15/A23–A25 | Q2/frontend, ranh giới/hồ sơ thật, MP3/preview, xóa/dọn và phần quản trị còn lại |
+| Worker/adapter WAV, READY/manifest, Check local/Retry lỗi xác định và job của nháp | Provider/quota thật, FFmpeg/MP3/audio, crash thật/file claims/dọn và toàn T07 |
+| Đọc phiên/lượt/thống kê A26–A28, dọn context và xóa vật lý D08 đã kiểm | Bật/đo scheduler vận hành, claim rò, frontend và toàn T05 |
 | Use Case Draw.io/SVG, Mermaid và tài sản bản đồ theo danh mục | Rà bản in, UI ứng dụng, nền/vị trí/ranh giới thật chưa được duyệt |
 
 Bộ nghiệm thu **20 văn bản/20 audio** vẫn giữ nguyên. Năm nháp vi đã được báo cáo là có, còn cần xác minh bản lưu, nguồn, bản dịch, nghe trọn và hồ sơ duyệt. Không dùng kết quả backend để đóng R06, toàn T01/T02/T03/T05 hoặc các mục UI/nội dung/CI-CD/vận hành.
 
-Trạng thái Git, Project và điểm tiếp tục có nguồn chính tại [handoff](01-tong-quan/handoff.md#next-step); phân nhóm bàn giao tại [commit-plan](01-tong-quan/commit-plan-2026-11-05.md). Nền T10 đã push, tài liệu T01 đang được rà trước stage/commit. Phần còn mở theo [decisions](02-nghiep-vu/decisions.md#dec-6), [R06](02-nghiep-vu/prd-review.md#review-open-final) và [TDD](03-ky-thuat/TDD.md#tdd-open).
+Trạng thái Git, Project và điểm tiếp tục có nguồn chính tại [handoff](01-tong-quan/handoff.md#next-step); phân nhóm bàn giao tại [commit-plan](01-tong-quan/commit-plan-2026-11-05.md). Nền T01/T02 đã tích hợp qua PR #12/#13; các nhóm T01/T02/T03/T05/T07 đã push theo handoff 2.25. Quyền Git hiện hành tại mục 7 handoff; D08 là mốc mới được ghi riêng, không suy đã merge main. Phần còn mở theo [decisions](02-nghiep-vu/decisions.md#dec-6), [R06](02-nghiep-vu/prd-review.md#review-open-final) và [TDD](03-ky-thuat/TDD.md#tdd-open).
 
 <a id="structure"></a>
 
@@ -143,6 +192,13 @@ docs/
 ├── 04-giao-dien/
 │   ├── ui-design.md
 │   └── design-assets/                 # README + sáu tài sản/hồ sơ, giữ nguyên
+├── 05-noi-dung/
+│   ├── doi-chieu-van-ban-audio.md
+│   └── thuyet-minh-vi-v01.md
+├── 06-kiem-thu/
+│   └── chay-thu-mot-dia-diem.json
+├── 07-van-hanh/
+│   └── chay-thu/                      # hướng dẫn và cấu hình mẫu
 └── 99-luu-tru/
     ├── README.md
     ├── ui-design-history.md           # di chuyển từ 04-giao-dien
@@ -153,9 +209,11 @@ docs/
     └── document-history.md            # mở đầu cũ, nhật ký và hướng dẫn đã qua
 ```
 
-Tài liệu hiện hành và tài sản giữ vị trí ngoài hai file lịch sử đã chuyển. Nhóm 05-noi-dung/06-kiem-thu/07-van-hanh, frontend, deploy, workflows và tài liệu trống không được tạo để đủ cây. Khung toàn dự án ở [README gốc](../README.md).
+Tài liệu hiện hành và tài sản giữ vị trí ngoài hai file lịch sử đã chuyển. Các nhóm 05-noi-dung, 06-kiem-thu và 07-van-hanh chứa sản phẩm của mốc chuẩn bị chạy thử. Khung toàn dự án ở [README gốc](../README.md).
 
 <a id="handoff"></a>
+
+**Nội dung v02 ngày 13/11:** [bốn vùng](05-noi-dung/duyet-vung-demo-v02.json) đã áp dụng trên bản riêng; [hồ sơ đối chiếu](06-kiem-thu/content-review-20261113/README.md) ghi 14 audio mới có thật, 13 bản khớp qua AI, một bản cần nghe lại và năm bản ru chờ quota. Chưa đủ nghe duyệt D09 hoặc 20 cặp để chuyển phục vụ; bản Ngọ Môn cũ được giữ nguyên.
 
 ## 7. Bàn giao và thay đổi đường dẫn
 

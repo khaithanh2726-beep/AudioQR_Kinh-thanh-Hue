@@ -8,9 +8,15 @@ Nhóm thực hiện gồm **Thành, Hòa và Nghĩa**. Phân công trách nhiệ
 - **Quản lý công việc:** [Project 21](https://github.com/users/khaithanh2726-beep/projects/21/views/1).
 - **Tài liệu:** bắt đầu tại [mục lục](docs/README.md), tra yêu cầu tại [PRD](docs/02-nghiep-vu/PRD.md) và trạng thái bàn giao tại [handoff](docs/01-tong-quan/handoff.md).
 
-**Trạng thái ngày 08/11/2026.** Nghiệp vụ và phạm vi yêu cầu đã rõ được phê duyệt, các hướng UI/công nghệ được xác nhận theo từng phần. Tài liệu kỹ thuật còn các nội dung dự thảo. Backend đã có V1–V4, K11/K01/K02/K04, xác thực Admin A01–A05, cửa sổ lệnh/receipt/tạo điểm ẩn A31/A06/A08 và phần đọc/sửa tên A07/A09, đạt 168 test hồi quy với MySQL tạm và HTTP localhost. Toàn T02/T03/T05, điều kiện bật hiện/vùng/cặp/xóa, grant/nội dung/audio, frontend, CI/CD và triển khai/backup/restore thực tế còn cần kiểm chứng. [Bằng chứng ngày 08/11](docs/03-ky-thuat/api-transactions.md#admin-place-test-result)
+**Trạng thái ngày 11/11/2026.** Backend có V1–V12, quản trị, phiên/nội dung khách, hàng đợi TTS, chuyển WAV thành MP3 và xử lý vòng đời; lượt full mới đạt 520/520, BUILD SUCCESS. Frontend khách/Admin đã có nguồn, 60 ca logic đạt và build Vue thành công. Hai kịch bản Chrome với API/MySQL riêng đã kiểm áp dụng cặp, đọc/phát MP3 thật, thống kê và lỗi mạng audio. WAV tiếng Việt được tạo bằng Gemini thật; worker chuyển MP3 từ WAV đưa vào bằng fixture kiểm thử. Chi tiết và giới hạn tại [hồ sơ chạy local](docs/06-kiem-thu/local-20261111/README.md). Bộ nội dung, vùng, 20 audio được duyệt, thiết bị thật, HTTPS/QR, CI/CD và backup/restore vẫn cần hoàn thiện/kiểm trước nghiệm thu. Có mã nguồn hoặc kiểm local không tự hoàn tất issue.
 
-Backlog hiện hành gồm **11 task, 89 ô checklist và 18 dấu tích có căn cứ** tại [roadmap](docs/01-tong-quan/roadmap.md). Các dấu tích không biểu thị phần trăm hoàn thành đồ án. Trạng thái Git và các mốc chưa có bằng chứng được theo dõi tại handoff.
+**Đóng gói và restore riêng:** đã build ảnh Linux phục vụ Vue/API chung origin, kiểm FFmpeg/ffprobe và đường dẫn Unicode, diễn tập phục hồi 12 audio khớp Hash cùng database, lọc retention và kiểm Chrome đăng nhập/đọc/phát sau restore với epoch mới. [Hồ sơ đóng gói](docs/06-kiem-thu/packaging-20261111/README.md) phân biệt diễn tập offline với OPS_GUARD/drain và backup live chưa triển khai. Môi trường kiểm đã dừng, dữ liệu được giữ để rà.
+
+**Bản thử giao diện:** đã sửa chữ tiếng Việt, bố cục dọc, ô văn bản cuộn riêng và nút Hủy. [Hồ sơ UI](docs/06-kiem-thu/guest-ui-20261111/README.md) ghi 7/7 ca Chrome và quan sát VS Code. Dữ liệu E2E cũ còn lưới/tam giác trùng nhau, đang được giữ ở trạng thái dừng tại cổng 18081; chưa dùng làm bộ demo chuẩn.
+
+**Mốc hiện hành:** [bản xem trước bản đồ](docs/06-kiem-thu/map-preview-20261111/README.md) đang mở riêng ở `http://127.0.0.1:18082/map-preview.html`, có nền OSM offline/năm vùng đề xuất và database mới 5 điểm/20 slot/5 bản vi nháp. Chưa có hồ sơ/cặp áp dụng hoặc bật điểm; không tự coi vùng được duyệt. Sửa lỗi trạng thái Mức đầy đủ đã có kiểm lỗi/thử lại/dữ liệu cũ. [Theo dõi issue](docs/01-tong-quan/issue-follow-up-2026-11-11.md) ghi phần còn mở theo G02; QR/HTTPS, audio được duyệt, thiết bị và vận hành vẫn cần hoàn thiện.
+
+Backlog hiện hành gồm **11 task, 89 ô checklist; bản local có 20 dấu tích, mốc GitHub đã đối chiếu có 18** tại [roadmap](docs/01-tong-quan/roadmap.md). Các dấu tích không biểu thị phần trăm hoàn thành đồ án. Trạng thái Git và các mốc chưa có bằng chứng được theo dõi tại handoff.
 
 ## Cấu trúc thực tế
 
@@ -19,7 +25,10 @@ AudioQR_Kinh-thanh-Hue/
 ├── README.md
 ├── .gitignore
 ├── .git/                         # chỉ ghi nhận hiện diện, không thao tác
-├── backend/                      # khung Spring Boot, guest_session và vé/API Bắt đầu đã có test
+├── frontend/                     # Vue khách/Admin, kiểm logic và browser
+├── deploy/                       # Dockerfile, Compose và cấu hình mẫu
+├── .github/workflows/            # CI đã soạn, chưa chạy GitHub
+├── backend/                      # Spring Boot ba lớp, V1–V12
 │   ├── pom.xml
 │   ├── mvnw / mvnw.cmd
 │   ├── .mvn/wrapper/
@@ -34,14 +43,17 @@ AudioQR_Kinh-thanh-Hue/
     ├── 02-nghiep-vu/             # Business Flow, PRD, decisions, kết luận rà soát
     ├── 03-ky-thuat/              # TDD, mô hình, API, DFD, vận hành, thực hành
     ├── 04-giao-dien/             # UI hiện hành và tài sản/nguồn bản đồ
+    ├── 05-noi-dung/              # văn bản, bản dịch nháp, đối chiếu audio
+    ├── 06-kiem-thu/              # bằng chứng và giới hạn kiểm
+    ├── 07-van-hanh/              # môi trường, chạy thử, đóng gói
     └── 99-luu-tru/               # lịch sử, căn cứ và phương án cũ
 ```
 
-## Khung định hướng — chưa tạo hoặc triển khai
+## Phạm vi triển khai và nghiệm thu
 
-- frontend/ dự kiến có README, src, public, tests và mẫu môi trường theo công nghệ đã chọn. Backend hiện có V1 guest_session, V2 place/region_revision, V3 admin_account, V4 admin_command_window/operation_receipt, API khách và phần quản trị đã nêu ở trạng thái, theo [package chia lớp](docs/03-ky-thuat/TDD.md#tdd-packages). Toàn schema, dữ liệu khởi tạo và các API khác vẫn chưa hoàn tất.
+- Frontend khách/Admin dùng bộ phiên bản đã chốt; backend giữ [package chia lớp](docs/03-ky-thuat/TDD.md#tdd-packages). Dockerfile đóng gói Vue cùng backend đã build và kiểm trên Linux; Compose update/rollback và triển khai public chưa nghiệm thu.
 - docs/05-noi-dung/: bài thuyết minh, bản dịch, nguồn và hồ sơ duyệt; docs/06-kiem-thu/: kết quả/bằng chứng, mã kiểm thử đặt cùng frontend/backend; docs/07-van-hanh/: hướng dẫn chạy và triển khai.
-- deploy/ và .github/workflows/ dành cho cấu hình thực thi khi được giao. Mẫu .env.example chỉ tạo khi cần; không chứa secret. Không tạo hàng loạt thư mục/file trống để đủ cây.
+- [Đóng gói và CI](docs/07-van-hanh/dong-goi-va-ci.md) mô tả cấu hình đã có và điều kiện CD còn thiếu. `.env.example` không chứa secret; tệp runtime và khóa giữ ngoài repository.
 - Vị trí audio/file tải lên/dữ liệu thực, đường dẫn backup và chi tiết thực thi tiếp tục ở TDD; không mặc định đưa vào Git. .gitignore gốc có phạm vi toàn repo.
 
 Các hướng đã chọn: Vue 3/Vite, Leaflet/Geoman Free; Java 21/Spring Boot/Maven Wrapper; MySQL/JPA/Flyway; Admin session/cookie; Docker và GitHub Actions. Chi tiết/mốc phiên bản tại [technical-inputs](docs/01-tong-quan/technical-inputs.md#version-proposal), căn cứ tại [decisions](docs/02-nghiep-vu/decisions.md). Đã chọn khác với đã kiểm chứng tương thích hoặc đã triển khai.

@@ -1,0 +1,9 @@
+{
+    "status":  "COMPLETE",
+    "disk":  {
+                 "availableBytesAtCopy":  "150933979136",
+                 "requiredBytes":  "1335518"
+             },
+    "files":  2,
+    "backupDurationMs":  4622
+}

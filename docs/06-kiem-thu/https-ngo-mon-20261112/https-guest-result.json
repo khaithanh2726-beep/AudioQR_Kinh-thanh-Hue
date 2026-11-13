@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-12T13:03:37.920Z",
+  "passed": true,
+  "url": "https://kiwi-situated-outboard.ngrok-free.dev/",
+  "interstitial": true,
+  "secureContext": true,
+  "mapPlaces": 1,
+  "textHash": "d78e71e427aebe1552575ff4f5e6e62c3b27de904ce6d1450c802bf11dd66177",
+  "mp3Checksum": "b236c64424078f960a7dc164d17294b804fd1ff5ffbb800b1f2f988165011354",
+  "playedSeconds": 0.719202,
+  "ngrokHeaderSent": true,
+  "guestCookieSent": false,
+  "mapContentType": "application/json",
+  "endedThroughUi": true,
+  "pageErrors": [],
+  "tileFixture": true,
+  "realPhoneVerified": false
+}

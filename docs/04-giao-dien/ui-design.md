@@ -1,6 +1,6 @@
 # Thiết kế giao diện — Khách tham quan và Admin
 
-**Phiên bản nội dung:** 0.7.8; biên tập 08/11/2026. **Trạng thái:** các hướng UI-01–UI-05/UI-P01–UI-P04/UI-AP01–UI-AP10 đã xác nhận đúng phần; thiết kế cụ thể và điểm mở còn dự thảo.
+**Phiên bản nội dung:** 0.7.9; biên tập 11/11/2026. **Trạng thái:** các hướng UI-01–UI-05/UI-P01–UI-P04/UI-AP01–UI-AP10 đã xác nhận đúng phần; mẫu thị giác tại 3.2.1 được chọn, nghiệm thu toàn giao diện và điểm mở còn chờ rà.
 **Mục đích:** tra màn hình, bố cục, thao tác, ngoại lệ và đối chiếu nghiệp vụ của khách/Admin. Toàn bộ UI đặt trước nhật ký cuối file.
 **Nguồn:** [Business Flow](../02-nghiep-vu/business-flow.md), [PRD](../02-nghiep-vu/PRD.md), [decisions](../02-nghiep-vu/decisions.md), [đầu vào kỹ thuật](../01-tong-quan/technical-inputs.md). Công nghệ được xác nhận riêng, không suy từ ảnh tham khảo.
 **Giới hạn:** chưa duyệt toàn bộ đồ họa/câu chữ, nền/vị trí/ranh giới, bản dịch/nội dung/audio/TTS hoặc kỹ thuật; ảnh không là phần mềm đã triển khai. Khách Android/Chrome+iPhone/Safari, Admin Windows/Chrome; hướng thu gọn Admin mobile không là nghiệm thu bắt buộc.
@@ -97,6 +97,22 @@ Quy tắc tên không đổi: chuẩn hóa khoảng trắng, Unicode/số/dấu 
 - **Chưa duyệt:** kích thước/đồ họa cụ thể trong ảnh, nền/vị trí/ranh giới vùng, cách trình bày các bản dịch. Mốc 00:30/02:10 và tên Khách A chỉ minh họa bố cục, không thời lượng bắt buộc hoặc nội dung thật đã được duyệt. Nền bản đồ xem nguồn/giới hạn tại mục 7.
 - Ảnh thể hiện trường hợp có cảnh báo 5 phút; bình thường không hiện cảnh báo. Không yêu cầu đếm ngược từng giây hoặc nút gia hạn.
 - Khi chỉ đọc/cuộn box, không đóng lần mở địa điểm hoặc cộng lượt. Lối quay bản đồ trong nhánh thiếu dịch vẫn D03, không đồng nhất với cuộn văn bản.
+
+<a id="ui-reference-red"></a>
+
+### 3.2.1. Mẫu thị giác đỏ sẫm
+
+![Mẫu thị giác giao diện Khách](design-assets/guest-reference-20261111.jpg)
+
+Trọng tâm mẫu là nền bản đồ địa lý chi tiết như ảnh: đường đi, công trình, mặt nước, cây xanh và nhãn địa danh của kiểu raster OpenStreetMap tiêu chuẩn, kéo/phóng được; không thay bằng hình học vẽ lại giản lược. Giữ đầu trang đỏ sẫm, bản đồ ở trên, nền sáng, thẻ nội dung trắng bo góc, tiêu đề địa điểm đỏ và phông sans-serif hỗ trợ tiếng Việt. Nguồn ảnh `1000004589.jpg`; [hồ sơ màu/bố cục](../06-kiem-thu/ui-reference-20261111/README.md) và [hồ sơ lớp nền OSM](../06-kiem-thu/osm-map-20261111/README.md) ghi kết quả theo phạm vi.
+
+Áp dụng màu chủ đạo `#970b0b`, màu đậm `#730707`, nền `#f5f6f7`; vùng API có viền đỏ/tô trong suốt, vùng chọn tăng độ đậm và có dấu chọn. Vẫn dùng polygon API, không đổi thành bán kính tròn theo ảnh. Lớp raster OSM nằm dưới vùng và có ghi công; bản trích offline chỉ để kiểm riêng. Nền địa lý không xác nhận ranh giới di tích, không tự áp dụng năm vùng đề xuất.
+
+Giữ bố cục 3.2 và toàn bộ quyền nghiệp vụ: đầu trang gọn, Kết thúc tách Ngôn ngữ; bản đồ → tên điểm → audio → box văn bản cuộn riêng. Không kế thừa nút quét QR trong trang, GPS/ghim vị trí, khoảng cách hoặc mã phiên trong ảnh. Không thêm thông báo kỹ thuật thường trực vào màn Khách; chỉ nhãn chờ duyệt khi build preview. Ảnh tham khảo không là bằng chứng QR/HTTPS, phông hoặc dữ liệu đã nghiệm thu.
+
+Mốc đầu áp dụng cho Khách và trang xem trước bản đồ; chưa dùng ảnh Khách để tự chốt thiết kế toàn bộ Admin.
+
+**Ghim vị trí nhấn:** nhấn trong vùng tham quan hợp lệ đặt một ghim xanh tại đúng tọa độ nhấn, không tại tâm vùng. Nhấn hợp lệ tiếp theo dời ghim duy nhất; ngoài vùng/kéo/phóng không tạo điểm chọn mới. Chồng lấn chỉ đổi ghim sau chọn ứng viên; Hủy giữ ghim/bài cũ. Ghim là phản hồi vị trí nhấn, không định vị GPS hoặc xác nhận nội dung đã tải thành công; không gửi thêm tọa độ vào API. Không tự khôi phục ghim ở tâm vùng sau reload. Trang preview giữ một chú giải, một hướng dẫn và một dòng chờ duyệt, bỏ hàng nút và câu nhắc trùng; giữ attribution của nền. [Hồ sơ ghim và thu gọn](../06-kiem-thu/map-pin-20261111/README.md).
 
 ### 3.3. Danh sách chồng lấn — UI-K04
 
@@ -1095,6 +1111,15 @@ Bảng này tổng hợp [PRD mục 9](../02-nghiep-vu/PRD.md#prd-open-classific
 3. **Tiếp tục phần thực hành theo phụ thuộc:** kiểm SSH/account Docker/CD và browser/audio, hoàn thiện nền/vùng/nội dung trước sử dụng; chưa thực hiện trong lượt tài liệu này, không chờ mọi pixel/20+20 mới thiết kế nền.
 
 Hiện có TDD hiện hành/API 0.4/model 0.3/operations 0.3, roadmap 0.11/đầu vào 0.7. DATA-05 chốt vé Bắt đầu ký 24 giờ xử lý ở nền, không context/generation hoặc bước/màn hình/đồng hồ mới. Vé hết trước gửi đầu chuẩn bị mới nền/giữ form; pending giữ vé/key/quyền, không tự S2; lookup đã tạo vẫn kiểm đủ dù vé hết hạn. DATA-04/REC/backup và các hướng UI khác giữ, không JWT Admin. Backend đã có mã và kiểm thử theo [handoff](../01-tong-quan/handoff.md#next-step). UI ứng dụng, browser/audio và đồ họa cụ thể chưa có bằng chứng tích hợp hoặc được duyệt theo gói; ảnh thiết kế không thay kiểm thử giao diện.
+
+
+<a id="ui-guest-source-result"></a>
+
+### 12.4. Nguồn giao diện khách ngày 09/11/2026
+
+[Frontend Vue khách](../../frontend/README.md) đã có nguồn form bắt đầu, phiên/owner document, vùng từ API/chọn ứng viên, bài đọc/audio, cảnh báo và box hết hạn/kết thúc. Không lấy tài sản vùng đề xuất tại mục 7 làm ranh giới phục vụ, chưa nền bản đồ được duyệt. 13 ca logic Playback đạt với đối tượng audio/clock giả và script qua kiểm cú pháp; chưa resolve dependency, lockfile, build Vue, compile template/CSS/DOM, browser, điện thoại hoặc duyệt các nhãn dịch trong source.
+
+Các hướng UI-01–UI-05, mã màn hình và điều kiện nghiệm thu giữ nguyên. Đây là mốc nguồn triển khai T04, không hình đã duyệt hoặc phần mềm đã được kiểm trên thiết bị; T06/Admin chưa triển khai giao diện. Tiếp tục kiểm build/API/owner/audio/expiry và phần lỗi chưa rõ/version, khả năng tiếp cận theo [handoff 2.24](../01-tong-quan/handoff.md#guest-content-frontend-result).
 
 <a id="ui-history"></a>
 

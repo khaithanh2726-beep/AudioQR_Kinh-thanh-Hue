@@ -1,0 +1,212 @@
+{
+  "checkedAt": "2026-11-12T02:53:52.184Z",
+  "preparation": {
+    "startedAt": "2026-11-12T02:42:57.548Z",
+    "project": "hueqr-rehearsal-15d2f5c0",
+    "image": "hueqr-local:20261112-rehearsal",
+    "imageId": "sha256:8b3964b3f79c17f4023960e8a3089785f5c75fc746d63d0629f4ebcc370e9b7d",
+    "status": "ready-local-awaiting-approval-https",
+    "public": false,
+    "sourceProject": "hueqr-compose-check-44ec542f",
+    "files": [
+      {
+        "storageKey": "d7299238-3836-4ed2-a723-5f28a885edd0.mp3",
+        "sha256": "b236c64424078f960a7dc164d17294b804fd1ff5ffbb800b1f2f988165011354",
+        "bytes": 93740
+      },
+      {
+        "storageKey": "dd042ef3-b136-4c01-a226-6f9c842fbdbb.wav",
+        "sha256": "b32706ff255be3f18f5bb26e931855d54a079b45912f58bd57a85694d9fb2afa",
+        "bytes": 1127396
+      }
+    ],
+    "dumpHash": "620c2a111927695f001ca4c3a9dc510c815527a79401b3dcd71f1c0bfe035aa7",
+    "counts": "5\t20\t1\t1\t0\t0",
+    "url": "http://localhost:18083",
+    "workersEnabled": false,
+    "previewPageDisabled": true,
+    "finishedAt": "2026-11-12T02:44:30.218Z"
+  },
+  "browserBeforeRestart": {
+    "checkedAt": "2026-11-12T02:45:34.594Z",
+    "passed": true,
+    "cases": 2,
+    "providerCalled": false,
+    "sourceTextHash": "d78e71e427aebe1552575ff4f5e6e62c3b27de904ce6d1450c802bf11dd66177",
+    "sourceMp3Hash": "b236c64424078f960a7dc164d17294b804fd1ff5ffbb800b1f2f988165011354",
+    "playbackStarted": true,
+    "pairApplyDisabled": true,
+    "adminBusinessWrites": 0,
+    "qrConfigured": false,
+    "actualTilesTested": false
+  },
+  "browserAfterRestart": {
+    "checkedAt": "2026-11-12T02:49:54.813Z",
+    "passed": true,
+    "cases": 2,
+    "providerCalled": false,
+    "sourceTextHash": "d78e71e427aebe1552575ff4f5e6e62c3b27de904ce6d1450c802bf11dd66177",
+    "sourceMp3Hash": "b236c64424078f960a7dc164d17294b804fd1ff5ffbb800b1f2f988165011354",
+    "playbackStarted": true,
+    "pairApplyDisabled": true,
+    "adminBusinessWrites": 0,
+    "qrConfigured": false,
+    "actualTilesTested": false
+  },
+  "restart": {
+    "checkedAt": "2026-11-12T02:48:34.514Z",
+    "passed": true,
+    "imageId": "sha256:8b3964b3f79c17f4023960e8a3089785f5c75fc746d63d0629f4ebcc370e9b7d",
+    "counts": "5\t20\t1\t1\t0\t0",
+    "stableEpochAndKey": true,
+    "files": [
+      {
+        "storageKey": "d7299238-3836-4ed2-a723-5f28a885edd0.mp3",
+        "sha256": "b236c64424078f960a7dc164d17294b804fd1ff5ffbb800b1f2f988165011354",
+        "fullDecodePassed": true
+      },
+      {
+        "storageKey": "dd042ef3-b136-4c01-a226-6f9c842fbdbb.wav",
+        "sha256": "b32706ff255be3f18f5bb26e931855d54a079b45912f58bd57a85694d9fb2afa",
+        "fullDecodePassed": true
+      }
+    ],
+    "oldAdminDisabled": true,
+    "newAdminEnabled": true,
+    "workersEnabled": false,
+    "audioVolume": "hueqr-rehearsal-15d2f5c0_audio-data"
+  },
+  "media": {
+    "checkedAt": "2026-11-12T02:49:37.511Z",
+    "passed": true,
+    "version": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+    "sourceWavHash": "b32706ff255be3f18f5bb26e931855d54a079b45912f58bd57a85694d9fb2afa",
+    "mp3Hash": "b236c64424078f960a7dc164d17294b804fd1ff5ffbb800b1f2f988165011354",
+    "bytes": 93740,
+    "stream": {
+      "codec_name": "mp3",
+      "sample_rate": "24000",
+      "channels": 1
+    },
+    "fullyDecoded": true,
+    "registeredAsContent": false
+  },
+  "tileBrowser": {
+    "checkedAt": "2026-11-12T02:46:04.803Z",
+    "scope": "one-Chrome-image-load-no-map-pan-zoom",
+    "requests": 1,
+    "fullMapVerified": false,
+    "loaded": true,
+    "width": 256,
+    "height": 256
+  },
+  "tileCommandLine": {
+    "checkedAt": "2026-11-12T02:39:10.073Z",
+    "scope": "single-tile-GET-connectivity-only",
+    "url": "https://tile.openstreetmap.org/17/104704/59456.png",
+    "browserRenderingVerified": false,
+    "passed": false,
+    "error": "CONNECTION_OR_HTTP_FAILURE"
+  },
+  "access": {
+    "checkedAt": "2026-11-12T02:50:43.380Z",
+    "url": "http://localhost:18083",
+    "adminUrl": "http://localhost:18083/admin.html",
+    "project": "hueqr-rehearsal-15d2f5c0",
+    "java": "openjdk version \"21.0.13\" 2026-10-20 LTS"
+  },
+  "frontend": {
+    "logicTests": 65,
+    "passed": 65,
+    "normalHtml": [
+      "admin.html",
+      "index.html"
+    ],
+    "previewHtml": [
+      "admin.html",
+      "index.html",
+      "map-preview.html"
+    ]
+  },
+  "files": [
+    {
+      "path": "deploy/prepare-rehearsal.mjs",
+      "sha256": "ac84a7e7ef2d27657b8bb8dbfe1a58768ba0101155fafde961d9bfacc6d2756a"
+    },
+    {
+      "path": "frontend/vite.config.js",
+      "sha256": "863f8636fb411c13bb2d3865fa89bba2d77b87f787f352b0076a5b30f7b8985e"
+    },
+    {
+      "path": "frontend/README.md",
+      "sha256": "a20b6dff4b153f86c46e57b6c788772c42cfc9a84426057dd47765e8bf94f65e"
+    },
+    {
+      "path": "frontend/tests/e2e/rehearsal.spec.mjs",
+      "sha256": "f02021e87eda253a04e712d896c5de175e9632bbbb3a25b813fd89a5cf723c71"
+    },
+    {
+      "path": "frontend/tests/e2e/README.md",
+      "sha256": "67e50b84304f4d969eb87db9bb2aadfb595333197ff73b95588a9828c5fe6c42"
+    },
+    {
+      "path": "docs/07-van-hanh/tap-duot.md",
+      "sha256": "02e172e603a0c1c045fdb4e337cc0062c46bafcbad9f470ab1784d94919e970c"
+    },
+    {
+      "path": "docs/01-tong-quan/handoff.md",
+      "sha256": "215b2c8fcd785c9a8f01e26486c6cbe439e8b5e939e6e698d73123f1ee4b574e"
+    },
+    {
+      "path": "docs/01-tong-quan/roadmap.md",
+      "sha256": "d2fa67c651f4f826a1f2ca46002b62cf8977da5b6fa7535c0c0b75fcca037bb4"
+    },
+    {
+      "path": "docs/01-tong-quan/issue-follow-up-2026-11-11.md",
+      "sha256": "b788fcabb11b6608a4359222c100b8ffe8f226778ea5dbd467e465d0997b5b5c"
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "0e9452c3a5b9d60c5a05a523bef4a7fdc5552eba3e47bf8b27db05a53dc3a525"
+    },
+    {
+      "path": "docs/06-kiem-thu/rehearsal-20261112/README.md",
+      "sha256": "91611e672fa54b12ef1e3ba265dbd7c87155346cd6270cc8961648dd718b9851"
+    }
+  ],
+  "T08": [
+    {
+      "path": "docs/05-noi-dung/audio-vi-v01.json",
+      "sha256": "de03f4c5bd1e29d7c22a9e4c8902aa3785e7e5e668e7ea0bc43c7af44feac1a7",
+      "unchanged": true
+    },
+    {
+      "path": "docs/05-noi-dung/doi-chieu-van-ban-audio.md",
+      "sha256": "b481f7cc4342ee292661363cf9b234634f8c2e7327be3b09e93b34922f7082e9",
+      "unchanged": true
+    },
+    {
+      "path": "docs/05-noi-dung/thuyet-minh-en-v01.md",
+      "sha256": "5d9ced2b3850e57a8ead59df5638aeef02c0ecc48469d9db13c035577734e50d",
+      "unchanged": true
+    },
+    {
+      "path": "docs/05-noi-dung/thuyet-minh-fr-v01.md",
+      "sha256": "3e3cd141f44bc01564de63dff3671e0233bac3a68148124a6cd106d175cf58cb",
+      "unchanged": true
+    },
+    {
+      "path": "docs/05-noi-dung/thuyet-minh-ru-v01.md",
+      "sha256": "1e0779cf09a1ef0b6942e23901f05aec90871ebf2ba75771e8b6b671945907b2",
+      "unchanged": true
+    },
+    {
+      "path": "docs/05-noi-dung/thuyet-minh-vi-v01.md",
+      "sha256": "74f371a8f08c0a8b81b5be3a8a249fd2903550bc77679ffea878401c0e183e84",
+      "unchanged": true
+    }
+  ],
+  "backendJavaUnchanged": true,
+  "committed": false,
+  "public": false
+}

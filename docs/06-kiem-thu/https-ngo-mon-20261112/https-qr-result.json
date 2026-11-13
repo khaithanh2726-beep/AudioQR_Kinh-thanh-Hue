@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-11-12T13:03:23.747Z",
+  "passed": true,
+  "url": "https://kiwi-situated-outboard.ngrok-free.dev/",
+  "interstitial": true,
+  "pngBytes": 9337,
+  "pngHash": "d51f180c0d041336181faccb0c2aa9f0d6d7c3cc0be41ad303b3724886bf00a1",
+  "dimensions": [
+    512,
+    512
+  ],
+  "decoded": {
+    "supported": false
+  },
+  "printRequested": true,
+  "printCssCaptured": true,
+  "physicalPhoneScanVerified": false
+}
