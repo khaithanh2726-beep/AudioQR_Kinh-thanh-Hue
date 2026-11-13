@@ -4,11 +4,17 @@ on:
     branches: [main, T01, T02, T03, T04, T05, T06, T07, T08, T09, T10, T11]
   pull_request:
   workflow_dispatch:
+    inputs:
+      deploy_source_sha:
+        description: 'SHA đầy đủ để deploy sau khi kiểm đạt; để trống nếu chỉ kiểm'
+        required: false
+        default: ''
+        type: string
 permissions:
   contents: read
 concurrency:
-  group: build-${{ github.workflow }}-${{ github.sha }}
-  cancel-in-progress: true
+  group: build-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   frontend:
     runs-on: ubuntu-latest
@@ -55,3 +61,88 @@ jobs:
         with:
           name: backend-jar
           path: backend/target/backend-0.0.1-SNAPSHOT.jar
+
+  deploy:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy_source_sha != ''
+    needs: [frontend, backend]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    concurrency:
+      group: deploy-hueqr-rehearsal
+      cancel-in-progress: false
+    env:
+      SOURCE_SHA: ${{ inputs.deploy_source_sha }}
+      PUBLIC_START_URL: ${{ vars.HUEQR_PUBLIC_START_URL }}
+      SSH_HOST: ${{ vars.HUEQR_CD_HOST }}
+      SSH_USER: ${{ vars.HUEQR_CD_USER }}
+    steps:
+      - name: Validate the exact source checked by this run
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_SHA" =~ ^[a-f0-9]{40}$ ]]
+          [[ "$SOURCE_SHA" == "$GITHUB_SHA" ]]
+          [[ "$GITHUB_REF" == refs/heads/T10 || "$GITHUB_REF" == refs/heads/main ]]
+          [[ "$SSH_USER" =~ ^[A-Za-z0-9_.-]+$ ]]
+          [[ "$SSH_HOST" =~ ^100\.[0-9]+\.[0-9]+\.[0-9]+$ ]]
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.2
+      - name: Build the image and transfer manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module -e 'const u=new URL(process.env.PUBLIC_START_URL);if(u.protocol!=="https:"||u.username||u.password||u.search||u.hash)process.exit(1)'
+          docker build --label "org.opencontainers.image.revision=$SOURCE_SHA" \
+            --build-arg "VITE_PUBLIC_START_URL=$PUBLIC_START_URL" \
+            --build-arg VITE_NGROK_SKIP_BROWSER_WARNING=true \
+            -t "hueqr-local:ci-$SOURCE_SHA" -f deploy/Dockerfile .
+          docker save -o image.tar "hueqr-local:ci-$SOURCE_SHA"
+          probe=$(docker create --network none --entrypoint true "hueqr-local:ci-$SOURCE_SHA")
+          docker cp "$probe:/app/backend.jar" application.jar
+          docker rm "$probe"
+          node --input-type=module <<'NODE'
+          import { createHash } from 'node:crypto'
+          import { createReadStream } from 'node:fs'
+          import { writeFile } from 'node:fs/promises'
+          async function digest(path) { const h=createHash('sha256'); for await (const c of createReadStream(path)) h.update(c); return h.digest('hex') }
+          const paths=['deploy/cd-receive.mjs','deploy/update-image.mjs','deploy/maintenance.mjs','deploy/operations-backup.mjs','deploy/runtime-env.mjs','deploy/compose.yaml','deploy/Dockerfile']
+          const files=await Promise.all(paths.map(async path=>({path,sha256:await digest(path)})))
+          await writeFile('transfer.json',JSON.stringify({source:process.env.SOURCE_SHA,image:'hueqr-local:ci-'+process.env.SOURCE_SHA,publicStartUrl:process.env.PUBLIC_START_URL,imageTarSha256:await digest('image.tar'),applicationJarSha256:await digest('application.jar'),files}))
+          NODE
+      - uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ vars.HUEQR_TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.HUEQR_TS_OAUTH_SECRET }}
+          tags: tag:hueqr-ci
+          ping: ${{ vars.HUEQR_CD_HOST }}
+      - name: Transfer through pinned SSH and update the private runtime
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.HUEQR_CD_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ vars.HUEQR_CD_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test -n "$SSH_PRIVATE_KEY"
+          test -n "$SSH_KNOWN_HOSTS"
+          umask 077
+          key="$RUNNER_TEMP/hueqr-cd-key"
+          hosts="$RUNNER_TEMP/hueqr-cd-hosts"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$key"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$hosts"
+          trap 'rm -f "$key" "$hosts"' EXIT
+          opts=(-i "$key" -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$hosts" -o ConnectTimeout=20)
+          export RELEASE_NAME="$SOURCE_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          prepare=$(node --input-type=module -e 'const n=process.env.RELEASE_NAME;if(!/^[a-f0-9]{40}-[0-9]+-[0-9]+$/.test(n))process.exit(1);const p="$ErrorActionPreference=\u0027Stop\u0027;$p=Join-Path $env:USERPROFILE \u0027AudioQR-CD/inbox/"+n+"/deploy\u0027;New-Item -ItemType Directory -Path $p -Force | Out-Null";console.log(Buffer.from(p,"utf16le").toString("base64"))')
+          ssh -T "${opts[@]}" "$SSH_USER@$SSH_HOST" "powershell.exe -NoProfile -NonInteractive -EncodedCommand $prepare"
+          remote="AudioQR-CD/inbox/$RELEASE_NAME"
+          scp "${opts[@]}" image.tar transfer.json "$SSH_USER@$SSH_HOST:$remote/"
+          scp "${opts[@]}" deploy/cd-receive.mjs deploy/update-image.mjs deploy/maintenance.mjs deploy/operations-backup.mjs deploy/runtime-env.mjs deploy/compose.yaml deploy/Dockerfile "$SSH_USER@$SSH_HOST:$remote/deploy/"
+          receive=$(node --input-type=module -e 'const n=process.env.RELEASE_NAME,s=process.env.SOURCE_SHA;if(!/^[a-f0-9]{40}-[0-9]+-[0-9]+$/.test(n)||!/^[a-f0-9]{40}$/.test(s))process.exit(1);const p="$ErrorActionPreference=\u0027Stop\u0027;$root=Join-Path $env:USERPROFILE \u0027AudioQR-CD\u0027;$c=Get-Content (Join-Path $root \u0027config.json\u0027) -Raw | ConvertFrom-Json;& $c.nodeExecutable (Join-Path $root \u0027inbox/"+n+"/deploy/cd-receive.mjs\u0027) \u0027"+s+"\u0027;exit $LASTEXITCODE";console.log(Buffer.from(p,"utf16le").toString("base64"))')
+          ssh -T "${opts[@]}" "$SSH_USER@$SSH_HOST" "powershell.exe -NoProfile -NonInteractive -EncodedCommand $receive" | tee deployment-result.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deployment-result
+          path: deployment-result.json
