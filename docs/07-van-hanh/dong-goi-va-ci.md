@@ -2,7 +2,7 @@
 
 Ứng dụng dùng Vue và Spring Boot chung origin. Docker build đóng gói hai trang khách/Admin vào static resources của backend. MySQL và kho audio nằm trên hai volume riêng.
 
-Đã kiểm build ảnh Linux, FFmpeg/ffprobe, đường dẫn Unicode, ứng dụng chung origin và Compose restart/update/rollback trong môi trường tách biệt. HTTPS/QR Ngọ Môn vi đã có lượt chạy thử; không đồng nghĩa nâng bản V14, đủ 20 cặp hoặc nghiệm thu toàn bộ vận hành. Phạm vi và bằng chứng tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
+Đã kiểm build ảnh Linux, FFmpeg/ffprobe, đường dẫn Unicode, ứng dụng chung origin và Compose restart/update/rollback trong môi trường tách biệt. HTTPS/QR Ngọ Môn vi đã có lượt chạy thử; bản phục vụ đã nâng V14 có kiểm trước/sau, còn 20 cặp và nghiệm thu vận hành cuối. Phạm vi và bằng chứng tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
 
 ## Cấu hình
 
@@ -36,6 +36,8 @@ Workflow `.github/workflows/ci.yml` chạy kiểm frontend và backend cho pull 
 
 Job Node kiểm thêm manifest backup bằng năm ca độc lập. [CI PR #15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43406790912) đạt 530/530 backend, 71/71 logic frontend, 5/5 manifest và build. Bộ kiểm manifest V14 mở rộng đạt 8/8 cục bộ là lượt khác. Artifact gồm Surefire, JAR và frontend dist; workflow chưa có CD hoặc build/publish ảnh release. Không gọi provider hay dùng database phục vụ trong CI.
 
+T10 `5ef599c` đã push và [CI đạt](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43469439941). Bộ kiểm cục bộ mới mở rộng thành 20 ca (5 manifest, 12 integrity V13/V14, 3 đọc runtime-env); workflow bổ sung các suite này, kết quả GitHub của mốc bổ sung được ghi riêng khi chạy.
+
 Chạy workflow trên GitHub cần các file nguồn tương ứng đã được đưa lên nhánh. Lượt chạy cục bộ và lượt chạy GitHub được ghi nhận riêng trong hồ sơ kiểm thử.
 
 ## HTTPS/ngrok khi diễn tập
@@ -47,6 +49,15 @@ Chỉ mở agent tới đúng cổng ứng dụng đã rà theo [hướng dẫn 
 
 
 ## Bàn giao CD
+
+Kiểm điều kiện máy bằng công cụ chỉ đọc:
+
+```powershell
+node deploy/check-host.mjs
+node deploy/check-host.mjs --require-cd
+```
+
+Công cụ báo Node, Docker/Compose, Linux Engine và trạng thái dịch vụ Windows OpenSSH/Tailscale; không cài, đăng nhập, mở cổng hoặc khởi động dịch vụ. Cờ `--require-cd` trả mã lỗi khi thiếu điều kiện máy. Kết quả dịch vụ đang chạy chưa chứng minh SSH qua mạng riêng, quyền Docker của tài khoản SSH hoặc triển khai từ pipeline. Lượt kiểm mới nhất: Linux Engine dùng được; Tailscale đã online, OpenSSH Server chưa sẵn sàng. CD tiếp tục chờ SSH/key/host verification và quyền Docker trên máy đích.
 
 Đường CD đã chọn là GitHub Actions qua Tailscale riêng đến OpenSSH trên Windows, chạy PowerShell với context Docker Desktop của tài khoản triển khai. Cần cấu hình danh tính Tailscale, máy đích, SSH host key, khóa SSH, tài khoản và thư mục triển khai trước khi tạo bước phát hành thực thi.
 

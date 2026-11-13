@@ -490,7 +490,7 @@ Các nhóm mã bao phủ kiến trúc, không thay bảng truy vết đầy đ�
 
 ## 16. Trạng thái triển khai và giới hạn
 
-Mã nguồn gồm Vue Khách/Admin, API Spring Boot ba lớp, migrations V1–V14, hàng đợi TTS, chuyển WAV→MP3 và gate bảo trì. CI đã thực thi trên GitHub; CD qua Tailscale/OpenSSH chưa được nghiệm thu. Ngọ Môn vi đã dùng tập dượt HTTPS; bản phục vụ đang ở schema V13, còn nguồn V14 được kiểm riêng. Bộ 20 cặp, các ca thiết bị/lỗi đầy đủ và vận hành cuối còn thiếu theo hồ sơ bàn giao.
+Mã nguồn gồm Vue Khách/Admin, API Spring Boot ba lớp, migrations V1–V14, hàng đợi TTS, chuyển WAV→MP3 và gate bảo trì. CI đã thực thi trên GitHub; CD qua Tailscale/OpenSSH chưa được nghiệm thu. Ngọ Môn vi đã dùng tập dượt HTTPS; bản phục vụ đã nâng V13→V14 có snapshot trước nâng và backup/restore V14 riêng. Hai scheduler dọn đã bật, TTS vẫn tắt. Bộ 20 cặp, các ca thiết bị/lỗi đầy đủ và vận hành cuối còn thiếu theo hồ sơ bàn giao.
 
 Phạm vi triển khai và nghiệm thu được tổng hợp tại [hiện trạng bàn giao](../01-tong-quan/handoff.md); kết quả thực thi tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
 

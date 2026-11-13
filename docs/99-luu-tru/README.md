@@ -12,10 +12,11 @@ Lịch sử được rút gọn để trình bày tiến trình; trạng thái h
 | 13/11 — kỹ thuật | V14 gate/backup/restore/scheduler riêng, lượt full 530 ca đạt; tạo 14 audio mới, dừng phần ru vì quota |
 | 13/11 — lưu nguồn | PR #15 tích hợp vào main tại 601c09a, giữ lịch sử/tác giả; CI của PR đạt |
 | 13/11 — rà tiến độ | Đối chiếu 89 ô, cập nhật GitHub/local 62 ô, giữ 27 ô chưa đủ; Android/iPhone có báo dùng Ngọ Môn cơ bản |
+| 14/11 — vận hành | Snapshot/restore V13, diễn tập nâng V14, chuyển bản Ngọ Môn V14 và kiểm backup/restore; bật scheduler dọn, giữ dữ liệu và URL QR |
 
 ## Trạng thái kế thừa
 
-Bản tập dượt Ngọ Môn không phải nghiệm thu đủ 20 cặp. Nguồn V14 đã kiểm riêng không đồng nghĩa database phục vụ V13 đã được cập nhật. Lượt full 530/530 là một lượt đầy đủ; các lượt trước có lỗi/chạy lại hoặc ledger giữ riêng trong bằng chứng, không cộng thành một lượt full.
+Bản tập dượt Ngọ Môn không phải nghiệm thu đủ 20 cặp. Bản phục vụ đã chuyển V14 ở mốc 14/11, giữ snapshot V13 trước nâng và kiểm phục hồi riêng. Lượt full 530/530 là một lượt đầy đủ; các lượt trước có lỗi/chạy lại hoặc ledger giữ riêng trong bằng chứng, không cộng thành một lượt full.
 
 ## Bảo quản nguyên bản
 

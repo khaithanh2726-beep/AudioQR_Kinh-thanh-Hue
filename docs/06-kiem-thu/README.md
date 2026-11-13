@@ -17,10 +17,18 @@ Mã kiểm nằm trong `backend/src/test` và `frontend/tests`. Các bằng ch�
 | TTS | Một lượt Admin→Gemini→WAV→MP3 thật; sau đó thêm 14 audio vi/en/fr, probe/giải mã và Hash đạt | Năm ru bị chặn quota; 14 audio mới chưa được nghe duyệt cuối, Thái Hòa fr cần rà thuật ngữ |
 | HTTPS/QR | Chrome 2/2 trên bộ Ngọ Môn; QR PNG 512×512, URL/read-only, print request/CSS | Không tính request in là đã in giấy hoặc BarcodeDetector là đã giải mã |
 | Thiết bị | Người kiểm báo nghe Ngọ Môn trên Android và chạy ổn trên iPhone | Chưa ghi đủ mẫu máy/OS/browser/mạng và từng ca lỗi/time/tab |
-| Vận hành V14 | Gate/URL mã hóa, drain, mutex, snapshot/restore mới, thu hồi quyền cũ và scheduler riêng | Chưa chuyển runtime phục vụ V13 sang V14; CD, lịch backup/log và một số ca crash còn mở |
+| Vận hành V14 | Gate/drain, backup/restore riêng, snapshot V13 và chuyển Ngọ Môn V14 có kiểm trước/sau; hai scheduler dọn đã bật | CD, lịch backup/log và một số ca crash còn mở |
 | Manifest backup | 8/8 ca V14 đạt khi chạy riêng; workflow CI còn có bộ nền 5 ca | Không cộng hai bộ hoặc các lần chạy thành một lượt full |
 
 ## 3. Nguồn kết quả để đối chiếu
+
+Lượt kiểm vận hành bổ sung sau mốc tài liệu `20cd3ec`: bộ kiểm tính toàn vẹn backup đạt 8/8; backup nội dung V14 và restore vào project mới đạt 30/30 tệp, Hash nguồn/đích khớp, giữ số lượng nghiệp vụ 5 điểm/20 slot/16 text revision/15 audio revision/0 cặp/30 file. 20 bài trong bundle không đồng nghĩa đã lưu 20 revision vào database. Gate khởi động đóng, epoch mới và worker TTS tắt theo công cụ restore.
+
+Scheduler trên bản phục hồi giữ nguyên dữ liệu khi gate đóng qua 75 giây; khi mở đã dọn ba phiên fixture quá hạn và file fixture đủ hạn, giữ phiên fixture còn hạn cùng timestamp gốc, giữ file từng áp dụng mới ngừng bảy giờ và toàn bộ 30 Hash audio thật. Cấu hình worker được trả về tắt, container thử dừng sau kiểm. Lượt kiểm 30 tệp này không gọi provider hoặc thay bản phục vụ; bước snapshot/nâng V13 thực hiện riêng ở mốc bổ sung bên dưới. Bằng chứng bổ sung được giữ tại hồ sơ nội bộ `van-hanh-20261113-dcc5f86a`, không cộng vào lượt full 530 ca hoặc tự tích thêm checklist.
+
+Lượt 14/11 bổ sung: snapshot V13 Ngọ Môn hai file đã kiểm và restore bằng đúng ảnh V13; diễn tập nâng V13→V14 trên bản restore giữ inventory/vùng/Hash, phiên cũ và khóa/epoch, đọc văn bản/tải MP3 93.740 byte khớp Hash, gate close/freeze/resume đạt. Bản phục vụ sau đó đã chuyển V14, backup/restore lại hai file, giữ volume và cặp; bật cleanup/retention, provider/converter tắt. Local/API và HTTPS csrf trả 200; chưa có lượt thiết bị thật mới sau cập nhật. Bằng chứng riêng tại hồ sơ nội bộ vận hành 14/11; không gộp các lượt thành full backend mới.
+
+Kiểm cập nhật ảnh trên restore riêng đạt cả nhánh thành công và nhánh quay ảnh cũ: ảnh có tùy chọn Java sai không khởi động, công cụ trả FAILED nhưng khôi phục ảnh cũ/health/gate RUNNING khi schema không đổi, cấu hình và metadata file giữ nguyên. Tag gây lỗi được gỡ sau kiểm. Đây là fault injection có lỗi dự kiến; không là bằng chứng ảnh lỗi đã phát hành thành công. Bộ Node cục bộ mới đạt 20/20 (5 manifest, 12 integrity, 3 runtime-env), không chạy lại full backend cục bộ trong lượt này.
 
 - [CI nguồn tổng hợp: 530 ca backend và frontend/build](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43402780832).
 - [CI của PR #15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43406790912).

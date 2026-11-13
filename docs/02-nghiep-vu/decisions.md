@@ -1032,7 +1032,7 @@ Nghiệp vụ D/A/Q/UI/TECH/DATA ở trên giữ nguyên phạm vi. Mã đã tri
 | Nội dung/audio | Tạo năm audio ru khi đủ quota; nghe trọn 14 audio mới, rà phát âm Thái Hòa fr, nguồn/bản dịch và hồ sơ từng cặp trước áp dụng. | D06/D09, ma trận nội dung |
 | Vùng/giao diện | Vùng tương tác phục vụ UX, không là ranh giới pháp lý; kiểm dữ liệu áp dụng thực và đầy đủ luồng chồng lấn/chạm/kéo/phóng, Q2/Q3, thiếu nội dung. | P06–P08, UI, báo cáo kiểm |
 | Thiết bị | Android/iPhone đã có báo cáo chạy được; còn ghi model/OS/browser/mạng và đủ ma trận ngoại lệ, tab nền, reload/hết hạn/audio. | IN-P02, T09 |
-| Vận hành | V14/gate/backup/restore đã diễn tập riêng; còn nâng bản phục vụ có kiểm soát, owner sau crash đủ căn cứ, quyền/lịch backup-log/retention và RPO/RTO. | DATA-01–05, operations-design |
+| Vận hành | V14/gate/backup/restore đã kiểm riêng và đã chuyển bản phục vụ có backup trước nâng; còn owner sau crash đủ căn cứ, quyền/lịch backup-log và RPO/RTO. | DATA-01–05, operations-design |
 | CD | Tailscale/OpenSSH/PowerShell, quyền Docker Desktop, deploy/health/rollback và bằng chứng workflow trên máy đích chưa nghiệm thu. | TECH-05, T10 |
 | Hồ sơ | Đối chiếu toàn bộ checklist và tài liệu với bằng chứng; không tích cả ô khi mới đạt một phần. | Roadmap, T11 |
 

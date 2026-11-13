@@ -1,5 +1,26 @@
 # Diễn tập đóng gói và backup/restore tách biệt
 
+## Snapshot V13 và cập nhật ảnh V14
+
+`deploy/offline-v13-backup.mjs` nhận nguồn V13 có app/worker đã dừng, MySQL đang chạy, không task/claim chưa đối chiếu hoặc writer/container dùng chung volume. Nó không tạo gate V14 giả. `deploy/restore-backup.mjs` nhận đúng loại snapshot và đúng ID ảnh nguồn, tạo database/audio/khóa/epoch mới ngoài nguồn, không chuyển đường phục vụ.
+
+```powershell
+node deploy/offline-v13-backup.mjs '<runtime-V13>' '<backup-moi>'
+node deploy/restore-backup.mjs '<backup-moi>' '<restore-moi>' '<anh-V13>'
+node backend/src/test/fixtures/operations/upgrade-v13-rehearsal.mjs '<restore-V13-rieng>' '<anh-V14>'
+node --test backend/src/test/fixtures/operations/operations-backup.test.mjs backend/src/test/fixtures/operations/runtime-env.test.mjs
+```
+
+`upgrade-v13-rehearsal.mjs` chỉ nhận project restore riêng, kiểm inventory/vùng/file, giữ khóa/epoch qua cập nhật thường và phiên khách cũ, tải MP3 thật đúng Hash rồi kiểm gate close/freeze/resume. Nó không là phép kiểm phát audio trên thiết bị thật. Khi lỗi sau migration, giữ bản thử dừng; không tự chạy V13 trên schema V14.
+
+`deploy/update-image.mjs` cập nhật ảnh V14 cùng schema, yêu cầu label nguồn đúng SHA, backup trước, giữ volume/khóa/epoch và kiểm gate/health. Nhánh lỗi chỉ quay ảnh cũ khi schema không đổi và đúng owner. Kiểm nhánh này trên restore riêng bằng:
+
+```powershell
+node backend/src/test/fixtures/operations/image-rollback-rehearsal.mjs '<restore-V14-rieng>' '<thu-muc-kiem-moi>'
+```
+
+Ca kiểm tạo ảnh có tùy chọn Java sai để gây lỗi khởi động thật; kết quả đạt là ảnh mới bị từ chối và ảnh cũ được phục hồi, không coi ảnh gây lỗi là phát hành thành công. Nó dừng đúng project thử và gỡ đúng tag lỗi đã tạo; không dùng nguồn phục vụ, không gọi provider. Cấu hình thực phải có ACL, thư mục ngoài repository/runtime; xem [quy trình vận hành](../../../../../docs/07-van-hanh/bao-tri-va-sao-luu.md).
+
 ## Bộ kiểm gate V14
 
 `maintenance-rehearsal.mjs` chỉ nhận bản mới do `deploy/prepare-rehearsal.mjs` tạo từ bộ provider đã dừng, dùng ảnh có V14, năm điểm ẩn/20 slot và một audio thật. Không dùng bản Ngọ Môn đã áp dụng/hiển thị. Chạy từ repo:

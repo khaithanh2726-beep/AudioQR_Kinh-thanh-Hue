@@ -25,6 +25,6 @@ Bộ tài liệu mô tả yêu cầu, thiết kế, dữ liệu, giao diện, c�
 
 ## Phạm vi hiện tại
 
-Mốc mã nguồn đã lưu trên main là `601c09a`, PR #15. Checklist hiện 62/89. Bản Ngọ Môn vi đã dùng tập dượt HTTPS; còn bộ dữ liệu/audio chưa duyệt đủ và các điều kiện vận hành cuối. [Hiện trạng](01-tong-quan/handoff.md) là nơi chính ghi các giới hạn này; đặc tả không được hiểu thành kết quả nghiệm thu.
+Mốc mã nguồn đã lưu trên main là `601c09a`, PR #15. Checklist hiện 62/89. Bản Ngọ Môn vi đã dùng HTTPS và chuyển V14 có backup/restore được kiểm; còn bộ dữ liệu/audio chưa duyệt đủ và các điều kiện vận hành cuối. [Hiện trạng](01-tong-quan/handoff.md) là nơi chính ghi các giới hạn này; đặc tả không được hiểu thành kết quả nghiệm thu.
 
 Mã kiểm thử giữ trong backend/frontend. Log, XML, ảnh và JSON bằng chứng chi tiết đã được tách sang hồ sơ nội bộ riêng; các báo cáo tổng hợp dẫn tới [nguồn tại mốc đã lưu](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/tree/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu). Việc tách tài liệu không thay nghiệp vụ, phiên bản thư viện hoặc kết quả kiểm đã ghi nhận.

@@ -12,7 +12,7 @@ Build từ nguồn/lockfile, Vue/API cùng origin, MySQL/Flyway và kho audio ri
 
 [Quy trình bảo trì](bao-tri-va-sao-luu.md) yêu cầu đúng owner, đóng tiếp nhận việc, drain và đóng băng trước snapshot. Giữ MySQL/audio cùng checkpoint, Hash và hạn nguồn; restore sang schema/volume mới, lọc retention theo anchor gốc và cấp epoch mới. Không suy restart thường thành restore, không xóa claim theo tuổi hoặc mở lại gate sau lỗi.
 
-Gate/backup/restore và scheduler V14 đã kiểm trên bộ riêng. Bản phục vụ vẫn V13; còn mốc chuyển phục vụ, lịch log/backup và xử lý owner/claim thiếu bằng chứng sau crash. Chưa restore lại chính snapshot nội dung 30 tệp mới; không dùng kết quả snapshot cũ thay lượt đó.
+Gate/backup/restore và scheduler V14 đã kiểm trên bộ riêng. Snapshot nội dung 30 tệp mới đã được backup/restore sang project mới, đối chiếu Hash ở đích và khởi động với gate đóng. Scheduler trên chính bản phục hồi đã giữ 30 tệp thật, chỉ dọn fixture quá hạn khi gate mở. Bản phục vụ đã chuyển V14 sau snapshot/restore V13 và diễn tập nâng cấp; đã kiểm backup/restore hai file bản phục vụ và bật hai scheduler dọn. Còn lịch log/backup và xử lý owner/claim thiếu bằng chứng sau crash.
 
 ## 4. CI/CD và khả năng tái lập
 

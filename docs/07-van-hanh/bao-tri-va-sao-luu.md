@@ -13,7 +13,7 @@ V14 tạo `ops_guard` và `ops_activity`. API và bốn scheduler lấy lease tr
 - Thực hiện ngoài buổi trình diễn. Người quản trị tự xử lý phần đang soạn; công cụ không lưu hoặc áp dụng thay Admin.
 - Thư mục runtime, backup và restore ở ngoài repository, có ACL của tài khoản thực hiện và SYSTEM. Không chia sẻ private.env, runtime.json hoặc dump. Đích backup mới phải tách runtime; restore luôn tạo project/volume mới.
 - Không có SQL/DDL thủ công, app ngoài quy trình hoặc công cụ khác ghi cùng database/kho audio. Gate không fence được người quản trị có quyền truy cập trực tiếp MySQL/Docker. Công cụ kiểm thêm kết nối MySQL và container dùng chung volume; nếu chưa rõ thì dừng.
-- Dùng đúng ảnh V14 đã kiểm. Chưa áp dụng công cụ lên bản tập dượt V13 đang giữ dữ liệu Ngọ Môn. Backup/đổi schema của bản đó cần mốc cập nhật riêng và bản sao trước migration.
+- Dùng đúng ảnh V14 đã kiểm. Bản Ngọ Môn đã nâng V14 có snapshot/restore V13 trước migration và backup/restore V14 sau nâng. Công cụ gate V14 vẫn từ chối nguồn V13; hướng dẫn nâng riêng ở cuối tài liệu.
 
 ## Đóng nhận việc và sao lưu
 
@@ -67,3 +67,39 @@ Nếu đã mở gate và sau đó dừng dịch vụ bình thường, dùng Comp
 ## Giới hạn còn mở
 
 Chưa tự giải quyết lease/claim do crash thiếu bằng chứng owner, triển khai từ xa, lịch backup/dọn backup, hay chuyển phục vụ sang bản restore. Chưa thay thế kiểm 20 cặp, Android/iPhone, HTTPS/QR và CD-L01. [Thiết kế vận hành](../03-ky-thuat/operations-design.md#ops-backup) tiếp tục là nguồn chính sách.
+
+## Chuẩn bị chuyển bản phục vụ V13 sang V14
+
+Gate V14 không tồn tại trên V13; không chạy `maintenance.mjs` hoặc tự thêm hàng gate để vượt kiểm trên bản cũ. Thực hiện theo các mốc:
+
+1. Ghi danh tính project/container, ID ảnh, URL, Flyway, volume database/audio và Hash cấu hình. Giữ secret ở kho riêng; xác nhận không có writer dùng chung volume hoặc kết nối database ngoài quy trình.
+2. Chọn thời gian ngừng phục vụ; dừng ứng dụng/worker V13 có kiểm soát. Xác minh tiến trình đã dừng và không còn task/claim chưa đối chiếu; không xóa marker theo tuổi. MySQL tiếp tục hoạt động để lấy bản sao nhất quán. Nếu không đủ căn cứ dừng sạch, giữ môi trường đóng và xử lý nguyên nhân trước.
+3. Sao lưu trước migration: dump database, catalog và toàn bộ WAV/MP3 còn tham chiếu; kiểm Hash, quyền, dung lượng và hạn bảy ngày. Bản sao V13 là loại offline trước nâng cấp, không gắn nhãn backup gate V14. Dùng `deploy/offline-v13-backup.mjs` cho đúng loại snapshot offline; công cụ gate V14 không thực hiện bước này.
+4. Phục hồi snapshot V13 vào database/kho audio mới bằng đúng ảnh V13, kiểm dữ liệu/âm thanh và lọc hạn theo mốc gốc. Sau đó diễn tập nâng bản sao lên V14 với provider/cleaner/retention tắt, chỉ mở loopback; kiểm migration, gate, API/Admin/Khách và Hash dữ liệu.
+5. Chỉ chuyển bản phục vụ sau khi diễn tập đạt và mốc được rà. Build ảnh V14 có đúng URL HTTPS/cấu hình frontend; không dùng ảnh thử thiếu cấu hình public chỉ vì đã đạt kiểm gate. Kiểm lại QR/đăng nhập/đọc/nghe sau chuyển.
+6. Khi migration đã áp dụng, không mặc định chạy lại ảnh V13 trên schema V14. Phương án khôi phục là snapshot/ảnh V13 đã kiểm ở môi trường riêng, rồi chuyển đường phục vụ có kiểm soát; không hạ hoặc sửa migration.
+
+Restore nội dung V14 ở môi trường riêng không thay phép kiểm snapshot V13 trước nâng cấp. Khóa/epoch giữ qua restart/cập nhật thường; phục hồi backup thật cấp khóa/epoch mới theo REC-P01.
+
+
+## Công cụ V13 và cập nhật ảnh V14
+
+Với nguồn V13 đã dừng app/worker và MySQL đang chạy, dùng đích mới ngoài repository/runtime:
+
+```powershell
+node deploy/offline-v13-backup.mjs '<runtime-V13>' '<backup-moi>'
+node deploy/restore-backup.mjs '<backup-moi>' '<restore-moi>' '<anh-V13-dung-ID-snapshot>'
+node backend/src/test/fixtures/operations/upgrade-v13-rehearsal.mjs '<restore-V13-rieng>' '<anh-V14>'
+```
+
+Snapshot kiểm đầy đủ migrations V1–V13 thành công, app đã dừng, zero task/claim/job chưa đối chiếu và không writer/container dùng chung volume. Restore tạo project mới, khóa/epoch mới và chỉ mở loopback; V13 không có gate nên trả trạng thái RESTORE_V13_VERIFIED_PRIVATE. Không sửa manifest thành backup gate V14. Không chạy lại bước V13 trên bản Ngọ Môn hiện đã ở V14.
+
+Cập nhật ảnh V14 cùng schema dùng công cụ sau. Ảnh phải có nhãn `org.opencontainers.image.revision` khớp SHA đã rà/đối chiếu CI, TTS và converter đang tắt; thư mục backup phải mới, ở ngoài runtime/repository:
+
+```powershell
+node deploy/update-image.mjs '<runtime-V14>' '<anh-moi>' '<SHA-nguon-40-ky-tu>' '<backup-moi>'
+```
+
+Công cụ quiesce/drain/freeze, backup, đổi ảnh trong khi gate đóng, kiểm health/schema/volume/khóa rồi mở lại. Không tự nâng migration qua công cụ cập nhật cùng schema. Nếu ảnh mới lỗi, chỉ thử quay ảnh cũ khi schema không đổi và gate vẫn thuộc owner; không ép xóa lease hoặc hạ migration. Hồ sơ khôi phục và bản cấu hình trước nằm trong thư mục image-update của runtime, có thông tin riêng cần bảo vệ. Nếu không thể quay lại an toàn, đối chiếu owner/gate và snapshot trước khi thao tác tiếp.
+
+`runtime-env.mjs` bỏ qua BOM/dòng trống/comment và nhận giá trị cụ thể, không thực thi hoặc tự nội suy secret. Cấu hình dùng biểu thức chưa giải quyết bị từ chối; không đưa kết quả đọc private.env vào log. Các bộ kiểm tại backend/src/test/fixtures/operations giữ riêng với bằng chứng runtime.

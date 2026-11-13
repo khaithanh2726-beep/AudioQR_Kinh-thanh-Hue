@@ -11,7 +11,7 @@ docker compose -p $rehearsalState.project --env-file $rehearsalState.configPath 
 ngrok http 18083 --inspect=false
 ```
 
-Đây là hướng dẫn cho bộ tập dượt V13 đã chuẩn bị, không dùng để tự mở gate của một bản restore V14. Với bộ bảo trì/restore, theo [quy trình gate](bao-tri-va-sao-luu.md). Giữ ngrok hoạt động và kiểm URL Forwarding trùng URL QR. Khi URL thay đổi cần cấu hình/build và xuất QR lại; không chỉ thay ảnh QR.
+Bộ tập dượt hiện ở V14, chỉ mở phục vụ khi gate RUNNING. Lệnh Compose không tự mở gate bảo trì hoặc thu hồi quyền cũ; không dùng nó thay lệnh resume có đúng owner. Không dùng script khởi động cũ chỉ chấp nhận V13. Với bộ bảo trì/restore, theo [quy trình gate](bao-tri-va-sao-luu.md). Giữ ngrok hoạt động và kiểm URL Forwarding trùng URL QR. Khi URL thay đổi cần cấu hình/build và xuất QR lại; không chỉ thay ảnh QR.
 
 ## 2. Khách tham quan
 
