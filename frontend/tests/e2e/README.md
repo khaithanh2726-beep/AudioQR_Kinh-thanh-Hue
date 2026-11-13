@@ -40,7 +40,7 @@ Kịch bản tạo địa điểm/tài khoản khách có tên riêng, không x�
 
 `public-rehearsal.spec.mjs` nhận `HUEQR_PUBLIC_REHEARSAL_RUNTIME` trỏ tới runtime riêng có project `hueqr-rehearsal-*`, tài khoản và `publicStartUrl` HTTPS. Đặt `HUEQR_E2E_URL` cùng URL, chọn Chrome đã cài rồi chạy riêng `npm run test:e2e -- public-rehearsal.spec.mjs`. Chỉ dùng bộ một cặp vi đã áp dụng; không chạy bộ `rehearsal.spec.mjs` ban đầu trên trạng thái này. Kịch bản có tạo/kết thúc phiên khách và đăng nhập Admin, không tạo TTS hoặc thay cặp.
 
-Hai ca kiểm tải QR/in CSS, nhận map JSON không cookie, đọc/nghe MP3 thật và kết thúc. Tile là fixture; không thay bằng chứng quét QR/thiết bị hoặc mạng thật. Chọn thư mục kết quả mới, không công bố runtime chứa khóa. [Kết quả mốc HTTPS](../../../docs/06-kiem-thu/https-ngo-mon-20261112/README.md).
+Hai ca kiểm tải QR/in CSS, nhận map JSON không cookie, đọc/nghe MP3 thật và kết thúc. Tile là fixture; không thay bằng chứng quét QR/thiết bị hoặc mạng thật. Chọn thư mục kết quả mới, không công bố runtime chứa khóa. [Kết quả mốc HTTPS](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/https-ngo-mon-20261112/README.md).
 
 ## Kiểm Admin sau restore V14
 

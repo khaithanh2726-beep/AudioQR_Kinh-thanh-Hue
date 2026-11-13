@@ -1,33 +1,25 @@
-# Điều kiện nghiệm thu môi trường demo
-
-Tài liệu này hướng dẫn hoàn tất các phép kiểm còn mở. Quy tắc vòng đời, backup và restore giữ tại [thiết kế vận hành](../03-ky-thuat/operations-design.md); không thay hợp đồng bằng cấu hình chạy thử. Kết quả thực chạy lưu ở `docs/06-kiem-thu`, không đánh dấu đạt từ việc có cấu hình.
+# Điều kiện nghiệm thu và bàn giao môi trường
 
 ## 1. Dữ liệu phục vụ
 
-Nhóm duyệt vùng/nền bản đồ và từng bản trong [ma trận 20 cặp](../05-noi-dung/doi-chieu-van-ban-audio.md). Mỗi audio phải đọc đúng revision, nghe trọn, ghi tham chiếu và giới hạn. Bản dịch nháp chỉ dùng để rà ngôn ngữ/lịch sử; tạo audio sau khi chốt bản văn nhằm tránh tiêu hao quota khi sửa. Audio nháp ngoài repository phải được bảo quản cùng manifest Hash.
+Đủ năm điểm × bốn tiếng = 20 văn bản và 20 audio đúng revision/Hash; nghe trọn và duyệt từng cặp, ghi giới hạn bản dịch theo D09. Áp dụng qua API/Admin và bật theo gate, không dùng dữ liệu/ref fixture làm hồ sơ duyệt. Hiện còn năm audio ru, nghe duyệt 14 bài mới và thuật ngữ Thái Hòa fr.
 
-Áp dụng từng cặp trong Admin, kiểm danh sách mức đầy đủ cho đúng năm điểm chuẩn, rồi bật hiển thị theo gate hiện hành. Không dùng các địa điểm/phiên và tham chiếu kiểm thử để chứng minh đã duyệt dữ liệu phục vụ.
+## 2. Ứng dụng và thiết bị
 
-## 2. Đóng gói và HTTPS
+Build từ nguồn/lockfile, Vue/API cùng origin, MySQL/Flyway và kho audio riêng. Kiểm QR mở form, phiên/chọn vùng/đọc-nghe/đổi tiếng, lỗi mạng/reload/tab, mốc hết hạn và Q2/Q3. Android/Chrome, iPhone/Safari, Admin Windows/Chrome cần ma trận thiết bị/browser thực; xác nhận dùng Ngọ Môn cơ bản không đủ toàn ma trận.
 
-Chuẩn bị cấu hình riêng theo [đóng gói và CI](dong-goi-va-ci.md). Build ảnh Linux, kiểm FFmpeg/ffprobe trong ảnh và đường dẫn audio Unicode, khởi động trên database/volume riêng rồi kiểm cùng origin cho frontend/API. HTTPS phải giữ cookie Secure/HttpOnly/SameSite và CSRF; không sửa thuộc tính cookie để bỏ qua lỗi môi trường.
+## 3. Vận hành và khôi phục
 
-Khi có URL HTTPS thật, cấu hình `HUEQR_PUBLIC_START_URL`, build lại ảnh và đối chiếu URL hiển thị trên trang QR. Tải/in PNG rồi quét trên Android/Chrome và iPhone/Safari từ mạng ngoài laptop. Kiểm QR mở form, chưa tự tạo phiên; bắt đầu phiên, chọn vùng, đọc/nghe, đổi tiếng, lỗi mạng/thử lại, reload/nhân bản tab, BFCache/background và hết hạn theo ma trận UI. Viewport giả lập trên Chrome không thay hai lượt thiết bị thật.
+[Quy trình bảo trì](bao-tri-va-sao-luu.md) yêu cầu đúng owner, đóng tiếp nhận việc, drain và đóng băng trước snapshot. Giữ MySQL/audio cùng checkpoint, Hash và hạn nguồn; restore sang schema/volume mới, lọc retention theo anchor gốc và cấp epoch mới. Không suy restart thường thành restore, không xóa claim theo tuổi hoặc mở lại gate sau lỗi.
 
-## 3. Backup và diễn tập restore
+Gate/backup/restore và scheduler V14 đã kiểm trên bộ riêng. Bản phục vụ vẫn V13; còn mốc chuyển phục vụ, lịch log/backup và xử lý owner/claim thiếu bằng chứng sau crash. Chưa restore lại chính snapshot nội dung 30 tệp mới; không dùng kết quả snapshot cũ thay lượt đó.
 
-Trước khi viết/chạy công cụ backup trên môi trường phục vụ, xác định tài khoản thực thi, thư mục ngoài repository, quyền truy cập, dung lượng và lịch giữ 7 ngày theo thiết kế. Mật khẩu/khóa runtime không được chèn vào command line hoặc hồ sơ kiểm công khai.
+## 4. CI/CD và khả năng tái lập
 
-Một bộ backup phải ghi cùng mốc database và kho audio. Ngăn tiếp nhận thao tác mới, chờ các luồng ghi/worker/READ đang chạy kết thúc hoặc đối chiếu bằng chứng tiến trình theo thiết kế; không xóa claim theo timeout. Giữ hệ thống ở trạng thái không ghi trong suốt dump và sao chép audio. Ghi schema/Flyway, phiên bản nguồn/ảnh, thời điểm UTC, manifest kích thước/Hash và kết quả từng bước. Không coi dump database đơn lẻ là backup đầy đủ khi thiếu tệp audio tương ứng.
+CI đã chạy thật trên GitHub và kiểm PR #15 trước merge. CD-L01 qua Tailscale/OpenSSH Windows cần xác thực máy/tài khoản, host key, quyền Docker/context, cấu hình riêng và thư mục triển khai; chưa có lượt triển khai từ pipeline. Kiểm restart/update/rollback phải giữ volume/khóa theo quy trình và tương thích schema.
 
-Diễn tập restore trên schema, volume và kho audio **mới**, không ghi đè môi trường đang dùng. Kiểm Hash trước nhập, nạp database và audio đúng bộ, dùng epoch mới và thực hiện lọc dữ liệu theo anchor gốc/retention trước mở phục vụ. Không kéo dài tuổi dữ liệu bằng thời điểm restore. Kiểm tham chiếu audio, cặp đang áp dụng, quản trị/khách, thống kê, quyền file và các tình huống thiếu/hỏng tệp. Chỉ xóa bộ backup hết hạn sau khi xác minh bộ mới đầy đủ; không xóa đệ quy theo đường dẫn chưa kiểm.
+## 5. Hồ sơ bàn giao
 
-Đã có [diễn tập offline ngày 11/11](../06-kiem-thu/packaging-20261111/README.md): phục hồi DB/audio riêng, kiểm Hash, lọc retention và chạy ứng dụng với epoch mới. Chưa có OPS_GUARD/drain live hoặc reconcile job/claim đang xử lý; không coi lượt offline là backup môi trường đang phục vụ hoặc bật vận hành dựa riêng vào hướng dẫn này.
+Bộ chấm gồm đặc tả, thiết kế, dữ liệu/hồ sơ duyệt, báo cáo kiểm, hướng dẫn chạy/sử dụng và giới hạn còn mở. Bằng chứng thô, tài khoản/khóa và snapshot runtime giữ riêng đúng loại; mã nguồn Git không thay backup database/audio. Người nhận cần thực hiện lại hướng dẫn trên môi trường thống nhất và ghi kết quả thực tế. Checklist chỉ đóng khi đủ từng điều kiện, không tự kết luận Done từ commit/merge.
 
-Bổ sung 13/11: [bộ V14](../06-kiem-thu/operations-guard-20261113/README.md) triển khai gate bền và đã kiểm CLI freeze/backup/resume, phục hồi riêng và phát MP3 qua Admin. [Công cụ/hướng dẫn](bao-tri-va-sao-luu.md) chỉ nhận môi trường được nhận diện, giữ FROZEN khi chưa rõ. Chưa áp lên bản tập dượt V13; còn đối chiếu claim/lease do crash, lịch backup/dọn bản hết hạn và mốc cập nhật phục vụ. Kết quả này không mở rộng lượt offline cũ thành backup live.
-
-## 4. CI/CD và tài khoản
-
-Đã push chín nhánh theo G02 và chạy [CI Linux thật ngày 12/11](../06-kiem-thu/release-readiness-20261112/README.md): 520/520 backend, 65/65 frontend, 5/5 manifest và build đạt. Compose riêng đã kiểm giữ dữ liệu qua restart/update/rollback giữa hai ảnh tương thích schema; chưa thay cho kiểm môi trường phục vụ hoặc đường CD. CD cần Tailscale riêng, OpenSSH Windows, SSH host key/khóa đăng nhập, quyền Docker của tài khoản đích và thư mục triển khai. Chưa cấu hình các đầu vào này thì chưa chạy triển khai.
-
-Sau khi cấu hình, kiểm triển khai lặp lại, giữ volume qua thay ảnh, khởi động lại, rollback phiên bản tương thích schema và truy cập HTTPS từ thiết bị ngoài mạng. Phân biệt kết quả CI, đóng gói local, CD và nghiệm thu dữ liệu/thiết bị. Commit/push, PR, checklist và Project chỉ cập nhật đúng quyền đã giao và sau mốc rà.
+[Báo cáo kiểm](../06-kiem-thu/README.md) và [hiện trạng](../01-tong-quan/handoff.md) là nguồn ghi kết quả; [roadmap](../01-tong-quan/roadmap.md) giữ 62/89 ô hiện tại.

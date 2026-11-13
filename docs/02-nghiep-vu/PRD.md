@@ -1,9 +1,6 @@
-# PRD — Hệ thống thuyết minh tự động bằng mã QR cho Kinh thành Huế
+# Đặc tả yêu cầu hệ thống (PRD)
 
-**Phiên bản nội dung:** 0.8.8; bổ sung sơ đồ tổng quan 08/11/2026, giữ phạm vi yêu cầu đã duyệt.
-**Trạng thái:** kế thừa phạm vi yêu cầu mô tả rõ của PRD 0.4.1 theo [PRD-01](decisions.md#prd-approval), gồm Q1–Q3/BR-11; các bổ sung UI-01–UI-05/TECH/DATA đã xác nhận áp dụng đúng phần từ [decisions](decisions.md). Mục còn mở/đề xuất/chưa kiểm chứng tiếp tục được loại trừ.
-**Mục đích:** đặc tả BR/DR/FR, Use Case dạng mô tả, NFR và tiêu chí AC có truy vết. [Business Flow](business-flow.md) mô tả nghiệp vụ; [báo cáo rà soát](prd-review.md) giữ phát hiện và phụ thuộc.
-**Giới hạn:** không dùng duyệt tài liệu làm bằng chứng phần mềm, nội dung lịch sử/bản dịch/audio, đồ họa/ranh giới hay toàn bộ TDD đã đáp ứng. Phần còn mở ở mục 9.
+Tài liệu quy định phạm vi, quy tắc nghiệp vụ, yêu cầu chức năng/phi chức năng, Use Case và tiêu chí nghiệm thu của hệ thống. Giữ các mã BR/DR/FR/UC/NFR/AC để truy vết giữa các tài liệu. Đây là đặc tả yêu cầu; trạng thái đáp ứng thực tế được báo cáo riêng.
 
 ## 1. Mục tiêu, cách đọc và truy vết
 
@@ -555,124 +552,27 @@ Giữ mã hiện có, không tăng FR/UC/AC vì thêm chi tiết vận hành. Kh
 
 <a id="prd-open"></a>
 
-## 9. Phụ thuộc còn mở và phạm vi yêu cầu đã xác nhận
+## 9. Phụ thuộc và phạm vi nghiệm thu còn mở
 
-Mục 9.1–9.2 là các phụ thuộc còn mở; mục 9.3–9.6 giữ phạm vi xác nhận và truy vết. Không coi nội dung đã xác nhận bên dưới là yêu cầu cần duyệt lại.
+Nghiệp vụ hai vai trò, Q1–Q3, cặp nội dung và chính sách DATA đã chốt trong phạm vi tương ứng. Phần này ghi điều kiện thực hiện/kiểm chứng, không mở lại các quyết định đã rõ hoặc tự thêm ngưỡng đạt–trượt.
 
-Chưa phát hiện mâu thuẫn nghiệp vụ thực chất trong các nguồn đã đối chiếu. A02.6 đã chốt, không còn là điểm mở. Công nghệ nền/kiến trúc đã chốt riêng theo [TECH-01](decisions.md#tech-01); không còn hỏi chọn lại stack. TECH-03/DATA-01 nay chốt mốc phiên bản/nền tảng/audio và đúng phần chính sách, ngrok chỉ chọn thử. TECH-05/DATA-03 đã chốt CD riêng/phạm vi-nhịp backup; tương thích thực, build thiết bị, quota/chất lượng TTS, kiểm SSH/Docker, path/quyền/công cụ/checkpoint backup-log và cơ chế vẫn còn mở. Việc lựa chọn không chứng minh công cụ đã đáp ứng các yêu cầu bên dưới. Các mục dưới đây ảnh hưởng thiết kế, khả thi hoặc cách chứng minh PRD; chúng không làm cho nghiệp vụ hai vai trò quay lại trạng thái chưa duyệt.
+| Mã | Nội dung giữ nguyên | Điều kiện còn cần chứng minh |
+|---|---|---|
+| O-01 | Gemini TTS/Charon, WAV nguồn/MP3 khách, FFmpeg-Linux; đủ năm điểm × bốn ngôn ngữ. | Pipeline thật đã chạy; còn năm audio ru, nghe trọn/hồ sơ D09 và phát âm Thái Hòa fr. Quota/ngân sách không được suy từ lần gọi trước. |
+| O-02 | Q1, một đa giác đơn giản; Lưu khác Áp dụng; UI-03–05 và gate cặp vi. | Giao diện Leaflet/OSM đã có; vùng áp dụng cần rà đúng dữ liệu phục vụ. Không coi vùng UX là ranh giới pháp lý hoặc tự thêm công cụ bản đồ. |
+| O-03 | Khách Android/Chrome, iPhone/Safari; Admin Windows/Chrome. | Bổ sung model/OS/browser/mạng và đầy đủ ca luồng chính/ngoại lệ/tab/expiry/audio. Báo cáo hai loại điện thoại chạy được chưa thay toàn ma trận. Chưa tự đặt mức tải/số giây/dung lượng bắt buộc. |
+| O-04 | Q2/Q3, phiên Admin 30 phút, tab khách độc lập và mốc nghe cùng bài. | Cơ chế đã có mã/kiểm; còn đối chiếu đầy đủ hành vi trên thiết bị và lỗi mất mạng/phiên. Không bổ sung đồng bộ tab/thiết bị hoặc lịch sử nghe lâu dài. |
+| O-05 | Log 7 ngày, backup 7 ngày; DB + WAV/MP3 tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema; restore riêng/lọc mốc gốc. | Backup/restore V14 đã diễn tập riêng; quyền/lịch chạy/log/retention/RPO-RTO trên môi trường phục vụ và CD còn thiếu. Giữ giới hạn backup cục bộ của DATA-02. |
+| O-06 | File đã áp dụng: 8 giờ từ ngừng áp dụng đủ điều kiện; file hoàn chỉnh chưa áp dụng: 24 giờ đủ điều kiện; tạm: 1 giờ đủ an toàn; phiên/lượt: 30 ngày theo anchor gốc. | Kiểm lịch/độ trễ và owner/claim sau crash đủ căn cứ. HTTPS/QR đã có lượt Ngọ Môn; phải kiểm lại URL/live mỗi buổi, không xem ngrok là CD. |
 
-### 9.1. Chỉ mục O-01–O-06
+Các nhận định “chưa kiểm/chưa có kết quả” trong bảng thiết kế phép kiểm mục 8 mô tả giới hạn tại lúc lập tiêu chí; không là nguồn tiến độ hiện hành. [Bàn giao](../01-tong-quan/handoff.md), [báo cáo kiểm thử](../06-kiem-thu/README.md) và [roadmap](../01-tong-quan/roadmap.md) ghi kết quả thực tế và 27 ô chưa đủ toàn điều kiện.
 
-| Mã | Cần xác định / xác nhận thêm | Ảnh hưởng và cách giữ trạng thái |
-| --- | --- | --- |
-| O-01 | TTS-01 chọn Gemini 3.8 Flash TTS/Charon; TECH-03/IN-P03 chọn WAV nguồn/MP3 khách/FFmpeg-Linux. | Còn quota thực/ngân sách nếu trả phí/tích hợp/chất lượng vi/en/fr/ru và giới hạn cần thiết; sáu MP3 không duyệt 20 cặp. Không giảm D06. |
-| O-02 | Bố cục bản đồ/Admin, thao tác vẽ/xem trước/áp dụng, ranh giới từng vùng; các trường thông tin địa điểm và điều kiện “hợp lệ” cụ thể. | Hành vi/gate A02.4–A02.6 đã chốt. Thông tin hợp lệ theo Q1 đã chốt; chỉ bố cục/vùng/thao tác cụ thể và các chi tiết giao diện còn mở xem xét riêng theo mục 9.2. Hướng đa giác đơn giản/thao tác cơ bản đã chốt UI-03; Leaflet/Geoman miễn phí đã chọn theo TECH-01; không tự chốt ngưỡng hoặc coi nền/ranh giới đã duyệt. UI-04 chốt áp dụng cả cặp/gate cặp vi, không để gate cũ còn áp dụng. |
-| O-03 | Nền tảng IN-P02 đã chốt: khách Android/Chrome+iPhone/Safari, Admin Windows/Chrome; còn model/OS/build thực và mức tải/ngưỡng nếu dùng. | Có hai loại điện thoại, ghi ma trận thật khi kiểm; mốc minh họa cũ không bắt buộc. Không cam kết mọi thiết bị hoặc tự chọn số giây/dung lượng/đồng thời làm đạt-trượt. |
-| O-04 | Cách bảo vệ/khôi phục nội dung Admin chưa lưu, nhận biết hoạt động Admin; cách lưu mốc nghe gần nhất cùng bài và xử lý tab/thời gian. | Nghĩa vụ bảo vệ/khôi phục và mốc 30 phút đã chốt. Phạm vi giữ tạm/tiếp tục soạn theo Q2 và loại hoạt động theo Q3 đã được xác nhận ngày 31/10/2026; cơ chế thực hiện vẫn để TDD thiết kế. Không thêm đồng bộ tab/thiết bị hoặc lịch sử nghe lâu dài, không yêu cầu khôi phục đúng từng giây. |
-| O-05 | DATA-01 đã chốt log 7 ngày/không nhạy cảm, backup 7 ngày/restore riêng/lọc mốc gốc/đuôi gần 37 ngày. | DATA-02 cho backup cục bộ tách dữ liệu chạy, không yêu cầu ngoài laptop; DATA-03 chốt DB + WAV/MP3 tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema; còn path/quyền/công cụ/checkpoint nhất quán và RPO-RTO; D08 không tự xóa mọi bản sao/log provider. Không coi đề xuất cũ là đã duyệt toàn bộ. |
-| O-06 | DATA-01 đã chốt file chưa áp dụng 24 giờ đủ ba điều kiện, tạm 1 giờ đủ an toàn; ngrok chỉ chọn thử, URL/QR thật chưa có. | Giữ A02.3 DB thành công/không tham chiếu VÀ không dùng chung/8 giờ từ last-unapply; D08 30 ngày. Còn lịch/cơ chế/retry/độ trễ/đọc tiếp/backup và kiểm URL; không gán mốc tùy ý. |
+Mọi thay đổi ngưỡng nghiệm thu, ngân sách, dịch vụ hoặc nghiệp vụ phải được rà riêng; chưa coi toàn TDD/API/ERD, nội dung lịch sử/bản dịch/audio hay vận hành đã được duyệt theo phê duyệt PRD.
 
 <a id="prd-open-classification"></a>
-
-### 9.2. Trạng thái phụ thuộc, mốc cần chốt và người xác nhận
-
-**Các dòng Q1–Q3 đã được người dùng xác nhận ngày 31/10/2026**, không còn là phương án chờ duyệt. Chỉ các phụ thuộc khác ghi còn mở/đề xuất bên dưới tiếp tục chờ lựa chọn hoặc thiết kế; không biến chúng thành ngưỡng bắt buộc. Giữ mã O-01–O-06 để theo dõi; nguồn Q1–Q3 tại [decisions mục 5.8](decisions.md#dec-q), bản đề xuất 0.3 chỉ còn là lịch sử mục 7.3 của decisions. Phạm vi 0.4.1/PRD-01 và UI-01 giữ hiệu lực; UI-02 bổ sung 01/11/2026 đã chốt đúng phần. Các phần còn mở khác bên dưới tiếp tục loại trừ, không đóng toàn bộ R06.
-
-| Nội dung / trạng thái | FR/UC/AC hoặc NFR bị ảnh hưởng | Phân loại | Mốc / tình trạng chốt | Nội dung hiện hành hoặc đề xuất còn mở | Người xác nhận / thực hiện |
-| --- | --- | --- | --- | --- | --- |
-| O-01 — TTS-01 đã chọn Gemini 3.8 Flash TTS/Charon; khả năng thực tế/quota/ngân sách còn mở | FR-A05/A06/A12; UC-A04; AC-A08–A13/A26; NFR-05 | Lựa chọn dịch vụ/model/giọng đã chốt riêng; tích hợp/chất lượng phải có bằng chứng. | Định dạng đã chốt IN-P03; trước triển khai thiết kế cách tích hợp; kiểm quota/giới hạn thực và duyệt mỗi audio trước phục vụ. | [Khảo sát 03/11](../01-tong-quan/technical-inputs.md#tts-research) có công bố bốn ngôn ngữ/Free tier/WAV, chưa thử. Sáu MP3 được nghe theo báo cáo người dùng không chứng minh cả bộ. Không tự chọn ngân sách hoặc giảm D06. | Người triển khai đề xuất/kiểm theo quyền được giao; người dùng quyết định phần còn mở và duyệt theo D09, không hỏi lại model/giọng. |
-| O-01/O-03 — giới hạn đầu vào văn bản/kết quả audio, định dạng và cách xử lý vượt giới hạn | FR-A04/A05; UC-A03/A04; AC-A08–A11; NFR-04 | Tiêu chí đầu vào và phản hồi nghiệp vụ khi giới hạn ảnh hưởng thao tác; định dạng/cơ chế là kỹ thuật. | Trước triển khai kiểm tra đầu vào/tích hợp TTS; mọi giới hạn dùng làm điều kiện bắt buộc phải được xác nhận trước áp dụng. | Lấy giới hạn thực tế từ phương án TTS được chọn, đề xuất cách thông báo/cho sửa và đánh giá ảnh hưởng bộ nội dung; chưa đặt số ký tự, thời lượng hoặc dung lượng; IN-P03 đã chọn WAV/MP3 và FFmpeg-Linux, không còn câu hỏi định dạng. | Người triển khai đề xuất theo bằng chứng; người dùng xác nhận giới hạn/phản hồi có ảnh hưởng sử dụng. |
-| O-02 — thông tin địa điểm “hợp lệ” gồm trường nào, bắt buộc gì | FR-A02; UC-A02; AC-A03/A04; BR-11 | Chi tiết nghiệp vụ **đã chốt Q1**; cách lưu/kiểm tra là kỹ thuật. | Đã xác nhận 31/10/2026, cụ thể hóa trong BR-11/DR-06/FR-A02/UC-A02/AC-A03/A04; không yêu cầu duyệt lại. | Tên Admin bắt buộc 1–100 ký tự hiển thị sau chuẩn hóa; mã hệ thống cấp ổn định/độc lập tên, trùng tên cảnh báo không chặn kèm mã. Lưu được điểm ẩn thiếu vùng/bài; bật hiện giữ A02.5, vùng/văn bản/audio tách riêng. Nguồn [Q1](decisions.md#q1). | Người dùng đã xác nhận Q1; người triển khai thiết kế cách kiểm tra theo yêu cầu. |
-| O-02 — bố cục, thao tác vẽ/xem trước và ranh giới cụ thể | FR-K03/FR-A03; UC-K02/UC-A02; AC-K05/K07–K09, AC-A05/A06; NFR-01 | Thiết kế tương tác/giao diện và bằng chứng xem xét vùng; khả năng vẽ/sửa và hiệu lực đã chốt. | Trước triển khai giao diện/vùng cụ thể; xem lại trên môi trường nghiệm thu trước nghiệm thu. | Trình bản thiết kế cho bộ năm điểm, thể hiện vùng/nhãn/viền, xem trước và tách Lưu/Áp dụng; xem xét trên điện thoại. Không tự chọn công nghệ hoặc coi ranh giới đã duyệt theo Business Flow. | Người triển khai đề xuất thiết kế; người dùng xem xét giao diện/ranh giới. |
-| O-02 — UI-03/UI-04 đã xác nhận đúng hướng Admin | FR-A01/A02/A04/A07/A12; UC-A01–A05/A08; AC-A02/A04/A07/A13–A15/A25/A26 | Hướng UI/hành vi đã xác nhận, không còn câu hỏi áp dụng riêng hoặc chỉ cần văn bản vi. | UI-03/UI-04 ngày 02/11/2026; chi tiết đồ họa/ranh giới/kỹ thuật và UI lượt 3 vẫn trước triển khai cần xem xét. | Một cặp văn bản/audio, gate cặp vi, hồ sơ cặp và bảo vệ phần tham chiếu; hết phiên Admin dừng nghe thử. Xem nguồn UI-04, không duyệt toàn bộ UI hoặc chọn TTS theo gói. | Người dùng đã chốt đúng phần; nhóm thiết kế/triển khai cách đáp ứng. |
-| O-02 — UI-P01/UI-P02/UI-P04 đã chốt đúng phần UI-02 | FR-K03/K05/K09; UC-K02/K03/K05; AC-K09/K12/K18/K20 | Hành vi đã xác nhận, không còn câu hỏi phải duyệt lại. | Đã xác nhận 01/11/2026; thiết kế cụ thể/kịch bản và cơ chế kỹ thuật còn công việc sau. | Box ứng viên + Hủy/nền khóa/giữ audio, tua khi còn hiệu lực, box toàn trang sau kết thúc và box bản đồ khi hết hạn; ngoại lệ P01 nghe hết bài đang phát. Ảnh 0.2 chưa thể hiện các box; xem ui-design hiện hành và mục 9.5 về phục vụ file. Không duyệt bản đồ/UI Admin/bản dịch hoặc chi tiết khác theo gói. | Người dùng đã xác nhận đúng phần; nhóm thiết kế cách thể hiện/chứng minh, không hỏi lại hành vi. |
-| O-04 — phạm vi nội dung Admin chưa lưu cần bảo vệ và cách tiếp tục soạn sau hết phiên | FR-A01/A03/A04; UC-A01–A03; AC-A02/A05/A07; NFR-04 | Phạm vi/kết quả nghiệp vụ **đã chốt Q2**; cơ chế giữ tạm chưa chọn. | Đã xác nhận 31/10/2026; thiết kế cơ chế trước triển khai. | Ba loại công việc trong tab, qua hết phiên/đăng nhập lại cùng tài khoản, lưu lỗi/mất mạng và tải lại bình thường. Khôi phục bản gần nhất đã ghi nhận, rõ chưa lưu; vòng đời và giới hạn đóng tab/crash/thiết bị khác theo [Q2](decisions.md#q2), kiểm tra AC-A02 mục 8.2.1. | Người dùng đã xác nhận Q2; người triển khai đề xuất cơ chế, không duyệt lại phạm vi. |
-| O-04 — hoạt động nào tính vào mốc Admin 30 phút không hoạt động | FR-A01; BR-14; UC-A01; AC-A02; NFR-03 | Quy tắc hoạt động nghiệp vụ **đã chốt Q3**; cách ghi nhận sự kiện là kỹ thuật. | Đã xác nhận 31/10/2026; thiết kế ghi nhận trước triển khai. | 30 phút từ hoạt động chủ động gần nhất được ghi nhận khi còn hiệu lực. Danh sách tính/không tính và không ghi bù/hồi sinh phiên theo [Q3](decisions.md#q3); TTS chạy nền/giữ tạm/tải trạng thái/audio tự tiếp tục không gia hạn. | Người dùng đã xác nhận Q3; người triển khai ánh xạ sự kiện theo quy tắc. |
-| O-04 — cơ chế lưu tạm, phiên theo tab, mốc nghe, ký tự hiển thị và tab nền | FR-A01, FR-K01/K02/K07/K10; UC-K01/K04/A01; AC-K02/K04/K15/K21, AC-A02 | Cách thực hiện kỹ thuật sau khi phạm vi bảo vệ/hoạt động đã xác nhận; không đổi quy tắc nghiệp vụ. | Trước triển khai phần tương ứng. Không phải điều kiện buộc chọn công nghệ trước duyệt PRD. | TDD mô tả cách giữ/khôi phục, nhận biết tab, tính ký tự hiển thị nhất quán, bảo đảm đúng bài và chống lặp; quan sát mốc đã lưu của cùng bài, không đòi chính xác từng giây/đồng bộ thiết bị. | Người triển khai đề xuất thiết kế; người dùng xem xét cách chứng minh yêu cầu, không cần tự chọn công nghệ để duyệt hành vi. |
-| O-03 — IN-P02 đã chốt nền tảng, build thực còn ghi | NFR-01/NFR-05/NFR-06; AC-K05/K07/K09/K12/K17, AC-A05/A06 | Môi trường nghiệm thu theo TECH-03. | Ghi model/OS/browser build khi kiểm, trước kết luận nghiệm thu; không hỏi chọn lại nền tảng. | Khách Android/Chrome+iPhone/Safari; Admin Windows/Chrome máy tính/laptop, chuột/bàn phím. Kiểm đủ main/error/map/cuộn/audio-tua/ngôn ngữ/phiên/Admin. Không tất cả thiết bị hoặc Admin mobile bắt buộc. | Người triển khai ghi matrix thật với thiết bị người dùng có, không lấy mốc minh họa làm bắt buộc. |
-| O-03 — hiệu năng, thời gian tạo audio, mức tải và ngưỡng đạt/chưa đạt nếu cần | FR-A05/A06; NFR-01/NFR-04/NFR-06; AC-A08–A12, AC-K16 | Tiêu chí nghiệm thu định lượng nếu được chọn; chưa là yêu cầu có ngưỡng bắt buộc. | Trước nghiệm thu nếu dùng số đo để kết luận đạt/chưa đạt; cần cập nhật/duyệt đúng phần NFR/AC trước khi dùng. | Đề xuất đo trên môi trường thực tế và căn cứ TTS rồi trình mục tiêu phù hợp; nếu chưa chốt thì chỉ đánh giá hành vi/trạng thái đã rõ, không tự chọn số giây hoặc số người đồng thời. | Người triển khai cung cấp phép đo/đề xuất; người dùng xác nhận tiêu chí, không tự coi số đo là ngưỡng đã duyệt. |
-| O-06 — lịch tự xóa phiên/lượt và lịch dọn file, xử lý lỗi | FR-D01/FR-A09; UC-D01/UC-A06; AC-D01, AC-A19–A21 | Cách thực hiện kỹ thuật; mốc đến hạn 30 ngày và bảo vệ file 8 tiếng là nghiệp vụ đã chốt. | Trước triển khai cơ chế tự xóa/dọn file. Không chặn duyệt kết quả xóa đã mô tả ở AC-D01. | TDD đề xuất lịch/thử lại theo mốc nguồn, phân biệt đủ hạn với lúc tác vụ chạy; không thay mốc bằng lúc phát hiện phiên hoặc dọn file trước đủ bảo vệ. Không chỉ đánh dấu/hàng chờ rồi coi như đã xóa. | Người triển khai đề xuất lịch/cơ chế; người dùng xem xét sự phù hợp, không cần chọn công cụ lịch để duyệt PRD. |
-| O-06 — cách đánh giá thời gian hoàn tất xóa/độ trễ vận hành | FR-D01/FR-A09; UC-D01/UC-A06; AC-D01, AC-A20/A21 | Tiêu chí nghiệm thu; nếu ảnh hưởng thời gian giữ dữ liệu thực tế thì có ý nghĩa nghiệp vụ, không chỉ là lựa chọn TDD. | Trước nghiệm thu về thời gian hoàn tất; nếu đề xuất làm thay đổi chính sách lưu thì trình người dùng **trước triển khai thay đổi đó**. | Giữ 30 ngày và 8 tiếng làm mốc; AC-D01 quan sát kết quả xóa thực tế khi cơ chế tự động xử lý. Nếu cần một mức độ trễ để đánh giá, trình giá trị/căn cứ riêng; hiện chưa có số được duyệt và không tự cho phép kéo dài hạn lưu. | Người triển khai đề xuất phép quan sát/độ trễ có căn cứ; người dùng xác nhận tiêu chí hoặc quyết định nghiệp vụ nếu thật sự thay chính sách. |
-| O-06 — DATA-01 đã chốt vòng đời file chưa áp dụng/tạm | FR-A06/A09; UC-A04/A06; AC-A18–A21; mục 8.3.1 | Chính sách đã chốt, cơ chế/mốc đủ điều kiện và kiểm lại là TDD. | Trước code cơ chế dọn; không hỏi duyệt lại 24 giờ/1 giờ đúng phạm vi. | File hoàn chỉnh: 24 giờ từ khi không tham chiếu/không dùng chung/không tác vụ dùng; nháp tham chiếu giữ. Tạm: 1 giờ khi job kết thúc/không worker/đủ an toàn; đang chạy/unknown không rác. | Người triển khai đề xuất cơ chế đúng DATA-01; thay chính sách nếu phát sinh phải trình riêng. |
-| O-05 — DATA-01 và chi tiết log/backup còn thiếu | DR-04/DR-08; NFR-03; AC-D02/mục 8.3.1 | DATA-03 chốt thêm phạm vi/nhịp backup cục bộ; path/quyền/công cụ/checkpoint nhất quán/RPO-RTO và chi tiết log còn thiết kế/kiểm. | Làm rõ trước cấu hình backup/log, kiểm restore trước nghiệm thu. | Không ghi secret/thông tin khách/nội dung nhạy cảm; log 7 ngày/backup 7 ngày từ tạo, restore riêng lọc mốc gốc trước phục vụ. Không tự coi retention là đã chọn nơi/RPO-RTO hoặc xóa mọi bản sao. | Người triển khai đề xuất có căn cứ → người dùng xác nhận chi tiết có ảnh hưởng chính sách, TDD cụ thể hóa cơ chế. |
-| O-06 — URL thực tế và kiểm tra bản in QR | FR-K01/FR-A10; UC-K01/UC-A07; AC-K01/AC-A22 | Thông tin triển khai và thiết kế bản in; nghiệp vụ một QR chung đã chốt. | Trước nghiệm thu QR/bản in thực tế. | Hướng UI-05 đã chốt URL chỉ đọc/PNG/bản in gọn; chỉ URL thực tế, thư viện/cách sinh/tải/in và kiểm tra bản thật còn công việc sau, không bổ sung chuyển hướng/đếm quét. | Người triển khai cung cấp URL; người dùng xem xét bản in và xác nhận địa chỉ dùng trình diễn. |
-| D06/D09 — nguồn, bản dịch và nghe trọn từng audio | FR-A07/A12; UC-A05/A08; AC-A14/A25/A26; NFR-05 | Thực hiện/rà soát và duyệt nội dung theo quy trình đã chốt, không là lựa chọn công nghệ hoặc duyệt nghiệp vụ lại. | Trước áp dụng từng phiên bản cho khách; đủ bộ chuẩn trước nghiệm thu. | Nhận năm bản vi người dùng cung cấp, rà nguồn, chuẩn bị bản dịch với giới hạn được nêu rõ và nghe trọn audio đúng bản/ngôn ngữ; người dùng duyệt từng phiên bản theo D09. Chưa có bản nào được duyệt sẵn qua việc sửa PRD. | Người dùng duyệt từng bản; người có năng lực phù hợp rà soát bản dịch hoặc ghi rõ giới hạn theo D09. |
-
-### 9.3. Phạm vi PRD đã được duyệt và giới hạn
-
-Kết quả rà soát cuối tập trung Q1–Q3, phạm vi đề nghị duyệt và các phần loại trừ được ghi tại [prd-review.md mục 7.3–7.5](../99-luu-tru/prd-review-history.md#review-final). Bản 0.4.1 chỉ sửa câu chữ BR-11 theo nguồn và dẫn chiếu; không thêm quyết định hoặc yêu cầu mới.
-
-Q1–Q3 đã được xác nhận và cụ thể hóa vào BR/DR/FR/UC/AC/NFR; ba chi tiết về thông tin địa điểm, giữ tạm và hoạt động Admin **không còn là điểm thiếu yêu cầu**. R01–R05 và S01/S02 đã xử lý ở mức tài liệu. Người dùng đã duyệt các yêu cầu mô tả rõ trong PRD 0.4.1 theo PRD-01, gồm Q1–Q3 và câu BR-11 đã sửa; phần còn mở tại mục 9.1/9.2 được loại trừ, không yêu cầu duyệt lại nghiệp vụ đã chốt.
-
-R06 **vẫn mở một phần**: TECH-05/DATA-03 đã chọn CD-L01/phạm vi-nhịp backup, không hỏi duyệt lại. Backend đã có build/test theo bằng chứng thực hành; còn tương thích toàn bộ, quota/chất lượng/giới hạn TTS, nền/vùng/nội dung-hồ sơ, Q2/Q3/tab/file-nghe tiếp, kiểm SSH/quyền Docker, lịch/độ trễ dọn, path/quyền/công cụ/checkpoint backup-log/RPO-RTO. TDD hiện hành/model/API/operations vẫn là dự thảo; không đóng R06 hoặc coi mọi AC đã được kiểm, không tự thêm ngưỡng.
-
-**Căn cứ:** xác nhận trực tiếp ngày 31/10/2026 của người dùng: “Tôi duyệt các yêu cầu đã được mô tả rõ trong PRD 0.4.1”. Đã đọc bản lưu trước ghi nhận: đúng 0.4.1, gồm Q1–Q3 và BR-11 hiện hành; không phát hiện khác biệt ảnh hưởng xác nhận này. Chi tiết phạm vi/loại trừ tại [decisions 3.3 — PRD-01](decisions.md#prd-approval). Không coi đây là duyệt mọi nội dung của file. Năm bài vi vẫn là bản nháp chờ cung cấp/rà soát; duyệt nội dung theo D09 và bằng chứng phần mềm đáp ứng tách biệt với duyệt yêu cầu.
-
-**Bước hiện tại:** TDD hiện hành/model 0.3/API 0.4/operations 0.3 cụ thể hóa DATA-05/DATA-04. [Thực hành nền dữ liệu/Bắt đầu](../03-ky-thuat/practice-01-start-session.md#practice-stop) đã có V1/mapping, API K11/K01/K02 và 64 test đạt trên MySQL tạm; đang bàn giao tài liệu/Git, không quay lại điểm dừng kiểm công cụ. Không start_generation; phần chưa kiểm như browser/runtime/restore vẫn giữ riêng. LIFE-P01 được chốt riêng không duyệt toàn TDD hoặc R06 còn mở theo gói.
-
 <a id="prd-proposals"></a>
-
-### 9.4. Truy vết Q1–Q3 đã được xác nhận
-
-**Người dùng xác nhận ngày 31/10/2026 toàn bộ Q1–Q3, gồm chi tiết và giới hạn của mục 9.4 bản 0.3.** Đã đối chiếu nội dung hiện tại, không có khác biệt thực chất. Q1–Q3 giữ mã để truy vết và được ghi nhận tại [decisions mục 5.8](decisions.md#dec-q), liên kết A01/A02/A03/A04. Xác nhận Q1–Q3 khi đó chỉ duyệt ba chi tiết; phạm vi PRD nay được xác nhận riêng theo PRD-01.
-
-| Mã / neo cũ được giữ | Nội dung nguồn đã chốt | Cụ thể hóa trong PRD |
-| --- | --- | --- |
-| <a id="proposal-q1"></a>Q1 | [Thông tin địa điểm](decisions.md#q1): tên 1–100, mã độc lập, trùng tên cảnh báo, lưu ẩn/bật hiện tách biệt, nội dung riêng | BR-11, DR-06, FR-A02, UC-A02, AC-A03/A04 và mục 8.2.2 |
-| <a id="proposal-q2"></a>Q2 | [Giữ tạm Admin](decisions.md#q2): đủ ba loại công việc/các tình huống, cùng tab/tài khoản, mốc gần nhất, vòng đời/giới hạn, không tự tác vụ | BR-18, DR-09, FR-A01–A04, UC-A01–A03, AC-A02/A05/A06/A07, NFR-03/04 và mục 8.2.1 |
-| <a id="proposal-q3"></a>Q3 | [Hoạt động Admin](decisions.md#q3): 30 phút theo hoạt động được ghi nhận, tính/không tính, không hồi sinh hoặc ghi bù khi mất mạng | BR-14, FR-A01, UC-A01, AC-A02, NFR-03/04; tác vụ nền A04.4 giữ nguyên |
-
-**Lịch sử:** Nguyên văn bộ đề xuất 0.3 đã chuyển, giữ nguyên tại [decisions mục 7.3](../99-luu-tru/decisions-history.md#dec-q-history). Những câu “chưa duyệt/cần xác nhận/sau xác nhận” và lời mời phản hồi trong bản gốc chỉ là lịch sử đã bị thay bằng xác nhận hiện hành; không còn hai bộ mô tả cùng áp dụng. Các neo proposal-q1/q2/q3/prd-proposals được giữ để liên kết cũ không gãy.
-
-BR-18/DR-09 được bổ sung để tách giữ tạm Admin khỏi phiên khách/bản khôi phục khách (DR-05) và khỏi bản nháp nghiệp vụ (DR-06); không đổi mã đã có hoặc thêm chức năng ngoài Q2. Các mã FR/UC/AC được giữ nguyên.
-
+<a id="proposal-q1"></a>
+<a id="proposal-q2"></a>
+<a id="proposal-q3"></a>
 <a id="prd-expiry-delivery"></a>
-
-### 9.5. TECH-04 — hướng full MP3 đã chọn, cơ chế/kiểm chứng trong TDD
-
-Hành vi và hướng full MP3 đã được TECH-04 xác nhận, không hỏi lại. [TDD hiện hành mục 9–10](../03-ky-thuat/TDD.md#tdd-full-audio) có cơ chế tab/Blob/vòng đời/late response và cách kiểm dự thảo; chưa kiểm luồng browser/full MP3 hoặc coi mọi phụ thuộc đã đáp ứng; kiểm chứng backend được ghi riêng tại [handoff](../01-tong-quan/handoff.md#next-step).
-
-| Phụ thuộc cần xử lý | FR/UC/AC bị ảnh hưởng / kết quả phải giữ |
-| --- | --- |
-| Xác định đúng bài đang phát tại mốc, giữ phạm vi pause/resume | FR-K05/K09, UC-K03/K05, AC-K18: đúng bài/ngôn ngữ/phiên; không lẫn bài đang tải/chưa phát/pause trước mốc hoặc cấp quyền tua/Nghe lại. Không tự đặt một hạn nghe tiếp mới. |
-| Đồng hồ/tab nền và kết quả tải muộn | FR-K02/K05/K09; AC-K08/K18: hết hạn cố định dù còn nghe, đóng ứng viên, chặn chọn mới; kết quả muộn không phát bài khác. Không hồi sinh sau tải lại/quay lại. |
-| Phục vụ file khi phiên đã hết hạn | FR-K05/FR-A09; AC-K18/AC-A19–A21: TECH-04 tải trọn MP3 cho tab trước phát, chỉ A1 đủ điều kiện expiry được pause/resume từ dữ liệu đó, không cần tải A1 từ server sau dọn. Không cache giả định/offline dài hạn hoặc khôi phục quyền sau reload. |
-| Thay/ẩn/xóa nội dung và dọn file A02.3 | BR-13/16, UC-A06: server giữ nguyên 8 giờ/điều kiện dọn; A1 đã tải đủ ở tab không bị thay bằng A2 hoặc cần server giữ file lâu hơn. Vòng đời Blob/OS discard cần kiểm, không tự gia hạn hoặc giữ file vô hạn. |
-| Chuyển form, tải lại, lỗi và mốc nghe | AC-K15/K16/K18/K20: rời nghe vào UI-K01 dừng bài cũ; tải lại không khôi phục ngoại lệ; lỗi không tự mở quyền retry từ đầu, không thêm offline/nghe nền. Cách báo lỗi/chứng minh phụ thuộc môi trường còn chọn riêng. |
-| Dữ liệu và thống kê | DR-04/AC-D01, AC-K21/K22: bắt đầu + 8 tiếng vẫn là mốc hết hạn/30 ngày; không mốc lúc phát hết, không phiên/lượt mới hoặc lịch sử từng thao tác audio. |
-
 <a id="prd-tech-inputs"></a>
-
-### 9.6. Đầu vào xác nhận, khảo sát và TDD ngày 03/11/2026
-
-- TECH-02 là căn cứ ràng buộc môn học: Backend Controller → Service → Repository với trách nhiệm rõ; có bằng chứng CI **và** CD thực thi, frontend đầy đủ. TDD/roadmap phải truy vết ràng buộc này; chỉ workflow/source hoặc CI xanh chưa là CD hoạt động.
-- Phạm vi đánh giá đã xác nhận: khách Android/iOS, Admin máy tính/laptop; khách desktop/Admin mobile chưa là bắt buộc. Hướng thu gọn UI Admin trước đây vẫn có thể thiết kế, không bị biến thành phạm vi nghiệm thu mới. IN-P02 đã chọn Android/Chrome, iPhone/Safari và Windows/Chrome; thiết bị/build thực tế phải ghi khi kiểm, không dùng mốc phiên bản minh họa làm AC bắt buộc.
-- TECH-01 giữ nền; TTS-01 chọn model/giọng, chưa duyệt nội dung. Đã khảo sát nguồn chính thức nhưng không thử tương thích/TTS/demo; [báo cáo đầu vào](../01-tong-quan/technical-inputs.md) ghi ngày/nguồn/giới hạn. DATA-01 nay chốt đúng phần file/log/backup/restore; lịch cụ thể vẫn dự kiến, chi tiết còn mở không duyệt theo gói. Giữ D08/A02.3/P01/UI-02.
-- TECH-03 đã chọn mốc phiên bản và nền tảng thật cần ghi build, WAV/MP3/Linux và thử ngrok; DATA-01 chốt phần chính sách bổ sung DR-08/mục 8.3.1. TECH-05/DATA-03 đã chọn CD riêng và phạm vi/nhịp backup. TDD hiện hành/model/API/operations có ERD/DTO/lifecycle/backup dự thảo, chưa duyệt toàn thiết kế hoặc thực hiện phần mềm. Giữ mã FR/UC/AC/NFR, không tự thêm ngưỡng.
-
-## 10. Thứ tự rà soát và bàn giao
-
-### 10.1. Các nhóm tham chiếu sau duyệt phạm vi
-
-Danh sách dưới giữ thứ tự đọc/truy vết cho thiết kế và bàn giao; không phải yêu cầu người dùng duyệt lại phạm vi PRD-01 đã chốt. Chỉ trình xác nhận phần còn mở hoặc thay đổi thực chất mới.
-
-1. **Mục 1–3:** mục tiêu, tác nhân, phạm vi/bộ chuẩn, quy tắc dữ liệu/đếm; kiểm tra PRD phản ánh đúng nguồn, không yêu cầu duyệt lại Business Flow.
-2. **Khách:** mục 4.1, UC-K01–K05 và AC-K01–K22; ưu tiên phân biệt chọn vùng/đổi ngôn ngữ, khôi phục/thử lại, hết hạn/kết thúc và lượt xem.
-3. **Admin — điểm/vùng/xóa:** FR-A02/A03/A08/A09, UC-A02/A06 và AC-A03–A06/A16–A21; đối chiếu lưu/áp dụng vùng, giữ lịch sử và file.
-4. **Admin — nội dung/audio:** FR-A04–A07/A12, UC-A03–A05 và AC-A07–A15/A25/A26; đối chiếu bản nháp, phiên bản, trạng thái tạo, hồ sơ duyệt/áp dụng.
-5. **Admin — truy cập/QR/thống kê và lưu dữ liệu:** các FR/UC/AC còn lại; kiểm tra 30 phút Admin, ngày Asia/Saigon, hạn lưu và quyền xem.
-6. **Phi chức năng và phần cần xác nhận:** mục 6/9; chỉ chốt tiêu chí định lượng hoặc thiết kế khi có căn cứ/môi trường, ghi trạng thái riêng cho phần PRD đã duyệt.
-
-### 10.2. Thông tin chuyển giao
-
-- Đọc **docs/02-nghiep-vu/business-flow.md** và **docs/02-nghiep-vu/decisions.md** trong repo chính: nghiệp vụ hai vai trò đã duyệt, gồm A02.6, BF-K01/BF-A01/BF-ALL01; các mục nhật ký là lịch sử, không áp lại phương án bị thay thế.
-- Đọc **docs/02-nghiep-vu/PRD.md**, phiên bản 0.8.8, kế thừa PRD-01/UI-01–UI-04 và bổ sung UI-05/P01 hiện hành: phạm vi yêu cầu đã rõ được duyệt theo PRD-01, gồm các BR/DR/23 FR/14 UC/50 AC/6 NFR đã rõ; phần còn mở tại mục 9 không được duyệt ngầm. Tham chiếu mã theo bảng mục 4; PRD quy định tiêu chí, kết quả kiểm thử được dẫn tại [handoff](../01-tong-quan/handoff.md#next-step).
-- Giữ nguyên phạm vi 5 điểm chuẩn × 4 ngôn ngữ, khả năng thêm điểm, các quy tắc nháp/áp dụng và database/file; Q1–Q3 đã chốt và cụ thể hóa; xử lý phần còn mở của O-01–O-06.
-- Đọc **docs/04-giao-dien/ui-design.md**, kiểm tra phiên bản/trạng thái thực tế: UI-01–UI-05 đã chốt đúng phạm vi; UI-A21 là box, công việc trước/trong TDD tại ui-design mục 12, không duyệt UI/nền/vùng/nội dung/TTS/kỹ thuật theo gói. Khi bàn giao nêu đúng phần đã chốt/mở, không giả định cùng lịch sử. Khảo sát TTS/TDD/roadmap chỉ khi được giao.
-- Đọc mục lục **docs/README.md** và dùng các đường dẫn mới ở trên. Khi tiếp nhận, đối chiếu đường dẫn, phiên bản, trạng thái và bằng chứng tại nguồn chính.
-
-## 11. Nhật ký PRD
-
-
-
-Nhật ký theo thời điểm được giữ nguyên trong [hồ sơ biên tập](../99-luu-tru/document-history.md#official-20261107-02-nghiep-vu-prd-journal). Phần hiện hành không thay thế kết quả hoặc căn cứ lịch sử.

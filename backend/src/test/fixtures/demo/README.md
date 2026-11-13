@@ -6,7 +6,7 @@
 
 Đặt `HUEQR_MAP_PREVIEW_RUNTIME` trỏ thư mục runtime riêng ngoài repo rồi chạy `node backend/src/test/fixtures/demo/refresh-preview.mjs`. Network riêng có alias `database` để tránh IP bridge đổi sau restart. App chỉ publish 127.0.0.1:18082; script chờ MySQL và API CSRF, ghi `osm-refresh.json` không chứa secret, cập nhật manifest. Giữ container trước để đối chiếu; nếu thay app đang chạy rồi lỗi, thử khởi động lại app trước và ghi kết quả. Không coi nhánh xử lý lỗi này là diễn tập rollback đã đạt.
 
-Lượt thực chạy đầu đã khôi phục đúng bộ preview và kiểm giữ 5 điểm/20 slot/5 văn bản. Lượt cập nhật ghim sau đó đã dùng tên app từ manifest và thay app thành công, giữ database/audio. Chưa diễn tập nhánh lỗi/khởi động lại app cũ. Chi tiết tại [hồ sơ OSM](../../../../../docs/06-kiem-thu/osm-map-20261111/README.md) và [hồ sơ ghim](../../../../../docs/06-kiem-thu/map-pin-20261111/README.md).
+Lượt thực chạy đầu đã khôi phục đúng bộ preview và kiểm giữ 5 điểm/20 slot/5 văn bản. Lượt cập nhật ghim sau đó đã dùng tên app từ manifest và thay app thành công, giữ database/audio. Chưa diễn tập nhánh lỗi/khởi động lại app cũ. Chi tiết tại [hồ sơ OSM](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/osm-map-20261111/README.md) và [hồ sơ ghim](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/map-pin-20261111/README.md).
 
 ## Khởi tạo bộ mới
 

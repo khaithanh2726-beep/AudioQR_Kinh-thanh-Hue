@@ -1,8 +1,0 @@
-﻿#24 1.911 ℹ tests 60
-#24 1.915 ℹ pass 60
-#24 1.915 ℹ fail 0
-#24 4.807 ✓ built in 1.36s
-#26 38.30 [INFO] Tests are skipped.
-#26 42.28 [INFO] BUILD SUCCESS
-#34 exporting manifest list sha256:978801878f79dfbbd0f9b9268de113153e94f66b0884ec3879932b9547fdd371 0.0s done
-#34 naming to docker.io/library/hueqr-local:20261111-map-preview-final done

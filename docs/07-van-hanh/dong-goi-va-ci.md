@@ -2,7 +2,7 @@
 
 Ứng dụng dùng Vue và Spring Boot chung origin. Docker build đóng gói hai trang khách/Admin vào static resources của backend. MySQL và kho audio nằm trên hai volume riêng.
 
-Mốc kiểm ngày 11/11: đã build ảnh Linux, kiểm FFmpeg/ffprobe với WAV thật và đường dẫn Unicode, chạy ứng dụng chung origin trên database/kho audio phục hồi riêng. [Bằng chứng đóng gói/restore](../06-kiem-thu/packaging-20261111/README.md) giữ phạm vi và danh tính ảnh. Mốc 12/11 đã kiểm [Compose restart/update/rollback và một lượt provider thật](../06-kiem-thu/release-readiness-20261112/README.md) trong môi trường mới chỉ mở loopback; chưa triển khai public hoặc nghiệm thu toàn bộ vận hành.
+Đã kiểm build ảnh Linux, FFmpeg/ffprobe, đường dẫn Unicode, ứng dụng chung origin và Compose restart/update/rollback trong môi trường tách biệt. HTTPS/QR Ngọ Môn vi đã có lượt chạy thử; không đồng nghĩa nâng bản V14, đủ 20 cặp hoặc nghiệm thu toàn bộ vận hành. Phạm vi và bằng chứng tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
 
 ## Cấu hình
 
@@ -34,23 +34,17 @@ Lượt ngày 11/11 đã đạt các kiểm media trên Linux nêu trên; giữ 
 
 Workflow `.github/workflows/ci.yml` chạy kiểm frontend và backend cho pull request, các nhánh task và khi kích hoạt thủ công. Frontend dùng lockfile, chạy test và build. Backend dùng Java 21, Maven Wrapper và Testcontainers MySQL, xuất báo cáo Surefire.
 
-Job Node kiểm thêm manifest backup bằng năm ca độc lập; không chạy Docker/provider hoặc database thật của môi trường phục vụ từ bộ kiểm này. [Lượt GitHub ngày 12/11](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43135057755) trên `56814d3` đạt 520/520 backend, 65/65 logic frontend, 5/5 manifest và build. Artifact gồm Surefire, JAR và frontend dist; chưa có bước CD hoặc build/publish ảnh release trong workflow.
+Job Node kiểm thêm manifest backup bằng năm ca độc lập. [CI PR #15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43406790912) đạt 530/530 backend, 71/71 logic frontend, 5/5 manifest và build. Bộ kiểm manifest V14 mở rộng đạt 8/8 cục bộ là lượt khác. Artifact gồm Surefire, JAR và frontend dist; workflow chưa có CD hoặc build/publish ảnh release. Không gọi provider hay dùng database phục vụ trong CI.
 
 Chạy workflow trên GitHub cần các file nguồn tương ứng đã được đưa lên nhánh. Lượt chạy cục bộ và lượt chạy GitHub được ghi nhận riêng trong hồ sơ kiểm thử.
 
-## Chuẩn bị ngrok trên Windows
+## HTTPS/ngrok khi diễn tập
 
-Cài và liên kết tài khoản theo [hướng dẫn Windows chính thức](https://ngrok.com/download/windows?tab=download), đối chiếu ngày 12/11/2026:
+Ngrok đã được liên kết trên máy diễn tập. Token giữ trong cấu hình riêng của tài khoản, không ghi vào hồ sơ. Khi đổi máy, cấu hình lại công cụ theo tài liệu nhà cung cấp trước khi mở đường phục vụ.
 
-```powershell
-winget install ngrok -s msstore
-ngrok version
-ngrok config add-authtoken '<authtoken-rieng>'
-```
+Chỉ mở agent tới đúng cổng ứng dụng đã rà theo [hướng dẫn tập dượt](tap-duot.md). URL HTTPS phải khớp HUEQR_PUBLIC_START_URL và QR; giữ agent/laptop hoạt động, kiểm lại từ điện thoại sau mỗi lần khởi động. Ngrok không phục vụ database hoặc môi trường restore chưa nghiệm thu.
 
-Thao tác đăng nhập/cấu hình token do người vận hành thực hiện trên máy, giữ ngoài Git và hồ sơ chia sẻ. Sau khi cài, mở lại terminal nếu PATH chưa cập nhật. Chưa chạy tunnel tới preview hoặc database thử chỉ vì đã cài công cụ.
 
-Khi đã xác nhận bản ứng dụng, dữ liệu và cổng phục vụ, mở một endpoint HTTP tới đúng cổng loopback theo [CLI quickstart](https://ngrok.com/docs/gateway/endpoints/agent-cli-quickstart), ví dụ `ngrok http 8080` nếu ứng dụng thực sự chạy tại 8080. Ghi URL HTTPS được cấp, đặt `HUEQR_PUBLIC_START_URL`, build lại và kiểm QR/cookie/CSRF qua URL đó. Ví dụ cổng không phải bằng chứng ứng dụng đang chạy hoặc URL đã được cấu hình. Giữ endpoint hoạt động trong lúc kiểm trên điện thoại; khi URL đổi phải cấu hình/build và phát QR lại.
 
 ## Bàn giao CD
 

@@ -1,11 +1,6 @@
-# TDD — Thiết kế kỹ thuật theo từng phần
+# Thiết kế kỹ thuật hệ thống (TDD)
 
-**Phiên bản nội dung:** 0.7; biên tập 11/11/2026. **Trạng thái:** dự thảo; các hướng đã xác nhận theo [TECH/DATA trong decisions](../02-nghiep-vu/decisions.md) không đồng nghĩa duyệt toàn TDD hoặc đã chạy tương thích.
-**Mục đích:** giải thích kiến trúc/module/ba lớp, API-quyền, tab/audio, môi trường và CI/CD; dẫn tới mô hình, DTO, vận hành và kiểm chứng chi tiết.
-**Trạng thái triển khai:** sản phẩm và bằng chứng xem [mục 16](#tdd-open); điểm bàn giao/Git có nguồn chính tại [handoff](../01-tong-quan/handoff.md#next-step). Phần thiết kế dưới đây giữ rõ các mục đã chốt và còn dự thảo.
-**Đọc cùng:** [PRD](../02-nghiep-vu/PRD.md), [đầu vào](../01-tong-quan/technical-inputs.md), [data-model](data-model.md), [API](api-transactions.md), [operations](operations-design.md), [DFD](dfd.md), [UI](../04-giao-dien/ui-design.md).
-
-**Mục lục:** [1. Đầu vào](#tdd-inputs) · [2. Tổng thể](#tdd-overview) · [3. Module](#tdd-modules) · [4. Ba lớp](#tdd-layers) · [5. API/quyền](#tdd-api-security) · [6. MySQL/tác vụ](#tdd-data-jobs) · [7. Mô hình dữ liệu](#tdd-erd) · [8. Phiên/lượt/xóa](#tdd-visits-data) · [9. Tab](#tdd-tab-session) · [10. Audio trong tab](#tdd-full-audio) · [11. WAV/MP3/file](#tdd-audio) · [12. Backup/restore](#tdd-local-backup) · [13. Môi trường](#tdd-runtime) · [14. CI/CD](#tdd-cicd) · [15. Truy vết](#tdd-trace) · [16. Điểm mở/kiểm chứng](#tdd-open) · [17. Hướng đọc/nhật ký](#tdd-guide)
+Mô tả kiến trúc, phân lớp, giao tiếp và các cơ chế kỹ thuật của hệ thống Vue + Spring Boot + MySQL/Flyway. Các mục yêu cầu thiết kế và phần đã được kiểm chứng được phân biệt qua báo cáo hiện trạng, không dùng lịch sử triển khai thay cho đặc tả.
 
 <a id="tdd-inputs"></a>
 
@@ -13,16 +8,16 @@
 
 - Một repo, frontend Vue 3/JavaScript/CSS, Vite/npm/Node chỉ cho công cụ; Backend một ứng dụng Java 21/Spring Boot/Maven Wrapper chia module nghiệp vụ. MySQL/JPA/Flyway; Spring Security session/cookie, OpenAPI, Spring Boot tests/Testcontainers, Compose và GitHub Actions.
 - Bộ phiên bản **đã được chọn làm mốc** theo TECH-03/IN-P01 và bảng ở technical-inputs mục 4. Chưa kiểm khả dụng/resolve/build/tương thích; không tự đổi patch/BOM khi gặp lỗi, phải nêu bằng chứng và ảnh hưởng.
-- Bản đồ Leaflet/Geoman Free: mỗi điểm một đa giác kín đơn giản, Admin vẽ/sửa/xem trước/Lưu bản sửa/Áp dụng; chưa duyệt nền/ranh giới. Không GPS/vùng tròn/Haversine.
+- Bản đồ Leaflet/OSM, mỗi điểm một đa giác kín đơn giản; Admin vẽ/sửa/xem trước/Lưu/Áp dụng. Mã sửa vùng riêng trên Leaflet; Geoman là lựa chọn khảo sát, không là dependency hiện hành. Không GPS/vùng tròn/Haversine.
 - Khách Android/Chrome và iPhone/Safari; Admin Windows/Chrome, máy tính/laptop với chuột/bàn phím. Đã có hai loại điện thoại, chưa ghi model/OS/build thật. Không dùng mốc minh họa Chrome 142/iOS 18.6 trước đây thành yêu cầu; không hứa mọi thiết bị.
 - Gemini gemini-3.8-flash-tts/Charon; WAV nguồn còn tham chiếu, MP3 phục vụ khách, FFmpeg/ffprobe Linux container. Nghe trọn/duyệt từng bài theo D09; kiểm codec/duration không duyệt thay.
-- Chọn **thử ngrok Free**, chấp nhận trang trung gian; chưa URL thật, chưa đăng ký/chạy/kiểm khác mạng. Đường CD riêng nay đã chọn TECH-05: Actions → Tailscale riêng → OpenSSH Windows → PowerShell; ngrok không làm deploy.
+- HTTPS diễn tập qua ngrok đã được kiểm với bài Ngọ Môn vi; trạng thái live cần kiểm tại thời điểm chạy. CD riêng theo TECH-05: Actions → Tailscale riêng → OpenSSH Windows → PowerShell, chưa nghiệm thu.
 - Các quy tắc 8 giờ khách, 30 phút Admin/Q2/Q3, 30 ngày phiên/lượt, 8 giờ file từng áp dụng và DATA-01 giữ đúng từng lớp. Một QR chung, 20 văn bản +20 audio của bộ chuẩn năm điểm; không giới hạn số điểm hệ thống.
-- Lượt 2 bổ sung ERD logic/định danh/ràng buộc/vòng đời xóa, tab/audio/full-download và backup. Chưa có schema vật lý/DDL/migrations hoặc kế hoạch test/cấu hình CI/CD. Lượt 3 có hợp đồng API/giao dịch; lượt 4 đã hợp nhất mô hình tại data-model, DTO mục 10 API và state/vòng đời/backup/ma trận kiểm tại operations-design. Các file là phần của một TDD, không nguồn nghiệp vụ khác; chưa JSON schema/OpenAPI thực thi/code.
+- TDD gồm kiến trúc, mô hình dữ liệu, API/giao dịch, DFD và thiết kế vận hành. DDL V1–V14 và mã API đã có; tài liệu thiết kế không thay bằng chứng nghiệm thu toàn bộ tiêu chí.
 
 <a id="tdd-overview"></a>
 
-## 2. Kiến trúc tổng thể — hướng đóng gói đã xác nhận, chi tiết còn dự thảo
+## 2. Kiến trúc tổng thể
 
 Frontend là nơi khách/Admin thao tác. Backend quyết định quyền, phiên, bản nội dung được dùng và dữ liệu. MySQL giữ dữ liệu có cấu trúc; audio ở kho file riêng có bản ghi tham chiếu. Cả hai giao diện dùng cùng một Backend, không tách microservices.
 
@@ -56,13 +51,13 @@ flowchart TD
 
 Sơ đồ thể hiện trách nhiệm logic, không tạo thêm dịch vụ mạng cho từng ô. Worker thao tác dữ liệu qua Service/Repository tương ứng, không bỏ qua quy tắc do vẽ mũi tên DB. Gemini chỉ được gọi từ Backend, key không vào trình duyệt. Ngrok không là lớp đăng nhập Admin và không lưu MySQL/audio thay laptop.
 
-**Hướng đóng gói đã xác nhận TECH-04:** lúc demo, Vue được build rồi phục vụ cùng ứng dụng Spring Boot qua một cổng HTTP nội bộ; ngrok đưa cổng đó ra HTTPS. Nhờ vậy cookie và API cùng origin, chưa cần chọn thêm reverse proxy. DEV có thể dùng Vite cùng Backend riêng, proxy API để tránh cấu hình chéo không cần thiết. Hướng phục vụ demo đã chốt; chi tiết DEV/asset path/cache/proxy/cổng vẫn dự thảo, chưa cấu hình/kiểm tương thích.
+**Đóng gói theo TECH-04:** Vue build vào Spring Boot, web/API cùng origin; ngrok đưa cổng loopback ra HTTPS. Vite phục vụ phát triển có proxy API riêng. Cấu hình thực tại deploy và hướng dẫn đóng gói; không dùng cổng preview làm môi trường phục vụ.
 
 <a id="tdd-modules"></a>
 
 ## 3. Frontend/Backend và module nghiệp vụ
 
-Định hướng thư mục frontend/backend đã chốt. Ngày 05/11/2026, người dùng điều chỉnh lựa chọn package Backend sang chia theo lớp trước, các file của từng thực thể/nghiệp vụ đặt trong package lớp tương ứng; thay lựa chọn trước đó chia theo nghiệp vụ rồi theo trách nhiệm. Cấu trúc thực tế và phần dự kiến tại [mục 3.1](#tdd-packages). Bảng dưới mô tả các nhóm trách nhiệm logic của toàn hệ thống, không ánh xạ mỗi nhóm thành một package bao ngoài.
+Mã nguồn tách frontend/backend; Backend tổ chức package theo lớp, mỗi thực thể/nghiệp vụ nằm trong package lớp tương ứng. [Mục 3.1](#tdd-packages) nêu cấu trúc thực; bảng dưới là nhóm trách nhiệm logic, không là package bao ngoài.
 
 | Module/nhóm | Trách nhiệm | Ranh giới |
 | --- | --- | --- |
@@ -84,7 +79,7 @@ Mỗi nhóm trách nhiệm Backend có Controller/Service/Repository theo nhu c�
 
 ### 3.1. Package chia theo lớp trước — lựa chọn hiện hành
 
-**Căn cứ:** người dùng điều chỉnh lựa chọn ngày 05/11/2026; thay cấu trúc theo nghiệp vụ rồi theo trách nhiệm đã áp dụng ở lượt trước. Package gốc giữ `vn.hueqr.backend`, BackendApplication ở gốc. File của các thực thể/nghiệp vụ nằm trong package lớp tương ứng, không tạo package guestsession/place bao ngoài. Không thay nghiệp vụ, mapping hoặc mô hình dữ liệu.
+Package gốc là `vn.hueqr.backend`, BackendApplication ở gốc. Các thực thể/nghiệp vụ đặt trong package controller/service/repository/entity/dto tương ứng, không tạo package guestsession/place bao ngoài.
 
 **Mã nguồn hiện có**, tính từ `backend/src/main/java/vn/hueqr/backend`:
 
@@ -191,7 +186,7 @@ service/
 
 Luồng trách nhiệm vẫn **Controller → Service → Repository**; Entity và DTO là thành phần hỗ trợ, không phải lớp thứ tư/thứ năm của luồng này. Cây package giúp tìm file, không tự chứng minh đã cài đủ ba lớp.
 
-**Kiểm chứng:** bộ 7 sau sắp xếp giữ tại [mục A.10](practice-01-start-session.md#practice-mapping-test-result); về sau các ca đó vẫn đạt trong [64 test clean test](practice-01-start-session.md#practice-start-api-result) trong lần hồi quy đã ghi nhận. Test support public dùng được qua package; DynamicPropertyRegistrar chỉ cấp fixture cho context import nó. V1/mapping/test nền giữ nguyên. Chưa kiểm lại HTTP test-run/đóng gói JAR hoặc áp dụng cấu hình runtime thật. Lệnh hồi quy khi có thay đổi là `.\mvnw.cmd clean test` tại backend, không yêu cầu chạy lại chỉ để lặp bằng chứng.
+**Kiểm chứng:** bộ 7 sau sắp xếp giữ tại [mục A.10](TDD.md#tdd-layers); về sau các ca đó vẫn đạt trong [64 test clean test](TDD.md#tdd-layers) trong lần hồi quy đã ghi nhận. Test support public dùng được qua package; DynamicPropertyRegistrar chỉ cấp fixture cho context import nó. V1/mapping/test nền giữ nguyên. Chưa kiểm lại HTTP test-run/đóng gói JAR hoặc áp dụng cấu hình runtime thật. Lệnh hồi quy khi có thay đổi là `.\mvnw.cmd clean test` tại backend, không yêu cầu chạy lại chỉ để lặp bằng chứng.
 
 <a id="tdd-layers"></a>
 
@@ -233,20 +228,20 @@ sequenceDiagram
     V-->>A: Hiển thị cặp thực tế / cho kiểm tra nếu chưa rõ
 ```
 
-Repository không tự có quyền “duyệt”. Việc người dùng duyệt ở hồ sơ, Admin đối chiếu/ghi tham chiếu, Service thực thi điều kiện là ba việc khác nhau. Ví dụ này là thiết kế dự thảo dựa FR-A07/UC-A05/AC-A14–A15/UI-04, không chứng minh chức năng đã chạy.
+Repository không có quyền duyệt. Hồ sơ bên ngoài, Admin đối chiếu/ghi tham chiếu và Service thực thi điều kiện là ba trách nhiệm riêng. Ví dụ minh họa dựa FR-A07/UC-A05/AC-A14–A15/UI-04; bằng chứng kiểm phần mềm được ghi riêng.
 
 <a id="tdd-api-security"></a>
 
 ## 5. Giao tiếp API và ranh giới xác thực
 
-**Thiết kế dự thảo hiện hành:** HTTP JSON/byte media đúng Content-Type, cùng HTTPS origin demo, DTO thay entity. Hợp đồng canonical tại [API/giao dịch 0.4](api-transactions.md): /api/v1/guest/…, /api/v1/admin/…, /api/v1/auth/…, quyền/precondition/key/ACK/grant/TX và lỗi. Path minh họa cũ không còn là hợp đồng thứ hai; chưa có endpoint đã triển khai.
+**Giao tiếp hiện hành:** HTTP JSON/media đúng Content-Type, DTO thay entity, cùng origin khi đóng gói. [API/giao dịch](api-transactions.md) là nguồn hợp đồng /api/v1/guest/…, /api/v1/admin/…, /api/v1/auth/…, precondition/key/ACK/grant/TX và lỗi.
 
 | Ngữ cảnh | Ai được làm | Kiểm tra bắt buộc từ nghiệp vụ |
 | --- | --- | --- |
 | Truy cập trang bắt đầu | Khách chưa đăng nhập Admin; mở QR/URL, đi qua trang ngrok nếu xuất hiện | Chưa tạo phiên chỉ vì mở trang/QR. Không thu quyền vị trí. |
-| Phiên khách | Định danh/credential riêng theo tab đề xuất ở client, Backend tra phiên; không tên, không lấy HttpSession Admin làm phiên khách | Tạo thành công mới có phiên; 8 giờ cố định và quyền theo P01; payload sửa giờ không có quyền gia hạn. Cookie dùng chung trình duyệt không đủ phân biệt tab, cần thiết kế riêng phần tab/nhân bản ở lượt sau. Không tự chọn JWT. |
+| Phiên khách | Định danh/credential riêng theo tab đề xuất ở client, Backend tra phiên; không tên, không lấy HttpSession Admin làm phiên khách | Tạo thành công mới có phiên; 8 giờ cố định và quyền theo P01; payload sửa giờ không có quyền gia hạn. Cookie dùng chung trình duyệt không đủ phân biệt tab; tab context và khôi phục theo mục 9. Không tự chọn JWT. |
 | Quản trị | Spring Security với tài khoản cấp trước, password hash, cookie session và CSRF | Mọi API Admin kiểm quyền phía server; chặn chỉ ở menu chưa đủ. Frontend khách không có quyền gọi CRUD/hồ sơ/job/thống kê. |
-| Media | Service kiểm đúng bản/cặp và ngữ cảnh phục vụ; WAV/nháp chỉ Admin có quyền | Không dùng URL file đoán được để vượt duyệt/phiên. Cách Range/tải đệm/grant cho nghe tiếp P01 chưa chốt. |
+| Media | Service kiểm đúng bản/cặp và ngữ cảnh phục vụ; WAV/nháp chỉ Admin có quyền | Không dùng URL file đoán được để vượt duyệt/phiên. Khách dùng grant và tải trọn MP3 theo mục 10; không dựa vào Range/cache để chứng minh nghe tiếp P01. |
 | Tác vụ nền | Backend xử lý job đã tiếp nhận độc lập phiên Admin | Không cần trình duyệt giữ mở hoặc giả hoạt động Admin; không tự áp dụng kết quả. |
 
 Session-cookie Admin là lựa chọn đã chốt, CSRF là biện pháp thiết kế cần giữ khi dùng cookie; không tắt CSRF để nối Vue cho nhanh. Cookie bảo vệ theo HTTPS/HttpOnly/SameSite, cách làm cụ thể/proxy headers được kiểm khi có môi trường. [Spring Security session](https://docs.spring.io/spring-security/reference/servlet/authentication/session-management.html), [CSRF cho ứng dụng Servlet](https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html).
@@ -259,13 +254,13 @@ Guest/Admin có thông báo/cách phục hồi khác nhau theo nguồn; Admin h�
 
 ## 6. Vai trò MySQL, giao dịch và tác vụ TTS
 
-MySQL là nguồn dữ liệu nghiệp vụ và trạng thái bền cho địa điểm/mã, vùng nháp-hiện hành, bản văn/ngôn ngữ/hồ sơ/cặp, metadata file, yêu cầu tạo, phiên/lượt và nhận biết điểm đã xóa. ERD/trường logic tại mục 7–8. V1–V9 đã có migration/mapping cho phiên, địa điểm/vùng, tài khoản/window/receipt, văn bản, job, file, lượt và audio/cặp; script riêng khởi tạo năm điểm ẩn/20 ngăn trống đã được kiểm. Opening/grant/claims và các bảng vận hành còn tiếp tục theo phụ thuộc; schema không thay quyền áp dụng hoặc nội dung được duyệt. Dữ liệu lớn WAV/MP3 để kho file. [Phạm vi dữ liệu mới nhất và giới hạn](data-model.md#model-audio-pair-result)
+MySQL là nguồn dữ liệu nghiệp vụ và trạng thái bền; WAV/MP3 nằm ở kho file. Migrations V1–V14 quản lý phiên, địa điểm/vùng, tài khoản/window/receipt, nội dung/cặp, TTS/file, opening/grant/claim, lifecycle và gate. [Mô hình dữ liệu](data-model.md) mô tả quan hệ và ràng buộc; schema không tự cấp quyền áp dụng hoặc duyệt nội dung.
 
 - Flyway quản lý thay đổi schema khi triển khai được giao; JPA không tự đổi schema trái migrations. MySQL/Flyway/Testcontainers đúng bộ phiên bản phải kiểm thật trước dùng.
 - Áp dụng cả cặp là một thay đổi DB nhất quán. Xóa điểm do ứng dụng xử lý dữ liệu riêng trước trong cùng giao dịch; FK chặn xóa trực tiếp khi còn tham chiếu ở quan hệ đã yêu cầu, không ON DELETE CASCADE ở đó. Giữ lịch sử A02.2 và hồ sơ tài liệu ngoài hệ thống.
 - File/API Gemini không thuộc giao dịch DB. Sau commit mới dọn file đúng điều kiện; dọn lỗi có chờ/thử lại, không báo xóa hết file.
 - Đề xuất job bền trong MySQL, worker ở cùng Backend. Service nhận yêu cầu → ghi job/snapshot đúng bản/ngôn ngữ/model/voice → sau commit mới worker gọi Gemini. Không giữ giao dịch chờ TTS. Không cần Redis/Kafka hoặc dịch vụ worker riêng.
-- “Đã tiếp nhận” khác “đã tạo xong”. Đóng trang/hết phiên Admin không hủy job đã nhận. Timeout/chưa rõ kết quả phải kiểm job cũ, không gửi lại mù; 429 không tự chứng minh hết tiền. Retry là chủ động theo A04.2; chi tiết phục hồi job sau restart và reconcile provider chưa thiết kế, không hứa exactly-once tới API ngoài.
+- “Đã tiếp nhận” khác “đã tạo xong”. Đóng trang/hết phiên Admin không hủy job đã nhận. Timeout/chưa rõ kết quả phải kiểm job cũ, không gửi lại mù; 429 không tự chứng minh hết tiền. Retry là chủ động theo A04.2; phục hồi job sau restart phải đối chiếu owner và bằng chứng local, không suy kết quả provider khi thiếu căn cứ, không hứa exactly-once tới API ngoài.
 - Văn bản đổi không tự nhận audio của bản trước. Kết quả về sau xóa điểm chỉ chuyển vòng đời file an toàn, không tái tạo điểm. Tạo thành công chưa duyệt/áp dụng.
 
 <a id="tdd-erd"></a>
@@ -281,7 +276,7 @@ Mô hình giữ id độc lập tên, SLOT×4 tiếng, TEXT/AUDIO/PAIR đúng b�
 - **Receipt/window:** kết quả commit của đúng lệnh Admin, có cửa sổ nhận key; dọn kết quả không làm key cũ được thực hiện lại.
 - **LIFE-P01/DATA-05:** vé ký 24 giờ gắn requestId/quyền tab/epoch, ledger trong session + UNIQUE/TX chống lặp. Có ledger trả gốc sau kiểm đầy đủ kể cả vé hết hạn; không ledger chỉ insert vé còn hạn. Không start_generation/purge gate/context hoặc đồng hồ khách.
 
-UUID/kiểu thời gian/UK-FK/index đề xuất cụ thể ở mô hình; chưa DDL/MySQL/Flyway thực thi. [Mô hình TDD 0.3 nguyên văn](../99-luu-tru/data-model-history.md) đã chuyển sang lịch sử, không bản hiện hành thứ hai.
+UUID/kiểu thời gian/UK-FK/index đề xuất cụ thể ở mô hình; chưa DDL/MySQL/Flyway thực thi. [Mô hình TDD 0.3 nguyên văn](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/data-model-history.md) đã chuyển sang lịch sử, không bản hiện hành thứ hai.
 
 <a id="tdd-visits-data"></a>
 
@@ -297,7 +292,7 @@ State job QUEUED→DISPATCHING→RESULT_STAGED→CONVERTING→SUCCEEDED và nhá
 
 <a id="tdd-tab-session"></a>
 
-## 9. Gắn phiên với tab và kiểm quyền — giải pháp dự thảo theo TECH-04
+## 9. Phiên theo tab và kiểm quyền
 
 ### 9.1. Danh tính và dữ liệu giữ ở đâu
 
@@ -326,7 +321,7 @@ Web Locks không xác thực thay server, không ngăn một client đã bị l�
 
 ## 10. Audio tải trọn trong tab, hết hạn và vòng đời bộ nhớ
 
-### 10.1. Trình tự đề xuất
+### 10.1. Trình tự tải và phát audio
 
 1. Chọn vùng còn quyền: dừng audio cũ đúng D07/P06, tăng selection generation; hiển thị văn bản đúng bản/tiếng và trạng thái đang tải audio. Văn bản thành công có thể tính lượt, không chờ audio.
 2. Backend kiểm credential/phiên/cặp được phép, trả MP3 đúng revision và metadata nhận biết (id/checksum/size nếu có), không WAV nháp. File còn trên server không là quyền truy cập tự do.
@@ -363,7 +358,7 @@ Server giữ D08/8 giờ và lịch dọn file như đã chốt. Khi A1 đã t�
 
 **Đánh đổi:** chờ tải hết làm bắt đầu nghe chậm hơn streaming; cần dữ liệu mạng cho cả bài dù nghe ít; một MP3/đôi lúc bytes tải đang chuyển làm tăng bộ nhớ. Không đặt ngưỡng MB/giây chưa chốt; đề xuất chỉ giữ bài hiện tại + request mới cần thiết, không prefetch đủ 20 bài. Không hứa RAM luôn ở một mức hoặc browser luôn giữ tab nền.
 
-### 10.4. Cách kiểm chứng sau này — chưa chạy, chưa toàn bộ kế hoạch test
+### 10.4. Các trường hợp kiểm chứng
 
 | Tình huống cần kiểm trên ENV-KA/ENV-KI với model/OS/build thật | Quan sát cần có |
 | --- | --- |
@@ -411,7 +406,7 @@ Kiểm file không rỗng/đúng codec/duration giúp bắt lỗi kỹ thuật; 
 
 ## 12. Backup cục bộ — BKP-P02 stop phục vụ và REC-P01 đã chốt
 
-DATA-01–04 giữ DB + WAV/MP3 đang tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema, cục bộ tách live, mỗi bản bảy ngày. **Ngày 04/11 người dùng chọn tạm ngừng phục vụ ngoài demo**, không đặt thời lượng khi chưa đo. BKP-P01 online + MySQL tạm lập catalog không còn mặc định; dấu vết ở [lịch sử](../99-luu-tru/data-model-history.md).
+DATA-01–04 giữ DB + WAV/MP3 đang tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema, cục bộ tách live, mỗi bản bảy ngày. **Ngày 04/11 người dùng chọn tạm ngừng phục vụ ngoài demo**, không đặt thời lượng khi chưa đo. BKP-P01 online + MySQL tạm lập catalog không còn mặc định; dấu vết ở [lịch sử](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/data-model-history.md).
 
 Quy trình [operations 3](operations-design.md#ops-backup): đóng nhận việc/dispatch/dọn mới → drain request/TX/TTS/ghi file có kiểm soát → dừng app/worker/cleaner, giữ MySQL → xác minh không writer → dump/catalog từ chính DB đứng yên → copy/hash/manifest → COMPLETE → kiểm housekeeping/quyền/mốc gốc và mở lại. Không thêm DB tạm mỗi backup; restore thử vẫn riêng. Chưa chứng minh quiescent thì hoãn/lỗi, không có bản COMPLETE giả.
 
@@ -427,7 +422,7 @@ Ví dụ B tạo lúc S kết thúc 29 ngày, hai ngày sau B còn hạn nhưng 
 
 Laptop vẫn chạy Windows/VS Code/PowerShell. Docker Desktop dùng nền WSL 2 để chạy Linux containers; không có nghĩa phải cài lại máy thành Linux. FFmpeg/ffprobe chạy trong môi trường container, không kế thừa pipeline Windows demo hoặc yêu cầu hai bản FFmpeg trên Windows/Linux. [Docker WSL](https://docs.docker.com/desktop/features/wsl/).
 
-**Đề xuất runtime Compose:** một container ứng dụng Spring Boot kèm Vue đã build và công cụ audio, một container MySQL; volume DB và audio tách vòng đời image. Build frontend dùng Node, runtime nghiệp vụ vẫn Java. Ngrok agent đề xuất chạy phía Windows và trỏ cổng ứng dụng nội bộ; chưa chọn cách cài/service/cổng. Volume tồn tại qua thay container không tự là backup. DATA-02 không đặt mục tiêu cứu mất/hỏng laptop; backup vẫn phải tách dữ liệu chạy/bảo vệ/dọn/restore đúng quy tắc. [Docker volumes](https://docs.docker.com/engine/storage/volumes/).
+**Runtime Compose:** một container Spring Boot chứa Vue và công cụ audio, một container MySQL; volume DB/audio tách image. Ngrok chạy phía Windows; cổng diễn tập theo hướng dẫn vận hành. Volume qua thay container không tự là backup. DATA-02 không đặt mục tiêu cứu mất/hỏng laptop; bản sao phải tách dữ liệu chạy và phục hồi đúng hạn.
 
 | Đường truy cập | Mục đích / ranh giới |
 | --- | --- |
@@ -436,15 +431,15 @@ Laptop vẫn chạy Windows/VS Code/PowerShell. Docker Desktop dùng nền WSL 2
 | Laptop localhost → app | Hỗ trợ phát triển/chẩn đoán; chạy được ở đây chưa chứng minh khác mạng hoặc QR đạt. |
 | CI/CD → đường quản trị riêng | Không lấy URL web ngrok làm SSH/deploy endpoint. Không thêm API công khai nhận lệnh deploy. |
 
-**Đã kiểm nguồn chính thức 03/11:** ngrok Free cấp một dev domain gắn tài khoản, không đổi chỉ vì restart agent; hậu tố/URL thật phải ghi khi thực hiện, không sinh QR từ ví dụ. Trang trung gian HTML được người dùng chấp nhận để thử; cần kiểm Safari/Chrome/QR lần đầu và lần sau, không lách bằng cách yêu cầu khách cài extension. [Dev domain](https://ngrok.com/blog/free-static-domains-ngrok-users), [Free plan](https://ngrok.com/docs/pricing-limits/free-plan-limits).
+**HTTPS/ngrok:** QR lấy từ URL thật đang được cấu hình; không dùng URL ví dụ. Giữ agent hoạt động, kiểm trang trung gian và hành trình quét trên thiết bị. Thay URL phải build/cấu hình lại và phát QR lại.
 
-Nguồn [Pricing/limits](https://ngrok.com/docs/pricing-limits) công bố Free 1 GB outbound và 20.000 HTTP request/tháng. Đây là trần tài khoản, không 20.000 khách; MP3/ảnh/assets/Range và API cùng tiêu hao. Cần đo file/lượt thật và xem quota còn lại trước buổi chấm, không hứa đủ theo phép tính minh họa. Việc mua domain/hosting/gói trả phí hoặc tạo tài khoản được kiểm soát riêng, không thuộc phê duyệt thiết kế này.
+Hạn mức ngrok là điều kiện tài khoản tại thời điểm chạy, không là hằng số nghiệp vụ. Đo request/dung lượng thực, tính cả web/API/audio, kiểm quota trước buổi chấm; không tự bật gói trả phí.
 
-Khi kiểm môi trường mới, đối chiếu Windows build/WSL/ảo hóa/Docker engine/quyền/dung lượng, image/BOM/Compose và ghi kết quả thực tế. Boot/MySQL/Flyway/Testcontainers đã có bằng chứng trong các mốc backend. Các cổng còn mở gồm frontend build, Geoman draw-edit-preview, TTS→MP3, ngrok HTTPS/QR khác mạng, CD và restore. Phiên bản không có hoặc không tương thích cần báo bằng chứng, ảnh hưởng và đề xuất điều chỉnh.
+Khi đổi môi trường/ảnh, kiểm Windows/WSL/Docker/quyền/dung lượng, công cụ media và đường HTTPS. Đã có bằng chứng build, API/media, QR và báo cáo Android/iPhone chạy được; còn ma trận thiết bị đầy đủ, D09/bộ20cặp, CD và nghiệm thu vận hành. Xem báo cáo kiểm thử để biết phạm vi từng lượt.
 
 <a id="tdd-cicd"></a>
 
-## 14. CI/CD — CD-L01 đã chọn, chi tiết/kiểm chứng còn thực hiện
+## 14. CI và phương án triển khai
 
 **CI** tự build và kiểm tra thay đổi. **CD** đưa đúng bản CI đã đạt vào môi trường chạy bằng quy trình tự động có bằng chứng; việc mở ngrok, copy file thủ công hoặc thấy CI xanh chưa chứng minh CD.
 
@@ -493,53 +488,11 @@ Các nhóm mã bao phủ kiến trúc, không thay bảng truy vết đầy đ�
 
 <a id="tdd-open"></a>
 
-## 16. Phần đã chốt, thiết kế tiếp và cổng kiểm chứng
+## 16. Trạng thái triển khai và giới hạn
 
-**Bằng chứng hiện tại.** Backend V1–V10, nội dung khách/grant/ACK/tải MP3/READ claim và nền Admin/worker có [bằng chứng chính tại API 11.9](api-transactions.md#guest-content-test-result). Nguồn frontend Vue khách tại [frontend/README](../../frontend/README.md) chưa resolve/build hoặc kiểm browser; 13 ca Playback V8 không thay kiểm DOM/Web Locks/codec. Các mốc 64–366 test giữ đúng thời điểm. Không suy môi trường phục vụ, toàn TDD hoặc nghiệm thu hệ thống đã đạt.
+Mã nguồn gồm Vue Khách/Admin, API Spring Boot ba lớp, migrations V1–V14, hàng đợi TTS, chuyển WAV→MP3 và gate bảo trì. CI đã thực thi trên GitHub; CD qua Tailscale/OpenSSH chưa được nghiệm thu. Ngọ Môn vi đã dùng tập dượt HTTPS; bản phục vụ đang ở schema V13, còn nguồn V14 được kiểm riêng. Bộ 20 cặp, các ca thiết bị/lỗi đầy đủ và vận hành cuối còn thiếu theo hồ sơ bàn giao.
 
-Không hỏi lại DATA-05/DATA-04/TECH-05/DATA-03 hoặc hành vi đã duyệt. Các chi tiết kỹ thuật là dự thảo để triển khai theo từng bước.
-
-| Loại | Hiện hành | Việc còn lại |
-| --- | --- | --- |
-| LIFE-P01/DATA-05 | Vé ký 24 giờ từ cấp, lookup đã tạo sau signature/quyền/epoch/fingerprint dù vé hết hạn; không có ledger chỉ tạo vé còn hạn. Bỏ generation/context/10 phút | Backend ticket/crypto/DTO/TX đã có kiểm chứng; còn owner/browser, runtime bền vững, D08 và restore. Ma trận V-START01.01–10 ghi phạm vi từng ca |
-| LIFE-P02/P03 | Window Admin 24 giờ từ cấp không gia hạn; metadata job cũ bảy ngày từ terminal rõ và đủ điều kiện, active/unknown/current refs giữ | Window/mapping/security/receipt đã có kiểm chứng; dọn metadata và vòng đời job còn cần triển khai, không coi hạn job là xóa text/audio |
-| REC-P01 | Restore thật thu hồi quyền/window cũ, giữ timestamp/lịch sử; không backup/restart thường | Epoch/runtime/đối chiếu và phép kiểm restore |
-| BKP-P02 | Stop phục vụ/ghi/dọn có kiểm soát ngoài demo, MySQL còn chạy; không catalog DB tạm mỗi lần | Quy trình drain/TTS/checkpoint/backup/mở lại, đo downtime/disk; chưa checkpoint không COMPLETE |
-| Cổng thực tế | V-TAB owner/reload, V-AUDIO Blob/expiry/freeze, V-TX/FK/lock/replay, V-TTS/backup/restore/SSH account Docker | Người dùng thực hiện sau; không suy từ ERD/tài liệu thành đã đạt |
-| Nội dung/vùng/đánh giá | Các phần nguồn/hồ sơ/ranh giới/quota/ngưỡng đã ghi mở | Tiếp tục đúng phạm vi, không tự thêm điều kiện nghiệm thu hoặc đóng R06 |
-
-LIFE-P01 giữ vé 24 giờ ngắn hơn thời điểm purge ledger D08, phương án generation tiếp tục được loại khỏi thiết kế theo DATA-05. K11/K01/K02/K04, nền xác thực Admin, window/receipt, tạo điểm ẩn và đọc/sửa tên đã kiểm hồi quy trong bộ 168 ca. Cấu hình key/epoch thật, restart/restore/D08/browser và dọn grant/metadata, owner/Blob/clock/browser còn cần triển khai hoặc kiểm chứng. Tiến độ, quyền test/Git và điểm dừng theo [handoff](../01-tong-quan/handoff.md#guidance-protocol), bằng chứng mới tại [API](api-transactions.md#guest-content-test-result). Các ô T03/T05 giữ điều kiện nghiệm thu toàn ô.
-
+Phạm vi triển khai và nghiệm thu được tổng hợp tại [hiện trạng bàn giao](../01-tong-quan/handoff.md); kết quả thực thi tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
 
 <a id="tdd-lifecycle-cleanup-result"></a>
-
-### 16.1. Triển khai vòng đời ngày 10/11/2026
-
-A11 và cơ chế dọn vòng đời tiếp tục theo Controller → Service → Repository. Receipt/giao dịch xóa địa điểm tách khỏi unlink; scope runtime giữ an toàn công việc đọc/ghi file bên ngoài TX. Cleaner mặc định tắt và không dùng TTL để kết luận tiến trình chết. Không thêm tầng trung gian hoặc đổi kiến trúc Vue + Spring Boot. Nguồn quy tắc, kiểm chứng và phần còn mở tại [operations 6.3](operations-design.md#ops-lifecycle-cleanup-result), cấu trúc V11 tại [data-model 7.9](data-model.md#model-lifecycle-cleanup-result).
-
 <a id="tdd-guide"></a>
-
-## 17. Cách đọc cho người mới và nhật ký
-
-Đọc kiến trúc mục 2 và ví dụ ba lớp mục 4, rồi [DFD](dfd.md#dfd-context) để theo dữ liệu qua ranh giới hệ thống. Tiếp theo là mô hình/phiên ở mục 7–8, tab/audio ở mục 9–11, backup ở mục 12, môi trường/CI-CD ở mục 13–14. Mục 15 giữ truy vết, mục 16 giữ điểm mở và bằng chứng. [API/giao dịch](api-transactions.md) giải thích một lệnh từ UI qua Service tới commit. Mỗi phần thực hành cần nêu mục tiêu, cách thực hiện, kết quả mong đợi và giới hạn kiểm chứng.
-
-Câu hỏi ôn tập:
-1. Vì sao Vue không được quyết định cặp đã duyệt hoặc thời hạn phiên?
-2. Vì sao Service giữ giao dịch áp dụng/xóa, còn gọi Gemini phải ra ngoài giao dịch dài?
-3. Vì sao phiên khách theo tab khác cookie Admin và tên khách?
-4. Vì sao polling job không được kéo dài 30 phút Admin?
-5. Vì sao volume không là backup, và restore phải lọc theo mốc gốc trước phục vụ?
-6. Vì sao ngrok có URL công khai chưa chứng minh CI/CD, hoặc MP3 nghe được chưa chứng minh 20 cặp được duyệt?
-
-
-### 16.2. Local audio theo ba lớp — 11/11/2026
-
-Không thêm endpoint/tầng trung gian. Controller TTS và session/receipt hiện hành gọi Service điều phối local/Check/Retry; LocalAudioRepository xử lý marker/job/audio trong giao dịch, Mp3ResultStore/Encoder xử lý bytes/tool ngoài giao dịch. Finalize kiểm lại đích/token/metadata rồi commit audio/job/pointer, Check gắn kết quả cùng receipt. Bổ sung result đã có trong thiết kế API 9.4, giữ trường cũ để frontend nối hợp đồng.
-
-[API 11.13](api-transactions.md#local-audio-implementation-result) là nguồn chính về trạng thái, cấu hình mặc định tắt và giới hạn kiểm; [model 7.10](data-model.md#model-local-audio-result) ghi V12. Ledger 520 ca có bằng chứng đạt qua full và nhóm local/TTS chạy lại, không suy encoder giả/Java subprocess thành FFmpeg, MP3, provider hoặc browser thật. Cấu hình/migration trên môi trường phục vụ và frontend không thay trong lượt này.
-
-### Nhật ký biên tập
-
-
-
-Nhật ký theo thời điểm được giữ nguyên trong [hồ sơ biên tập](../99-luu-tru/document-history.md#official-20261107-03-ky-thuat-tdd-journal). Phần hiện hành không thay thế kết quả hoặc căn cứ lịch sử.

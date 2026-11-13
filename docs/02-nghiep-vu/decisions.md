@@ -1,22 +1,19 @@
-# Quyết định hiện hành và căn cứ
+# Quy tắc nghiệp vụ và quyết định thiết kế
 
-**Mục đích:** tra quyết định, phạm vi xác nhận và điểm còn mở; mã giữ nguyên. Biên tập 08/11/2026.
-**Trạng thái:** BF-K01/BF-A01/BF-ALL01 duyệt nghiệp vụ hai vai trò; PRD-01 duyệt phạm vi yêu cầu đã rõ; UI-01–UI-05/TECH/DATA được xác nhận riêng đúng phần. Không suy thành duyệt toàn bộ UI/TDD/nội dung hoặc kết quả phần mềm. Bằng chứng triển khai hiện tại xem [handoff](../01-tong-quan/handoff.md#next-step); trạng thái duyệt quyết định không thay trạng thái kiểm thử.
-**Cách tra:** mục 3–5 là quyết định hiện hành, mục 6 là phần còn mở; [lịch sử và căn cứ gốc](../99-luu-tru/decisions-history.md) chỉ để đối chiếu, không là nguồn triển khai song song.
+Tập hợp các quy tắc có mã ổn định cho phạm vi, phân công, phiên tham quan, quản trị, nội dung và vòng đời dữ liệu. G02 phân định trách nhiệm thành viên; D/A/Q/UI/TECH/DATA là căn cứ cho đặc tả và thiết kế. Nguồn khảo sát và diễn biến xác nhận chi tiết được lưu trong hồ sơ phát triển; bộ hiện hành trình bày nội dung áp dụng.
 
 <a id="dec-1"></a>
 
 ## 1. Cách đọc và quy ước trạng thái
 
-**Đường dẫn sau sắp xếp 01/11/2026:** mục lục hiện hành tại [docs/README.md](../README.md). Đường dẫn cũ trong căn cứ/nhật ký là dấu vết tại thời điểm ghi, không là bản hiện hành thứ hai; liên kết tài liệu đã chuyển tới vị trí mới. Đây là thay đổi tổ chức/dẫn chiếu, không phê duyệt nghiệp vụ, UI hoặc kỹ thuật mới.
+Mục lục hiện hành tại [docs/README.md](../README.md). Tài liệu này giữ quy tắc áp dụng; lịch sử xác nhận nguyên bản được bảo toàn trong hồ sơ phát triển.
 
-- **Đã chốt:** đúng nội dung người dùng xác nhận; xem vị trí chính của từng mã tại mục 2. Người xác nhận là người dùng; ngày và căn cứ lưu tại mục 8.1.
+- **Đã chốt:** nội dung đã được nhóm xác nhận trong phạm vi ghi tại từng mã; không đồng nghĩa phần mềm đã nghiệm thu.
 - **Đề xuất / còn mở / chờ thiết kế hoặc rà soát:** chưa được duyệt theo gói; không dùng như yêu cầu bắt buộc đã chốt.
-- **Đã bị thay thế / lịch sử:** tra cứu tại mục 7–8, không áp lại trạng thái cũ hoặc phương án đã bỏ.
+- **Đã bị thay thế / lịch sử:** chỉ dùng để truy vết, không áp lại phương án cũ.
 - Mã **BS** bổ sung quyết định cùng số, không tự hủy phần gốc. Mã P từng được dùng cho đề xuất nhưng **P01–P08 hiện đã chốt**; không suy ra trạng thái từ tên mã. Giữ nguyên mã D/P/A/G/BF và các mục con.
 - Mỗi quyết định có một vị trí chính ở mục 3–5; mục 2 là chỉ mục, [Business Flow](business-flow.md) diễn giải vận hành và [PRD](PRD.md) đặc tả yêu cầu/nghiệm thu theo phạm vi PRD-01; không suy rộng duyệt sang mục còn mở.
 - Duyệt nghiệp vụ không duyệt giao diện/ranh giới, nội dung lịch sử/bản dịch/audio, TTS, thiết kế kỹ thuật hoặc chứng minh phần mềm đã kiểm thử. Không đưa dữ liệu nhạy cảm vào tài liệu.
-- Mục 8 giữ nguyên các ghi nhận lịch sử đã lưu, gồm số mục ở phiên bản cũ. Đọc cùng bảng quy đổi tại mục 8.4; không dùng một câu trạng thái cũ trong nhật ký làm trạng thái hiện hành.
 
 <a id="dec-2"></a>
 
@@ -30,7 +27,7 @@
 | G02 | [Phân công nhóm và người commit](#g02) | Đã chốt 02/11/2026; backlog 0.2 đã duyệt sau đó, nội dung hiện hành xem roadmap; tài khoản tại G02, lịch theo mục tiêu dự kiến |
 | TECH-01 | [Công nghệ và kiến trúc dự án chính](#tech-01) | Đã chốt nền; phiên bản theo TECH-03, kiến trúc/CD theo TECH-04/05; tương thích và vận hành còn kiểm |
 | TECH-02 | [Môn học, hướng dẫn, môi trường và mục tiêu](#tech-02) | Đã xác nhận đầu vào 03/11; nền tảng/trình duyệt theo TECH-03, ngrok chọn thử; giờ thực tế và ngân sách trả phí chưa chốt |
-| TTS-01 | [Gemini 3.8 Flash TTS và giọng Charon](#tts-01) | Đã chọn 03/11/2026; người dùng nghe sáu MP3 hài lòng, chưa duyệt 20 cặp/kiểm chứng tích hợp |
+| TTS-01 | [Gemini TTS/Charon](#tts-01) | Giữ model/giọng; pipeline đã chạy, chưa duyệt đủ 20 cặp. |
 | TECH-03 / IN-P01–IN-P04 | [Mốc phiên bản, nền tảng kiểm tra, audio và ngrok thử](#tech-03) | Đã chọn mốc/định dạng; ngrok chỉ chọn thử, chưa đạt tương thích/triển khai |
 | DATA-01 / IN-P05 / DATA-P01–P04 | [Dọn file/log/backup](#data-01) | Đã chốt điều kiện/hạn/restore; DATA-03 bổ sung phạm vi/nhịp backup, còn path/quyền/công cụ/checkpoint/RPO-RTO |
 | G03 | [Ghi nhận checklist theo bằng chứng](#g03) | Đã chốt; đối chiếu đúng issue hiện hành, người vận hành trực tiếp cập nhật GitHub |
@@ -59,7 +56,7 @@
 | A02.1 / A02.2 / A02.3 | [Xóa dữ liệu riêng](#a02-1) / [giữ lịch sử](#a02-2) / [dọn file](#a02-3) | Đã chốt 30/10/2026 |
 | A02.4 / A02.5 / A02.6 | [Vẽ vùng](#a02-4) / [điều kiện hiện](#a02-5) / [hiệu lực sửa vùng](#a02-6) | Đã chốt 30/10/2026 |
 | A03 | [Văn bản và bản dịch](#a03) | Đã chốt 30/10/2026 |
-| A04 | [Tạo audio từ văn bản](#a04) | Đã chốt hướng/vận hành; model/giọng theo TTS-01, tích hợp/bốn ngôn ngữ chưa kiểm chứng |
+| A04 | [Tạo audio từ văn bản](#a04) | Giữ bản văn lúc tạo, Check/Retry theo trạng thái; tạo xong không là duyệt/áp dụng. |
 | A04.1 / A04.2 | [Chủ động tạo](#a04-1) / [trạng thái và thử lại](#a04-2) | Đã chốt 30/10/2026 |
 | A04.3 / A04.4 | [Đúng bản văn](#a04-3) / [tác vụ đang chạy](#a04-4) | Đã chốt 30/10/2026 |
 | A05 / A06 / A07 | [QR chung](#a05) / [phiên-thống kê](#a06) / [hiệu lực nội dung](#a07) | Đã chốt 30/10/2026 |
@@ -68,7 +65,7 @@
 | UI-04 / UI-AP04–UI-AP07 | [Lượt 2, chỉ áp dụng cả cặp và gate bật hiện](#ui-admin-confirmed-02) | Đã chốt đúng phạm vi 02/11/2026; UI-AP06 thay phương án cũ, trạng thái lượt 3 theo UI-05 |
 | UI-05 / UI-AP08–UI-AP10 | [Lượt 3: box phiên/hai bảng/QR chung](#ui-admin-confirmed-03) | Đã chốt đúng phạm vi 02/11/2026; thay trang riêng UI-A21, không duyệt toàn bộ đồ họa/kỹ thuật |
 
-Tra cứu phần chưa chốt ở [mục 6](#dec-6), phương án bị thay thế ở [mục 7](#dec-7), căn cứ/nguồn/nhật ký ở [mục 8](#dec-8).
+Phần còn mở tại [mục 6](#dec-6); lịch sử theo mốc tại [tóm lược](../99-luu-tru/README.md).
 
 <a id="dec-3"></a>
 
@@ -93,15 +90,14 @@ Phạm vi phê duyệt Business Flow được xác nhận riêng tại BF-K01/BF
 
 ### 3.2. BF-K01 / BF-A01 / BF-ALL01 — Phạm vi được duyệt
 
-**Người xác nhận:** Người dùng. **Ngày:** 30/10/2026.
 
 | Mã | Nội dung đã chốt | Ý nghĩa / ảnh hưởng | Giới hạn |
 | --- | --- | --- | --- |
 | <a id="bf-k01"></a>BF-K01 | Luồng nghiệp vụ khách đã được duyệt tổng thể: bản tổng hợp 13 bước, luồng chính/ngoại lệ, phiên, vùng tương tác, audio, cảnh báo và cách đếm thống nhất. P02 dùng câu bắt buộc có điều kiện, không mở lại quyết định. | Đã tạo cơ sở chuyển sang phân tích Admin không cần chờ bản đồ/giao diện hoặc nội dung; Admin nay đã được duyệt riêng theo BF-A01. | Riêng BF-K01 chỉ duyệt khách; BF-A01/BF-ALL01 nay bổ sung duyệt nghiệp vụ Admin/hai vai trò. Không duyệt ranh giới/giao diện, lịch sử/bản dịch/audio, TDD hoặc phần mềm đã kiểm thử. |
 | <a id="bf-a01"></a>BF-A01 | Luồng nghiệp vụ Admin đã được duyệt tổng thể: 12 nhóm công việc đã tổng hợp, A01–A07, A02.1–A02.6, A04.1–A04.4. Đối chiếu bản lưu không có khác biệt thực chất. | Đủ cơ sở soạn PRD/Use Case/tiêu chí nghiệm thu; không yêu cầu duyệt lại nghiệp vụ Admin. | Không duyệt theo giao diện/thao tác vẽ/ranh giới, nội dung, lựa chọn TTS, thiết kế kỹ thuật hoặc kết quả kiểm thử. |
-| <a id="bf-all01"></a>BF-ALL01 | Business Flow cho hai vai trò đã được duyệt trong phạm vi nghiệp vụ đã thống nhất; BF-K01/BF-A01 cùng có hiệu lực. | Phân biệt phê duyệt nghiệp vụ với thiết kế, nội dung, PRD và bằng chứng thực hiện. | Tại thời điểm BF-ALL01, PRD mới soạn là dự thảo; nay phạm vi yêu cầu đã rõ được duyệt riêng theo PRD-01. Năm bài vi vẫn nháp chờ cung cấp/rà soát. |
+| <a id="bf-all01"></a>BF-ALL01 | Business Flow cho hai vai trò đã được duyệt trong phạm vi nghiệp vụ đã thống nhất; BF-K01/BF-A01 cùng có hiệu lực. | Phân biệt phê duyệt nghiệp vụ với thiết kế, nội dung, PRD và bằng chứng thực hiện. | Tại thời điểm BF-ALL01, PRD mới soạn là dự thảo; nay phạm vi yêu cầu đã rõ được duyệt riêng theo PRD-01. Trạng thái tài nguyên theo ma trận nội dung hiện hành. |
 
-Ba xác nhận chỉ duyệt nghiệp vụ hai vai trò. Không duyệt theo bố cục giao diện, thao tác vẽ/ranh giới cụ thể; lịch sử/bản dịch/audio; nhà cung cấp TTS/giọng/chi phí/công nghệ; thiết kế kỹ thuật hoặc kết quả kiểm thử. Năm bản nháp vi đã được báo cáo là có, vẫn là nháp chờ xác minh bản lưu và rà soát/duyệt. Các nhánh AD trong [Business Flow mục 4.1](business-flow.md#bf-admin-main) chi tiết hóa 12 nhóm Admin đã tổng hợp, không bổ sung nhóm nghiệp vụ mới.
+Ba xác nhận chỉ duyệt nghiệp vụ hai vai trò. Không duyệt theo bố cục giao diện, thao tác vẽ/ranh giới cụ thể; lịch sử/bản dịch/audio; nhà cung cấp TTS/giọng/chi phí/công nghệ; thiết kế kỹ thuật hoặc kết quả kiểm thử. Trạng thái văn bản/audio theo [ma trận hiện hành](../05-noi-dung/doi-chieu-van-ban-audio.md). Các nhánh AD trong [Business Flow mục 4.1](business-flow.md#bf-admin-main) chi tiết hóa 12 nhóm Admin đã tổng hợp, không bổ sung nhóm nghiệp vụ mới.
 
 <a id="prd-approval"></a>
 
@@ -109,18 +105,16 @@ Ba xác nhận chỉ duyệt nghiệp vụ hai vai trò. Không duyệt theo b�
 
 **Đã chốt ngày 31/10/2026. Người xác nhận:** Người dùng/chủ đồ án.
 
-**Căn cứ trực tiếp:** “Tôi duyệt các yêu cầu đã được mô tả rõ trong PRD 0.4.1, bao gồm các quyết định Q1–Q3 đã thống nhất và phần sửa cách diễn đạt BR11.” Xác nhận đồng thời loại trừ mọi mục còn mở, đề xuất hoặc chưa kiểm chứng.
+**Phạm vi phê duyệt:** yêu cầu đã mô tả rõ trong PRD 0.4.1, gồm Q1–Q3 và cách diễn đạt BR-11; loại trừ mọi mục còn mở, đề xuất hoặc chưa kiểm chứng.
 
-**Đối chiếu trước ghi nhận:** Đã đọc trực tiếp PRD.md, business-flow.md, decisions.md và prd-review.md trong repo chính. Bản lưu đúng **0.4.1**, gồm Q1–Q3 và BR-11 đã sửa theo R07; không thấy khác biệt ảnh hưởng phạm vi xác nhận. Phạm vi phê duyệt chỉ áp dụng cho yêu cầu đã rõ; thiết kế bổ sung và kết quả kiểm thử được ghi nhận riêng.
 
 | Phạm vi | Trạng thái / giới hạn |
 | --- | --- |
 | Mục tiêu/vai trò, phạm vi trong-ngoài, bộ chuẩn năm điểm × vi/en/fr/ru; BR/DR, FR, UC, NFR và tiêu chí nghiệm thu đã mô tả rõ ở PRD 0.4.1 | **Đã được duyệt trong phạm vi đã rõ**, gồm Q1–Q3, giới hạn tương ứng và câu BR-11 hiện hành. Giữ mã/truy vết; không yêu cầu duyệt lại BF-K01/BF-A01/BF-ALL01 hoặc Q1–Q3. |
 | Mục còn mở/đề xuất/chưa kiểm chứng | **Không thuộc xác nhận này**: PRD mục 9 và [bảng tổng hợp prd-review 7.3](prd-review.md#review-open-final) tiếp tục giữ trạng thái và mốc xử lý riêng. Có một phần đã rõ trong cùng FR/UC/AC không có nghĩa các chi tiết mở của mã đó đã được duyệt. |
 | Thiết kế giao diện/thao tác/ranh giới; giải pháp kỹ thuật; TTS/giọng/chi phí/giới hạn chưa chốt; môi trường/ngưỡng đánh giá chưa chốt; chính sách log/bản sao lưu và file chưa từng áp dụng | Không được duyệt ngầm. Chỉ trình xác nhận phần thực sự mới khi tới công việc liên quan. |
-| Nội dung lịch sử, bản dịch/audio; kết quả kiểm thử hoặc phần mềm đáp ứng | Không được duyệt hoặc xác minh qua PRD-01. D09 tiếp tục áp dụng; năm bản nháp vi đã được báo cáo là có, vẫn là nháp chờ xác minh bản lưu và rà soát/duyệt. |
+| Nội dung lịch sử, bản dịch/audio; kết quả kiểm thử hoặc phần mềm đáp ứng | Không được duyệt hoặc xác minh qua PRD-01. D09 tiếp tục áp dụng; trạng thái văn bản/audio và hồ sơ theo [ma trận hiện hành](../05-noi-dung/doi-chieu-van-ban-audio.md). |
 
-**Lịch sử PRD-01:** bước thiết kế tiếp theo tại thời điểm xác nhận được lưu trong [hồ sơ lịch sử](../99-luu-tru/document-history.md#official-20261107-context-docs-02-nghiep-vu-decisions-md); không áp lại trạng thái chưa triển khai cũ cho hiện trạng mới.
 
 <a id="g02"></a>
 
@@ -148,7 +142,7 @@ Ba xác nhận chỉ duyệt nghiệp vụ hai vai trò. Không duyệt theo b�
 - T11: Thành tổng hợp; Nghĩa và Hòa cung cấp hướng dẫn, kết quả và bằng chứng phần việc.
 - T02 phụ trách cấu trúc/ràng buộc/migrations; T03/T05 phụ trách nghiệp vụ backend; T04/T06 phụ trách giao diện. T07 tạo/theo dõi audio; T05 quản trị, áp dụng cặp và xóa/dọn. T01 là phân tích/thiết kế; T11 là hướng dẫn/vận hành/bàn giao cuối.
 - Mỗi nhóm commit/push dùng tài khoản GitHub tương ứng với cột người commit của G02. Trước commit xác định task, tài khoản, metadata Git, danh sách file, phụ thuộc và staged diff. Bảng phân công hoặc tài khoản dùng để push không tự chứng minh ai đã viết mã, thao tác hay hoàn thành phần việc.
-- Kế hoạch nhánh, bàn giao, Pull Request và tích hợp được quy định tại [commit-plan](../01-tong-quan/commit-plan-2026-11-05.md). Quy trình đối chiếu và quyền thao tác tại [handoff mục 7](../01-tong-quan/handoff.md#guidance-protocol).
+- Theo dõi task và phụ thuộc tại [roadmap](../01-tong-quan/roadmap.md). Đối chiếu từng nhóm file và staged diff trước commit; không dùng tài khoản push để suy tác giả hoặc người đã thực hiện.
 
 | Thành viên | Tài khoản GitHub |
 | --- | --- |
@@ -160,117 +154,69 @@ Ba xác nhận chỉ duyệt nghiệp vụ hai vai trò. Không duyệt theo b�
 
 **Phân biệt khi kiểm Git:** người nhập lệnh, metadata author/committer và tài khoản xác thực GitHub là các thông tin khác nhau. `git config user.name/user.email` chỉ đặt metadata, không đăng nhập hoặc chuyển tài khoản push. Tài khoản xác thực phải theo task như trên; tên/email commit cần có căn cứ và email gắn với tài khoản tương ứng. Không tạo thông tin tác giả hoặc suy đã hoàn thành công việc từ việc dùng tài khoản. Không tự gán assignee, sửa issue/Project hoặc thao tác tài khoản khi chưa được giao.
 
-[Roadmap mục 3](../01-tong-quan/roadmap.md#t01) là nguồn duy nhất của 11 task, mỗi issue gồm Description và một Checklist. Backlog hiện hành giữ 89 ô/18 dấu tích có căn cứ; nội dung issue #1–#11 tại repository hiện tại đã đối chiếu ngày 08/11, mapping và nguồn trạng thái Project tại mục 6 roadmap; hồ sơ ngày 06/11 được giữ riêng theo thời điểm. Nội dung phê duyệt backlog không phê duyệt toàn TDD, kế hoạch triển khai hoặc kết quả phần mềm.
+[Roadmap mục 3](../01-tong-quan/roadmap.md#t01) là nguồn 11 task/89 ô; mốc đối chiếu hiện hành là 62/89. Issue và Project là hai trạng thái riêng; không suy toàn bộ task hoàn thành từ một sản phẩm hoặc một lượt kiểm.
 
-Căn cứ phân công tại [hồ sơ G02](../99-luu-tru/decisions-history.md#g02-source). G02 không thay đổi phạm vi G01/BF/PRD/UI.
+Căn cứ phân công tại [hồ sơ G02](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/decisions-history.md#g02-source). G02 không thay đổi phạm vi G01/BF/PRD/UI.
 
 <a id="tech-01"></a>
 
 ### 3.5. TECH-01 — Công nghệ và kiến trúc dự án chính
 
-**Đã chốt lựa chọn ngày 02/11/2026. Người xác nhận:** người dùng/chủ đồ án.  
-**Căn cứ:** xác nhận lựa chọn công nghệ cho repository chính; [nguyên văn](../99-luu-tru/document-history.md#official-20261107-context-docs-02-nghiep-vu-decisions-md) được lưu để truy vết. Không suy lựa chọn từ dự án tham khảo.
+| Phạm vi | Lựa chọn và cách triển khai |
+|---|---|
+| Frontend | Vue 3, JavaScript, CSS; Vite và npm để phát triển/đóng gói. Node.js không là Backend nghiệp vụ. |
+| Bản đồ | Leaflet, nền OpenStreetMap có attribution; mỗi điểm một đa giác kín đơn giản. Geoman Free là lựa chọn khảo sát ban đầu; mã hiện hành dùng trình sửa vùng riêng trên Leaflet, không có dependency Geoman. Không mở rộng lỗ/nhiều mảnh/GPS/Haversine. |
+| Backend | Java 21, Spring Boot, Maven Wrapper; một ứng dụng, Controller → Service → Repository. |
+| Dữ liệu | MySQL, Spring Data JPA, Flyway V1–V14; WAV/MP3 ở kho file riêng. |
+| Admin | Spring Security, session/cookie, password hash và CSRF; giữ 30 phút/Q2/Q3. |
+| API | DTO và hợp đồng API/giao dịch; springdoc/OpenAPI hỗ trợ tra cứu. |
+| Kiểm thử | Spring Boot/Testcontainers MySQL, frontend logic và trình duyệt; kết quả theo báo cáo kiểm thử. |
+| Đóng gói/CI | Docker Compose, Vue build vào static resources của Spring Boot; GitHub Actions test/build. CD riêng theo TECH-05. |
 
-| Phạm vi | Lựa chọn đã chốt | Giới hạn xác nhận |
-| --- | --- | --- |
-| Frontend | Vue 3 + JavaScript + CSS | Không tự đổi sang TypeScript/framework khác; chưa có triển khai. |
-| Công cụ frontend | Vite + npm; Node.js cho phát triển/đóng gói | Node.js không phải Backend nghiệp vụ. |
-| Bản đồ | Leaflet | Chưa chọn nguồn nền/nhà cung cấp lớp nền; không duyệt vị trí/ranh giới. |
-| Vẽ/sửa vùng Admin | Leaflet-Geoman bản miễn phí, dùng cho đa giác nghiệp vụ đã chốt | Chưa kiểm chứng tương thích hoặc khả năng cụ thể của phiên bản được chọn; không mở rộng lỗ/nhiều mảnh/công cụ bản đồ nâng cao. |
-| Backend | Java 21 + Spring Boot + Maven Wrapper | Một ứng dụng Backend chia module nghiệp vụ; phiên bản Spring Boot còn chờ kiểm tra. |
-| Database và truy cập dữ liệu | MySQL + Spring Data JPA + Flyway | TECH-03/IN-P01 chọn mốc phiên bản; schema/migrations và tương thích thực chưa thiết kế/kiểm. |
-| Bảo mật Admin | Spring Security; xác thực session/cookie và băm mật khẩu | Không mặc định JWT; thuật toán/tham số và cấu hình chi tiết chưa được chọn. Không đổi hạn 30 phút/Q2/Q3. |
-| Tài liệu API | OpenAPI/Swagger UI | TECH-03/IN-P01 đã chọn springdoc theo bảng phiên bản; cấu hình truy cập/tương thích thực chưa kiểm. |
-| Kiểm thử Backend/Database | Bộ kiểm thử Spring Boot + Testcontainers/MySQL | Chưa cài, chạy hoặc có kết quả kiểm thử. |
-| Môi trường | Docker Compose | Chưa có cấu hình chạy hoặc bằng chứng tương thích với máy/hosting. |
-| CI | GitHub Actions để build và kiểm thử | Chưa tạo workflow; tự động triển khai quyết định sau khi chọn hosting. |
+Mã nguồn tách `frontend/` và `backend/`, phục vụ web/API cùng origin HTTPS. Không bổ sung microservices, Redis, Kafka hoặc Kubernetes. Phiên bản chính xác và phạm vi đã kiểm ở [bảng công nghệ](../01-tong-quan/technical-inputs.md); giới hạn dữ liệu/vận hành ở [bàn giao](../01-tong-quan/handoff.md).
 
-**Kiến trúc đã chốt:**
-
-- Một repository tách `frontend/` và `backend/`; trạng thái triển khai từng phần được theo dõi tại handoff.
-- Backend là một ứng dụng chia module theo nghiệp vụ; không bổ sung microservices, Redis, Kafka hoặc Kubernetes trong phạm vi hiện tại.
-- **Ưu tiên** Frontend và API cùng địa chỉ HTTPS khi triển khai. Đây là hướng ưu tiên, chưa chọn URL/hosting hoặc biến thành cam kết đã triển khai.
-- Giữ nguyên Business Flow/PRD/UI đã duyệt, gồm áp dụng cả cặp, điều kiện hiện cặp vi, phiên khách/Admin, Q2/Q3, thống kê/QR và chính sách 8 tiếng/30 ngày. Không sửa nghiệp vụ để khớp công nghệ.
-
-**Cơ sở thiết kế:** hướng công nghệ đã được chọn cho dự án; kiến trúc và phân công giữ theo phạm vi đã thống nhất. Không diễn giải lựa chọn thành kết luận nhóm đã thành thạo hoặc các thư viện đã đáp ứng toàn bộ yêu cầu.
+Giữ nghiệp vụ đã duyệt: áp dụng cả cặp, điều kiện cặp vi khi bật hiển thị, phiên khách/Admin, Q2/Q3, thống kê/QR và chính sách giữ dữ liệu. Lựa chọn công nghệ không thay việc duyệt ranh giới, nội dung hoặc nghiệm thu từng tiêu chí.
 
 <a id="tech-01-context"></a>
-
-**Thông tin nền do người dùng cung cấp, chưa kiểm tra năng lực/cấu hình máy:**
-
-- Nhóm thực hiện theo G02; cả nhóm phối hợp nội dung, chưa chia riêng địa điểm. Quyền tạo/sửa file và chạy/kiểm chứng hiện hành theo [handoff mục 7](../01-tong-quan/handoff.md#guidance-protocol), đã được người dùng cập nhật ngày 05/11/2026.
-- Thành chưa sử dụng Vue, Vite, npm, Leaflet và Geoman; cần hướng dẫn từng phần nhỏ. Trình độ với các công nghệ khác và của Nghĩa/Hòa chưa đủ thông tin; không gán mức thành thạo theo tên task.
-- Môi trường hiện tại: Windows, VS Code, PowerShell. TECH-02 bổ sung cấu hình laptop, thiết bị và mạng; chưa kiểm máy hoặc chọn phiên bản trình duyệt.
-- Thầy từng hỏi thao tác thêm/xóa địa điểm và bổ sung nội dung kèm audio. Bộ năm địa điểm × bốn ngôn ngữ do người dùng chọn, không phải giới hạn tối đa của thầy. TECH-02 bổ sung chủ đề 2/ba lớp/CI-CD; chưa có hạn chính thức/rubric đầy đủ.
-
 <a id="tech-01-open"></a>
-
-**Còn mở / chưa kiểm chứng:**
-
-| Nội dung | Trạng thái và mốc xử lý |
-| --- | --- |
-| Phiên bản và tương thích | IN-P01/TECH-03 đã chọn nguyên bộ phiên bản mục 4 technical-inputs 0.1 làm mốc; chưa kiểm khả dụng/tương thích. Khi thực hiện phải báo bằng chứng/ảnh hưởng/đề xuất nếu cần đổi, không đổi âm thầm. |
-| TTS | **Đã chọn Gemini API, gemini-3.8-flash-tts/Charon theo TTS-01.** Thay trạng thái chỉ ưu tiên khảo sát; từng cặp, quota thực, ngân sách trả phí và tích hợp chưa kiểm chứng/chốt. |
-| FFmpeg/ffprobe | IN-P03/TECH-03 đã chọn WAV nguồn còn tham chiếu, MP3 khách và FFmpeg/ffprobe trong Linux container; Windows/VS Code/PowerShell vẫn giữ, WSL/Docker hướng dẫn khi thực hiện. Chưa kiểm pipeline. |
-| Hosting và môi trường demo | IN-P04/TECH-03 chọn THỬ ngrok Free thay ưu tiên Funnel. Dev domain theo tài khoản không đổi chỉ vì restart agent theo nguồn chính thức 03/11; chưa URL thật/đăng ký/kiểm khác mạng hoặc CD. TECH-05 đã chọn riêng CD-L01 nhưng chưa kiểm SSH/Docker Desktop. Không mua hosting/domain/gói trả phí. |
-| Chính sách dữ liệu/file | DATA-01/IN-P05 chốt file chưa áp dụng/tạm/log/backup và restore lọc dữ liệu; giữ D08/A02.3/P01. DATA-02/03 bổ sung cục bộ/phạm vi/nhịp backup; còn path/quyền/công cụ/checkpoint nhất quán và RPO/RTO, không suy đã kiểm từ xác nhận chính sách. |
-| Thiết kế cụ thể và bằng chứng | TDD, cách đáp ứng đầy đủ hành vi, UI/vùng cụ thể, nội dung/hồ sơ và kết quả phần mềm chưa được duyệt/kiểm chứng qua TECH-01. R06 tiếp tục mở một phần. |
-
-**Phân biệt trạng thái:** đã chọn công nghệ ≠ đã kiểm chứng tương thích ≠ đã triển khai ≠ đã kiểm thử. Không cài công cụ, tạo code/cấu hình/schema/workflow, thao tác Git/GitHub hoặc dịch vụ phát sinh chi phí trong lượt ghi quyết định.
-
-**Tiến độ hiện hành 04/11:** DATA-05/LIFE-P01 chốt vé ký 24 giờ và bỏ generation, DATA-04 giữ các xác nhận trước. [TDD hiện hành](../03-ky-thuat/TDD.md)/model/API/operations và thực hành 01 phân biệt nguồn đã chốt với chi tiết chưa kiểm; ngrok vẫn thử, lịch có giả định.
 
 <a id="tech-02"></a>
 
-### 3.6. TECH-02 — Đầu vào môn học, hướng dẫn, môi trường và mốc mục tiêu
+### 3.6. TECH-02 — Đầu vào môn học và môi trường
 
-**Đã xác nhận ngày 03/11/2026.** Căn cứ tại [8.1.13](../99-luu-tru/decisions-history.md#tech-02-source). Đây là đầu vào repo chính, không phải kết quả kiểm máy hoặc suy từ demo.
+- Chủ đề 2: Backend ba lớp có CI/CD, frontend đầy đủ; giữ Vue theo TECH-01. CI có bằng chứng thực; CD chưa nghiệm thu theo TECH-05.
+- Môi trường phát triển/diễn tập: Windows, VS Code, PowerShell, Docker Desktop/Linux containers. Công cụ và lệnh kiểm tại [môi trường local](../07-van-hanh/moi-truong-local.md).
+- Khách hướng tới điện thoại Android/Chrome và iPhone/Safari; Admin dùng Windows/Chrome với chuột/bàn phím. Cần ghi model, OS, browser và mạng trong ma trận nghiệm thu; báo cáo Android/iPhone chạy được chưa thay toàn bộ ma trận.
+- Hướng trình diễn: laptop có Internet phục vụ qua HTTPS/ngrok, ưu tiên miễn phí. Ngân sách trả phí không tự được cấp từ việc chọn công nghệ.
+- Mục tiêu nội bộ 17/11/2026 không là hạn nộp chính thức; không thay rubric môn học.
+- Phân công theo G02. Mã, dữ liệu, khóa và lịch sử demo khác không tự trở thành đầu vào đã được duyệt cho dự án chính.
 
-| Phạm vi | Nội dung đã xác nhận | Giới hạn |
-| --- | --- | --- |
-| Cách hướng dẫn | Cả nhóm được hướng dẫn từng bước nhỏ: làm gì, vì sao, kiểm tra thế nào, lỗi thường gặp; có câu hỏi ôn tập ở phần quan trọng. Phân công và người commit theo G02. | Là phương pháp hướng dẫn, không kết luận nhóm chưa có kiến thức. Trình độ cụ thể các công nghệ khác chưa đánh giá. |
-| Môn học | Chủ đề 2 “BE Dev theo hướng 3 lớp bao gồm CD/CI”; Backend thể hiện Controller → Service → Repository, trách nhiệm từng lớp và bằng chứng CI/CD hoạt động. Frontend đầy đủ. | React Native/React.js của chủ đề 1 không là căn cứ bắt buộc chủ đề 2. Giữ Vue 3/TECH-01. Chưa có rubric đầy đủ/hạn nộp chính thức. |
-| Mốc cá nhân | Hoàn thành sớm nhất có thể; mục tiêu 17/11/2026 tính từ 03/11/2026. | Không phải hạn môn học. Giờ thực hành/ngày chưa biết; kế hoạch phải nêu giả định/khả thi, không hứa chắc. |
-| Máy | i5-12450H, 8 nhân/12 luồng, RAM khoảng 16 GB; Windows, VS Code, PowerShell. | Do người dùng cung cấp; chưa kiểm Windows build/WSL/ảo hóa/dung lượng/công cụ. |
-| Thiết bị | Khách web trình duyệt điện thoại Android/iOS; Admin web máy tính/laptop, chuột và bàn phím. | Chưa đặt khách desktop/Admin mobile thành nghiệm thu bắt buộc. Ma trận trình duyệt/phiên bản cụ thể cần đề xuất; không cam kết mọi thiết bị. |
-| Trình diễn/chi phí | URL công khai, dự kiến 4G phát từ điện thoại; ưu tiên miễn phí, chưa xác nhận ngân sách trả phí. | TECH-03 bổ sung chọn thử ngrok, chưa URL thật/hosting độc lập; không kế thừa URL/Quick Tunnel demo. Yêu cầu URL công khai repo chính giữ nguyên. |
-| Gemini | Người dùng xác nhận key hoạt động/còn quota/project Free tier. Google AI Plus không chứng minh quyền API TTS được bao gồm. | Chưa kiểm tài khoản bằng API, không lưu key/dữ liệu nhạy cảm; quyền gọi API hoặc phát sinh chi phí được kiểm soát riêng. |
 
-**Khảo sát tham khảo:** được đọc phần liên quan trong hai thư mục demo chỉ để học kinh nghiệm. Quyền tự triển khai trong AGENTS/README demo là bối cảnh cũ, không thay [quyền hiện hành tại handoff mục 7](../01-tong-quan/handoff.md#guidance-protocol). Không sửa/chạy/copy code, dữ liệu, audio, secret hoặc lịch sử Git demo.
-
-**Không kế thừa:** phương án URL/Quick Tunnel, chính sách log/backup và kế hoạch T01–T24 cũ không được coi đã duyệt cho repo chính; JWT/vùng tròn-Haversine/quy tắc xóa khác cũng không thay nghiệp vụ hiện hành. [Khảo sát mới](../01-tong-quan/technical-inputs.md#demo-survey) tách mã đang có, thiết kế cũ, kết quả hồ sơ và phần chưa kiểm chứng.
-
-**Cập nhật sau TECH-02:** TECH-03 đã chọn mốc phiên bản/nền tảng/audio và thử ngrok; DATA-01 chốt phần chính sách, G03 cho lập lịch bằng giả định không hỏi lại tổng quát giờ. Còn tương thích/build thực/CD/URL/quota/ngân sách nếu cần và chi tiết backup-log. Không đòi đủ 20+20 hoặc mọi đồ họa trước TDD nền tảng.
 
 <a id="tts-01"></a>
 
-### 3.7. TTS-01 — Chọn Gemini 3.8 Flash TTS và giọng Charon
+### 3.7. TTS-01 — Gemini TTS và giọng Charon
 
-**Đã chốt ngày 03/11/2026:** Gemini API, model **gemini-3.8-flash-tts**, giọng **Charon**. Người dùng xác nhận đã nghe sáu MP3 thử nghiệm và hài lòng; đây là lựa chọn dự án chính, không chỉ ưu tiên khảo sát hoặc suy từ cấu hình demo.
+Giữ Gemini API, model **gemini-3.8-flash-tts**, giọng **Charon**. Không tự đổi model/giọng hoặc thêm phong cách đọc chưa duyệt. Khóa ở cấu hình riêng ngoài repository; việc dùng API và ngân sách được quản lý riêng.
 
-- Bằng chứng chất lượng hiện có là kết quả nghe/hài lòng sáu MP3 được báo cáo; chưa có lần nghe hoặc kiểm file độc lập mới. Giữ đúng thời điểm và phạm vi ghi nhận, không suy thành duyệt bộ 20 cặp.
-- Không duyệt đủ 20 văn bản/audio hoặc lịch sử/bản dịch/phát âm/tên riêng/từng cặp. Mỗi bản theo D09/UI-04, nghe trọn và được duyệt rõ trước áp dụng cả cặp.
-- Tiếp tục đối chiếu API hiện hành, vi/en/fr/ru, quota miễn phí, định dạng/lỗi/thử lại/cách tích hợp từ nguồn chính thức; có trở ngại thực tế phải báo căn cứ/ảnh hưởng, không tự thay model/giọng.
-- Phần FFmpeg/định dạng trước đây chưa chọn qua TTS-01, nay đã được TECH-03/IN-P03 xác nhận WAV/MP3/Linux. Phong cách chi tiết ngoài Charon, ngưỡng/ngân sách trả phí và cơ chế còn mở; không suy từ lựa chọn giọng.
-- Chưa gọi TTS/cài công cụ/phát sinh chi phí. Key hoạt động/Free tier không chứng minh quota đủ 20, chất lượng bốn ngôn ngữ hoặc pipeline chạy.
-- [Khảo sát 03/11](../01-tong-quan/technical-inputs.md#tts-research) là thông tin nhà cung cấp công bố, tách với kiểm chứng thực tế chưa làm cho repo chính.
+Pipeline thật đã tạo WAV/MP3; kết quả hiện có được tổng hợp ở [ma trận văn bản/audio](../05-noi-dung/doi-chieu-van-ban-audio.md). Chất lượng nghe mẫu hoặc kiểm codec/Hash/chép lời không thay duyệt từng cặp D09. Bộ 20 cặp chưa đủ: năm audio ru còn thiếu, 14 audio mới còn chờ nghe trọn và rà phát âm Thái Hòa fr. Quota thực phải được kiểm trước lần tạo tiếp; không suy từ gói tài khoản hoặc một lần gọi thành công.
+
+
 
 <a id="tech-03"></a>
 
-### 3.8. TECH-03 — IN-P01–IN-P04: mốc triển khai và phương án thử
+### 3.8. TECH-03 — IN-P01–IN-P04: phiên bản và phương án chạy
 
-**Đã xác nhận ngày 03/11/2026**, căn cứ [8.1.14](../99-luu-tru/decisions-history.md#tech-03-source). Giữ IN-P01–IN-P05 để truy vết gói phương án; TECH-03 là mã xác nhận mới, không xóa TECH-01/02/TTS-01.
+| Mã | Nội dung áp dụng | Điều kiện nghiệm thu |
+|---|---|---|
+| IN-P01 | Giữ bộ phiên bản trong bảng công nghệ hiện hành. | Thay phiên bản phải có căn cứ và rà ảnh hưởng; không đổi âm thầm. |
+| IN-P02 | Khách Android/Chrome, iPhone/Safari; Admin Windows/Chrome. | Ghi thiết bị/OS/browser/mạng thực, kiểm luồng chính và ngoại lệ; không cam kết mọi thiết bị. |
+| IN-P03 | Giữ WAV nguồn còn tham chiếu; MP3 cho khách; FFmpeg/ffprobe trong Linux container. | Pipeline đã chạy không thay nghe trọn/D09; không tự áp ngưỡng chất lượng hoặc bitrate mới. |
+| IN-P04 | Thử ngrok cho HTTPS công khai; laptop/app/agent phải hoạt động. Admin vẫn xác thực session/cookie. | QR phải trỏ đúng URL đang phục vụ. Kiểm trang trung gian và quota tài khoản trước buổi chấm; không coi ngrok là hosting độc lập hoặc CD. |
 
-| Mã | Xác nhận hiện hành | Chưa được suy rộng |
-| --- | --- | --- |
-| IN-P01 | Dùng nguyên bộ phiên bản đề xuất tại mục 4 technical-inputs 0.1 làm mốc triển khai; bảng hiện hành 0.2 giữ số phiên bản đó. | Đã chọn khác đã kiểm chứng. Khi người dùng kiểm môi trường, phiên bản không khả dụng/không tương thích phải nêu bằng chứng, ảnh hưởng và đề xuất điều chỉnh; không âm thầm đổi. Các build chưa có số cụ thể ghi khi kiểm, không bịa số cài. |
-| IN-P02 | Khách Android/Chrome + iPhone/Safari, nhóm có đủ hai loại điện thoại; Admin Windows/Chrome máy tính/laptop, chuột/bàn phím. Kiểm đầy đủ luồng chính/ngoại lệ/map/cuộn/audio-tua/ngôn ngữ/phiên/Admin đã chốt. | Chọn thiết bị/OS/browser build thực và ghi khi thực hiện. Mốc Chrome/iOS minh họa cũ bị thay bằng ma trận thực chưa điền; không cam kết mọi thiết bị/browser hoặc tự thêm nghiệm thu Admin mobile/khách desktop. |
-| IN-P03 | Giữ WAV nguồn còn tham chiếu, MP3 phục vụ khách; FFmpeg/ffprobe trong Linux container. Laptop vẫn Windows/VS Code/PowerShell; Docker Desktop cung cấp Linux container, giải thích/hướng dẫn Docker/WSL khi tới thực hành. | Model/Charon giữ TTS-01; kiểm định dạng/thời lượng không thay nghe trọn/duyệt D09. Chưa có pipeline đã chạy hoặc bộ 20 cặp được duyệt; bitrate/ngưỡng không được chọn ngầm. |
-| IN-P04 | **Chọn THỬ ngrok Free** thay ưu tiên Tailscale Funnel; chấp nhận trang trung gian và kiểm ảnh hưởng QR. URL khách dùng được từ Wi-Fi/4G khác mạng laptop, Admin vẫn session-cookie bảo mật. Laptop phải bật và có Internet. | Không là hosting độc lập hoặc bằng chứng triển khai/CI-CD/nghiệm thu. Không mua domain/hosting/gói trả phí. URL thật, quota còn lại và tác động thực phải kiểm; kênh CD vào laptop cần thiết kế riêng, không mặc định Funnel. |
+Không cố định thông số gói miễn phí vào tiêu chí nghiệp vụ. Hạn mức request/dữ liệu tính cả web, API và audio, cần đối chiếu tài khoản khi vận hành. Hướng đóng gói theo TECH-04; đường quản trị riêng theo TECH-05.
 
-Nguồn ngrok chính thức kiểm 03/11: [dev domain gắn tài khoản, không đổi khi restart agent](https://ngrok.com/blog/free-static-domains-ngrok-users); [quota Free](https://ngrok.com/docs/pricing-limits) hiện 1 GB dữ liệu outbound/20.000 HTTP request mỗi tháng, không phải số người/lượt nghe; [trang trung gian](https://ngrok.com/docs/pricing-limits/free-plan-limits) cần kiểm trên hành trình QR. Không dùng nhận định cũ “Free luôn đổi URL”. Số liệu là công bố, chưa kiểm tài khoản/ngrok thực tế.
 
-**Cập nhật TECH-04/TECH-05:** hướng đóng gói Vue cùng Spring Boot đã xác nhận riêng; tên/chi tiết module/API/ERD mới vẫn dự thảo. TECH-05 nay chọn CD-L01 Tailscale riêng + OpenSSH Windows/PowerShell, không Funnel; cần kiểm SSH/quyền Docker Desktop, chưa cài/đăng ký/cấu hình hoặc kiểm chứng.
 
 <a id="data-01"></a>
 
@@ -286,7 +232,7 @@ Nguồn ngrok chính thức kiểm 03/11: [dev domain gắn tài khoản, không
 | Backup / DATA-P04 | Giữ mỗi bản **7 ngày từ lúc tạo**; bản sao phải được bảo vệ và dọn đúng hạn. Restore vào môi trường riêng, lọc phiên/lượt quá hạn theo mốc gốc **trước khi mở phục vụ**. | Người dùng chấp nhận bản sao có thể còn tới gần **37 ngày tính từ kết thúc/hết hạn gốc** (30 ngày vận hành cộng gần 7 ngày backup), không phải thêm 37 ngày sau xóa vận hành. Không làm sống lại dữ liệu D08 hoặc đổi mốc theo lúc restore/audio hết. |
 | Quy tắc gốc | Giữ D08 **30 ngày** phiên/lượt và A02.3 **8 giờ** bảo vệ file từng áp dụng, đồng thời các điều kiện tham chiếu/dùng chung/DB thành công. | Không dùng chung TTL mọi lớp; không gộp xóa DB với file, không đổi quyền nghe tiếp khách. |
 
-**Cập nhật DATA-02/DATA-03:** backup cục bộ tách dữ liệu chạy, không bắt ổ ngoài/ngoài laptop hoặc cứu mất/hỏng toàn máy. DATA-03 đã chốt phạm vi DB + WAV/MP3 tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema. **Còn thiết kế/chưa đo đạt:** path/quyền/công cụ/bảo vệ/checkpoint nhất quán/kiểm restore và RPO-RTO; chi tiết log còn mở theo DATA-01. Không tự đặt downtime hoặc kéo dài mốc giữ/xóa đã chốt.
+**Bổ sung DATA-02/DATA-03:** backup cục bộ tách dữ liệu chạy, gồm DB + WAV/MP3 tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema. Công cụ backup/restore đã được kiểm trong môi trường riêng; quyền, lịch chạy và RPO/RTO của môi trường phục vụ chưa nghiệm thu. Không tự kéo dài mốc giữ/xóa.
 
 <a id="g03"></a>
 
@@ -299,13 +245,13 @@ Nguồn ngrok chính thức kiểm 03/11: [dev domain gắn tài khoản, không
 - Người vận hành trực tiếp tích/sửa/đóng issue hoặc thay đổi Project. Khi local và issue khác nhau, cần đối chiếu nội dung và chuẩn bị phần cập nhật; công cụ hỗ trợ không tự thay đổi GitHub.
 - Không suy tên người G02 thành GitHub username hoặc người đã thực hiện.
 
-**Lịch:** giữ mốc mục tiêu dự án 17/11, không phải hạn nộp chính thức; lập lịch theo công việc, phân công G02, phụ thuộc, kết quả và dự phòng. Quỹ giờ từng thành viên cần được xác nhận khi theo dõi tiến độ; lịch dự kiến không là bằng chứng công việc đã hoàn thành. Không cần hỏi lại tổng quát quỹ giờ để viết TDD, không ghi tương lai đã hoàn thành. [Roadmap 0.5](../01-tong-quan/roadmap.md#target-1711) ghi lịch dự kiến và đối chiếu GitHub chỉ đọc.
+**Theo dõi tiến độ:** [Roadmap](../01-tong-quan/roadmap.md) giữ checklist và trạng thái có bằng chứng. Lịch mục tiêu không là xác nhận hoàn thành.
 
 <a id="tech-04"></a>
 
 ### 3.11. TECH-04 — Hướng kiến trúc, phiên tab và audio tải trọn
 
-**Đã xác nhận ngày 03/11/2026**, nguồn [8.1.15](../99-luu-tru/decisions-history.md#tech-04-source); bổ sung TECH-01–03/D04/P01/UI-02, không mở lại nghiệp vụ.
+**Đã xác nhận ngày 03/11/2026**, nguồn [8.1.15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/decisions-history.md#tech-04-source); bổ sung TECH-01–03/D04/P01/UI-02, không mở lại nghiệp vụ.
 
 | Phần | Hướng đã xác nhận | Phạm vi chưa được duyệt/kiểm |
 | --- | --- | --- |
@@ -326,15 +272,15 @@ Nguồn ngrok chính thức kiểm 03/11: [dev domain gắn tài khoản, không
 
 - Giữ DATA-01: mỗi bản bảy ngày từ tạo, bảo vệ/dọn đúng hạn, restore vào môi trường riêng, lọc phiên/lượt quá hạn theo mốc gốc trước phục vụ; chấp nhận phần lưu thêm gần 37 ngày đã chốt.
 - Mục tiêu là phục hồi lỗi thao tác/triển khai khi còn bản sao; **không đặt mục tiêu khôi phục mất/hỏng toàn bộ laptop**. Tách thư mục/volume không trở thành bản sao ở máy khác.
-- Trạng thái tại lần chốt DATA-02: nhịp/phạm vi từng để đề xuất trong TDD; **nay DATA-03 đã xác nhận riêng**. Công cụ/path/checkpoint/quyền/cách kiểm còn thiết kế, RPO/RTO chưa đo đạt/không tự cam kết.
+- Trạng thái tại lần chốt DATA-02: nhịp/phạm vi từng để đề xuất trong TDD; **nay DATA-03 đã xác nhận riêng**. Công cụ/checkpoint đã được kiểm riêng; quyền/lịch vận hành và RPO/RTO trên môi trường phục vụ còn chờ nghiệm thu.
 - Các phương án lưu mã hóa ở thiết bị khác của technical-inputs 0.1 chỉ còn là lựa chọn ngoài phạm vi bắt buộc, không điều kiện chặn TDD/nghiệm thu phiên bản nghiệm thu.
-- Phạm vi DB + WAV/MP3 đang tham chiếu + manifest và nhịp cuối ngày có thay đổi/trước deploy-schema nay **đã được DATA-03 xác nhận riêng**; công cụ/path/cách nhất quán/kiểm restore còn thiết kế, không còn hỏi chọn lại phạm vi/nhịp.
+- Phạm vi DB + WAV/MP3 đang tham chiếu + manifest và nhịp cuối ngày có thay đổi/trước deploy-schema nay **đã được DATA-03 xác nhận riêng**; công cụ nhất quán/restore đã được kiểm riêng, lịch và quyền ở môi trường phục vụ còn chờ nghiệm thu.
 
 <a id="tech-05"></a>
 
 ### 3.13. TECH-05 — CD-L01 đã chọn, chưa kiểm chứng
 
-**Đã xác nhận ngày 03/11/2026**, căn cứ [8.1.16](../99-luu-tru/decisions-history.md#tech-05-source).
+**Đã xác nhận ngày 03/11/2026**, căn cứ [8.1.16](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/decisions-history.md#tech-05-source).
 
 - Chọn Tailscale **mạng riêng** kết hợp OpenSSH trên **Windows** để GitHub Actions triển khai qua PowerShell vào laptop.
 - Ngrok tiếp tục cho khách/Admin truy cập website công khai; không dùng lại Funnel làm đường công khai. URL web không là quyền triển khai.
@@ -353,15 +299,15 @@ Nguồn ngrok chính thức kiểm 03/11: [dev domain gắn tài khoản, không
 - Lưu **cục bộ, tách dữ liệu đang phục vụ**; không bổ sung yêu cầu ngoài laptop hoặc phục hồi mất/hỏng toàn laptop.
 - Giữ từng bản **bảy ngày**; bảo vệ/dọn đúng hạn. Restore vào môi trường riêng và lọc phiên/lượt quá hạn theo timestamp gốc **trước đưa vào phục vụ**; giữ phần lưu thêm backup đã chốt DATA-01.
 - Sửa ví dụ: phục hồi B **khi B vẫn còn trong hạn bảy ngày**, nhưng một phiên/lượt trong B đã quá hạn theo mốc gốc; không dùng câu “một tuần sau phục hồi B” dễ vượt hạn bản sao.
-- Công cụ/path/quyền/bảo vệ/cách lấy DB-file nhất quán và kiểm restore còn thiết kế; RPO/RTO chưa đo đạt/không tự cam kết. Không phê duyệt ngầm downtime hoặc thao tác restore ghi đè hệ thống đang chạy.
+- Công cụ lấy DB–file nhất quán và restore đã được kiểm riêng; quyền/bảo vệ/lịch vận hành và RPO/RTO chưa nghiệm thu ở môi trường phục vụ. Không phê duyệt ngầm downtime hoặc thao tác restore ghi đè hệ thống đang chạy.
 
 <a id="data-04"></a>
 
 ### 3.15. DATA-04 — Vòng đời metadata, phục hồi và backup tạm ngừng phục vụ
 
-**Đã xác nhận ngày 04/11/2026**, căn cứ [8.1.17](../99-luu-tru/decisions-history.md#data-04-source). Giữ mã LIFE-P01–P03/REC-P01 để truy vết; **BKP-P02** là mã cho hướng backup mới thay BKP-P01 online, không thêm phạm vi sao lưu.
+**Đã xác nhận ngày 04/11/2026**, căn cứ [8.1.17](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/decisions-history.md#data-04-source). Giữ mã LIFE-P01–P03/REC-P01 để truy vết; **BKP-P02** là mã cho hướng backup mới thay BKP-P01 online, không thêm phạm vi sao lưu.
 
-- **LIFE-P01 — phạm vi tại lần DATA-04:** khi đó chỉ chốt hướng đơn giản, chưa context/10 phút; phương án ticket/generation chỉ đề xuất. **Nay DATA-05 chốt riêng vé ký 24 giờ, bỏ generation**, tra [3.16 hiện hành](#data-05); dấu vết trước xác nhận giữ 7.13 và data-model-history. Không mở lại P02/P03/REC/BKP-P02.
+- **LIFE-P01:** vé ký 24 giờ theo DATA-05, thay generation/context/10 phút; xem [3.16](#data-05).
 <a id="life-p02"></a>
 
 - **LIFE-P02 — đã duyệt:** cửa sổ tra lại/chống xử lý lặp lệnh Admin **24 giờ từ cấp**. Hết cửa sổ không tự thực hiện lại lệnh cũ; đối chiếu trạng thái thực trước thao tác tiếp. Không đổi thời hạn đăng nhập Admin, không tự gia hạn window khi login lại.
@@ -373,7 +319,7 @@ Nguồn ngrok chính thức kiểm 03/11: [dev domain gắn tài khoản, không
 - **REC-P01 — đã duyệt:** sau restore backup thật thu hồi quyền truy cập và window cũ trước mở phục vụ; khách xác nhận Bắt đầu phiên mới, Admin login/đối chiếu. Giữ lịch sử còn hạn và timestamp gốc, không endedAt giả/auto tạo phiên. Không áp vào deploy/restart thường, không tuyên bố xóa tức thì text/Blob đã tải. Người dùng hiểu dữ liệu đổi sau snapshot có thể mất.
 <a id="bkp-p02"></a>
 
-- **BKP-P02 — hướng đã chọn:** backup ngoài trình diễn, cuối ngày có thay đổi/trước deploy-schema theo DATA-03; chấp nhận tạm ngừng phục vụ, chưa thời lượng khi chưa đo. Thiết kế dừng app/ghi/dọn có kiểm soát, **MySQL còn chạy**, lấy DB/audio khớp; không tự gửi lại TTS, làm mất việc đã nhận hoặc đặt lại hạn phiên. Không MySQL tạm mỗi backup chỉ để catalog; restore thử vẫn môi trường riêng. Phạm vi/gói bảy ngày/lọc mốc gốc giữ nguyên. [Operations 3](../03-ky-thuat/operations-design.md#ops-backup) cụ thể hóa drain/job/checkpoint/mở lại còn dự thảo/chưa kiểm.
+- **BKP-P02 — hướng đã chọn:** backup ngoài trình diễn, cuối ngày có thay đổi/trước deploy-schema theo DATA-03; chấp nhận tạm ngừng phục vụ, chưa thời lượng khi chưa đo. Thiết kế dừng app/ghi/dọn có kiểm soát, **MySQL còn chạy**, lấy DB/audio khớp; không tự gửi lại TTS, làm mất việc đã nhận hoặc đặt lại hạn phiên. Không MySQL tạm mỗi backup chỉ để catalog; restore thử vẫn môi trường riêng. Phạm vi/gói bảy ngày/lọc mốc gốc giữ nguyên. [Operations 3](../03-ky-thuat/operations-design.md#ops-backup) mô tả drain/job/checkpoint/mở lại; phạm vi đã kiểm riêng và phần còn thiếu ở báo cáo kiểm thử.
 - Xác nhận này không duyệt toàn TDD/API/mô hình, không bằng chứng backup/restore/tab/audio/SSH/Docker đã hoạt động. R06 và các phần mở khác không đóng theo gói.
 
 <a id="life-p01"></a>
@@ -382,7 +328,7 @@ Nguồn ngrok chính thức kiểm 03/11: [dev domain gắn tài khoản, không
 
 ### 3.16. DATA-05 / LIFE-P01 — Vé Bắt đầu có chữ ký, 24 giờ từ cấp
 
-**Đã xác nhận ngày 04/11/2026**, căn cứ [8.1.18](../99-luu-tru/decisions-history.md#data-05-source). Đây là vị trí chính LIFE-P01 hiện hành, thay đề xuất start_generation; giữ mã LIFE-P01 và mã API-K01/K11/TX-K01/TX-D01 để truy vết.
+**Đã xác nhận ngày 04/11/2026**, căn cứ [8.1.18](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/decisions-history.md#data-05-source). Đây là vị trí chính LIFE-P01 hiện hành, thay đề xuất start_generation; giữ mã LIFE-P01 và mã API-K01/K11/TX-K01/TX-D01 để truy vết.
 
 - Vé gắn requestId ngẫu nhiên và quyền của đúng tab, có chữ ký và hạn **24 giờ từ issuedAt**. Cấp/xử lý ở nền, không bước/màn hình/đồng hồ đếm ngược cho khách.
 - Bỏ bảng start context, hạn 10 phút và start_generation phối hợp dọn phiên. **Giữ service_epoch cho REC-P01**, không đổi Admin session/cookie sang JWT.
@@ -391,13 +337,12 @@ Nguồn ngrok chính thức kiểm 03/11: [dev domain gắn tài khoản, không
 - Không session tương ứng: chỉ tạo lần đầu bằng vé còn hạn; vé hết hạn từ chối. Dữ liệu chống lặp giữ cùng D08; khi session bị dọn, vé cũ đã hết 24 giờ nên không tạo lại từ request đó.
 - UI giữ đúng vé/requestId/quyền khi kết quả cũ chưa rõ, không tự cấp vé khác tạo phiên khác. Vé hết trước request đầu thì chuẩn bị vé mới nền, giữ tên/ngôn ngữ. Không xác định/tiếp tục được yêu cầu cũ: thông báo phù hợp, khách chủ động xác nhận lần mới; không khẳng định sai phiên đã hết hạn.
 - Hạn vé không thay guest 8 giờ/D08 30 ngày/window lệnh Admin 24 giờ/login Admin 30 phút. LIFE-P02/P03/REC-P01/BKP-P02 giữ xác nhận DATA-04.
-- Hướng đã chốt không đồng nghĩa toàn TDD/API/ERD được duyệt hoặc đã triển khai/kiểm. [Protocol hiện hành](../03-ky-thuat/operations-design.md#ops-start-simple), [ma trận và phạm vi kiểm chứng](../03-ky-thuat/operations-design.md#ops-start-checks), [chuẩn bị thực hành](../03-ky-thuat/practice-01-start-session.md).
+- Hướng đã chốt không đồng nghĩa toàn TDD/API/ERD được duyệt hoặc đã triển khai/kiểm. [Protocol hiện hành](../03-ky-thuat/operations-design.md#ops-start-simple), [ma trận và phạm vi kiểm chứng](../03-ky-thuat/operations-design.md#ops-start-checks), [chuẩn bị thực hành](../03-ky-thuat/TDD.md#tdd-layers).
 
 <a id="dec-4"></a>
 
 ## 4. Quyết định khách — D, BS và P
 
-**Căn cứ:** người dùng xác nhận D01–D03, rồi D01–D09/BS ngày 29/10/2026; cảnh báo, điều chỉnh vùng/phát và P01–P08 ngày 30/10/2026. Phạm vi đã được BF-K01 duyệt tổng thể; xem căn cứ theo lượt tại mục 8.1. Các bổ sung Admin chỉ thay giới hạn số điểm/thêm vùng theo A02, không mở lại quy tắc khách khác.
 
 <a id="d01"></a>
 
@@ -467,7 +412,7 @@ Nguồn ngrok chính thức kiểm 03/11: [dev domain gắn tài khoản, không
 
 <a id="d04-bs"></a>
 
-#### 4.4.1. D04-BS — Cảnh báo sắp hết hạn — ĐÃ CHỐT ngày 30/10/2026
+#### 4.4.1. D04-BS — Cảnh báo sắp hết hạn
 
 - Giữ hạn cố định 8 tiếng từ lúc bắt đầu; không gia hạn theo hoạt động.
 - Khi thời gian còn lại **trên 0 và bằng hoặc dưới 5 phút**, trong phiên còn hiệu lực, hiển thị: **“Phiên tham quan sẽ hết hạn trong vòng 5 phút”**.
@@ -507,19 +452,9 @@ Không lấy vị trí trực tiếp, không yêu cầu GPS hoặc quyền vị 
 
 - Tổng mục tiêu: **20 bản văn bản và 20 audio**, vi/en/fr/ru tại mỗi điểm.
 - Thứ tự thực hiện đã chốt: một điểm tiếng Việt → năm điểm tiếng Việt → bổ sung các ngôn ngữ còn lại. Không giảm phạm vi nghiệm thu.
-- **Trạng thái đầu vào ngày 06/11/2026:** đã báo cáo có năm bản nháp tiếng Việt. Chưa xác minh file lưu trong repository, nguồn, kết quả rà soát hoặc hồ sơ duyệt. T08 tiếp nhận bản lưu trước khi rà soát; không tự tái tạo hoặc coi nháp là nội dung đã duyệt.
-- Không tự tìm và coi một file bất kỳ trong repo tham khảo là năm bản người dùng muốn cung cấp; không tái tạo bài thay người dùng.
-- Không áp ngưỡng 100–150 từ từ gợi ý cũ như yêu cầu bắt buộc. **P05 đã chốt ngày 30/10/2026:** Tử Cấm Thành có một vùng tương tác và một bài tổng quan, không chia điểm con; không đổi phạm vi 20 văn bản/20 audio. Bài tổng quan chưa được cung cấp/duyệt/kiểm chứng.
-
-| Bản vi theo danh sách đã chọn | Tình trạng được ghi nhận từ người dùng |
-| --- | --- |
-| Cổng Ngọ Môn | Người dùng đã chuẩn bị bản nháp, chờ cung cấp và rà soát |
-| Điện Thái Hòa | Người dùng đã chuẩn bị bản nháp, chờ cung cấp và rà soát |
-| Tử Cấm Thành | Người dùng đã chuẩn bị bản nháp, chờ cung cấp và rà soát |
-| Cửu Đỉnh | Người dùng đã chuẩn bị bản nháp, chờ cung cấp và rà soát |
-| Cung Diên Thọ | Người dùng đã chuẩn bị bản nháp, chờ cung cấp và rà soát |
-
-Bảng trạng thái trên không đánh dấu bản vi nào đã được duyệt/kiểm chứng; chưa có bằng chứng về trạng thái hoàn thành bản dịch hoặc audio.
+- Đầu vào hiện hành: năm bài vi đã được tiếp nhận, 15 bản dịch nháp được lưu theo bundle v02. Bộ 20 cặp là mục tiêu nghiệm thu, không là mô tả dữ liệu đã duyệt.
+- Hiện có 15 audio được ghi nhận, gồm Ngọ Môn vi đã rà và 14 audio mới; thiếu năm audio ru. Rà nguồn, bản dịch, nghe trọn và hồ sơ D09 tiếp tục là điều kiện trước áp dụng; xem [ma trận nội dung](../05-noi-dung/doi-chieu-van-ban-audio.md).
+- Không áp ngưỡng 100–150 từ như tiêu chí bắt buộc. P05: Tử Cấm Thành chỉ có một vùng và một bài tổng quan, không chia điểm con hoặc giảm phạm vi 20 cặp.
 
 <a id="d07"></a>
 
@@ -577,7 +512,6 @@ Bảng trạng thái trên không đánh dấu bản vi nào đã được duy�
 
 ### 4.10. P01–P08 — Các tình huống đã chốt
 
-**Người xác nhận:** Người dùng. **Ngày xác nhận P01–P04/P06–P08:** 30/10/2026. P05 giữ xác nhận trước về một vùng/bài tổng quan Tử Cấm Thành. BF-K01 xác nhận tổng thể luồng khách và cách đếm; BF-A01 duyệt Admin riêng. Không duyệt theo các đề xuất cũ ngoài phạm vi hoặc ranh giới/giao diện/nội dung.
 
 | Mã | Tình huống | Nội dung ĐÃ CHỐT | Giới hạn / cách đối chiếu |
 | --- | --- | --- | --- |
@@ -592,9 +526,9 @@ Bảng trạng thái trên không đánh dấu bản vi nào đã được duy�
 
 <a id="ui-guest-confirmed"></a>
 
-### 4.11. UI-01 — Xác nhận hướng giao diện khách ngày 31/10/2026
+### 4.11. UI-01 — Xác nhận hướng giao diện khách
 
-**Đã chốt đúng các phần dưới đây.** Phạm vi UI-01 được xác nhận sau PRD-01; [căn cứ nguyên văn](../99-luu-tru/document-history.md#official-20261107-context-docs-02-nghiep-vu-decisions-md) được lưu để truy vết. Đối chiếu ui-design 0.1/PRD 0.4.1 và nguồn trước khi ghi nhận; không áp lại bản sửa đã hoàn tác. Xác nhận này không duyệt toàn bộ UI, UI-P01–UI-P04, nền/vị trí/ranh giới, bản dịch hoặc giải pháp kỹ thuật.
+**Đã chốt đúng các phần dưới đây.** Phạm vi UI-01 được xác nhận sau PRD-01; [căn cứ nguyên văn](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/document-history.md#official-20261107-context-docs-02-nghiep-vu-decisions-md) được lưu để truy vết. Đối chiếu ui-design 0.1/PRD 0.4.1 và nguồn trước khi ghi nhận; không áp lại bản sửa đã hoàn tác. Xác nhận này không duyệt toàn bộ UI, UI-P01–UI-P04, nền/vị trí/ranh giới, bản dịch hoặc giải pháp kỹ thuật.
 
 #### 4.11.1. UI-01.1 — Bố cục tham quan và phạm vi cuộn
 
@@ -613,7 +547,7 @@ Bảng trạng thái trên không đánh dấu bản vi nào đã được duy�
 - Bấm Nghe lại phát bài hiện tại từ đầu, nút thành Tạm dừng. Nếu đã hết bài rồi tua về trước cuối: tạm dừng ở mốc mới, nút thành Phát; Phát nghe từ đó.
 - Không thêm nút Nghe lại thứ hai, dòng “Đã phát hết”, popup hoặc dải kết thúc bài. Nút biểu tượng có tên chức năng cho công cụ đọc màn hình; không bắt buộc chữ thường trực.
 - P06 bấm lại vùng không đổi khi phiên còn hiệu lực; nghe lại/tua không cộng lượt. Hết hạn dùng P01 hiện hành/UI-02: chỉ pause/resume bài đang phát lúc mốc hết hạn, không tua/Nghe lại.
-- Tại lượt UI-01 chưa duyệt UI-P01/UI-P02 toàn bộ; xác nhận hiện hành ngày 01/11/2026 tại UI-02 đã chốt đúng các nhánh, giữ lịch sử tại mục 7.4.
+- UI-P01/UI-P02 áp dụng hành vi đã chốt tại UI-02, gồm Hủy chọn ứng viên và thanh tua khi còn quyền.
 
 #### 4.11.3. UI-01.3 — Ngôn ngữ chung và phản hồi
 
@@ -642,7 +576,7 @@ Bảng trạng thái trên không đánh dấu bản vi nào đã được duy�
 
 ### 4.12. UI-02 — Box khách và ngoại lệ nghe tiếp khi hết hạn — 01/11/2026
 
-**Đã chốt đúng các hành vi dưới đây.** UI-02 xác nhận thay đổi có chủ đích so với P01 cũ; [căn cứ nguyên văn](../99-luu-tru/document-history.md#official-20261107-context-docs-02-nghiep-vu-decisions-md) được lưu để truy vết. Giữ mã P01/UI-P01–UI-P04; UI-02 là mã bổ sung, không thay mã yêu cầu cũ. Phạm vi xác nhận không đồng nghĩa duyệt mọi chi tiết thiết kế, cách đóng chưa nêu, UI Admin, bản đồ, nội dung, TTS hoặc kỹ thuật.
+**Đã chốt đúng các hành vi dưới đây.** UI-02 xác nhận thay đổi có chủ đích so với P01 cũ; [căn cứ nguyên văn](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/document-history.md#official-20261107-context-docs-02-nghiep-vu-decisions-md) được lưu để truy vết. Giữ mã P01/UI-P01–UI-P04; UI-02 là mã bổ sung, không thay mã yêu cầu cũ. Phạm vi xác nhận không đồng nghĩa duyệt mọi chi tiết thiết kế, cách đóng chưa nêu, UI Admin, bản đồ, nội dung, TTS hoặc kỹ thuật.
 
 <a id="ui-p04"></a>
 
@@ -686,7 +620,7 @@ Bảng trạng thái trên không đánh dấu bản vi nào đã được duy�
 - Sau hết bài: tua về trước cuối thì tạm dừng ở mốc mới, nút thành Phát; Nghe lại từ đầu theo UI-P03 đã chốt.
 - Các nhánh này chỉ cho phiên còn hiệu lực; hết hạn chỉ pause/resume đúng bài đủ điều kiện 4.12.2, không tua/Nghe lại.
 
-#### 4.12.5. Phụ thuộc kỹ thuật — TECH-04 chọn full MP3, cơ chế còn dự thảo
+#### 4.12.5. Phụ thuộc kỹ thuật — tải trọn MP3 theo TECH-04
 
 TECH-04 chọn tải trọn MP3 trước phát và giữ cho tab, chỉ đúng bài đang phát tại mốc được pause/resume; đang tải/chưa phát/pause trước mốc hoặc phản hồi muộn không được grant. TDD hiện hành phải kiểm vòng đời Blob/hủy tải/reload/owner/tab nền, không tải thêm A1 từ server sau expiry. Giữ 8 giờ bảo vệ file, 8 giờ phiên/30 ngày/lượt gốc; không gia hạn file hoặc giữ vô hạn. Không phục hồi ngoại lệ sau reload/đóng tab, không thêm kho offline/nghe nền hoặc retry từ đầu sau expiry. Hướng được chọn không chứng minh browser thực đã đáp ứng, chưa full API/test hoặc TDD toàn bộ được duyệt.
 
@@ -694,7 +628,7 @@ TECH-04 chọn tải trọn MP3 trước phát và giữ cho tab, chỉ đúng b
 
 ## 5. Quyết định Admin — A và các mục con
 
-**Đã chốt ngày 30/10/2026, luồng Admin đã được duyệt tổng thể theo BF-A01.** Căn cứ theo lượt tại mục 8.1; giới hạn duyệt tại mục 3.2. A02.1 cụ thể hóa cơ chế xóa đã được chốt trước, không là cơ chế mới phải duyệt lại.
+**Luồng Admin áp dụng BF-A01 và A01–A07; A02.1 cụ thể hóa cơ chế xóa do ứng dụng điều phối, không tạo cơ chế xóa khác.
 
 <a id="a01"></a>
 
@@ -716,7 +650,7 @@ TECH-04 chọn tải trọn MP3 trước phát và giữ cho tab, chỉ đúng b
 
 #### 5.2.1. A02.1 — Xử lý dữ liệu riêng và giao dịch xóa
 
-**Trạng thái:** Đã được người dùng xác nhận ngày 30/10/2026; khôi phục cách trình bày ngày 31/10/2026. A02.1 chỉ cụ thể hóa quy trình xóa do ứng dụng điều phối đã chốt, không là cơ chế mới cần duyệt lại.
+**Trạng thái:** A02.1 là quy tắc đã chốt; việc xóa DB và dọn file là hai bước có điều kiện riêng.
 
 **Nội dung hiện hành:**
 
@@ -728,7 +662,6 @@ TECH-04 chọn tải trọn MP3 trước phát và giữ cho tab, chỉ đúng b
 6. Mọi thay đổi database trong quy trình nằm trong **một giao dịch: thành công toàn bộ hoặc hoàn tác**. Dọn file tách khỏi giao dịch database và chỉ thực hiện sau khi phần database thành công theo A02.3.
 7. Mục đích là bảo vệ toàn vẹn quan hệ, không tuyên bố ngăn mọi người có quyền database xóa dữ liệu.
 
-**Căn cứ đối chiếu:** [Business Flow mục 4.2](business-flow.md#bf-admin-delete), [A02](#a02), A02.2/A02.3/A04.4 và ghi nhận xác nhận “Tôi xác nhận các phương án Admin còn mở như dưới đây” tại mục 8.1. Dấu vết cách trình bày cũ được gom tại dòng A02.1 ở **mục 7.1**, không phải nội dung hiện hành.
 
 **Giới hạn / thiết kế sau:** Thứ tự xử lý theo quan hệ dữ liệu thực tế, cách lưu thông tin lịch sử, schema/lệnh và bằng chứng kiểm tra để bước kỹ thuật xác định; không thay đổi quy tắc đã duyệt hoặc tuyên bố đã thực hiện xóa/kiểm thử.
 
@@ -768,7 +701,6 @@ TECH-04 chọn tải trọn MP3 trước phát và giữ cho tab, chỉ đúng b
 
 #### 5.2.6. A02.6 — Hiệu lực sửa vùng
 
-**Người xác nhận:** Người dùng, ngày 30/10/2026. Thay trạng thái còn mở của A02.6; không mở lại A02.4/A02.5.
 
 - Khi sửa vùng của địa điểm đang hiển thị, giữ vùng hiện hành cho khách.
 - **“Lưu bản sửa” không đồng nghĩa “Áp dụng”.** Có bước xem trước, xem xét bản sửa rồi chủ động áp dụng; không cần duyệt nhiều cấp.
@@ -869,7 +801,7 @@ Gemini/model/Charon theo TTS-01, nền TECH-01; IN-P03 đã chọn WAV/MP3/FFmpe
 
 ### 5.8. Q1–Q3 — Xác nhận bổ sung hiện hành
 
-**Đã xác nhận ngày 31/10/2026.** Q1–Q3 tại PRD 0.3 được phê duyệt trong phạm vi mô tả, có [căn cứ nguyên văn](../99-luu-tru/document-history.md#official-20261107-context-docs-02-nghiep-vu-decisions-md). Nội dung hiện hành thay phần đề xuất Q1–Q3, không thay các quyết định D/P/A/G/BF khác.
+**Đã xác nhận ngày 31/10/2026.** Q1–Q3 tại PRD 0.3 được phê duyệt trong phạm vi mô tả, có [căn cứ nguyên văn](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/document-history.md#official-20261107-context-docs-02-nghiep-vu-decisions-md). Nội dung hiện hành thay phần đề xuất Q1–Q3, không thay các quyết định D/P/A/G/BF khác.
 
 Q1–Q3 giữ mã dùng khi phân tích để truy vết; là xác nhận bổ sung liên kết các quyết định cha, không tạo lại cơ chế xóa hoặc mô hình phiên Admin. **Tại thời điểm xác nhận Q1–Q3, chỉ ba nội dung này được duyệt; phạm vi PRD nay đã được xác nhận riêng theo PRD-01.** Bản đề xuất 0.3 được lưu nguyên tại mục 7.3 để tra lịch sử, không áp dụng như bộ yêu cầu song song.
 
@@ -975,7 +907,6 @@ Q1–Q3 giữ mã dùng khi phân tích để truy vết; là xác nhận bổ s
 
 ### 5.9. UI-03 — Xác nhận hướng UI Admin lượt 1 — 02/11/2026
 
-**Người xác nhận:** Người dùng. **Căn cứ:** yêu cầu “Tôi đã xem đánh giá về UI Admin lượt 1…”; đã đọc bản thực tế UI 0.4, PRD 0.6, Business Flow/decisions/mục lục trước cập nhật. Giữ UI-AP01–UI-AP03 để truy vết; dùng UI-03 làm mã xác nhận tiếp sau UI-01/UI-02, không trùng mã nghiệp vụ A hoặc mã màn hình UI-A.
 
 **Liên kết:** A01, A02.4/A02.5/A02.6, Q1/Q2/Q3; vị trí thiết kế hiện hành [ui-design mục 9](../04-giao-dien/ui-design.md#ui-admin-round1).
 
@@ -1053,14 +984,13 @@ Hết phiên Admin thì **dừng audio nghe thử, che nội dung, yêu cầu đ
 
 Chỉ UI-AP04/UI-AP05/UI-AP07 và UI-AP06 thay thế nêu trên được chốt. Không duyệt toàn bộ đồ họa/câu chữ, UI Admin lượt 3, lịch sử/bản dịch/audio cụ thể, TTS/công nghệ/chi phí hoặc kết quả phần mềm. Nội dung chưa được duyệt không tự trở thành được duyệt do áp dụng quy trình.
 
-Nguồn này thay phần A02.5/A03/A04.3/Q1 còn cho bật hiện chỉ cần văn bản vi hoặc áp dụng văn bản trước audio; dấu vết tại [7.6](../99-luu-tru/decisions-history.md#ui-04-history). PRD hiện hành đồng bộ BR/DR/FR/UC/AC/NFR theo UI-04; tại thời điểm UI-04 lượt 3 còn đề xuất; hiện hành theo UI-05 ở mục 5.11, không được UI-04 duyệt ngầm.
+Nguồn này thay phần A02.5/A03/A04.3/Q1 còn cho bật hiện chỉ cần văn bản vi hoặc áp dụng văn bản trước audio; dấu vết tại [7.6](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/decisions-history.md#ui-04-history). PRD hiện hành đồng bộ BR/DR/FR/UC/AC/NFR theo UI-04; tại thời điểm UI-04 lượt 3 còn đề xuất; hiện hành theo UI-05 ở mục 5.11, không được UI-04 duyệt ngầm.
 
 
 <a id="ui-admin-confirmed-03"></a>
 
 ### 5.11. UI-05 — Xác nhận hướng UI Admin lượt 3 — 02/11/2026
 
-**Người xác nhận:** Người dùng, yêu cầu “Tôi xác nhận các phương án UI Admin lượt 3 dưới đây…”. Đã đọc docs/README và bản thực tế Business Flow/decisions/PRD 0.7/prd-review/UI 0.6 trước ghi. Giữ UI-AP08–UI-AP10 và UI-A20–UI-A23; UI-05 là mã xác nhận tiếp theo, không đổi mã FR/UC/AC.
 
 #### 5.11.1. UI-AP08 — Danh sách phiên và box UI-A21 chỉ đọc
 
@@ -1089,56 +1019,25 @@ Nguồn này thay phần A02.5/A03/A04.3/Q1 còn cho bật hiện chỉ cần v�
 
 Chỉ các hướng trên được chốt; không duyệt toàn bộ đồ họa/câu chữ, nền/vị trí/ranh giới, nội dung/bản dịch/audio, TTS/công nghệ hoặc bằng chứng phần mềm. Không đóng toàn bộ R06; giữ UI-01–UI-04, phiên/đếm/thời hạn/cặp/gate và hồ sơ đã chốt. Nguồn liên quan A05/A06/D04/D08/A02.2, FR-A10/A11, UC-A07/A08, AC-A22–A24.
 
-Bản chi tiết trang riêng và trạng thái đề xuất trước UI-05 được lưu tại [7.7](../99-luu-tru/decisions-history.md#ui-05-history), không áp dụng như nguồn hiện hành. Công việc chuẩn bị TDD xem [ui-design mục 12](../04-giao-dien/ui-design.md#ui-next-technical); đó là tổng hợp phụ thuộc, chưa là TDD/roadmap hoặc ủy quyền thao tác kỹ thuật.
+Bản chi tiết trang riêng và trạng thái đề xuất trước UI-05 được lưu tại [7.7](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/99-luu-tru/decisions-history.md#ui-05-history), không áp dụng như nguồn hiện hành. Công việc chuẩn bị TDD xem [ui-design mục 12](../04-giao-dien/ui-design.md#ui-next-technical); đó là tổng hợp phụ thuộc, chưa là TDD/roadmap hoặc ủy quyền thao tác kỹ thuật.
 
 <a id="dec-6"></a>
 
-## 6. Điểm còn mở — thiết kế, nội dung và cách chứng minh
+## 6. Phần còn mở và điều kiện nghiệm thu
 
-**Công nghệ nền/đầu vào/model-giọng và mốc phiên bản đã chốt theo TECH-01–05/TTS-01; ngrok là phương án thử, tương thích và vận hành còn kiểm. A02.6 và Q1–Q3 đã chốt; không yêu cầu duyệt lại các nội dung đó.** Ba chi tiết về thông tin địa điểm, phạm vi giữ tạm và hoạt động Admin không còn là câu hỏi mở; chỉ các phụ thuộc còn lại dưới đây cần thiết kế/xem xét. Các mục sau chưa được duyệt theo xác nhận nghiệp vụ; không dùng một phương án cũ chưa được nêu rõ như yêu cầu hiện hành.
+Nghiệp vụ D/A/Q/UI/TECH/DATA ở trên giữ nguyên phạm vi. Mã đã triển khai hoặc kiểm tự động đạt không thay phê duyệt D09 và nghiệm thu môi trường phục vụ.
 
-| Chủ đề | Phần chưa chốt / chờ thực hiện | Ranh giới đã chốt cần giữ |
-| --- | --- | --- |
-| Bản đồ/vùng | Nền/vị trí/ranh giới năm vùng đề xuất cần xem xét; hướng vẽ/xem trước Admin đã chốt UI-03, chi tiết đồ họa/câu chữ/cách kiểm tra hình còn thiết kế; thiết kế chi tiết box ứng viên UI-P01 đã chốt hành vi Hủy/nền khóa; các cách đóng khác chưa nêu không được duyệt ngầm; ngưỡng phân biệt chạm với kéo/phóng. | A02.4/A02.6 chốt khả năng vẽ/sửa và Lưu khác Áp dụng; P07/P08 chốt không kích hoạt nhầm, hỏi ứng viên, dễ phân biệt và ưu tiên lựa chọn mới nhất. Leaflet/Geoman miễn phí đã chọn theo TECH-01; nền/vị trí/ranh giới và khả năng thực tế chưa xác minh. |
-| Giao diện Admin | UI-03–UI-05 chốt đúng hướng lượt 1–3/UI-AP01–UI-AP10; chi tiết chưa nêu/đồ họa/câu chữ cụ thể chưa duyệt. | UI-04 thay A02.5/A03/A04.3 đúng phần: chỉ áp dụng cặp, gate cặp vi, hồ sơ cặp; hết phiên Admin dừng nghe thử. Không coi tạo audio/ghi tham chiếu là duyệt/áp dụng hoặc chứng minh phần mềm. |
-| Giao diện khách | Bố cục khung/box cuộn và một nút ba trạng thái đã chốt theo UI-01; kích thước/đồ họa/câu chữ/bản dịch và thiết kế cụ thể chưa được duyệt; UI-P01/UI-P02/UI-P04 đã chốt hành vi tại 4.12, thiết kế/ảnh cụ thể và chuyển tiếp ngôn ngữ vẫn xem xét riêng. | Không đổi tên 1–50 ký tự hiển thị, thanh tua, điều khiển Phát/Tạm dừng và quy tắc audio. Câu cảnh báo D04-BS và câu không thể tiếp tục P02 đã chốt nguyên văn. |
-| TTS và giới hạn kỹ thuật | TTS-01 chọn model/Charon; IN-P03 chọn WAV nguồn/MP3 khách/FFmpeg-Linux. Quota thực, chi phí nếu trả phí, bitrate/ngưỡng và chất lượng/tích hợp vi/en/fr/ru chưa kiểm chứng/chốt. | A04/D09/D06 giữ nguyên; TDD hiện hành vẫn là dự thảo, không duyệt 20 cặp. |
-| Nội dung/hồ sơ | Năm bản nháp vi đã được báo cáo là có; chờ xác minh bản lưu, rà soát nguồn, bản dịch, nghe trọn audio và duyệt từng bản. Mã phiên bản/mẫu hồ sơ cụ thể còn chuẩn bị; UI-AP05 đã chốt tham chiếu riêng trong hồ sơ cặp, không bắt nhập lại người/ngày nếu hồ sơ đã có. | D09 và A03 yêu cầu đối chiếu hồ sơ và tham chiếu phù hợp; không cần phần mềm tự biết phê duyệt bên ngoài, không dùng AI/dịch ngược làm thẩm định chuyên gia. Không áp độ dài gợi ý cũ 100–150 từ. |
-| Phiên, dữ liệu và vận hành | Nhận biết/nhân bản/khôi phục tab, mốc nghe, ký tự hiển thị, tab nền, chống ghi lượt lặp, cơ chế kỹ thuật giữ tạm theo Q2, ghi nhận hoạt động theo Q3, tự xóa và độ trễ tác vụ. | D04/P03/P04/D08, A01/A06 và Q1–Q3 đã chốt hành vi, trường thông tin và thời hạn; cách thực hiện thuộc TDD. Không chuyển mô hình khách về hết hạn do không hoạt động. |
-| File và truy cập nội dung đã tải | TECH-04 chọn tải trọn MP3 giữ riêng tab trước phát; đủ điều kiện hết hạn nghe tiếp từ dữ liệu đó, không cần tải file cũ từ server. Blob/vòng đời/hủy tải/late result và tab/browser cần kiểm trong TDD. | Không đổi 8 giờ A02.3 hoặc cấp quyền cho bài pause/đang tải trước expiry; reload/đóng tab không phục hồi ngoại lệ. Backend vẫn kiểm quyền khi tải, dữ liệu file không trong DB transaction. |
-| Log/bản sao lưu và QR | DATA-01 đã chốt hạn log/backup/restore/phần file; DATA-02 cho backup cục bộ, không bắt buộc ổ ngoài; DATA-03 đã chốt phạm vi/nhịp backup; path/quyền/công cụ/cách nhất quán/RPO-RTO còn mở. IN-P04 chọn thử ngrok; URL thật/thư viện/kiểm QR thực còn làm. | D08 không tự xóa mọi bản sao; backup có đuôi gần 37 ngày được chấp nhận riêng. A05 chỉ một QR/URL dự phòng, không chuyển hướng/đếm quét. |
-| Đặc tả và nghiệm thu | [PRD.md](PRD.md) 0.4.1 được duyệt phần yêu cầu đã rõ theo PRD-01; chỉ ngưỡng phi chức năng/môi trường và các phần còn mở ở mục 6/9 tiếp tục được xem xét riêng. | Không biến yêu cầu đã chốt thành bằng chứng phần mềm đã đáp ứng; không lấy giá trị tùy ý làm điều kiện bắt buộc. |
+| Nhóm | Phần cần hoàn tất | Nguồn kiểm soát |
+|---|---|---|
+| Nội dung/audio | Tạo năm audio ru khi đủ quota; nghe trọn 14 audio mới, rà phát âm Thái Hòa fr, nguồn/bản dịch và hồ sơ từng cặp trước áp dụng. | D06/D09, ma trận nội dung |
+| Vùng/giao diện | Vùng tương tác phục vụ UX, không là ranh giới pháp lý; kiểm dữ liệu áp dụng thực và đầy đủ luồng chồng lấn/chạm/kéo/phóng, Q2/Q3, thiếu nội dung. | P06–P08, UI, báo cáo kiểm |
+| Thiết bị | Android/iPhone đã có báo cáo chạy được; còn ghi model/OS/browser/mạng và đủ ma trận ngoại lệ, tab nền, reload/hết hạn/audio. | IN-P02, T09 |
+| Vận hành | V14/gate/backup/restore đã diễn tập riêng; còn nâng bản phục vụ có kiểm soát, owner sau crash đủ căn cứ, quyền/lịch backup-log/retention và RPO/RTO. | DATA-01–05, operations-design |
+| CD | Tailscale/OpenSSH/PowerShell, quyền Docker Desktop, deploy/health/rollback và bằng chứng workflow trên máy đích chưa nghiệm thu. | TECH-05, T10 |
+| Hồ sơ | Đối chiếu toàn bộ checklist và tài liệu với bằng chứng; không tích cả ô khi mới đạt một phần. | Roadmap, T11 |
 
-Xác nhận hiện hành TECH-01–05/DATA-01–05/G03 đúng phạm vi; [đầu vào](../01-tong-quan/technical-inputs.md#new-choices) và [operations](../03-ky-thuat/operations-design.md#ops-open) giữ phần chưa kiểm. LIFE-P01/P02/P03/REC/backup stop đã chốt đúng phần, không hỏi lại hoặc đóng R06 theo gói.
-
-**Giới hạn phạm vi tiếp tục giữ:** chưa cần lịch sử phiên bản phức tạp, không tự dịch, không offline/gửi bù, GPS, đồng bộ phiên/audio giữa tab/thiết bị, lịch sử nghe lâu dài hoặc QR riêng. Không suy ra quản lý thêm ngôn ngữ từ khả năng thêm điểm. Việc phân tích Admin đã hoàn tất và được duyệt về nghiệp vụ; phần thiết kế triển khai vẫn riêng.
-
-Có thể chuẩn bị kịch bản điểm minh họa CRUD/audio riêng để không làm mất bộ chuẩn khi trình diễn; đây là khuyến nghị tổ chức minh chứng, không tự tăng yêu cầu nội dung. Đưa điểm mới ra khách vẫn cần đủ A02.5.
-
-**Hiện hành DATA-05/DATA-04:** LIFE-P01 vé ký 24 giờ/lookup ledger và P02/P03/REC/BKP-P02 đã duyệt đúng phần. Không start_generation/context/10 phút. Mô hình/API/operations/thực hành 01 vẫn thiết kế/hướng dẫn dự thảo; các cổng runtime/UNIQUE/tab/audio/backup/SSH chưa kiểm.
+Phân biệt ba nguồn: đặc tả quy định hành vi; mã/migration thể hiện triển khai; báo cáo ghi phép kiểm đã thực chạy. [Bàn giao](../01-tong-quan/handoff.md) và [báo cáo kiểm thử](../06-kiem-thu/README.md) tổng hợp trạng thái mới nhất; nhật ký nguyên bản không là trạng thái hiện hành.
 
 <a id="dec-7"></a>
-
-## 7. Lịch sử phương án bị thay thế
-
-Đọc [phương án và dấu vết thay thế](../99-luu-tru/decisions-history.md#dec-7); chỉ mục 3–6 ở file này là nguồn quyết định hiện hành. Không áp lại context/10 phút/start_generation, backup online hoặc áp dụng riêng văn bản/audio.
-
 <a id="dec-8"></a>
-
-## 8. Căn cứ, ràng buộc cộng tác và nhật ký
-
-[Căn cứ xác nhận theo từng lượt](../99-luu-tru/decisions-history.md#dec-8), [nguồn tham khảo](../99-luu-tru/decisions-history.md#dec-sources) và [nhật ký đầy đủ](../99-luu-tru/decisions-history.md#dec-history) được giữ nguyên trong lưu trữ. Căn cứ chỉ ở lưu trữ không mất hiệu lực của quyết định đã ghi ở mục 3–5.
-
-### Ràng buộc cộng tác tiếp tục áp dụng
-
-- Quyền thực hiện và quy trình hướng dẫn có một vị trí chính tại [handoff mục 7](../01-tong-quan/handoff.md#guidance-protocol), cập nhật theo yêu cầu người dùng ngày 05/11/2026; thay quy tắc cũ về người trực tiếp sửa code/cấu hình, không thay các yêu cầu nghiệp vụ trong file này.
-- Không sửa/xóa/reset/di chuyển demo hoặc tự sao chép code, dữ liệu, secret, database và lịch sử Git.
-- Không ghi dữ liệu nhạy cảm; không tuyên bố nội dung hoặc phần mềm đã kiểm chứng khi chưa có bằng chứng.
-
 <a id="dec-history"></a>
-
-### Nhật ký biên tập
-
-
-
-Nhật ký theo thời điểm được giữ nguyên trong [hồ sơ biên tập](../99-luu-tru/document-history.md#official-20261107-02-nghiep-vu-decisions-journal). Phần hiện hành không thay thế kết quả hoặc căn cứ lịch sử.
