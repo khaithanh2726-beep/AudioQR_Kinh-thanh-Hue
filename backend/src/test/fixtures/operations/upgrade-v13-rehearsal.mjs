@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process'
 import { readFile, writeFile } from 'node:fs/promises'
 import { resolve, join } from 'node:path'
 import { createHash, randomBytes, randomUUID } from 'node:crypto'
+import { parseRuntimeEnv } from '../../../../../deploy/runtime-env.mjs'
 
 // Chỉ nâng bản restore riêng đã được kiểm, không nhận runtime phục vụ gốc.
 const [directoryArg, candidate] = process.argv.slice(2)
@@ -20,7 +21,7 @@ const docker = (args, input, env = process.env) => execFileSync('docker', args, 
 const sql = query => docker(['exec', '-i', runtime.database, 'sh', '-c',
   'MYSQL_PWD="$MYSQL_PASSWORD" exec mysql -u hueqr --default-character-set=utf8mb4 -N -B hueqr'], query)
 const originalConfig = await readFile(runtime.configPath, 'utf8')
-const settings = Object.fromEntries(originalConfig.trim().split('\n').map(line => { const i = line.indexOf('='); return [line.slice(0, i), line.slice(i + 1)] }))
+const settings = parseRuntimeEnv(originalConfig)
 for (const name of ['HUEQR_TTS_ENABLED', 'HUEQR_TTS_LOCAL_ENABLED', 'HUEQR_CLEANUP_ENABLED', 'HUEQR_RETENTION_ENABLED']) assert.equal(settings[name], 'false')
 const compose = (args, config = settings) => docker(['compose', '-p', runtime.project, '--env-file', runtime.configPath,
   '-f', join(root, 'deploy/compose.yaml'), '-f', join(directory, 'limits.yaml'), ...args], undefined, { ...process.env, ...config })
