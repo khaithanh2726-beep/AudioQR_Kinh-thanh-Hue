@@ -284,7 +284,7 @@ Không cố định thông số gói miễn phí vào tiêu chí nghiệp vụ. 
 
 - Chọn Tailscale **mạng riêng** kết hợp OpenSSH trên **Windows** để GitHub Actions triển khai qua PowerShell vào laptop.
 - Ngrok tiếp tục cho khách/Admin truy cập website công khai; không dùng lại Funnel làm đường công khai. URL web không là quyền triển khai.
-- **Cổng kiểm trước triển khai đầy đủ:** kiểm SSH qua mạng riêng và quyền/context truy cập Docker Desktop của tài khoản triển khai, kể cả engine có đang chạy. Chưa có kết quả, không coi đã hoạt động.
+- **Cổng kiểm trước triển khai đầy đủ:** SSH qua mạng riêng bằng khóa/host key đã ghim và Docker context của đúng tài khoản đã kiểm; SFTP/receiver riêng đạt. Còn lượt GitHub runner thật sau khi cấp OAuth/secrets; không dùng kết quả kiểm riêng thay CD toàn tuyến.
 - Giữ một Backend/ba lớp, source frontend/backend riêng và Vue build cùng Spring Boot theo TECH-04. Chưa chọn credential/path/port/workflow cụ thể hoặc cấp quyền cài đặt/cấu hình.
 - Kênh đã chọn không đồng nghĩa toàn TDD/API/ERD được duyệt, CI xanh không là bằng chứng CD; bảo toàn DB/audio và xử lý deploy lỗi theo thiết kế được kiểm sau này.
 

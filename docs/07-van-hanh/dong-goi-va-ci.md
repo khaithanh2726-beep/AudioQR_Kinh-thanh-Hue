@@ -57,8 +57,46 @@ node deploy/check-host.mjs
 node deploy/check-host.mjs --require-cd
 ```
 
-Công cụ báo Node, Docker/Compose, Linux Engine và trạng thái dịch vụ Windows OpenSSH/Tailscale; không cài, đăng nhập, mở cổng hoặc khởi động dịch vụ. Cờ `--require-cd` trả mã lỗi khi thiếu điều kiện máy. Kết quả dịch vụ đang chạy chưa chứng minh SSH qua mạng riêng, quyền Docker của tài khoản SSH hoặc triển khai từ pipeline. Lượt kiểm mới nhất: Linux Engine dùng được; Tailscale đã online, OpenSSH Server chưa sẵn sàng. CD tiếp tục chờ SSH/key/host verification và quyền Docker trên máy đích.
+Công cụ báo Node, Docker/Compose, Linux Engine và trạng thái dịch vụ Windows OpenSSH/Tailscale; không cài, đăng nhập, mở cổng hoặc khởi động dịch vụ. Cờ `--require-cd` trả mã lỗi khi thiếu điều kiện máy. Trường kiểm từ xa của công cụ chỉ đọc không thay kết quả diễn tập riêng. Máy đích đã có Tailscale/OpenSSH chạy; đăng nhập bằng khóa, ghim host key, Docker context qua SSH và SFTP/receiver trên restore riêng đã đạt. Chưa có lượt deploy thật từ GitHub runner.
 
 Đường CD đã chọn là GitHub Actions qua Tailscale riêng đến OpenSSH trên Windows, chạy PowerShell với context Docker Desktop của tài khoản triển khai. Cần cấu hình danh tính Tailscale, máy đích, SSH host key, khóa SSH, tài khoản và thư mục triển khai trước khi tạo bước phát hành thực thi.
 
 Các phép kiểm bắt buộc gồm SSH vào đúng máy, chạy được Docker/Compose dưới đúng tài khoản, giữ volume qua cập nhật ảnh, đổi phiên bản có thể quay lại và URL HTTPS truy cập được từ thiết bị ngoài mạng. Kết quả các phép kiểm được bổ sung khi môi trường đích được cấp.
+
+### Chuẩn bị máy và tài khoản runner
+
+Kho riêng ở `%USERPROFILE%/AudioQR-CD` có ACL cho tài khoản triển khai/SYSTEM, gồm `config.json`, cặp khóa `actions_ed25519`, host key công khai, inbox và backup. `config.json` ghi đường dẫn Node, runtime hiện hành, backupRoot, tài khoản SSH và địa chỉ Tailscale; không đưa vào repository. Khóa riêng chỉ lưu trong kho riêng/GitHub Secrets, không chép vào source hoặc artifact.
+
+Khởi tạo dưới đúng tài khoản Windows chạy Docker Desktop; chỉ chạy khi thư mục CD chưa tồn tại. Công cụ từ chối ghi đè kho/khóa đã có:
+
+```powershell
+node deploy/init-cd.mjs '<runtime-V14-co-publicStartUrl>' '<IPv4-Tailscale>'
+```
+
+Với tài khoản Windows thuộc nhóm Administrators và chạy Docker Desktop, người quản trị mở PowerShell Administrator, chạy script sau sau khi đã chuẩn bị cấu hình/cặp khóa:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/prepare-ssh.ps1 -CdDirectory '<thu-muc-AudioQR-CD>'
+```
+
+Script không cài OpenSSH, không đọc khóa riêng hoặc xóa khóa cũ; thêm khóa công khai, giữ bản trước, đặt ACL của administrators_authorized_keys, khởi động sshd và giới hạn rule TCP 22 vào dải Tailscale 100.64.0.0/10. Windows có thể hiển thị cùng dải bằng subnet mask 255.192.0.0. Không mở port router hoặc Tailscale Funnel. Kiểm SSH thực với StrictHostKeyChecking và host key lấy từ máy đích; không dùng trust-on-first-use thay đối chiếu khóa.
+
+Tailscale OAuth client dùng Auth Keys: Write và tag `tag:hueqr-ci`; cấu hình tag/quyền trước khi dùng runner. [Policy mẫu](../../deploy/tailscale-policy.example.json) dành cho tailnet mới chỉ có chính sách mặc định; tailnet đã tùy chỉnh phải hợp nhất đúng phạm vi, không ghi đè toàn bộ. Dùng [hướng dẫn OAuth](https://tailscale.com/docs/features/oauth-clients#setting-up-an-oauth-client) và [GitHub Action của Tailscale](https://tailscale.com/docs/integrations/github/github-action) làm nguồn cấu hình nhà cung cấp.
+
+| Loại GitHub Actions | Tên | Giá trị |
+|---|---|---|
+| Variable | HUEQR_PUBLIC_START_URL | URL HTTPS trang bắt đầu, khớp runtime |
+| Variable | HUEQR_CD_HOST | IPv4 Tailscale của máy đích |
+| Variable | HUEQR_CD_USER | Tài khoản Windows đã kiểm Docker qua SSH |
+| Variable | HUEQR_CD_KNOWN_HOSTS | Dòng known_hosts đã ghim khóa máy chủ |
+| Variable | HUEQR_TS_OAUTH_CLIENT_ID | OAuth Client ID của Tailscale |
+| Secret | HUEQR_TS_OAUTH_SECRET | OAuth Client secret |
+| Secret | HUEQR_CD_SSH_KEY | Nội dung khóa riêng CD, giữ đầy đủ các dòng |
+
+### Chạy job CD chủ động
+
+Workflow `ci.yml` có input `deploy_source_sha`. Push/PR hoặc input rỗng chỉ build/kiểm, không deploy. Chỉ workflow_dispatch trên T10/main với SHA đầy đủ đúng commit của lượt chạy mới mở job deploy; job này phải chờ cả frontend/backend đạt. Hai lượt deploy không chạy chồng và lượt dispatch không bị hủy tự động khi có lượt khác.
+
+Job build ảnh Linux gắn SHA, tính Hash tar/JAR/bộ công cụ, kết nối Tailscale rồi chuyển bằng SFTP qua SSH ghim host key. Máy đích kiểm Hash trước khi nạp ảnh, đối chiếu SHA nhãn và Hash JAR sau nạp, gọi update-image với backup trước chuyển. Runtime config/khóa và database/audio không đi qua artifact. Các file trung chuyển tar/JAR được bỏ sau deploy đạt; giữ báo cáo/Hash/ảnh và backup theo chính sách riêng.
+
+Lượt kiểm SFTP/receiver trên restore riêng đã đạt, gồm nạp ảnh, backup, đổi ảnh, gate/health, giữ volume/khóa/epoch. Đó là kiểm giao thức trên máy đích, **chưa thay lượt CD thật từ GitHub Actions**. Mốc còn chờ OAuth/secrets phải giữ rõ cho đến khi có URL workflow deploy và kết quả máy đích tương ứng.

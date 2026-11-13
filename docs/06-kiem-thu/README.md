@@ -30,6 +30,8 @@ Lượt 14/11 bổ sung: snapshot V13 Ngọ Môn hai file đã kiểm và restor
 
 Kiểm cập nhật ảnh trên restore riêng đạt cả nhánh thành công và nhánh quay ảnh cũ: ảnh có tùy chọn Java sai không khởi động, công cụ trả FAILED nhưng khôi phục ảnh cũ/health/gate RUNNING khi schema không đổi, cấu hình và metadata file giữ nguyên. Tag gây lỗi được gỡ sau kiểm. Đây là fault injection có lỗi dự kiến; không là bằng chứng ảnh lỗi đã phát hành thành công. Bộ Node cục bộ mới đạt 20/20 (5 manifest, 12 integrity, 3 runtime-env), không chạy lại full backend cục bộ trong lượt này.
 
+Đường CD đã kiểm SSH bằng khóa, host key ghim, đúng tài khoản Windows và Docker context desktop-linux; firewall chỉ dải Tailscale. Truyền ảnh/bộ công cụ bằng SFTP và chạy receiver trên restore riêng đạt kiểm Hash tar/JAR/công cụ, backup, đổi ảnh, gate/health và giữ volume/khóa/epoch; không thay bản phục vụ. Lượt này dùng ảnh ứng dụng nền 20cd3ec và bộ công cụ đang phát triển, không là một lượt GitHub runner. Cú pháp YAML, ba script Bash và hai script PowerShell được sinh từ workflow đã kiểm; kết quả CD GitHub chỉ ghi khi có run deploy thật.
+
 - [CI nguồn tổng hợp: 530 ca backend và frontend/build](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43402780832).
 - [CI của PR #15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43406790912).
 - [Full V14 và 51 suite](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/operations-guard-20261113/result.json), [bằng chứng vận hành](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/operations-guard-20261113/README.md).

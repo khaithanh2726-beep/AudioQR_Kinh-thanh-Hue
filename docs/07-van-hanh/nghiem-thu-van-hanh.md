@@ -16,7 +16,7 @@ Gate/backup/restore và scheduler V14 đã kiểm trên bộ riêng. Snapshot n�
 
 ## 4. CI/CD và khả năng tái lập
 
-CI đã chạy thật trên GitHub và kiểm PR #15 trước merge. CD-L01 qua Tailscale/OpenSSH Windows cần xác thực máy/tài khoản, host key, quyền Docker/context, cấu hình riêng và thư mục triển khai; chưa có lượt triển khai từ pipeline. Kiểm restart/update/rollback phải giữ volume/khóa theo quy trình và tương thích schema.
+CI đã chạy thật trên GitHub và kiểm PR #15 trước merge. CD-L01 đã kiểm khóa/host key, Docker context qua SSH và SFTP/receiver trên restore riêng. Job deploy chủ động đã có, còn OAuth/secrets và lượt triển khai thật từ GitHub runner. Kiểm restart/update/rollback phải giữ volume/khóa theo quy trình và tương thích schema; kết quả receiver riêng chưa thay nghiệm thu pipeline.
 
 ## 5. Hồ sơ bàn giao
 
