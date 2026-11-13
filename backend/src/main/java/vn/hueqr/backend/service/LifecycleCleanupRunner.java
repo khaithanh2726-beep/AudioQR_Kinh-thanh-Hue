@@ -14,24 +14,28 @@ public class LifecycleCleanupRunner {
 	private final WorkspaceCleanupService workspace;
 	private final FileCleanupService files;
 	private final int batch;
+	private final OperationsGateService gate;
 
 	public LifecycleCleanupRunner(MetadataCleanupService metadata, WorkspaceCleanupService workspace, FileCleanupService files,
-			@Value("${hueqr.cleanup.batch-size:100}") int batch) {
+			@Value("${hueqr.cleanup.batch-size:100}") int batch, OperationsGateService gate) {
 		if (batch < 1)
 			throw new IllegalArgumentException("CLEANUP_BATCH_MUST_BE_POSITIVE");
 		this.metadata = metadata;
 		this.workspace = workspace;
 		this.files = files;
 		this.batch = batch;
+		this.gate = gate;
 	}
 
 	// Nhịp chạy không thay các hạn nghiệp vụ 24 giờ, 7 ngày, 8 giờ và 1 giờ
 	@Scheduled(fixedDelayString = "${hueqr.cleanup.poll-delay-ms:60000}", initialDelayString = "${hueqr.cleanup.poll-delay-ms:60000}")
 	public void tick() {
-		metadata.reconcile(batch);
-		metadata.windows(batch);
-		metadata.jobs(batch);
-		workspace.sweep(batch);
-		files.sweep(batch);
+		gate.runIfOpen("CLEANUP", () -> {
+			metadata.reconcile(batch);
+			metadata.windows(batch);
+			metadata.jobs(batch);
+			workspace.sweep(batch);
+			files.sweep(batch);
+		});
 	}
 }

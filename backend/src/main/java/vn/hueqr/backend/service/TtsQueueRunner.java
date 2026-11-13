@@ -12,15 +12,18 @@ import vn.hueqr.backend.repository.TtsJobRepository;
 public class TtsQueueRunner {
 	private final TtsJobRepository jobs;
 	private final TtsWorker worker;
+	private final OperationsGateService gate;
 
-	public TtsQueueRunner(TtsJobRepository jobs, TtsWorker worker) {
+	public TtsQueueRunner(TtsJobRepository jobs, TtsWorker worker, OperationsGateService gate) {
 		this.jobs = jobs;
 		this.worker = worker;
+		this.gate = gate;
 	}
 
 	@Scheduled(fixedDelayString = "${hueqr.tts.poll-delay-ms:1000}")
 	public void tick() {
 		// Chỉ nhận QUEUED, không tự retry job FAILED hoặc DISPATCHING/UNCERTAIN còn chưa đối chiếu
-		jobs.findFirstByPhaseAndTargetValidTrueOrderByAcceptedAtAscIdAsc("QUEUED").ifPresent(job -> worker.run(job.getId()));
+		gate.runIfOpen("TTS_QUEUE", () -> jobs.findFirstByPhaseAndTargetValidTrueOrderByAcceptedAtAscIdAsc("QUEUED")
+				.ifPresent(job -> worker.run(job.getId())));
 	}
 }
