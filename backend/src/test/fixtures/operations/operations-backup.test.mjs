@@ -4,7 +4,7 @@ import { mkdtemp, mkdir, writeFile, rm, symlink } from 'node:fs/promises'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { createHash, randomUUID } from 'node:crypto'
-import { verifyOperationsBackup } from '../../../../../deploy/operations-backup.mjs'
+import { verifyOperationsBackup, verifyOfflineV13Backup } from '../../../../../deploy/operations-backup.mjs'
 
 async function fixture(run) {
   const directory = await mkdtemp(join(tmpdir(), 'hueqr-backup-validator-'))
@@ -49,4 +49,34 @@ test('rejects symbolic audio directory', () => fixture(async (d, m, n) => {
   await mkdir(join(d, 'replacement'))
   await symlink(join(d, 'replacement'), join(d, 'audio'), 'junction')
   await assert.rejects(verifyOperationsBackup(d, m, n))
+}))
+
+function offlineV13(manifest) {
+  return { ...manifest, kind: 'offline-v13-backup', sourceStopped: true,
+    sourceImage: 'sha256:' + 'a'.repeat(64),
+    schema: Array.from({ length: 13 }, (_, i) => `${i + 1}\t123\t1`).join('\n') }
+}
+
+test('accepts offline V13 snapshot without claiming a V14 gate', () => fixture(async (d, m, n) => {
+  const offline = offlineV13(m)
+  await verifyOfflineV13Backup(d, offline, n)
+  await assert.rejects(verifyOperationsBackup(d, offline, n))
+  await assert.rejects(verifyOfflineV13Backup(d, m, n))
+}))
+test('rejects offline snapshot with running source or wrong image identity', () => fixture(async (d, m, n) => {
+  const offline = offlineV13(m)
+  await assert.rejects(verifyOfflineV13Backup(d, { ...offline, sourceStopped: false }, n))
+  await assert.rejects(verifyOfflineV13Backup(d, { ...offline, sourceImage: 'hueqr:latest' }, n))
+}))
+test('rejects mismatched or failed migration before offline import', () => fixture(async (d, m, n) => {
+  const offline = offlineV13(m)
+  for (const schema of [offline.schema.replace('13\t123\t1', '14\t123\t1'),
+    offline.schema.replace('13\t123\t1', '13\t123\t0'), offline.schema.replace('12\t123\t1\n', '')])
+    await assert.rejects(verifyOfflineV13Backup(d, { ...offline, schema }, n))
+}))
+test('rejects damaged or expired offline V13 snapshot', () => fixture(async (d, m, n) => {
+  const offline = offlineV13(m)
+  await assert.rejects(verifyOfflineV13Backup(d, offline, n + 7 * 86400000))
+  await writeFile(join(d, 'database.sql'), 'broken')
+  await assert.rejects(verifyOfflineV13Backup(d, offline, n))
 }))

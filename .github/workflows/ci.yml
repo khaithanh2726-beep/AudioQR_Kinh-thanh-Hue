@@ -25,6 +25,7 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm test
       - run: node --test ../backend/src/test/fixtures/operations/backup-manifest.test.mjs
+      - run: node --test ../backend/src/test/fixtures/operations/operations-backup.test.mjs
       - run: npm run build
       - uses: actions/upload-artifact@v4
         with:

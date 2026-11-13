@@ -5,7 +5,7 @@ import { resolve, join, relative, isAbsolute, sep } from 'node:path'
 import { randomBytes, randomUUID } from 'node:crypto'
 import { createServer } from 'node:net'
 import { fileURLToPath } from 'node:url'
-import { verifyOperationsBackup } from './operations-backup.mjs'
+import { verifyOperationsBackup, verifyOfflineV13Backup } from './operations-backup.mjs'
 
 const [backupArg, outputArg, image] = process.argv.slice(2)
 assert(backupArg && outputArg && image, 'Usage: restore-backup.mjs backup new-runtime image')
@@ -18,7 +18,9 @@ for (const parent of [root, backup]) {
   assert(delta.startsWith('..' + sep) || isAbsolute(delta), 'Restore must use a new directory outside source and repository')
 }
 const manifest = JSON.parse(await readFile(join(backup, 'manifest.json'), 'utf8'))
-await verifyOperationsBackup(backup, manifest)
+const offlineV13 = manifest.kind === 'offline-v13-backup'
+const verify = offlineV13 ? verifyOfflineV13Backup : verifyOperationsBackup
+await verify(backup, manifest)
 const docker = (args, input, env = process.env) => execFileSync('docker', args, { input, env, encoding: 'utf8', windowsHide: true,
   maxBuffer: 128 * 1024 * 1024, timeout: 120000, stdio: ['pipe', 'pipe', 'pipe'] })
 const imageId = JSON.parse(docker(['image', 'inspect', image]))[0].Id
@@ -65,11 +67,11 @@ try {
   }
   assert(ready, 'New database not ready')
   assert.equal(sql('SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA=DATABASE();'), '0')
-  await verifyOperationsBackup(backup, manifest)
+  await verify(backup, manifest)
   sql(await readFile(join(backup, 'database.sql')))
   assert.equal(sql('SELECT version,checksum,success FROM flyway_schema_history WHERE version IS NOT NULL ORDER BY installed_rank;'), manifest.schema)
-  assert.equal(sql('SELECT mode FROM ops_guard WHERE id=1;'), 'FROZEN')
-  assert.equal(sql('SELECT (SELECT COUNT(*) FROM ops_activity)+(SELECT COUNT(*) FROM runtime_task)+(SELECT COUNT(*) FROM file_claim);'), '0',
+  if (!offlineV13) assert.equal(sql('SELECT mode FROM ops_guard WHERE id=1;'), 'FROZEN')
+  assert.equal(sql(`SELECT ${offlineV13 ? '' : '(SELECT COUNT(*) FROM ops_activity)+'}(SELECT COUNT(*) FROM runtime_task)+(SELECT COUNT(*) FROM file_claim);`), '0',
     'Unreconciled activity: keep restore stopped; never clear claims by age')
   const catalog = sql(`SELECT storage_key,LOWER(HEX(checksum)),byte_size,format FROM file_asset f WHERE state='READY' AND (
     EXISTS(SELECT 1 FROM audio_revision a WHERE a.wav_file_id=f.id OR a.mp3_file_id=f.id)
@@ -77,7 +79,7 @@ try {
     OR EXISTS(SELECT 1 FROM guest_content_grant g WHERE g.mp3_file_id=f.id)) ORDER BY storage_key;`)
   assert.equal(catalog, manifest.files.map(f => `${f.storageKey}\t${f.sha256}\t${f.bytes}\t${f.format}`).join('\n'))
   sql(await readFile(join(root, 'deploy/restore-retention.sql'), 'utf8'))
-  sql(`UPDATE ops_guard SET owner_token='${token}',changed_at=UTC_TIMESTAMP(6) WHERE id=1 AND mode='FROZEN';`)
+  if (!offlineV13) sql(`UPDATE ops_guard SET owner_token='${token}',changed_at=UTC_TIMESTAMP(6) WHERE id=1 AND mode='FROZEN';`)
   compose(['create', '--no-build', '--pull', 'never', 'application'])
   for (const file of manifest.files) docker(['cp', join(backup, 'audio', file.storageKey), `${application}:/data/audio/${file.storageKey}`])
   // Kiểm lại bytes từ volume đích trước khi chạy app; không suy từ Hash bản nguồn.
@@ -90,22 +92,25 @@ try {
     await writeFile(join(probe, 'audio', file.storageKey), bytes)
   }
   await writeFile(join(probe, 'database.sql'), await readFile(join(backup, 'database.sql')))
-  await verifyOperationsBackup(probe, manifest)
+  await verify(probe, manifest)
   compose(['up', '-d', '--no-build', '--pull', 'never', 'application'])
   let closed = false
   for (let attempt = 0; attempt < 120; attempt++) {
     try {
       const response = await fetch(`http://localhost:${port}/api/v1/auth/csrf`, { signal: AbortSignal.timeout(2000) })
-      closed = response.status === 503 && (await response.json()).code === 'SERVICE_UNAVAILABLE'
+      const body = await response.json()
+      closed = offlineV13 ? response.status === 200 && typeof body.token === 'string'
+        : response.status === 503 && body.code === 'SERVICE_UNAVAILABLE'
     } catch {}
     if (closed) break
     await new Promise(done => setTimeout(done, 1000))
   }
-  assert(closed, 'Restored application must start with guard closed')
-  await writeFile(join(output, 'restore-result.json'), JSON.stringify({ status: 'RESTORE_VERIFIED_CLOSED', project,
-    imageId, files: manifest.files.length, gate: 'FROZEN', epochChanged: true,
+  assert(closed, 'Restored application must satisfy private startup check')
+  const status = offlineV13 ? 'RESTORE_V13_VERIFIED_PRIVATE' : 'RESTORE_VERIFIED_CLOSED'
+  await writeFile(join(output, 'restore-result.json'), JSON.stringify({ status, project,
+    imageId, files: manifest.files.length, gate: offlineV13 ? 'NOT_AVAILABLE_V13' : 'FROZEN', epochChanged: true,
     retentionApplied: true, public: false, guestAdminFlowVerified: false }, null, 2))
-  console.log(JSON.stringify({ status: 'RESTORE_VERIFIED_CLOSED', project, files: manifest.files.length }))
+  console.log(JSON.stringify({ status, project, files: manifest.files.length }))
 } catch (error) {
   await writeFile(join(output, 'FAILED.json'), JSON.stringify({ status: 'FAILED', code: 'RESTORE_NOT_VERIFIED' }))
   throw error
