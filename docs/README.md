@@ -8,7 +8,8 @@ Bộ tài liệu mô tả yêu cầu, thiết kế, dữ liệu, giao diện, c�
 2. [Quy trình nghiệp vụ](02-nghiep-vu/business-flow.md), [PRD](02-nghiep-vu/PRD.md), [quy tắc](02-nghiep-vu/decisions.md).
 3. [Kiến trúc](03-ky-thuat/TDD.md), [mô hình dữ liệu](03-ky-thuat/data-model.md), [API/giao dịch](03-ky-thuat/api-transactions.md), [vòng đời/backup](03-ky-thuat/operations-design.md), [DFD](03-ky-thuat/dfd.md).
 4. [Thiết kế giao diện](04-giao-dien/ui-design.md) và [bộ nội dung](05-noi-dung/README.md).
-5. [Kết quả kiểm thử](06-kiem-thu/README.md), [cài đặt/đóng gói](07-van-hanh/dong-goi-va-ci.md), [sử dụng/trình diễn](07-van-hanh/tap-duot.md), [bảo trì/restore](07-van-hanh/bao-tri-va-sao-luu.md).
+5. [Tra chức năng và mã nguồn](07-van-hanh/tra-cuu-chuc-nang.md), [ma trận FR/UC/AC/NFR](06-kiem-thu/ma-tran-truy-vet.md).
+6. [Kết quả kiểm thử](06-kiem-thu/README.md), [cài đặt/đóng gói](07-van-hanh/dong-goi-va-ci.md), [sử dụng/trình diễn](07-van-hanh/tap-duot.md), [bảo trì/restore](07-van-hanh/bao-tri-va-sao-luu.md).
 
 ## Vai trò của từng nhóm
 

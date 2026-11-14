@@ -2,6 +2,8 @@
 
 ## 1. Chuẩn bị buổi trình diễn
 
+Kiểm task backup trước buổi diễn theo [hướng dẫn bảo trì](bao-tri-va-sao-luu.md#backup-theo-lịch-và-quản-lý-log). Lịch Ngọ Môn là 23:00; nếu buổi diễn đi qua giờ này, Disable-ScheduledTask để chặn lượt mới rồi bật lại sau buổi diễn. Không dừng cưỡng bức lượt backup đang chạy; chờ hoàn tất và gate RUNNING. Nếu bỏ lỡ lịch, chạy bù ngoài thời gian sử dụng.
+
 Mở Docker Desktop và đúng môi trường đã cấu hình, dùng database/kho audio/tài khoản riêng. Bản tập dượt được ghi nhận ở cổng loopback 18083, chỉ bật Ngọ Môn vi. Không dùng preview hoặc dữ liệu E2E làm nội dung đã duyệt. Cấu hình, mật khẩu, epoch và khóa ký giữ ngoài Git.
 
 ```powershell
@@ -12,6 +14,8 @@ ngrok http 18083 --inspect=false
 ```
 
 Bộ tập dượt hiện ở V14, chỉ mở phục vụ khi gate RUNNING. Lệnh Compose không tự mở gate bảo trì hoặc thu hồi quyền cũ; không dùng nó thay lệnh resume có đúng owner. Không dùng script khởi động cũ chỉ chấp nhận V13. Với bộ bảo trì/restore, theo [quy trình gate](bao-tri-va-sao-luu.md). Giữ ngrok hoạt động và kiểm URL Forwarding trùng URL QR. Khi URL thay đổi cần cấu hình/build và xuất QR lại; không chỉ thay ảnh QR.
+
+Kết thúc buổi: ngừng tiếp nhận khách, xác nhận Admin đã xử lý bản chưa lưu và không có lượt vận hành/TTS đang chạy. Dừng ngrok bằng Ctrl+C tại cửa sổ đang giữ tunnel, rồi dùng cùng project/config/compose ở trên với lệnh `stop` thay cho `up -d --no-build --pull never`. Không dùng `down -v`, xóa volume hoặc tạo lại private.env. Lần khởi động sau giữ nguyên volume/khóa/epoch; nếu gate đang đóng thì xử lý đúng owner trước phục vụ. Nếu máy không hoạt động lúc 23:00, chạy bù backup ngoài buổi diễn.
 
 ## 2. Khách tham quan
 
@@ -43,6 +47,8 @@ Chọn đúng audio để nghe thử, nghe trọn và ghi tham chiếu/giới h�
 Danh sách/chi tiết phiên chỉ đọc; lọc theo trường được hỗ trợ. Thống kê phân biệt số phiên với lượt xem, nhóm theo ngày/địa điểm/ngôn ngữ theo Asia/Saigon. Không cộng lượt do phát/tua/đổi tiếng/reload. Khi đổi bộ lọc, kết quả cũ được ghi nhãn tới khi tải lại.
 
 QR chung dùng URL HTTPS cấu hình chỉ đọc; tải PNG hoặc xem bản in gọn. Kiểm đúng URL và form mở được từ thiết bị ngoài laptop trước buổi trình diễn. Token ngrok và mật khẩu Admin không được in lên QR hoặc chia sẻ cho người xem.
+
+Bản PNG tại mốc 14/11: [tải QR Kinh thành Huế](qr-kinh-thanh-hue.png), trỏ tới `https://kiwi-situated-outboard.ngrok-free.dev/`. Laptop, Docker và ngrok phải hoạt động. Nếu URL thay đổi phải cấu hình/build/xuất QR lại, không tiếp tục dùng bản PNG cũ.
 
 ## 4. Phản hồi và xử lý lỗi
 

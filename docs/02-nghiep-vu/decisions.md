@@ -29,7 +29,7 @@ Mục lục hiện hành tại [docs/README.md](../README.md). Tài liệu này 
 | TECH-02 | [Môn học, hướng dẫn, môi trường và mục tiêu](#tech-02) | Đã xác nhận đầu vào 03/11; nền tảng/trình duyệt theo TECH-03, ngrok chọn thử; giờ thực tế và ngân sách trả phí chưa chốt |
 | TTS-01 | [Gemini TTS/Charon](#tts-01) | Giữ model/giọng; pipeline đã chạy, chưa duyệt đủ 20 cặp. |
 | TECH-03 / IN-P01–IN-P04 | [Mốc phiên bản, nền tảng kiểm tra, audio và ngrok thử](#tech-03) | Đã chọn mốc/định dạng; ngrok chỉ chọn thử, chưa đạt tương thích/triển khai |
-| DATA-01 / IN-P05 / DATA-P01–P04 | [Dọn file/log/backup](#data-01) | Đã chốt điều kiện/hạn/restore; DATA-03 bổ sung phạm vi/nhịp backup, còn path/quyền/công cụ/checkpoint/RPO-RTO |
+| DATA-01 / IN-P05 / DATA-P01–P04 | [Dọn file/log/backup](#data-01) | Đã chốt điều kiện/hạn/restore; DATA-03 bổ sung phạm vi/nhịp backup, đã bổ sung path/quyền/công cụ/checkpoint và lịch; RPO/RTO còn mở |
 | G03 | [Ghi nhận checklist theo bằng chứng](#g03) | Đã chốt; đối chiếu đúng issue hiện hành, người vận hành trực tiếp cập nhật GitHub |
 | TECH-04 | [Đóng gói, phiên theo tab và audio tải trọn](#tech-04) | Hướng đã chốt 03/11; CD-L01 cập nhật theo TECH-05; cơ chế/ERD mới và tương thích chưa duyệt/kiểm |
 | DATA-02 | [Backup cục bộ cho phiên bản nghiệm thu](#data-02) | Đã bỏ yêu cầu ngoài laptop; giữ hạn/restore DATA-01, không mục tiêu cứu hỏng/mất toàn máy |
@@ -199,7 +199,7 @@ Giữ nghiệp vụ đã duyệt: áp dụng cả cặp, điều kiện cặp vi
 
 Giữ Gemini API, model **gemini-3.8-flash-tts**, giọng **Charon**. Không tự đổi model/giọng hoặc thêm phong cách đọc chưa duyệt. Khóa ở cấu hình riêng ngoài repository; việc dùng API và ngân sách được quản lý riêng.
 
-Pipeline thật đã tạo WAV/MP3; kết quả hiện có được tổng hợp ở [ma trận văn bản/audio](../05-noi-dung/doi-chieu-van-ban-audio.md). Chất lượng nghe mẫu hoặc kiểm codec/Hash/chép lời không thay duyệt từng cặp D09. Bộ 20 cặp chưa đủ: năm audio ru còn thiếu, 14 audio mới còn chờ nghe trọn và rà phát âm Thái Hòa fr. Quota thực phải được kiểm trước lần tạo tiếp; không suy từ gói tài khoản hoặc một lần gọi thành công.
+Pipeline thật đã tạo WAV/MP3; kết quả hiện có được tổng hợp ở [ma trận văn bản/audio](../05-noi-dung/doi-chieu-van-ban-audio.md). Chất lượng nghe mẫu hoặc kiểm codec/Hash/chép lời không thay duyệt từng cặp D09. Bộ 20 audio kỹ thuật đã đủ; 19 bài mới còn chờ nghe trọn/hồ sơ D09 và rà phát âm Thái Hòa fr trước áp dụng. Quota thực phải được kiểm trước lần tạo tiếp; không suy từ gói tài khoản hoặc một lần gọi thành công.
 
 
 
@@ -232,7 +232,7 @@ Không cố định thông số gói miễn phí vào tiêu chí nghiệp vụ. 
 | Backup / DATA-P04 | Giữ mỗi bản **7 ngày từ lúc tạo**; bản sao phải được bảo vệ và dọn đúng hạn. Restore vào môi trường riêng, lọc phiên/lượt quá hạn theo mốc gốc **trước khi mở phục vụ**. | Người dùng chấp nhận bản sao có thể còn tới gần **37 ngày tính từ kết thúc/hết hạn gốc** (30 ngày vận hành cộng gần 7 ngày backup), không phải thêm 37 ngày sau xóa vận hành. Không làm sống lại dữ liệu D08 hoặc đổi mốc theo lúc restore/audio hết. |
 | Quy tắc gốc | Giữ D08 **30 ngày** phiên/lượt và A02.3 **8 giờ** bảo vệ file từng áp dụng, đồng thời các điều kiện tham chiếu/dùng chung/DB thành công. | Không dùng chung TTL mọi lớp; không gộp xóa DB với file, không đổi quyền nghe tiếp khách. |
 
-**Bổ sung DATA-02/DATA-03:** backup cục bộ tách dữ liệu chạy, gồm DB + WAV/MP3 tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema. Công cụ backup/restore đã được kiểm trong môi trường riêng; quyền, lịch chạy và RPO/RTO của môi trường phục vụ chưa nghiệm thu. Không tự kéo dài mốc giữ/xóa.
+**Bổ sung DATA-02/DATA-03:** backup cục bộ tách dữ liệu chạy, gồm DB + WAV/MP3 tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema. Công cụ backup/restore, ACL và lượt backup qua Task Scheduler trên bản phục vụ đã được kiểm; chưa quan sát trigger 23:00 tự chạy hoặc nghiệm thu RPO/RTO. Không tự kéo dài mốc giữ/xóa.
 
 <a id="g03"></a>
 
@@ -453,7 +453,7 @@ Không lấy vị trí trực tiếp, không yêu cầu GPS hoặc quyền vị 
 - Tổng mục tiêu: **20 bản văn bản và 20 audio**, vi/en/fr/ru tại mỗi điểm.
 - Thứ tự thực hiện đã chốt: một điểm tiếng Việt → năm điểm tiếng Việt → bổ sung các ngôn ngữ còn lại. Không giảm phạm vi nghiệm thu.
 - Đầu vào hiện hành: năm bài vi đã được tiếp nhận, 15 bản dịch nháp được lưu theo bundle v02. Bộ 20 cặp là mục tiêu nghiệm thu, không là mô tả dữ liệu đã duyệt.
-- Hiện có 15 audio được ghi nhận, gồm Ngọ Môn vi đã rà và 14 audio mới; thiếu năm audio ru. Rà nguồn, bản dịch, nghe trọn và hồ sơ D09 tiếp tục là điều kiện trước áp dụng; xem [ma trận nội dung](../05-noi-dung/doi-chieu-van-ban-audio.md).
+- Hiện có 20 audio kỹ thuật được ghi nhận, gồm Ngọ Môn vi đã rà và 19 audio mới; kho 40 WAV/MP3 đã backup/restore riêng đạt. Rà nguồn, bản dịch, nghe trọn và hồ sơ D09 tiếp tục là điều kiện trước áp dụng; xem [ma trận nội dung](../05-noi-dung/doi-chieu-van-ban-audio.md).
 - Không áp ngưỡng 100–150 từ như tiêu chí bắt buộc. P05: Tử Cấm Thành chỉ có một vùng và một bài tổng quan, không chia điểm con hoặc giảm phạm vi 20 cặp.
 
 <a id="d07"></a>
@@ -1029,11 +1029,11 @@ Nghiệp vụ D/A/Q/UI/TECH/DATA ở trên giữ nguyên phạm vi. Mã đã tri
 
 | Nhóm | Phần cần hoàn tất | Nguồn kiểm soát |
 |---|---|---|
-| Nội dung/audio | Tạo năm audio ru khi đủ quota; nghe trọn 14 audio mới, rà phát âm Thái Hòa fr, nguồn/bản dịch và hồ sơ từng cặp trước áp dụng. | D06/D09, ma trận nội dung |
+| Nội dung/audio | Đã tạo đủ năm ru; nghe trọn 19 audio mới, rà phát âm Thái Hòa fr, nguồn/bản dịch và hồ sơ từng cặp trước áp dụng. | D06/D09, ma trận nội dung |
 | Vùng/giao diện | Vùng tương tác phục vụ UX, không là ranh giới pháp lý; kiểm dữ liệu áp dụng thực và đầy đủ luồng chồng lấn/chạm/kéo/phóng, Q2/Q3, thiếu nội dung. | P06–P08, UI, báo cáo kiểm |
 | Thiết bị | Android/iPhone đã có báo cáo chạy được; còn ghi model/OS/browser/mạng và đủ ma trận ngoại lệ, tab nền, reload/hết hạn/audio. | IN-P02, T09 |
-| Vận hành | V14/gate/backup/restore đã kiểm riêng và đã chuyển bản phục vụ có backup trước nâng; còn owner sau crash đủ căn cứ, quyền/lịch backup-log và RPO/RTO. | DATA-01–05, operations-design |
-| CD/vận hành | CD GitHub đã đạt; còn lịch backup/log, mọi ca crash và khả năng tái lập đầy đủ trên môi trường được bàn giao. | TECH-05, T10 |
+| Vận hành | V14/gate/backup/restore đã kiểm riêng và đã chuyển bản phục vụ có backup trước nâng; lịch backup/log đã đăng ký và chạy thử, còn theo dõi trigger, owner sau crash đủ căn cứ và RPO/RTO. | DATA-01–05, operations-design |
+| CD/vận hành | CD GitHub và lượt backup qua task đã đạt; còn theo dõi trigger hằng ngày, giới hạn log hạ tầng, mọi ca crash và khả năng tái lập đầy đủ khi bàn giao. | TECH-05, T10 |
 | Hồ sơ | Đối chiếu toàn bộ checklist và tài liệu với bằng chứng; không tích cả ô khi mới đạt một phần. | Roadmap, T11 |
 
 Phân biệt ba nguồn: đặc tả quy định hành vi; mã/migration thể hiện triển khai; báo cáo ghi phép kiểm đã thực chạy. [Bàn giao](../01-tong-quan/handoff.md) và [báo cáo kiểm thử](../06-kiem-thu/README.md) tổng hợp trạng thái mới nhất; nhật ký nguyên bản không là trạng thái hiện hành.

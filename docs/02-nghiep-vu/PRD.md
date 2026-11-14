@@ -21,7 +21,7 @@ Mục tiêu quan sát: hoàn thành hành trình khách; trình diễn được 
 | FR-Kxx / FR-Axx / FR-Dxx | Yêu cầu chức năng khách / Admin / lưu dữ liệu tự động. Mã giữ ổn định khi sửa câu chữ; khi hủy thì ghi thay thế, không tái dùng mã cho nghĩa khác. |
 | BR-xx / DR-xx / NFR-xx | Quy tắc nghiệp vụ / dữ liệu / phi chức năng. |
 | UC-Kxx / UC-Axx / UC-Dxx | Use Case; ở cùng file để tránh lệch phiên bản. |
-| AC-Kxx / AC-Axx / AC-Dxx | Tiêu chí nghiệm thu, liên kết FR/UC; bảng FR dẫn quyết định nguồn. Các tiêu chí chưa được chạy. |
+| AC-Kxx / AC-Axx / AC-Dxx | Tiêu chí nghiệm thu, liên kết FR/UC; bảng FR dẫn quyết định nguồn. Trạng thái thực thi đọc tại báo cáo kiểm thử và ma trận truy vết, không suy từ đặc tả. |
 | O-xx | Điểm cần thiết kế/xác nhận thêm; chưa phải yêu cầu bắt buộc. |
 
 Phạm vi nguồn: D01–D09 và các bổ sung D01-BS/D02-BS/D03-BS/D04-BS, P01–P08, G01, A01–A07, A02.1–A02.6, A04.1–A04.4, BF-K01/BF-A01/BF-ALL01 và Q1–Q3; bổ sung UI-01/UI-01.1–UI-01.5, UI-02 và UI-P01–UI-P04. UI-02 là mã nguồn lượt xác nhận, không thay mã FR/UC/AC. Khi ghi D03/BS nghĩa là D03 và D03-BS; tương tự các mã khác. Việc gán mã trong PRD không chốt thêm chức năng hoặc công nghệ.
@@ -65,7 +65,7 @@ Hướng chỉ tải lên audio chuẩn bị sẵn và giới hạn không đư�
 
 Đây là bộ chuẩn người dùng chọn, **không phải số lượng do giảng viên quy định hoặc giới hạn số địa điểm hệ thống**. Thêm một điểm để trình diễn CRUD/tạo audio không tự làm tăng bộ nội dung phải chuẩn bị. Điểm thêm muốn hiện cho khách vẫn phải đủ A02.5; thiếu audio/ngôn ngữ khác theo D03/BS, không làm giảm mục tiêu của bộ chuẩn.
 
-Thứ tự chuẩn bị: một điểm tiếng Việt → năm điểm tiếng Việt → bổ sung en/fr/ru. Đã báo cáo có năm bản nháp vi, **chờ tiếp nhận bản lưu và rà soát**, chưa đưa nguyên văn vào tài liệu, chưa được duyệt/kiểm chứng. Tên địa điểm ở đây là danh sách phạm vi, không phải tài liệu thẩm định lịch sử.
+Thứ tự chuẩn bị: một điểm tiếng Việt → năm điểm tiếng Việt → bổ sung en/fr/ru. Nguồn vi đã tiếp nhận; bundle v02 hiện có 20 bài và 20 audio kỹ thuật ở kho riêng. Trạng thái nghe duyệt/áp dụng đọc tại ma trận nội dung, không đồng nhất bản nháp hoặc kiểm kỹ thuật với D09. Tên địa điểm ở đây là danh sách phạm vi, không phải tài liệu thẩm định lịch sử.
 
 <a id="prd-rules"></a>
 
@@ -558,11 +558,11 @@ Nghiệp vụ hai vai trò, Q1–Q3, cặp nội dung và chính sách DATA đã
 
 | Mã | Nội dung giữ nguyên | Điều kiện còn cần chứng minh |
 |---|---|---|
-| O-01 | Gemini TTS/Charon, WAV nguồn/MP3 khách, FFmpeg-Linux; đủ năm điểm × bốn ngôn ngữ. | Pipeline thật đã chạy; còn năm audio ru, nghe trọn/hồ sơ D09 và phát âm Thái Hòa fr. Quota/ngân sách không được suy từ lần gọi trước. |
+| O-01 | Gemini TTS/Charon, WAV nguồn/MP3 khách, FFmpeg-Linux; đủ năm điểm × bốn ngôn ngữ. | Pipeline thật đã chạy đủ 20 audio kỹ thuật; còn nghe trọn/hồ sơ D09 và phát âm Thái Hòa fr. Quota/ngân sách không được suy từ lần gọi trước. |
 | O-02 | Q1, một đa giác đơn giản; Lưu khác Áp dụng; UI-03–05 và gate cặp vi. | Giao diện Leaflet/OSM đã có; vùng áp dụng cần rà đúng dữ liệu phục vụ. Không coi vùng UX là ranh giới pháp lý hoặc tự thêm công cụ bản đồ. |
 | O-03 | Khách Android/Chrome, iPhone/Safari; Admin Windows/Chrome. | Bổ sung model/OS/browser/mạng và đầy đủ ca luồng chính/ngoại lệ/tab/expiry/audio. Báo cáo hai loại điện thoại chạy được chưa thay toàn ma trận. Chưa tự đặt mức tải/số giây/dung lượng bắt buộc. |
 | O-04 | Q2/Q3, phiên Admin 30 phút, tab khách độc lập và mốc nghe cùng bài. | Cơ chế đã có mã/kiểm; còn đối chiếu đầy đủ hành vi trên thiết bị và lỗi mất mạng/phiên. Không bổ sung đồng bộ tab/thiết bị hoặc lịch sử nghe lâu dài. |
-| O-05 | Log 7 ngày, backup 7 ngày; DB + WAV/MP3 tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema; restore riêng/lọc mốc gốc. | Backup/restore V14 đã diễn tập riêng; quyền/lịch chạy/log/retention/RPO-RTO trên môi trường phục vụ và CD còn thiếu. Giữ giới hạn backup cục bộ của DATA-02. |
+| O-05 | Log 7 ngày, backup 7 ngày; DB + WAV/MP3 tham chiếu + manifest, cuối ngày có thay đổi/trước deploy-schema; restore riêng/lọc mốc gốc. | Backup/restore V14, quyền/lịch chạy qua Task Scheduler, xoay log và CD thật đã có bằng chứng; còn theo dõi trigger tự chạy, giới hạn log hạ tầng và RPO/RTO. Giữ giới hạn backup cục bộ của DATA-02. |
 | O-06 | File đã áp dụng: 8 giờ từ ngừng áp dụng đủ điều kiện; file hoàn chỉnh chưa áp dụng: 24 giờ đủ điều kiện; tạm: 1 giờ đủ an toàn; phiên/lượt: 30 ngày theo anchor gốc. | Kiểm lịch/độ trễ và owner/claim sau crash đủ căn cứ. HTTPS/QR đã có lượt Ngọ Môn; phải kiểm lại URL/live mỗi buổi, không xem ngrok là CD. |
 
 Các nhận định “chưa kiểm/chưa có kết quả” trong bảng thiết kế phép kiểm mục 8 mô tả giới hạn tại lúc lập tiêu chí; không là nguồn tiến độ hiện hành. [Bàn giao](../01-tong-quan/handoff.md), [báo cáo kiểm thử](../06-kiem-thu/README.md) và [roadmap](../01-tong-quan/roadmap.md) ghi kết quả thực tế và 27 ô chưa đủ toàn điều kiện.

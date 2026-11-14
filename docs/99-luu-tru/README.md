@@ -13,6 +13,7 @@ Lịch sử được rút gọn để trình bày tiến trình; trạng thái h
 | 13/11 — lưu nguồn | PR #15 tích hợp vào main tại 601c09a, giữ lịch sử/tác giả; CI của PR đạt |
 | 13/11 — rà tiến độ | Đối chiếu 89 ô, cập nhật GitHub/local 62 ô, giữ 27 ô chưa đủ; Android/iPhone có báo dùng Ngọ Môn cơ bản |
 | 14/11 — vận hành | Snapshot/restore V13, diễn tập nâng V14, chuyển bản Ngọ Môn V14 và kiểm backup/restore; bật scheduler dọn, CD GitHub thực chạy đạt, giữ dữ liệu và URL QR |
+| 14/11 — lịch và log | Đăng ký backup 23:00, chạy thật qua Task Scheduler mã 0 và restore hai audio đạt; 29 ca Node, kiểm xoay log riêng và smoke API/HTTPS đạt; chưa thay nghiệm thu thiết bị/nội dung |
 
 ## Trạng thái kế thừa
 

@@ -2,7 +2,7 @@
 
 Đối chiếu PRD hiện hành: **23 FR, 14 UC, 50 AC, 6 NFR**, không đổi nội dung hoặc mã tiêu chí. Có ca kiểm/code không tự đồng nghĩa đạt toàn bộ tiêu chí. `Kỹ thuật có bằng chứng` có thể là unit/integration/fixture; `Còn nghiệm thu` giữ các điều kiện thiết bị, nội dung hoặc lỗi chưa đủ. Các số 530 backend/71 frontend là lượt trước; đợt mới có 11 ca Chrome riêng và 29 ca vận hành, không cộng thành một lượt full.
 
-Nguồn bằng chứng: [Kết quả 14/11](README.md#acceptance-final-result); [CI/CD thật](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664); hồ sơ nội bộ nghiệm thu 14/11 lưu log/ảnh/JSON. Kiểm model/OS/browser thật được thực hiện sau mốc lưu phiên bản; không ghi viewport Chrome thành Android/iPhone.
+Nguồn bằng chứng: [Kết quả 14/11](README.md#acceptance-final-result); [CI/CD thật](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664); hồ sơ nội bộ nghiệm thu 14/11 lưu log/ảnh/JSON. [Tra cứu file/dòng](../07-van-hanh/tra-cuu-chuc-nang.md) chỉ vị trí ba lớp. Kiểm model/OS/browser thật được thực hiện sau mốc lưu phiên bản; không ghi viewport Chrome thành Android/iPhone.
 
 ## Yêu cầu chức năng
 

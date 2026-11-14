@@ -402,6 +402,8 @@ Kiểm file không rỗng/đúng codec/duration giúp bắt lỗi kỹ thuật; 
 
 **Hướng giải quyết đã chọn TECH-04:** tải trọn A1 rồi dùng dữ liệu tạm trong tab, nên máy chủ dọn file đủ điều kiện không làm tab phải tải tiếp A1. Cơ chế Blob/vòng đời/late response/expiry ở [mục 14](#tdd-full-audio) mới đề xuất cần kiểm trên hai nền tảng; không đổi 8 giờ, thêm offline hoặc khôi phục sau reload.
 
+Triển khai vận hành 14/11: task Windows chốt project/runtime và các root không lồng nhau, công cụ ghim theo Hash ở kho có ACL. Lượt backup dùng đúng gate/owner/checkpoint rồi mở lại; chỉ sau bản mới hợp lệ mới dọn snapshot hết hạn. Báo cáo lịch có TTL bảy ngày; Docker local giới hạn 10 MB × 3 tệp/container, không có cam kết TTL theo tuổi cho buffer hạ tầng. Đăng ký, xử lý lỗi và restore thử tại [hướng dẫn bảo trì](../07-van-hanh/bao-tri-va-sao-luu.md#backup-theo-lịch-và-quản-lý-log), kết quả thực tại [báo cáo kiểm](../06-kiem-thu/README.md#ops-scheduled-result). RPO/RTO và các ca crash thiếu căn cứ owner chưa được nghiệm thu.
+
 <a id="tdd-local-backup"></a>
 
 ## 12. Backup cục bộ — BKP-P02 stop phục vụ và REC-P01 đã chốt

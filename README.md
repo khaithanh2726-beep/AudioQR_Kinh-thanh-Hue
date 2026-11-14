@@ -9,6 +9,7 @@ Nhóm thực hiện: **Thành, Hòa và Nghĩa**. Kiến trúc: **Vue → Spring
 - [Thiết kế kỹ thuật](docs/03-ky-thuat/TDD.md) · [Thiết kế giao diện](docs/04-giao-dien/ui-design.md)
 - [Cài đặt và chạy](docs/07-van-hanh/dong-goi-va-ci.md) · [Sử dụng và trình diễn](docs/07-van-hanh/tap-duot.md)
 - [Kết quả kiểm thử](docs/06-kiem-thu/README.md) · [Hiện trạng bàn giao](docs/01-tong-quan/handoff.md)
+- [Tra chức năng → file/dòng](docs/07-van-hanh/tra-cuu-chuc-nang.md) · [Ma trận truy vết](docs/06-kiem-thu/ma-tran-truy-vet.md)
 
 ## Sản phẩm và hiện trạng
 
@@ -16,7 +17,7 @@ Mã nguồn đã tích hợp vào main qua [PR #15](https://github.com/khaithanh
 
 Đã có lượt full backend 530/530 đạt; 71/71 logic frontend, build và các lượt Chrome/API/MP3 riêng có bằng chứng. Người kiểm đã báo sử dụng Ngọ Môn vi thành công trên Android và iPhone. Checklist được đối chiếu 62/89; số ô không biểu thị phần trăm hoàn thành đồ án.
 
-Bản tập dượt phục vụ Ngọ Môn tiếng Việt ở schema V14; đã kiểm snapshot/restore V13 trước nâng, backup/restore V14 và giữ nguyên vùng/cặp/audio khi chuyển. Hai scheduler dọn dữ liệu đã bật; TTS vẫn tắt; CD GitHub đã đạt, lịch backup/log còn hoàn thiện. Bốn vùng khác và 14 audio mới vẫn ở môi trường nội dung riêng; năm bài ru và nghe duyệt D09/phát âm Thái Hòa fr còn chờ. Bộ 20 cặp và toàn bộ nghiệm thu chưa hoàn tất.
+Bản tập dượt phục vụ Ngọ Môn tiếng Việt ở schema V14; đã kiểm snapshot/restore V13 trước nâng, backup/restore V14 và giữ nguyên vùng/cặp/audio khi chuyển. Hai scheduler dọn dữ liệu đã bật; TTS vẫn tắt; CD GitHub đã đạt. Backup Windows lúc 23:00 đã đăng ký và chạy thử qua Task Scheduler đạt, có restore riêng; báo cáo vận hành giữ bảy ngày, Docker giới hạn log 10 MB × 3 tệp/container. Bốn vùng khác và 19 audio mới ở môi trường nội dung riêng: đã đủ 20 văn bản/20 audio kỹ thuật, backup/restore 40 WAV/MP3 đạt. D09/nghe duyệt bộ mới và phát âm Thái Hòa fr còn chờ. Bộ 20 cặp và toàn bộ nghiệm thu chưa hoàn tất.
 
 ## Cấu trúc
 

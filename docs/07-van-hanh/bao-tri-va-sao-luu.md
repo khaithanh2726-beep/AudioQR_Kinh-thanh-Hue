@@ -47,7 +47,7 @@ Sau đối chiếu kết quả mới mở lại:
 node deploy/maintenance.mjs $runtimeDirectory resume $maintenanceOwner
 ```
 
-Nếu app đã dừng, công cụ khởi động lại và đợi API trả 503 dưới gate đóng trước khi ghi RUNNING. Owner khác không mở được gate. Không xoay epoch/khóa ký ở chu trình backup thường. Khi lỗi, không tự mở gate trong finally; người vận hành kiểm nguyên nhân và quyết định mở lại. Bộ backup hết bảy ngày không được restore; việc dọn bản hết hạn phải theo đường dẫn đã kiểm, chưa có lịch dọn tự động trong công cụ này.
+Nếu app đã dừng, công cụ khởi động lại và đợi API trả 503 dưới gate đóng trước khi ghi RUNNING. Owner khác không mở được gate. Không xoay epoch/khóa ký ở chu trình backup thường. Khi lỗi, không tự mở gate trong finally; người vận hành kiểm nguyên nhân và quyết định mở lại. Bộ backup hết bảy ngày không được restore; bộ chạy định kỳ ở cuối tài liệu thực hiện dọn theo đường dẫn và manifest đã kiểm.
 
 ## Restore tách biệt
 
@@ -66,7 +66,7 @@ Nếu đã mở gate và sau đó dừng dịch vụ bình thường, dùng Comp
 
 ## Giới hạn còn mở
 
-Chưa tự giải quyết lease/claim do crash thiếu bằng chứng owner, triển khai từ xa, lịch backup/dọn backup, hay chuyển phục vụ sang bản restore. Chưa thay thế kiểm 20 cặp, Android/iPhone, HTTPS/QR và CD-L01. [Thiết kế vận hành](../03-ky-thuat/operations-design.md#ops-backup) tiếp tục là nguồn chính sách.
+Chưa tự giải quyết lease/claim do crash thiếu bằng chứng owner hoặc chuyển phục vụ sang bản restore. CD từ xa đã có lượt thực thi đạt; công cụ lịch backup/dọn được mô tả bên dưới. Không thay thế kiểm đủ 20 cặp, toàn ma trận Android/iPhone và HTTPS/QR. [Thiết kế vận hành](../03-ky-thuat/operations-design.md#ops-backup) tiếp tục là nguồn chính sách.
 
 ## Chuẩn bị chuyển bản phục vụ V13 sang V14
 
@@ -103,3 +103,54 @@ node deploy/update-image.mjs '<runtime-V14>' '<anh-moi>' '<SHA-nguon-40-ky-tu>' 
 Công cụ quiesce/drain/freeze, backup, đổi ảnh trong khi gate đóng, kiểm health/schema/volume/khóa rồi mở lại. Không tự nâng migration qua công cụ cập nhật cùng schema. Nếu ảnh mới lỗi, chỉ thử quay ảnh cũ khi schema không đổi và gate vẫn thuộc owner; không ép xóa lease hoặc hạ migration. Hồ sơ khôi phục và bản cấu hình trước nằm trong thư mục image-update của runtime, có thông tin riêng cần bảo vệ. Nếu không thể quay lại an toàn, đối chiếu owner/gate và snapshot trước khi thao tác tiếp.
 
 `runtime-env.mjs` bỏ qua BOM/dòng trống/comment và nhận giá trị cụ thể, không thực thi hoặc tự nội suy secret. Cấu hình dùng biểu thức chưa giải quyết bị từ chối; không đưa kết quả đọc private.env vào log. Các bộ kiểm tại backend/src/test/fixtures/operations giữ riêng với bằng chứng runtime.
+
+## Backup theo lịch và quản lý log
+
+### Cấu hình và đăng ký
+
+Kho vận hành của bản Ngọ Môn: `%USERPROFILE%\AudioQR-Operations`; config chỉ chứa đường dẫn/project/chính sách, log và bộ công cụ ghim ở cùng kho. Backup định kỳ dùng chung `%USERPROFILE%\AudioQR-CD\backups` với CD, tách khỏi database/audio live. Kho có ACL tài khoản thực hiện và SYSTEM. Không sao chép private.env, khóa hoặc dump vào Git.
+
+Với môi trường mới, khởi tạo một lần; công cụ từ chối ghi đè kho đã có:
+
+```powershell
+node deploy/init-operations.mjs '<runtime-V14>' '<kho-van-hanh-moi>' '<backup-root-da-bao-ve>'
+node deploy/scheduled-operations.mjs '<kho-van-hanh>\config.json' check
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/register-operations-task.ps1 -ConfigPath '<kho-van-hanh>\config.json' -DailyAt '23:00'
+```
+
+Tham số backup-root có thể bỏ để tạo thư mục backups mới dưới kho vận hành. Lịch mặc định 23:00 theo giờ Windows, chạy mỗi ngày cả khi không có thay đổi để không bỏ sót DDL/cập nhật file; không thay yêu cầu backup trước deploy/schema. Task `AudioQR-Operations-<project>` dùng tài khoản hiện tại, Interactive/Limited, không lưu mật khẩu, không chạy bù khi mở máy, không đánh thức máy. Máy/tài khoản phải đang hoạt động và Docker Linux Engine phải sẵn sàng. Lượt bỏ lỡ phải được người vận hành chạy bù ngoài buổi trình diễn. Không cam kết backup khi laptop tắt hoặc đã đăng xuất.
+
+Khi đăng ký, bốn công cụ cần thiết được chép sang `tools/<Hash-bộ-công-cụ>/deploy` trong kho riêng và kiểm SHA256; task dùng bản ghim này thay vì phụ thuộc nhánh Git đang mở. Không tự cập nhật công cụ ghim khi pull/đổi nhánh. Nếu cần nâng công cụ, tắt lịch, chờ lượt hiện tại kết thúc, xuất XML task cũ, rà Hash rồi gỡ/đăng ký lại đúng task có kiểm soát. Bộ mới có thư mục Hash riêng, không ghi đè bộ cũ; script từ chối ghi đè task đang tồn tại hoặc tệp ghim khác Hash.
+
+### Chu trình và xử lý thất bại
+
+`scheduled-operations.mjs` kiểm runtime/project và các thư mục không lồng nhau hoặc có junction/symlink; lấy khóa một lượt trong log-root. Sau đó kiểm gate RUNNING → quiesce → drain → freeze → backup → đọc lại Hash → resume → kiểm HTTP 200 → dọn backup. Mỗi lần có tên backup UUID mới và hạn bảy ngày từ lúc tạo. Báo cáo JSON không ghi tên khách, nội dung, token, mật khẩu hoặc stderr của tiến trình con.
+
+Hai lượt không chạy chồng; gặp gate của owner khác thì dừng. Nếu ứng dụng đã dừng, lịch không tự khởi động lại nó. Backup lỗi hoặc không drain được không tự mở gate, không dọn backup cũ. Báo cáo FAILED có operationId/stage trong kho riêng. Khóa `.run-lock` còn sau crash cần đối chiếu PID/process và gate trước xử lý; không tháo khóa/lease chỉ vì quá giờ. Không dùng Stop-ScheduledTask hoặc kill tiến trình để thay cho quy trình drain.
+
+Chỉ dọn thư mục `backup-*` trực tiếp trong root đã cấu hình sau khi bản mới còn hạn và đủ Hash. Bản hết hạn phải có manifest COMPLETE loại quiesced-backup, hạn đúng bảy ngày, đúng tập database/audio/manifest và bytes khớp. Xóa từng tệp đã đối chiếu rồi xóa thư mục rỗng; không recursive delete hoặc đi vào link. Bản dở, hỏng, có tệp lạ hay loại V13 được ghi review và giữ để người vận hành xử lý; tuyệt đối không dùng chúng như backup còn hiệu lực. Cần theo dõi review để dọn dữ liệu quá hạn có kiểm soát, không âm thầm kéo hạn nguồn.
+
+```powershell
+$taskName = 'AudioQR-Operations-hueqr-rehearsal-15d2f5c0'
+Get-ScheduledTaskInfo -TaskName $taskName
+Start-ScheduledTask -TaskName $taskName # Ngoài trình diễn; có gián đoạn phục vụ.
+```
+
+Sau lượt chạy, kiểm LastTaskResult=0 và báo cáo mới nhất trong `AudioQR-Operations\logs` có SUCCESS, backupComplete/reopened=true. Restore định kỳ vẫn dùng `restore-backup.mjs` với đúng ảnh trong manifest vào kho/project mới; COMPLETE không tự đồng nghĩa restore đã đạt. Khi có lỗi, kiểm stage, gate và owner trước resume; không chạy lại để ép mở.
+
+### Log và dung lượng
+
+| Loại | Chính sách và phạm vi |
+|---|---|
+| Báo cáo chạy lịch | Tệp `operations-<UUID>.json`, giữ bảy ngày từ finishedAt; dọn ở đầu mỗi lượt. Chỉ nhận đúng loại scheduled-operations; tệp lạ/hỏng/link giữ để rà. Không có lượt chạy thì dọn vật lý có thể trễ, không đặt lại timestamp. |
+| Console ứng dụng/MySQL do Docker quản lý | Driver local, max-size=10m, max-file=3 cho từng container; Docker tự xoay. Đây là giới hạn dung lượng, không cam kết xóa theo tuổi bảy ngày. Không sửa/xóa trực tiếp tệp daemon hoặc dọn volume để giảm log. |
+| Báo cáo nghiệm thu và phục hồi | Bằng chứng đã chọn tách sang hồ sơ nội bộ; recovery-private/config/owner đang cần dùng không phải log rác để xóa theo tên. |
+| GitHub/ngrok/Tailscale/provider | Log hạ tầng ngoài phạm vi app tự xóa; theo quyền và chính sách của từng dịch vụ. Không ghi token hoặc thông tin khách vào log chia sẻ. |
+
+Đặt giới hạn Docker trong compose chỉ có hiệu lực với container được tạo lại. Công cụ sau backup/quiesce/freeze rồi tạo lại database/application bằng cùng ảnh/volume, kiểm schema/khóa/health trước mở; không tự nâng phiên bản:
+
+```powershell
+node deploy/apply-log-limits.mjs '<runtime-V14>' '<backup-moi>'
+```
+
+Thực hiện ngoài buổi trình diễn. Nếu lỗi, giữ gate và báo cáo log-policy trong runtime cho người vận hành; không tự clear owner. Việc giới hạn buffer Docker không phải bằng chứng mọi log hạ tầng có TTL bảy ngày.

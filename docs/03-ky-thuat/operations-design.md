@@ -223,7 +223,7 @@ Ma trận dưới đây quy định cách kiểm, không tự xác nhận mọi 
 | V-BKP01 — DATA-03/04, BKP-P02 | Dataset đủ refs; drain với QUEUED/DISPATCHING/local convert/UNCERTAIN, stop app/worker/cleaner nhưng MySQL còn chạy; dump/catalog/copy/kiểm/mở lại | Không writer giữa dump/catalog/copy, không MySQL tạm để lấy catalog. Đủ hash/file đúng snapshot, job/receipt/phiên còn và mốc gốc, không provider retry; đo downtime/disk. Không đủ checkpoint thì FAILED/hoãn, không COMPLETE giả |
 | V-REC01 — DATA-01–04/REC-P01 | B hai ngày nhưng S đã 31 ngày, còn phiên khác chưa hết hạn và window cũ; restore riêng/lọc/đổi epoch trước phục vụ | Lọc quá hạn/mốc gốc; quyền/window cũ đều vô hiệu dù phiên còn hạn, khách xác nhận Bắt đầu mới, Admin login/đối chiếu; không endedAt giả/provider retry hoặc xóa Blob tức thì. Restart/backup thường không đổi epoch |
 | V-CD01 — TECH-05 | Sau người dùng thiết lập dịch vụ theo hướng dẫn: từ mạng riêng SSH vào **đúng account triển khai Windows**, kiểm PowerShell, PATH và Docker CLI/context/engine | Ghi danh tính, shell thật, context và quyền truy cập daemon; không suy SSH thành công là Docker được. Không mở Docker TCP public hoặc tắt quyền để né lỗi |
-| V-CD02 — TECH-05 | Khi V-CD01 đạt, kiểm từ workflow trong mạng riêng bằng tác vụ chỉ đọc trước; sau đó mới thử deploy có backup trên dữ liệu test | Runner đúng account/context, Docker Desktop hoạt động khi tài khoản/session thực tế; DB/audio vẫn giữ, lỗi có đường quay lại phù hợp schema. Chưa có bằng chứng workflow/CI/CD được tạo hoặc chạy |
+| V-CD02 — TECH-05 | Khi V-CD01 đạt, kiểm từ workflow trong mạng riêng bằng tác vụ chỉ đọc trước; sau đó mới thử deploy có backup trên dữ liệu test | Runner đúng account/context, Docker Desktop hoạt động khi tài khoản/session thực tế; DB/audio vẫn giữ, lỗi có đường quay lại phù hợp schema. Workflow CD thật đã đạt; xem báo cáo kiểm thử để tách lượt thực chạy khỏi kế hoạch kiểm |
 
 **Cổng kỹ thuật bắt buộc:** V-TAB02, V-AUDIO01/02 và V-CD01 không thể kết luận chỉ qua ERD/DTO. Nếu thiếu Web Locks/owner hoặc browser không chứng minh trạng thái tại expiry, ghi phần chưa đạt và thiết kế tiếp; không đổi nghiệp vụ cho khớp kết quả. Các ngưỡng tải/hiệu năng/độ trễ dọn chưa chốt không tự được đặt thành con số pass/fail.
 
@@ -254,9 +254,11 @@ Phép kiểm chưa thể kết luận từ bảng: MySQL thật UNIQUE/rollback/
 
 ## 6. Phạm vi đã kiểm và phần còn thiếu
 
-Gate V14, drain, mutex, snapshot nhất quán, kiểm Hash, restore trên volume/schema riêng và thu hồi quyền cũ đã có bằng chứng. Scheduler cleanup/retention đã được kiểm trên bản riêng: giữ file được bảo vệ và xóa dữ liệu/file đủ hạn. Các kết quả này chưa phải xác nhận V14 đã được áp lên runtime Ngọ Môn V13.
+Gate V14, drain, mutex, snapshot nhất quán, kiểm Hash, restore trên volume/schema riêng và thu hồi quyền cũ đã có bằng chứng. Bản Ngọ Môn đã chuyển V14 và CD thật đã đạt. Scheduler cleanup/retention đã được kiểm riêng rồi bật trên bản phục vụ: giữ file được bảo vệ và xóa dữ liệu/file đủ hạn.
 
-Còn hoàn thiện xử lý claim/lease sau crash thiếu căn cứ owner, lịch backup/dọn log và snapshot, triển khai từ xa và nghiệm thu dữ liệu/thiết bị cuối. Không tự thu hồi lease theo timeout hoặc tự mở gate sau lỗi để vượt các điều kiện này.
+Công cụ lịch backup/dọn đã đăng ký 23:00, có lượt Task Scheduler chạy thật và restore riêng đạt; báo cáo vận hành giữ bảy ngày, buffer Docker giới hạn 10 MB × 3 tệp/container. Giới hạn dung lượng Docker không chứng minh TTL theo tuổi cho mọi log hạ tầng. Quyền, lệnh, xử lý lỗi và lịch bỏ lỡ tại [hướng dẫn bảo trì](../07-van-hanh/bao-tri-va-sao-luu.md#backup-theo-lịch-và-quản-lý-log).
+
+Còn hoàn thiện xử lý claim/lease sau crash thiếu căn cứ owner, theo dõi trigger hằng ngày, xử lý mục review của retention và nghiệm thu dữ liệu/thiết bị cuối. Không tự thu hồi lease theo timeout hoặc tự mở gate sau lỗi để vượt các điều kiện này.
 
 Phạm vi triển khai và nghiệm thu được tổng hợp tại [hiện trạng bàn giao](../01-tong-quan/handoff.md); kết quả thực thi tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
 

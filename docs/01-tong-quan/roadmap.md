@@ -237,9 +237,22 @@ Thành tổng hợp hướng dẫn và bàn giao theo sản phẩm thực tế; 
 
 ## 4. Thứ tự hoàn thiện
 
-1. Dữ liệu: quota ru, nghe duyệt, hồ sơ từng cặp và mức đầy đủ 20 văn bản/20 audio.
+1. Dữ liệu: đã đủ 20 văn bản/20 audio kỹ thuật; tiếp tục nghe duyệt, hồ sơ từng cặp và áp dụng.
 2. Tích hợp: kiểm năm điểm/bốn tiếng, lỗi/time/tab/thiết bị và ma trận FR/UC/AC/NFR.
 3. Vận hành: CD/SSH/Tailscale, crash/claim, lịch log/backup và mốc chuyển phục vụ.
 4. Bàn giao: đồng bộ hướng dẫn, hồ sơ và lượt người nhận thực hiện lại.
 
 T01/T11 do Thành; T02/T09/T10 do Hòa; T03/T05/T07 do Thành; T04/T06 do Nghĩa; T08 cả nhóm. Người thao tác, tác giả commit và tài khoản push là các vai trò khác nhau. Lịch triển khai chi tiết cũ và phân nhóm commit đã được gom trong hồ sơ nội bộ, không dùng như kết quả nghiệm thu.
+
+## 5. Đề xuất bổ sung theo bằng chứng ngày 14/11
+
+Đã đọc lại 11 issue trên GitHub: 62/89 ô, cùng dấu tích với mục 3. Không sửa issue/Project hoặc tự đổi checklist local trong đợt này. Bản đối chiếu từng ô giữ trong hồ sơ nội bộ `van-hanh-tu-dong-20261114`; 62 ô đã tích giữ bằng chứng mốc trước, không coi là đã kiểm lại toàn bộ ngày 14/11.
+
+| Issue / nguyên văn ô chưa tích | Đề xuất và căn cứ |
+|---|---|
+| [T01 #1](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/1): Hoàn thiện path/quyền/công cụ/checkpoint backup và chi tiết log/cách kiểm phục hồi; DATA-03 đã chốt phạm vi/nhịp, chưa coi mọi lớp đã kiểm. | Đề xuất tích sau rà: kho có ACL, root riêng/junction guard, gate/checkpoint, lịch 23:00 và lượt task thật/restore hai file đạt; log/retention/giới hạn hạ tầng được mô tả cụ thể. Không suy mọi lớp hoặc RPO/RTO đã đạt. |
+| [T10 #10](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/10): Thiết lập CI/CD với các kiểm tra phù hợp và lưu bằng chứng pipeline thực thi. | Đề xuất tích sau rà: CI và workflow CD thật 43486032664 đạt; source/image/volume/khóa và audio được đối chiếu. Step kiểm retention mới chỉ chạy local, chưa push/chạy GitHub trong đợt này. |
+| [T09 #9](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/9): Lập kịch bản truy vết FR/UC/AC/NFR và điều kiện đánh giá đã chốt; không tự đặt ngưỡng bắt buộc. | Đề xuất tích sau rà: ma trận đủ 23 FR/14 UC/50 AC/6 NFR, ca nguồn/bằng chứng/điều kiện chưa khép; không đặt RPO/RTO hoặc biến fixture thành thiết bị thật. |
+| [T11 #11](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/11): Hoàn thiện hướng dẫn khách, Admin và trình diễn theo chức năng đã chạy, gồm phiên, vùng, cặp nội dung, lỗi, thống kê và QR. | Đề xuất tích sau rà: hướng dẫn sử dụng/chạy/tắt/backup/restore và QR PNG hiện hành; có thêm tra cứu file/dòng và liên kết ma trận. Không đồng nghĩa người nhận đã tự chạy lại. |
+
+Nếu bốn đề xuất được duyệt và cập nhật, số ô sẽ là 66/89; hiện vẫn 62/89. Các ô rộng hơn về môi trường/thiết bị, vận hành cuối, tái lập bởi người nhận và dữ liệu 20+20 được duyệt/áp dụng giữ trạng thái mở. Đã có 20 audio kỹ thuật nhưng không tự tính thành 20 cặp D09. TTL báo cáo lịch bảy ngày khác giới hạn dung lượng buffer Docker; chưa dùng phép kiểm này để khẳng định mọi log hạ tầng tự xóa theo tuổi hoặc mọi ca crash đã được giải quyết.
