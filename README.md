@@ -13,13 +13,13 @@ Nhóm thực hiện: **Thành, Hòa và Nghĩa**. Kiến trúc: **Vue → Spring
 
 ## Sản phẩm và hiện trạng
 
-Mã nguồn đã tích hợp vào main qua [PR #15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/pull/15), mốc `601c09a`. Backend có migrations V1–V14, API Khách/Admin, TTS hàng đợi, chuyển WAV→MP3, vòng đời dữ liệu/file và gate bảo trì. Frontend có trang Khách, trang Admin và QR theo URL cấu hình.
+Mã nguồn được lưu theo các nhánh task và tích hợp qua [main](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/tree/main), giữ lịch sử tác giả G02. Backend có migrations V1–V14, API Khách/Admin, TTS hàng đợi, WAV→MP3, vòng đời dữ liệu/file và gate bảo trì. Frontend có trang Khách, Admin và QR theo URL cấu hình.
 
-Mốc bổ sung 14/11 đã commit/push theo T08/T09/T10/T11; nhánh T11 giữ đầy đủ bản tổng hợp để khôi phục. [CI nguồn 3f66b72](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43592287460) đạt 530 backend, 71 logic frontend, 29 ca vận hành và Vue build. Mốc này chưa được tích hợp vào main; ảnh ứng dụng đang phục vụ vẫn giữ nguyên vì không sửa nguồn Vue/Java ứng dụng.
+Bản phục vụ đã bật **năm địa điểm và 20 cặp văn bản/audio vi/en/fr/ru**. Ngọ Môn vi giữ hồ sơ cũ; 19 cặp mới được chủ đồ án duyệt dùng học phần, khóa đúng revision/Hash. Bản sao và API phục vụ đều kiểm 20/20 bài/MP3 khớp Hash. [Hồ sơ nội dung](docs/05-noi-dung/README.md) giữ phạm vi duyệt và giới hạn chuyên gia/phát âm.
 
-Đã có lượt full backend 530/530 đạt; 71/71 logic frontend, build và các lượt Chrome/API/MP3 riêng có bằng chứng. Người kiểm đã báo sử dụng Ngọ Môn vi thành công trên Android và iPhone. Checklist được đối chiếu 62/89; số ô không biểu thị phần trăm hoàn thành đồ án.
+[CI 1bab9a6](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43598895644) đạt 530 backend, 71 logic frontend, 33 ca vận hành và Vue build. Chrome riêng đạt 11/11 ca. Lịch backup/log, CD và restore được ghi tại [bàn giao](docs/01-tong-quan/handoff.md); nguồn Vue/Java và ảnh ứng dụng phục vụ giữ nguyên trong mốc bổ sung công cụ/dữ liệu này.
 
-Bản tập dượt phục vụ Ngọ Môn tiếng Việt ở schema V14; đã kiểm snapshot/restore V13 trước nâng, backup/restore V14 và giữ nguyên vùng/cặp/audio khi chuyển. Hai scheduler dọn dữ liệu đã bật; TTS vẫn tắt; CD GitHub đã đạt. Backup Windows lúc 23:00 đã đăng ký và chạy thử qua Task Scheduler đạt, có restore riêng; báo cáo vận hành giữ bảy ngày, Docker giới hạn log 10 MB × 3 tệp/container. Bốn vùng khác và 19 audio mới ở môi trường nội dung riêng: đã đủ 20 văn bản/20 audio kỹ thuật, backup/restore 40 WAV/MP3 đạt. D09/nghe duyệt bộ mới và phát âm Thái Hòa fr còn chờ. Bộ 20 cặp và toàn bộ nghiệm thu chưa hoàn tất.
+Kiểm thiết bị của bộ cập nhật và người nhận thực hiện lại hướng dẫn là lượt cuối. Android/iPhone từng dùng Ngọ Môn cơ bản không thay toàn ma trận mẫu máy/OS/browser. Checklist thực tế giữ 62/89; chưa tự tích thêm issue/Project từ việc commit hoặc merge.
 
 ## Cấu trúc
 

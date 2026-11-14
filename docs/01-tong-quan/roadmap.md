@@ -237,7 +237,7 @@ Thành tổng hợp hướng dẫn và bàn giao theo sản phẩm thực tế; 
 
 ## 4. Thứ tự hoàn thiện
 
-1. Dữ liệu: đã đủ 20 văn bản/20 audio kỹ thuật; tiếp tục nghe duyệt, hồ sơ từng cặp và áp dụng.
+1. Dữ liệu: đủ 20 văn bản/audio đã được duyệt dùng học phần và áp dụng; API Khách kiểm Hash 20/20. Giữ giới hạn hồ sơ khi thay revision.
 2. Tích hợp: kiểm năm điểm/bốn tiếng, lỗi/time/tab/thiết bị và ma trận FR/UC/AC/NFR.
 3. Vận hành: CD/SSH/Tailscale, crash/claim, lịch log/backup và mốc chuyển phục vụ.
 4. Bàn giao: đồng bộ hướng dẫn, hồ sơ và lượt người nhận thực hiện lại.
@@ -256,3 +256,8 @@ T01/T11 do Thành; T02/T09/T10 do Hòa; T03/T05/T07 do Thành; T04/T06 do Nghĩa
 | [T11 #11](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/issues/11): Hoàn thiện hướng dẫn khách, Admin và trình diễn theo chức năng đã chạy, gồm phiên, vùng, cặp nội dung, lỗi, thống kê và QR. | Đề xuất tích sau rà: hướng dẫn sử dụng/chạy/tắt/backup/restore và QR PNG hiện hành; có thêm tra cứu file/dòng và liên kết ma trận. Không đồng nghĩa người nhận đã tự chạy lại. |
 
 Nếu bốn đề xuất được duyệt và cập nhật, số ô sẽ là 66/89; hiện vẫn 62/89. Các ô rộng hơn về môi trường/thiết bị, vận hành cuối, tái lập bởi người nhận và dữ liệu 20+20 được duyệt/áp dụng giữ trạng thái mở. Đã có 20 audio kỹ thuật nhưng không tự tính thành 20 cặp D09. TTL báo cáo lịch bảy ngày khác giới hạn dung lượng buffer Docker; chưa dùng phép kiểm này để khẳng định mọi log hạ tầng tự xóa theo tuổi hoặc mọi ca crash đã được giải quyết.
+
+
+## 6. Đối chiếu mốc xuất bản đủ bộ
+
+Ngày 14/11: hồ sơ chủ đồ án duyệt 19 cặp mới đã được ghi, bốn vùng/19 cặp áp dụng qua API và năm điểm hiển thị. Bộ API thật đạt 20/20 bài/MP3, giữ cặp Ngọ Môn vi và dữ liệu cũ. Lịch backup tự kích hoạt một lần đạt 40 tệp, mã task 0; trigger thử đã gỡ, lịch 23:00 giữ nguyên. CI mốc 1bab9a6 đạt 530 backend/71 frontend/33 vận hành/build. Các bằng chứng này bổ sung cho T08/T09/T10/T11, không tự đóng ô nhiều vế còn thiếu kiểm thiết bị hoặc người nhận. Ma trận thiết bị thực hiện ở lượt cuối; chưa sửa dấu tích mục 3 hoặc GitHub Project.

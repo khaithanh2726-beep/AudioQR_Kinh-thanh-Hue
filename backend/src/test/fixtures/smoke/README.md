@@ -14,3 +14,11 @@ Bộ kiểm chờ HTTP sẵn sàng rồi chạy 10 nhóm UI và một nhóm cras
 Ca crash chỉ kill/restart container riêng đã kiểm label, giữ gate và lease chưa rõ owner; freeze phải bị từ chối. Chỉ xóa lease fixture do chính ca kiểm tạo, không dùng mã này như công cụ giải phóng lease/claim thật. File crash-fixture-private-*.json giữ nhận diện fixture ngoài Git để rà khi lỗi. Bộ kiểm không chứng minh đã giải quyết mọi reconcile sau crash.
 
 Kết quả browser-acceptance.json ghi từng ca, phiên bản Chrome/OS/Node và phạm vi fixture. Ca lỗi được giữ trước chạy lại, không cộng các lượt thành full mới. Sau kiểm dừng đúng hai container ở private-runtime.json bằng tên/label đã đối chiếu; không dọn project khác hoặc volume phục vụ. Kết quả không thay phép thử Android/iPhone hoặc nghe duyệt D09.
+
+## Kiểm bộ 20 cặp đã xuất bản
+
+```powershell
+node backend/src/test/fixtures/smoke/verify-published-content.mjs '<runtime-loopback>' '<bao-cao-ngoai-repository.json>'
+```
+
+Dùng trên bản sao trước khi thực hiện trên bản phục vụ đã được phép kiểm. Bộ kiểm tạo/kết thúc bốn phiên, chọn năm điểm theo từng ngôn ngữ, đối chiếu văn bản/MP3 theo SHA256 và thử replay cùng key. Không gửi view-ack vì không hiển thị văn bản. Không ghi đây là nghe thử trên thiết bị; kết quả API/bytes thật và phép kiểm điện thoại được lưu riêng.

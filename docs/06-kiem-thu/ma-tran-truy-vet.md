@@ -29,7 +29,7 @@ Nguồn bằng chứng: [Kết quả 14/11](README.md#acceptance-final-result); 
 | [FR-A09](../02-nghiep-vu/PRD.md) | Dọn file độc lập DB, ref/claim và hạn bảo vệ | [LifecycleCleanupTests.java](../../backend/src/test/java/vn/hueqr/backend/service/LifecycleCleanupTests.java#L42) | scheduler riêng; không thay bằng xóa DB; [Kết quả 14/11](README.md#acceptance-final-result). Dữ liệu/thiết bị còn theo AC bên dưới. |
 | [FR-A10](../02-nghiep-vu/PRD.md) | QR/URL, PNG và bản in chung | [QR HTTPS](../../frontend/tests/e2e/public-rehearsal.spec.mjs) | frontend/tests/e2e/public-rehearsal.spec.mjs; [Kết quả 14/11](README.md#acceptance-final-result). Dữ liệu/thiết bị còn theo AC bên dưới. |
 | [FR-A11](../02-nghiep-vu/PRD.md) | Danh sách/chi tiết phiên và thống kê | [AdminGuestSessionApiTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminGuestSessionApiTests.java#L43) | admin-statistics-filters; [Kết quả 14/11](README.md#acceptance-final-result). Dữ liệu/thiết bị còn theo AC bên dưới. |
-| [FR-A12](../02-nghiep-vu/PRD.md) | Mức đầy đủ 5 × 4; phân biệt đã tạo/áp dụng | [AdminContentApiTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminContentApiTests.java#L69) | 20 audio kỹ thuật; chưa đủ D09; [Kết quả 14/11](README.md#acceptance-final-result). Dữ liệu/thiết bị còn theo AC bên dưới. |
+| [FR-A12](../02-nghiep-vu/PRD.md) | Mức đầy đủ 5 × 4; phân biệt đã tạo/áp dụng | [AdminContentApiTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminContentApiTests.java#L69) | 20 cặp được chủ đồ án duyệt dùng học phần; API thật kiểm 20/20 Hash; [Kết quả 14/11](README.md#acceptance-final-result). Dữ liệu/thiết bị còn theo AC bên dưới. |
 | [FR-D01](../02-nghiep-vu/PRD.md) | Dọn phiên/lượt theo hạn gốc 30 ngày | [GuestRetentionTests.java](../../backend/src/test/java/vn/hueqr/backend/service/GuestRetentionTests.java#L47) | scheduler riêng và restore retention; [Kết quả 14/11](README.md#acceptance-final-result). Dữ liệu/thiết bị còn theo AC bên dưới. |
 
 ## Use Case
@@ -68,7 +68,7 @@ Nguồn bằng chứng: [Kết quả 14/11](README.md#acceptance-final-result); 
 | [AC-K11](../02-nghiep-vu/PRD.md) | FR-K04, FR-K05 | audio-error-retry: văn bản còn, tải lại MP3 không cộng lượt. |
 | [AC-K12](../02-nghiep-vu/PRD.md) | FR-K05 | playback.test.mjs + tabs-reload/expiry-warning-tail; còn mẫu máy. |
 | [AC-K13](../02-nghiep-vu/PRD.md) | FR-K03, FR-K05 | samePlaceAndLanguageChangesKeepOneOpeningAndOneView; playback unit. |
-| [AC-K14](../02-nghiep-vu/PRD.md) | FR-K06 | GuestContentApiTests language/sequence + messages/transport unit; bộ 20 cặp chưa áp dụng. |
+| [AC-K14](../02-nghiep-vu/PRD.md) | FR-K06 | GuestContentApiTests language/sequence + messages/transport unit; bộ 20 cặp đã áp dụng, API thật kiểm bốn ngôn ngữ; kiểm giao diện/thiết bị cuối còn riêng. |
 | [AC-K15](../02-nghiep-vu/PRD.md) | FR-K02, FR-K07 | tabs-reload: giữ id, pause, một view; không đo chính xác từng giây. |
 | [AC-K16](../02-nghiep-vu/PRD.md) | FR-K05, FR-K08 | offline-reload-recovery/audio-error-retry: lỗi API thật bị chặn mạng rồi phục hồi. |
 | [AC-K17](../02-nghiep-vu/PRD.md) | FR-K09 | expiry-warning-tail: timestamp phiên fixture + clock browser; không chờ 8 giờ thật. |
@@ -89,9 +89,9 @@ Nguồn bằng chứng: [Kết quả 14/11](README.md#acceptance-final-result); 
 | [AC-A10](../02-nghiep-vu/PRD.md) | FR-A05 | AdminTtsApiTests/recovery: receipt và retry rõ; không retry outcome chưa rõ. |
 | [AC-A11](../02-nghiep-vu/PRD.md) | FR-A06 | TtsWorkerIntegrationTests: snapshot V1/target version, kết quả gắn đúng revision. |
 | [AC-A12](../02-nghiep-vu/PRD.md) | FR-A06 | TtsWorkerIntegrationTests/restart; chưa kiểm mọi crash/lease thiếu owner. |
-| [AC-A13](../02-nghiep-vu/PRD.md) | FR-A01, FR-A05, FR-A06 | AdminAudioPreviewTests/StreamTests + browser restore; chưa có nghe duyệt người cho 19 bài. |
+| [AC-A13](../02-nghiep-vu/PRD.md) | FR-A01, FR-A05, FR-A06 | AdminAudioPreviewTests/StreamTests + browser restore; hồ sơ chủ đồ án duyệt 19 bài có giới hạn; không suy đã nghe trọn từ phép kiểm tự động. |
 | [AC-A14](../02-nghiep-vu/PRD.md) | FR-A07 | AdminPairApiTests kiểm tham chiếu/gate; hồ sơ D09 bộ mới vẫn chờ nghe. |
-| [AC-A15](../02-nghiep-vu/PRD.md) | FR-A06, FR-A07 | AdminPairApiTests atomic apply/ETag/rollback; thực phục vụ một cặp Ngọ Môn vi. |
+| [AC-A15](../02-nghiep-vu/PRD.md) | FR-A06, FR-A07 | AdminPairApiTests atomic apply/ETag/rollback; thực phục vụ 20 cặp; 19 cặp mới áp dụng qua API/ETag/review, Ngọ Môn vi được giữ. |
 | [AC-A16](../02-nghiep-vu/PRD.md) | FR-A02, FR-A08 | AdminPlaceDeletionTests: TX/FK/rollback và receipt; UI xóa cần kiểm ma trận thiết bị. |
 | [AC-A17](../02-nghiep-vu/PRD.md) | FR-A08, FR-A11 | AdminPlaceDeletionTests + AdminGuestSessionApiTests giữ snapshot điểm cũ. |
 | [AC-A18](../02-nghiep-vu/PRD.md) | FR-A06, FR-A08 | AdminPlaceDeletionTests/TtsWorkerIntegrationTests không hồi sinh target đã xóa. |
@@ -102,7 +102,7 @@ Nguồn bằng chứng: [Kết quả 14/11](README.md#acceptance-final-result); 
 | [AC-A23](../02-nghiep-vu/PRD.md) | FR-A11, FR-K10 | admin-statistics-filters + AdminGuestSessionApiTests: ngày/count/Asia-Saigon. |
 | [AC-A24](../02-nghiep-vu/PRD.md) | FR-A11 | AdminGuestSessionApiTests/ReportsPanel; còn toàn ma trận modal/lỗi/thiết bị. |
 | [AC-A25](../02-nghiep-vu/PRD.md) | FR-A12 | AdminContentApiTests + CompletenessPanel; audio kỹ thuật khác cặp áp dụng. |
-| [AC-A26](../02-nghiep-vu/PRD.md) | FR-A12, FR-A07 | Đã đủ 20 văn bản/20 audio kỹ thuật; 19 bài mới chưa nghe duyệt/áp dụng D09, chưa đạt toàn ô. |
+| [AC-A26](../02-nghiep-vu/PRD.md) | FR-A12, FR-A07 | Đủ 20 văn bản/20 audio, hồ sơ chủ đồ án duyệt 19 cặp mới cho học phần; đã áp dụng và API kiểm Hash 20/20. Kiểm thiết bị cuối không thay bằng API. |
 | [AC-D01](../02-nghiep-vu/PRD.md) | FR-D01 | GuestRetentionTests và scheduler trên restore riêng: xóa vật lý theo anchor gốc. |
 | [AC-D02](../02-nghiep-vu/PRD.md) | FR-D01, FR-A11 | GuestSessionSchemaTests/AdminGuestSessionApiTests: dữ liệu tối thiểu/quyền; log hạ tầng riêng. |
 
@@ -114,7 +114,7 @@ Nguồn bằng chứng: [Kết quả 14/11](README.md#acceptance-final-result); 
 | [NFR-02](../02-nghiep-vu/PRD.md) | Tính nhất quán/toàn vẹn: một audio khách mỗi tab, lựa chọn mới nhất thắng/không lượt lặp; áp dụng cặp không để lộ n… | GuestContent/AdminPair/deletion/retention API + retry thật sau commit; không suy mọi crash đã đạt. |
 | [NFR-03](../02-nghiep-vu/PRD.md) | Quản trị cần phiên hợp lệ; 30 phút Q3 độc lập khách. Hết phiên dừng nghe thử/che nội dung, đăng nhập lại không tự p… | AdminAuthApiTests MutableClock cho Q3, admin-401-q2 cho UI; chưa chờ 30 phút thật trên tất cả thiết bị. |
 | [NFR-04](../02-nghiep-vu/PRD.md) | Phục hồi/báo đúng trạng thái: không báo lưu/xóa/tạo thành công giả. Q2 bảo vệ ba loại nội dung qua hết phiên/lưu lỗ… | 10 ca Chrome gồm Q2/reload/lỗi mạng/mất response; còn Q2 vùng/tham chiếu và toàn lỗi chưa rõ. |
-| [NFR-05](../02-nghiep-vu/PRD.md) | Đa ngôn ngữ/nội dung có căn cứ: bộ chọn chung cho giao diện khách và nội dung/audio, tên khách nguyên vẹn; nút biểu… | 20 bài/20 audio kỹ thuật và UI vi/en/fr/ru; D09/phát âm/người rà ngôn ngữ còn mở. |
+| [NFR-05](../02-nghiep-vu/PRD.md) | Đa ngôn ngữ/nội dung có căn cứ: bộ chọn chung cho giao diện khách và nội dung/audio, tên khách nguyên vẹn; nút biểu… | 20 cặp được duyệt dùng học phần và UI vi/en/fr/ru; giữ giới hạn phát âm/thẩm định chuyên gia và kiểm thiết bị cuối. |
 | [NFR-06](../02-nghiep-vu/PRD.md) | Hoạt động trực tuyến, lỗi không làm mất lựa chọn/nội dung đã có; giữ phần audio vẫn phát được nhưng không hứa hoạt … | Có network-fault/Blob/expiry fixture; không thử offline service hoặc cam kết chạy khi laptop/ngrok tắt. |
 
 ## Cách cập nhật

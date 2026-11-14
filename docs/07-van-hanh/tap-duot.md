@@ -4,7 +4,7 @@
 
 Kiểm task backup trước buổi diễn theo [hướng dẫn bảo trì](bao-tri-va-sao-luu.md#backup-theo-lịch-và-quản-lý-log). Lịch Ngọ Môn là 23:00; nếu buổi diễn đi qua giờ này, Disable-ScheduledTask để chặn lượt mới rồi bật lại sau buổi diễn. Không dừng cưỡng bức lượt backup đang chạy; chờ hoàn tất và gate RUNNING. Nếu bỏ lỡ lịch, chạy bù ngoài thời gian sử dụng.
 
-Mở Docker Desktop và đúng môi trường đã cấu hình, dùng database/kho audio/tài khoản riêng. Bản tập dượt được ghi nhận ở cổng loopback 18083, chỉ bật Ngọ Môn vi. Không dùng preview hoặc dữ liệu E2E làm nội dung đã duyệt. Cấu hình, mật khẩu, epoch và khóa ký giữ ngoài Git.
+Mở Docker Desktop và đúng môi trường đã cấu hình, dùng database/kho audio/tài khoản riêng. Bản tập dượt được ghi nhận ở cổng loopback 18083, đã bật năm điểm và 20 cặp vi/en/fr/ru. Không dùng preview hoặc dữ liệu E2E làm nội dung đã duyệt. Cấu hình, mật khẩu, epoch và khóa ký giữ ngoài Git.
 
 ```powershell
 $rehearsalDirectory = '<thu-muc-runtime-tap-duot>'
@@ -60,4 +60,4 @@ Bản PNG tại mốc 14/11: [tải QR Kinh thành Huế](qr-kinh-thanh-hue.png)
 
 ## 5. Giới hạn bản trình diễn
 
-Bản phục vụ hiện chỉ có Ngọ Môn vi đã được chấp thuận tập dượt. Android và iPhone đã có báo dùng cơ bản; chưa thay kiểm bộ 20 cặp, toàn ma trận thiết bị/lỗi hoặc vận hành chính thức. [Điều kiện nghiệm thu](nghiem-thu-van-hanh.md) ghi phần cần hoàn tất.
+Bản phục vụ hiện có năm điểm và 20 cặp được chấp thuận dùng học phần, API văn bản/MP3 khớp Hash 20/20. Android và iPhone đã có báo dùng Ngọ Môn cơ bản; ma trận mẫu máy/OS/browser của bộ cập nhật được thực hiện ở lượt kiểm cuối. Không dùng kết quả API thay kết quả nghe trên thiết bị. [Điều kiện nghiệm thu](nghiem-thu-van-hanh.md) ghi phần cần hoàn tất.

@@ -23,4 +23,4 @@ npm.cmd run dev
 
 Build xuất `dist`; `node_modules`/`dist`/kết quả Playwright không commit. Mã unit và E2E giữ trong `tests`. Output E2E đặt ngoài repository bằng `HUEQR_E2E_OUTPUT`; [hướng dẫn E2E](tests/e2e/README.md) quy định runtime/schema riêng và điều kiện chạy. Không có runtime thì các ca phụ thuộc bị skip, không tính là pass.
 
-Đã có 71/71 logic và build đạt; các lượt Chrome/API/MP3 và giới hạn thiết bị tại [báo cáo kiểm thử](../docs/06-kiem-thu/README.md). Mốc nguồn trong Git khác với dữ liệu phục vụ đã duyệt; UI hiện chỉ tập dượt Ngọ Môn vi trên bản phục vụ.
+Đã có 71/71 logic và build đạt; các lượt Chrome/API/MP3 và giới hạn thiết bị tại [báo cáo kiểm thử](../docs/06-kiem-thu/README.md). Mốc nguồn trong Git khác với dữ liệu phục vụ đã duyệt; Bản phục vụ đã áp dụng đủ năm điểm/20 cặp vi/en/fr/ru, API Hash kiểm 20/20; kiểm thiết bị của bộ cập nhật được thực hiện ở lượt cuối.

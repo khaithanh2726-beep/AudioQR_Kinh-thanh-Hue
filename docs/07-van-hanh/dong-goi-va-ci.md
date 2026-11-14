@@ -2,7 +2,7 @@
 
 Ứng dụng dùng Vue và Spring Boot chung origin. Docker build đóng gói hai trang khách/Admin vào static resources của backend. MySQL và kho audio nằm trên hai volume riêng.
 
-Đã kiểm build ảnh Linux, FFmpeg/ffprobe, đường dẫn Unicode, ứng dụng chung origin và Compose restart/update/rollback trong môi trường tách biệt. HTTPS/QR Ngọ Môn vi đã có lượt chạy thử; bản phục vụ đã nâng V14 có kiểm trước/sau, còn 20 cặp và nghiệm thu vận hành cuối. Phạm vi và bằng chứng tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
+Đã kiểm build ảnh Linux, FFmpeg/ffprobe, đường dẫn Unicode, ứng dụng chung origin và Compose restart/update/rollback trong môi trường tách biệt. HTTPS/QR Ngọ Môn vi đã có lượt chạy thử; bản phục vụ đã nâng V14 có kiểm trước/sau, đã áp dụng 20 cặp, còn lượt nghiệm thu thiết bị/bàn giao cuối. Phạm vi và bằng chứng tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
 
 ## Cấu hình
 

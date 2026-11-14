@@ -154,3 +154,22 @@ node deploy/apply-log-limits.mjs '<runtime-V14>' '<backup-moi>'
 ```
 
 Thực hiện ngoài buổi trình diễn. Nếu lỗi, giữ gate và báo cáo log-policy trong runtime cho người vận hành; không tự clear owner. Việc giới hạn buffer Docker không phải bằng chứng mọi log hạ tầng có TTL bảy ngày.
+
+## Chuyển bộ nội dung v02 đã duyệt sang bản phục vụ
+
+Ba công cụ `import-approved-content.mjs`, `publish-approved-content.mjs` và `content-admin-client.mjs` phục vụ một lần chuyển 19 cặp v02, không phải API tải audio công khai. Chúng đọc [hồ sơ duyệt](../05-noi-dung/duyet-19-cap-v02-20261114.json), khóa đúng revision/Hash và giữ cặp Ngọ Môn vi cũ. Không thay database phục vụ bằng database tạo nội dung vì sẽ mất lịch sử khách/thống kê.
+
+1. Nguồn là bản phục hồi riêng của snapshot nội dung đủ 40 tệp, còn hạn, provider và mọi worker tắt. Hai ứng dụng phải dừng, DB chạy, gate FROZEN, không còn activity/task/claim. Bản đích phải có backup mới cùng owner/checkpoint và 19 slot trống; có chỉnh sửa hoặc ID trùng thì dừng để đối chiếu.
+2. Import giữ khóa ngoại, nhập file/text/job/audio cùng dấu vết instance chuyển đổi đã STOPPED; không tạo kết quả TTS giả. Chép và đọc lại 38 tệp mới, kiểm Hash, dùng transaction cho bản ghi/slot và đối chiếu Hash dữ liệu cũ. Không ghi trực tiếp cặp, review hoặc visibility.
+3. Sau kết quả `IMPORTED_FROZEN`, người vận hành mở lại đúng owner rồi chạy publisher. Công cụ đăng nhập Admin loopback, lưu/đọc lại Hash/áp dụng bốn vùng, ghi hồ sơ duyệt và áp dụng 19 cặp bằng ETag/command window/receipt. Chỉ bật địa điểm sau khi đủ cặp. Các receipt/SQL/log riêng phải nằm ngoài Git, có ACL bảo vệ.
+
+```powershell
+node deploy/import-approved-content.mjs '<runtime-nguon-rieng>' '<backup-40-tep>' '<runtime-dich>' '<owner-UUID>' '<backup-dich-truoc-nhap>' '<thu-muc-bao-cao-moi>'
+node deploy/maintenance.mjs '<runtime-dich>' resume '<owner-UUID>'
+node deploy/publish-approved-content.mjs '<runtime-dich>' '<runtime-co-tai-khoan-Admin>' '<thu-muc-ledger-moi>'
+node backend/src/test/fixtures/smoke/verify-published-content.mjs '<runtime-dich>' '<bao-cao-rieng.json>'
+```
+
+Chỉ resume sau khi importer báo đạt. `FAILED_CLOSED` giữ gate đóng; `IMPORT_OUTCOME_REQUIRES_RECONCILIATION` phải đối chiếu transaction/bản ghi/file trước thao tác tiếp. Publisher lưu key PENDING trước gửi; mất phản hồi hoặc receipt lỗi không tự thử ghi lại. Đọc ledger và tra receipt hiện có theo hợp đồng Admin trước khi quyết định; không chạy lại bằng thư mục/key mới để né xung đột. File đã chép nhưng transaction chưa hoàn tất không được tự xóa hoặc gắn sang revision khác.
+
+Bộ kiểm API tạo và kết thúc bốn phiên kỹ thuật, lấy đủ 20 văn bản/MP3, so Hash và thử replay cùng key. Nó không gửi view-ack vì không hiển thị văn bản cho khách, không tạo bằng chứng đọc/nghe trên điện thoại. Sau chuyển phải backup mới và thử restore đúng ảnh/schema sang kho riêng; giữ hạn/epoch theo quy trình đã nêu.

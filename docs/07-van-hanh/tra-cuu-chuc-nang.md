@@ -70,7 +70,9 @@ Luồng dữ liệu chính: Vue → Controller → Service → Repository → My
 | FR-A09 | [LifecycleCleanupTests.java](../../backend/src/test/java/vn/hueqr/backend/service/LifecycleCleanupTests.java#L42); scheduler riêng; không thay bằng xóa DB |
 | FR-A10 | [QR/HTTPS](../../frontend/tests/e2e/public-rehearsal.spec.mjs); frontend/tests/e2e/public-rehearsal.spec.mjs |
 | FR-A11 | [AdminGuestSessionApiTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminGuestSessionApiTests.java#L43); admin-statistics-filters |
-| FR-A12 | [AdminContentApiTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminContentApiTests.java#L69); 20 audio kỹ thuật; chưa đủ D09 |
+| FR-A12 | [AdminContentApiTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminContentApiTests.java#L69); 20 cặp được duyệt dùng học phần và API Khách kiểm Hash 20/20 |
 | FR-D01 | [GuestRetentionTests.java](../../backend/src/test/java/vn/hueqr/backend/service/GuestRetentionTests.java#L47); scheduler riêng và restore retention |
+
+Công cụ nhập dữ liệu đã duyệt: [import-approved-content.mjs](../../deploy/import-approved-content.mjs). Bước ghi hồ sơ, áp dụng vùng/cặp và bật hiển thị qua API: [publish-approved-content.mjs](../../deploy/publish-approved-content.mjs); khóa/receipt và kết quả chưa rõ: [content-admin-client.mjs](../../deploy/content-admin-client.mjs). Bộ kiểm đủ 20 bài: [verify-published-content.mjs](../../backend/src/test/fixtures/smoke/verify-published-content.mjs). Đây là công cụ vận hành, không thêm hợp đồng API.
 
 Các migrations nằm tại [db/migration](../../backend/src/main/resources/db/migration); cấu hình ứng dụng tại [application.properties](../../backend/src/main/resources/application.properties). Đọc [API/giao dịch](../03-ky-thuat/api-transactions.md), [dữ liệu](../03-ky-thuat/data-model.md) và [quy trình vận hành](bao-tri-va-sao-luu.md) để xem hợp đồng/giới hạn. Credential, khóa và audio không nằm trong tài liệu tra cứu.

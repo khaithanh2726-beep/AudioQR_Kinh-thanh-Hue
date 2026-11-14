@@ -22,3 +22,5 @@ Bản tập dượt Ngọ Môn không phải nghiệm thu đủ 20 cặp. Bản 
 ## Bảo quản nguyên bản
 
 Toàn bộ nguyên bản tài liệu, lịch sử dài, mốc commit/bàn giao, log/JSON/XML/ảnh kiểm được giữ trong hồ sơ nội bộ riêng cạnh dự án. Mỗi tệp có Hash đối chiếu trước biên tập; không xóa nguồn gốc hoặc viết lại lịch sử Git. Bộ tài liệu chấm chỉ giữ bản mô tả hiện hành, bảng mốc này và báo cáo kết quả tổng hợp.
+
+Mốc xuất bản đủ bộ ngày 14/11: chủ đồ án duyệt 19 cặp mới; bản phục vụ áp dụng năm điểm/20 cặp, API Hash 20/20. Backup tự trigger một lần đạt 40 tệp và restore riêng đủ 20 cặp; lịch 23:00 giữ nguyên. Kiểm thiết bị bộ cập nhật và người nhận nằm ở lượt cuối; checklist không tự đổi.
