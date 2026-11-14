@@ -14,7 +14,7 @@ Bộ chuẩn gồm năm địa điểm × vi/en/fr/ru = 20 văn bản và 20 aud
 
 Bốn tệp `thuyet-minh-*-v01.md` được giữ nguyên như nguồn tiếp nhận/đầu vào của công cụ chuẩn bị nội dung, không phải bản đã hiệu đính cuối. Văn bản sử dụng cho lượt tạo mới được đọc từ bundle v02; hai bài Cửu Đỉnh/Diên Thọ đã được điều chỉnh ở cả bốn tiếng. Không dùng bản v01 thay âm thầm cho revision đã có Hash.
 
-Có 14 audio mới vi/en/fr; năm ru còn thiếu vì quota. Trong 14 audio, 13 bản khớp qua ASR nhưng vẫn chờ nghe duyệt trọn; Thái Hòa fr cần nghe lại thuật ngữ kiến trúc. WAV/MP3 giữ ở kho riêng ngoài Git. Vùng chỉ là vùng chọn chạm dùng demo, không phải ranh giới pháp lý/khảo sát.
+Đã có 19 audio mới vi/en/fr/ru, đủ 20 khi tính Ngọ Môn vi cũ. Cả 19 bản mới qua kiểm Hash, probe và giải mã MP3 đầy đủ; 18 transcript khớp ý/số liệu, Thái Hòa fr cần nghe lại thuật ngữ kiến trúc. Hồ sơ nghe duyệt D09 của 19 bài mới chưa khép; không áp dụng tự động. Kho 40 WAV/MP3 đã backup/restore riêng đạt. WAV/MP3 giữ ở kho riêng ngoài Git. Vùng chỉ là vùng chọn chạm dùng demo, không phải ranh giới pháp lý/khảo sát.
 
 ## Nguồn tham khảo
 
