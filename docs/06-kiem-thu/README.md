@@ -2,7 +2,7 @@
 
 ## 1. Phạm vi báo cáo
 
-Báo cáo tổng hợp các lượt đã thực thi cho nguồn được lưu tại main `601c09a`. Đợt biên tập tài liệu không chạy lại phần mềm, không thay mã nguồn hoặc mở rộng phạm vi kết quả. Log, XML, ảnh, JSON và các lần thử lỗi/chạy lại được giữ nguyên trong hồ sơ kiểm thử riêng cạnh dự án; bộ chấm giữ phần tổng hợp này.
+Báo cáo tổng hợp các lượt đã thực thi cho nguồn main `601c09a`, CD T10 `134ac0d` và mốc bổ sung vận hành/nghiệm thu ngày 14/11 được phân nhóm commit theo G02. Biên tập tài liệu tự nó không tạo kết quả kiểm; các lượt thực chạy mới được ghi riêng theo mốc. Log, XML, ảnh, JSON và các lần thử lỗi/chạy lại giữ trong hồ sơ nội bộ cạnh dự án; bộ chấm giữ phần tổng hợp.
 
 Mã kiểm nằm trong `backend/src/test` và `frontend/tests`. Các bằng chứng đã được commit trước đợt biên tập có thể tra tại [nguồn theo phiên bản](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/tree/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu).
 
@@ -14,10 +14,10 @@ Mã kiểm nằm trong `backend/src/test` và `frontend/tests`. Các bằng ch�
 | Frontend | 71/71 logic; Vue build đạt; kiểm Chrome/API/MP3 riêng | Không thay ma trận thiết bị thật hoặc mọi ca lỗi |
 | Bản đồ/UI | Kiểm chọn trong polygon, ghim đúng điểm nhấn, chồng lấn/Hủy, kéo/phóng, nhiều viewport và lỗi audio | Một số ca dùng tile/API fixture; không xác nhận toàn nền OSM/mạng thật từ fixture |
 | Admin | Q2/reload/401, vùng/cặp, thống kê/filter, provider và nghe thử MP3 có các lượt kiểm thật | Chưa nghiệm thu mọi trạng thái trên toàn bộ màn Admin |
-| TTS | Một lượt Admin→Gemini→WAV→MP3 thật; sau đó thêm 14 audio vi/en/fr, probe/giải mã và Hash đạt | Năm ru bị chặn quota; 14 audio mới chưa được nghe duyệt cuối, Thái Hòa fr cần rà thuật ngữ |
+| TTS | Một audio Ngọ Môn vi trước đó cùng 19 audio mới vi/en/fr/ru; probe/giải mã/Hash đạt, đủ 20 kỹ thuật | 19 bài mới chưa nghe duyệt D09, Thái Hòa fr cần rà thuật ngữ |
 | HTTPS/QR | Chrome 2/2 trên bộ Ngọ Môn; QR PNG 512×512, URL/read-only, print request/CSS | Không tính request in là đã in giấy hoặc BarcodeDetector là đã giải mã |
 | Thiết bị | Người kiểm báo nghe Ngọ Môn trên Android và chạy ổn trên iPhone | Chưa ghi đủ mẫu máy/OS/browser/mạng và từng ca lỗi/time/tab |
-| Vận hành V14 | Gate/drain, backup/restore riêng, snapshot V13 và chuyển Ngọ Môn V14 có kiểm trước/sau; hai scheduler dọn đã bật | CD, lịch backup/log và một số ca crash còn mở |
+| Vận hành V14 | Gate/drain, backup/restore, chuyển V14 và CD thật; lịch backup Windows đã chạy thử, restore đạt; log giới hạn/xoay đã kiểm riêng | Theo dõi trigger hằng ngày, review/claim sau crash và giới hạn TTL log hạ tầng |
 | Manifest backup | 8/8 ca V14 đạt khi chạy riêng; workflow CI còn có bộ nền 5 ca | Không cộng hai bộ hoặc các lần chạy thành một lượt full |
 
 ## 3. Nguồn kết quả để đối chiếu
@@ -65,9 +65,45 @@ Chi tiết tiêu chí tại [roadmap](../01-tong-quan/roadmap.md). Bản đọc 
 
 ## 5. Điều kiện chưa đạt
 
-1. Đủ 20 văn bản/20 audio/cặp được duyệt; nghe trọn và hồ sơ D09, quota ru và thuật ngữ Thái Hòa fr.
+1. Đã đủ 20 văn bản/20 audio kỹ thuật; còn nghe trọn và hồ sơ D09/cặp được duyệt, thuật ngữ Thái Hòa fr.
 2. Ma trận FR/UC/AC/NFR→ca→bằng chứng, các ca mạng/time/tab/thiết bị và toàn trạng thái Admin.
-3. CD-L01/Tailscale/OpenSSH/quyền Docker từ xa; lịch log/backup và xử lý crash/claim thiếu bằng chứng owner.
+3. Theo dõi trigger backup 23:00 và mục review, giới hạn log hạ tầng và xử lý crash/claim thiếu bằng chứng owner. CD-L01/Tailscale/OpenSSH/Docker đã có lượt GitHub thực thi đạt.
 4. Chuyển phục vụ, kiểm tái lập môi trường cuối và người nhận thực hiện lại bộ hướng dẫn.
 
 Không kết luận nghiệm thu chính thức toàn đồ án từ mốc lưu mã nguồn hoặc CI xanh. [Hiện trạng bàn giao](../01-tong-quan/handoff.md) ghi việc tiếp theo.
+
+<a id="ops-scheduled-result"></a>
+
+## 6. Backup định kỳ, log và smoke sau triển khai — 14/11
+
+| Phép kiểm thực chạy | Kết quả |
+|---|---|
+| Node manifest/integrity/runtime-env/retention | 29/29: 5 + 12 + 3 + 9. Nhóm mới có boundary bảy ngày, Hash hỏng, bản dở, tệp lạ và junction; clock chỉ được truyền vào fixture, không đổi giờ hệ điều hành. |
+| Backup/restore trên bản riêng | Chu trình backup→mở lại→restore đạt, hai Hash audio được kiểm ở volume đích; giữ catalog/nghiệp vụ, đổi khóa/epoch khi restore; container thử dừng. |
+| Tranh chấp/lỗi lịch | Chặn lượt chạy chồng; không tiếp quản hoặc tự mở gate do owner khác giữ; không tự bật ứng dụng đã dừng. Không thử phá tiến trình trên bản phục vụ để mô phỏng crash. |
+| Windows Task Scheduler | Task đăng ký 23:00 hằng ngày, Interactive/Limited, không chạy bù; kích hoạt bằng Start-ScheduledTask trả mã 0. Backup hai file, giữ ba bản trước còn hạn, HTTP mở lại; gate đóng đo 110.157 giây. Chưa quan sát trigger 23:00 tự chạy. |
+| Restore backup của task thật | RESTORE_VERIFIED_CLOSED, schema/volume riêng, đúng ảnh nguồn, hai file đủ Hash tại đích; thu hồi quyền cũ, retention theo mốc gốc, không public; container dừng sau kiểm. |
+| Áp cấu hình log lên bản phục vụ | Cả app/MySQL dùng local/10m/3, giữ cùng ID ảnh/volume/schema/khóa; có backup trước recreate, HTTP 200 sau resume. |
+| Xoay log thật trong container riêng | Sinh 45.000 dòng; còn 25.694 dòng, 25.899.551 bytes; dòng đầu đã bị xoay, dòng cuối còn. Không mạng/volume; xóa đúng container thử sau kiểm. Các lượt lỗi trước do cú pháp chương trình sinh log được giữ riêng, không phải kết quả đạt. |
+| API trên bản phục vụ | Chín nhóm đạt: Admin login/session; vùng/cặp; start/replay; map/text; MP3 trọn/Hash; ACK/replay; sai credential; Range; audio sau kết thúc. MP3 93.740 bytes; một phiên và một lượt xem kiểm được tạo, phiên đã kết thúc. |
+| HTTPS | URL hiện hành trả 200 sau khi tunnel mở lại. Không thay xác nhận nghe thật trên thiết bị; lượt này chưa có kết quả điện thoại mới. |
+
+Báo cáo chạy lịch chỉ chứa trường vận hành, giữ bảy ngày. Dọn chỉ nhận đúng tên/loại, file lạ/hỏng/link được giữ để rà; backup hết hạn chỉ được dọn sau khi bản mới còn hạn/đủ Hash. Buffer Docker có giới hạn dung lượng, không tự có TTL theo tuổi bảy ngày. Không chạy lại full backend/frontend hoặc gọi Gemini trong đợt này; số 530/71 là bằng chứng mốc trước.
+
+Mã kiểm ở `backend/src/test/fixtures/operations`; bộ công cụ ở `deploy`. Bằng chứng tổng hợp, snapshot 11 issue và Hash nguồn được bảo quản trong hồ sơ nội bộ `van-hanh-tu-dong-20261114`; dump/khóa giữ ở kho runtime có ACL, không đưa vào bộ chấm.
+
+<a id="acceptance-final-result"></a>
+
+## 7. Mốc lưu nghiệm thu 14/11 — Chrome, nội dung và truy vết
+
+- Chrome 157.0.8103.78, Windows 10.0.26300, Node v24.22.2: **11/11 ca đạt** trên restore riêng, backend thật.
+- Tab độc lập, Duplicate không chiếm phiên, reload cùng id/pause/không view mới; response start/selection bị ngắt sau commit vẫn cùng key và không tạo trùng.
+- Lỗi tải audio giữ văn bản, retry không thêm view; lỗi API khi reload rồi hồi mạng giữ cùng phiên. Cảnh báo/hết hạn/ngoại lệ nghe tiếp dùng timestamp của chính phiên fixture và clock browser; không đổi giờ máy/hạn runtime hoặc gọi đây là chờ 8 giờ thật.
+- Q2 văn bản qua reload/401 được giữ đúng tài khoản, không tự lưu/apply; 401 là fault injection, không gọi đây là chờ Admin đủ 30 phút. Q3 server có MutableClock trong AdminAuthApiTests ở lượt full trước. Thống kê đọc API thật và ghi nhãn khi filter đổi.
+- Kill/restart đúng container thử khi gate QUIESCING: gate còn, lease fixture cũ chưa rõ owner không tự bị xóa, freeze bị từ chối; chỉ tháo lease do ca kiểm tạo rồi mở lại. Khóa/epoch giữ nguyên. Không suy mọi reconcile/claim sau crash đã đạt.
+- Lượt thử trước khi bổ sung readiness chờ app có 10 ca lỗi kết nối khởi động; sau sửa bộ kiểm chạy lại đủ 11/11. Giữ cả kết quả lỗi và kết quả cuối riêng, không tính lượt lỗi là đạt. Các container kiểm đã dừng.
+- Năm bài ru thật tạo thành công sau một Retry được đối chiếu; 19 bài mới đều probe/giải mã đầy đủ, transcript đủ ngôn ngữ/đầu-cuối. Đủ 20 audio kỹ thuật; 18 bài mới khớp ý/số liệu, Thái Hòa fr cần nghe thuật ngữ; model đối chiếu thứ hai trả 503. Chưa ghi nhận nghe duyệt người cho 19 bài mới.
+- Backup nội dung mới có 40 WAV/MP3, restore riêng đạt 40/40 Hash ở đích, 20 text/20 audio revision/0 cặp mới áp dụng. Bản phục vụ vẫn Ngọ Môn vi, nội dung không bị thay ngầm; provider/converter kho nội dung đã tắt, khóa bỏ khỏi cấu hình thử.
+- Ma trận truy vết đủ **23 FR/14 UC/50 AC/6 NFR**; đối chiếu source index 82 tệp với marker/dòng. [Ma trận chi tiết](ma-tran-truy-vet.md) tách bằng chứng kỹ thuật và điều kiện chưa khép.
+
+Kiểm mẫu máy/OS/browser thật là lượt sau mốc lưu nguồn; thông tin xác nhận Android/iPhone trước đây không được thay bằng model/version suy đoán. Checklist thực tế giữ 62/89, các đề xuất bổ sung nằm trên roadmap; chưa sửa issue/Project. Log/JSON/ảnh/source Hash nằm trong hồ sơ nội bộ `nghiem-thu-20261114`, không đưa dump, khóa hoặc audio vào Git.

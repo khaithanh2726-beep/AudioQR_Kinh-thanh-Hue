@@ -86,3 +86,13 @@ Kiểm media chạy container không có mạng, tài khoản không phải root
 Tại `frontend`, đặt `HUEQR_PACKAGED_RUNTIME` tới thư mục restore, `HUEQR_E2E_URL=http://localhost:18081`, `HUEQR_E2E_OUTPUT` tới thư mục kết quả mới; chạy `npm run test:e2e -- packaged.spec.mjs`. Chrome dùng bản cài sẵn theo cấu hình Playwright. Không đặt `HUEQR_E2E_RUNTIME` của suite tạo dữ liệu nếu chỉ chạy ca packaged.
 
 Sau kiểm, đọc `browser-runtime.json` để xác định đúng hai container thử rồi dừng chúng bằng tên đã đối chiếu; giữ kết quả và dữ liệu để rà. Không chạy lệnh dọn toàn Docker. Nếu khởi động ứng dụng lỗi, container thử được giữ để kiểm log và cần dừng trước chạy lại. Không chép `browser-runtime.json`, `private-runtime.json` hoặc `database.sql` vào hồ sơ chung.
+
+## Kiểm retention, log Docker và smoke sau CD
+
+```powershell
+node --test backend/src/test/fixtures/operations/operations-retention.test.mjs
+node backend/src/test/fixtures/operations/docker-log-rotation.mjs '<anh-local-da-co>' '<bao-cao-JSON-moi-ngoai-repo>'
+node backend/src/test/fixtures/operations/post-deploy-check.mjs '<runtime-rieng-da-ra>' '<bao-cao-JSON-moi-ngoai-repo>'
+```
+
+Retention dùng clock truyền vào fixture, kiểm hạn/Hash/junction và chỉ dọn thư mục tạm do chính suite tạo. Phép thử Docker sinh 45.000 dòng trên container không mạng/volume, kiểm buffer xoay trong 10 MB × 3 file rồi xóa đúng container thử; không kiểm TTL theo tuổi. Smoke API đọc tài khoản từ runtime riêng, không in credential; tạo một phiên/lượt kiểm rồi kết thúc phiên, kiểm Admin/vùng/cặp/văn bản/MP3 và lỗi quyền/Range/sau kết thúc. Không thay văn bản/vùng/cặp hoặc nghe duyệt trên điện thoại. Chỉ chạy trên môi trường và thời điểm đã được phép, lưu báo cáo ngoài repository.
