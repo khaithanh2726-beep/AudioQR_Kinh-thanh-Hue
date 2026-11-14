@@ -9,7 +9,7 @@ Phạm vi ghi nhận: 14/11/2026. Tài liệu tổng hợp trạng thái đang c
 - Admin quản lý địa điểm/vùng/văn bản/hồ sơ/cặp, TTS/Check/Retry/nghe thử, thống kê và QR chung.
 - Worker WAV→MP3, vòng đời dữ liệu/file, gate bảo trì và công cụ snapshot/restore môi trường riêng.
 
-Nguồn đã tích hợp qua [PR #15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/pull/15), main `601c09a`. CD nguồn T10 `134ac0d` và tài liệu T11 `2cb36ba` đã lưu ở các nhánh riêng. Mốc bổ sung 14/11 gồm lịch backup/log, kiểm Chrome, bộ 20 audio kỹ thuật và hồ sơ tra cứu/truy vết được lưu theo nhánh G02. Main vẫn 601c09a; không suy commit local thành đã push hoặc triển khai lại ứng dụng.
+Nguồn đã tích hợp qua [PR #15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/pull/15), main `601c09a`. CD đang phục vụ nguồn T10 `134ac0d`. Mốc bổ sung 14/11 gồm lịch backup/log, kiểm Chrome, bộ 20 audio kỹ thuật và hồ sơ tra cứu/truy vết đã commit/push lên T08/T09/T10/T11 theo G02; T11 giữ bản tổng hợp. Main vẫn 601c09a; mốc này chưa merge main và không đổi nguồn Vue/Java ứng dụng đang phục vụ.
 
 ## 2. Phân biệt nguồn, bản tập dượt và dữ liệu
 
@@ -24,6 +24,8 @@ Nguồn đã tích hợp qua [PR #15](https://github.com/khaithanh2726-beep/Audi
 | Phục vụ Khách | Chỉ Ngọ Môn vi được áp dụng/hiển thị trong bản tập dượt; chưa áp dụng các cặp mới |
 
 ## 3. Kiểm chứng
+
+[CI nguồn tổng hợp 3f66b72](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43592287460) đạt 530/530 backend, 71/71 logic frontend, 29/29 ca vận hành và Vue build. Deploy bị bỏ qua đúng điều kiện của lượt push; không gọi đây là CD mới. Kết quả Chrome riêng và bộ audio được ghi ở các lượt dưới, không cộng thành cùng một full run.
 
 Full backend 530/530, 71/71 logic frontend, build và CI có kết quả đạt theo từng lượt. Đợt vận hành bổ sung đạt 20 ca Node cục bộ (5 manifest + 12 integrity + 3 runtime-env), snapshot/restore V13 và nâng V13→V14 riêng, backup/restore 30 tệp nội dung và hai tệp bản phục vụ. Ảnh V14 mới build frontend 71/71 và đóng gói JAR đạt, backend tests không chạy trong bước package. Hai scheduler dọn đã bật trên bản phục vụ sau kiểm riêng. Android/iPhone từng dùng Ngọ Môn cơ bản; chưa kiểm lại toàn ma trận sau cập nhật. CD toàn tuyến đã đạt; lịch backup/log đã bổ sung ở mốc dưới đây, còn theo dõi trigger và một số ca crash.
 

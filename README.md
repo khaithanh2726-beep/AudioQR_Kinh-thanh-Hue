@@ -15,6 +15,8 @@ Nhóm thực hiện: **Thành, Hòa và Nghĩa**. Kiến trúc: **Vue → Spring
 
 Mã nguồn đã tích hợp vào main qua [PR #15](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/pull/15), mốc `601c09a`. Backend có migrations V1–V14, API Khách/Admin, TTS hàng đợi, chuyển WAV→MP3, vòng đời dữ liệu/file và gate bảo trì. Frontend có trang Khách, trang Admin và QR theo URL cấu hình.
 
+Mốc bổ sung 14/11 đã commit/push theo T08/T09/T10/T11; nhánh T11 giữ đầy đủ bản tổng hợp để khôi phục. [CI nguồn 3f66b72](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43592287460) đạt 530 backend, 71 logic frontend, 29 ca vận hành và Vue build. Mốc này chưa được tích hợp vào main; ảnh ứng dụng đang phục vụ vẫn giữ nguyên vì không sửa nguồn Vue/Java ứng dụng.
+
 Đã có lượt full backend 530/530 đạt; 71/71 logic frontend, build và các lượt Chrome/API/MP3 riêng có bằng chứng. Người kiểm đã báo sử dụng Ngọ Môn vi thành công trên Android và iPhone. Checklist được đối chiếu 62/89; số ô không biểu thị phần trăm hoàn thành đồ án.
 
 Bản tập dượt phục vụ Ngọ Môn tiếng Việt ở schema V14; đã kiểm snapshot/restore V13 trước nâng, backup/restore V14 và giữ nguyên vùng/cặp/audio khi chuyển. Hai scheduler dọn dữ liệu đã bật; TTS vẫn tắt; CD GitHub đã đạt. Backup Windows lúc 23:00 đã đăng ký và chạy thử qua Task Scheduler đạt, có restore riêng; báo cáo vận hành giữ bảy ngày, Docker giới hạn log 10 MB × 3 tệp/container. Bốn vùng khác và 19 audio mới ở môi trường nội dung riêng: đã đủ 20 văn bản/20 audio kỹ thuật, backup/restore 40 WAV/MP3 đạt. D09/nghe duyệt bộ mới và phát âm Thái Hòa fr còn chờ. Bộ 20 cặp và toàn bộ nghiệm thu chưa hoàn tất.

@@ -96,6 +96,8 @@ Mã kiểm ở `backend/src/test/fixtures/operations`; bộ công cụ ở `depl
 
 ## 7. Mốc lưu nghiệm thu 14/11 — Chrome, nội dung và truy vết
 
+[CI nguồn 3f66b72, run 43592287460](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43592287460) hoàn tất thành công: backend 530/530 (0 failure/error/skipped), frontend 71/71, vận hành 29/29 và Vue build. Đây là lượt full riêng trên Linux; 11 ca Chrome bên dưới chạy trên Windows riêng. Không cộng các lượt thành một full lớn hơn. Deploy bị bỏ qua đúng điều kiện của push, không phát sinh lượt chuyển bản phục vụ.
+
 - Chrome 157.0.8103.78, Windows 10.0.26300, Node v24.22.2: **11/11 ca đạt** trên restore riêng, backend thật.
 - Tab độc lập, Duplicate không chiếm phiên, reload cùng id/pause/không view mới; response start/selection bị ngắt sau commit vẫn cùng key và không tạo trùng.
 - Lỗi tải audio giữ văn bản, retry không thêm view; lỗi API khi reload rồi hồi mạng giữ cùng phiên. Cảnh báo/hết hạn/ngoại lệ nghe tiếp dùng timestamp của chính phiên fixture và clock browser; không đổi giờ máy/hạn runtime hoặc gọi đây là chờ 8 giờ thật.
