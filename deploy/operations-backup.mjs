@@ -7,6 +7,22 @@ export async function verifyOperationsBackup(directory, manifest, now = Date.now
   assert.equal(manifest.kind, 'quiesced-backup')
   assert.equal(manifest.status, 'COMPLETE')
   assert.match(manifest.checkpoint, /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
+  return verifyBackupFiles(directory, manifest, now)
+}
+
+export async function verifyOfflineV13Backup(directory, manifest, now = Date.now()) {
+  assert.equal(manifest.kind, 'offline-v13-backup')
+  assert.equal(manifest.status, 'COMPLETE')
+  assert.equal(manifest.sourceStopped, true)
+  assert.match(manifest.sourceImage, /^sha256:[0-9a-f]{64}$/)
+  const migrations = manifest.schema.split('\n').map(line => line.trim().split('\t'))
+  assert.deepEqual(migrations.map(row => row[0]), Array.from({ length: 13 }, (_, i) => String(i + 1)))
+  assert(migrations.every(row => row.length === 3 && /^-?\d+$/.test(row[1]) && row[2] === '1'), 'Invalid V13 schema')
+  return verifyBackupFiles(directory, manifest, now)
+}
+
+// Kiểm bytes/hạn dùng chung; loại snapshot và điều kiện fence do từng giao thức kiểm riêng.
+export async function verifyBackupFiles(directory, manifest, now = Date.now()) {
   const created = Date.parse(manifest.createdAt), expires = Date.parse(manifest.expiresAt)
   assert(Number.isFinite(created) && created <= now)
   assert.equal(expires - created, 7 * 86400000)

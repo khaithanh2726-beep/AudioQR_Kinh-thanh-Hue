@@ -1,16 +1,12 @@
-# TDD — Mô hình dữ liệu hiện hành
+# Mô hình dữ liệu và ràng buộc
 
-**Phiên bản nội dung:** 0.4, biên tập 11/11/2026. **Trạng thái:** ERD còn dự thảo. Đã có V1 guest_session, V2 địa điểm/vùng theo [phần nền địa điểm/vùng](#model-place-region-result), V3 tài khoản và V4 window/receipt theo [bằng chứng quản trị](api-transactions.md#admin-command-implementation), V5 văn bản nháp/hồ sơ theo [mục 7.2](#model-text-result), V6 hàng đợi TTS theo [mục 7.3](#model-tts-queue-result), V7/V8 WAV và lượt xem theo [mục 7.4](#model-worker-report-result). V9 bổ sung audio/cặp và seed riêng theo [mục 7.5](#model-audio-pair-result); nghiệp vụ áp dụng/bật-ẩn và mốc file có bằng chứng riêng tại [API 11.8](api-transactions.md#admin-pair-visibility-implementation). V10/grant/ACK/READ claim và quyền phục vụ có bằng chứng tại [mục 7.7](#model-guest-content-result); chưa toàn schema/vòng đời hoặc duyệt toàn mô hình.
-**Mục đích:** vị trí chính duy nhất của mô hình nội dung, phiên/lượt, quyền tải, thao tác lặp, job và file. LIFE-P01 theo DATA-05: vé ký 24 giờ/ledger, không bảng start context hoặc start_generation.
-**Đọc cùng:** [TDD](TDD.md), [API](api-transactions.md), [operations](operations-design.md), [PRD](../02-nghiep-vu/PRD.md), [decisions](../02-nghiep-vu/decisions.md). [Mô hình cũ](../99-luu-tru/data-model-history.md) chỉ để truy vết.
-
-Mục lục: [1. Quy ước](#model-conventions) · [2. Nội dung](#model-content) · [3. Phiên/quyền](#model-guest) · [4. Thao tác/job/file](#model-operations) · [5. Ràng buộc/xóa](#model-constraints) · [6. Truy vết](#model-trace) · [7. Triển khai/kiểm chứng](#model-implementation).
+Mô hình logic cho địa điểm/vùng, nội dung/audio/cặp, phiên/lượt xem, hàng đợi và tài nguyên file. Bản triển khai dùng UUID, thời gian UTC, JPA/JDBC và migrations V1–V14; việc rà/duyệt toàn ERD vẫn được theo dõi trong checklist.
 
 <a id="model-conventions"></a>
 
 ## 1. Quy ước và phạm vi
 
-- UUID do hệ thống cấp, không lấy tên làm khóa. Mapping BINARY(16)/Java UUID, thời gian UTC DATETIME(6), tên/ngôn ngữ Unicode, version tăng khi aggregate thay đổi. V1–V9 đã có DDL/mapping cho các bảng nêu tại mục 7, gồm audio/cặp và lịch sử lượt. Opening/grant/READ claim đã có V10 theo mục 7.7; dọn metadata/claim sau crash và phần vận hành còn chờ triển khai. Bằng chứng phiên khách tại [thực hành](practice-01-start-session.md#practice-jpa-mapping), địa điểm/vùng tại mục 7.1.
+- UUID do hệ thống cấp, không lấy tên làm khóa. Mapping BINARY(16)/Java UUID, thời gian UTC DATETIME(6), tên/ngôn ngữ Unicode, version tăng khi aggregate thay đổi. DDL/mapping hiện hành là V1–V14, gồm phiên/opening/grant/claim, nội dung/cặp, TTS/audio/lifecycle và gate vận hành; bảng phiên bản tại mục 7. Mô hình khái niệm không thay ràng buộc vật lý trong migration.
 - PK: khóa chính; FK: tham chiếu được database kiểm; UK: tổ hợp không trùng. FK quan hệ cần chặn dùng RESTRICT/NO ACTION, không CASCADE/JPA xóa ngầm. Pointer nullable để tạo và tháo theo thứ tự trong giao dịch.
 - Ngôn ngữ chỉ vi/en/fr/ru. Năm điểm là bộ chuẩn 20 văn bản + 20 audio, không trần số điểm. Tên Q1/D02-BS kiểm grapheme/chuẩn hóa tại Service; độ dài cột/byte không tự thay giới hạn ký tự hiển thị hoặc thêm giới hạn bài mới.
 - Bản văn/audio/vùng đã lưu dùng định danh bất biến; sửa sinh revision thay thế. Con trỏ nháp khác con trỏ áp dụng. Không cần UI lịch sử phiên bản phức tạp.
@@ -282,10 +278,10 @@ erDiagram
 | TTS_JOB | UK(admin_account_key,request_window_key,request_operation_key) là snapshot logical không FK bắt giữ window; target FK nullable + snapshot; worker_instance/token/phase_version; dispatched_at/result_staged_at/updated_at; retry_of logical nếu cần dọn job cũ | TEXT.active_tts_job_id cùng text ngăn hai job active/unknown; latest_tts_job_key logical giữ nhận biết kết quả mới nhất khi text còn sống. LIFE-P03 đã duyệt: job cũ terminal rõ chỉ dọn sau bảy ngày nếu không còn ref/use/current; audio/nháp còn liên kết và active/unknown giữ. Không tự biến TTL thành lỗi/provider retry. |
 | FILE_ASSET | key chỉ server tạo, checksum/size/duration/ready_at; cleanup_status/retry/cause | File bất biến, không ghi đè cùng key; không publish pointer trước bytes hoàn tất và kiểm. Metadata phải còn để báo dọn chờ/lỗi; trỏ WAV và MP3 riêng. |
 | FILE_CLAIM | FK file, owner_instance/task/download key, kind READ/WORKER; ACTIVE→RELEASED→xóa | Bảo vệ đọc/copy/worker đang thực dùng; không là tham chiếu nội dung giữ mãi. Không dọn chỉ vì thiếu heartbeat khi tiến trình còn sống/chưa rõ. |
-| OPS_GUARD | Hàng bền cho maintenance_mode OPEN/QUIESCING/FROZEN, owner/checkpoint/version | Chỉ điều phối backup/dispatch/cleaner như BKP-P02; **không start_generation hoặc khóa start/purge**. service_epoch vẫn quản lý riêng theo REC-P01, backup/restart thường không thu hồi quyền |
+| OPS_GUARD | Hàng bền cho mode RUNNING/QUIESCING/FROZEN và owner_token theo V14; checkpoint/manifest thuộc quy trình vận hành | Chỉ điều phối backup/dispatch/cleaner như BKP-P02; **không start_generation hoặc khóa start/purge**. service_epoch vẫn quản lý riêng theo REC-P01, backup/restart thường không thu hồi quyền |
 | BACKUP_RUN (metadata vận hành cục bộ riêng kho phục vụ) | backupId,state,createdAt,expiresAt=created+7 ngày,owner/checkpoint,dump/catalog/file hashes,error | BKP-P02 stop app/worker/cleaner, MySQL còn hoạt động và không writer/DDL; dump/catalog/copy khớp. Không MySQL tạm mỗi lần backup; restore thử vẫn riêng |
 
-V3 chỉ tạo bảng tài khoản quản trị, không sinh tài khoản hoặc secret. [AdminAccount](../../backend/src/main/java/vn/hueqr/backend/entity/AdminAccount.java), [Repository](../../backend/src/main/java/vn/hueqr/backend/repository/AdminAccountRepository.java) và [hợp đồng/bằng chứng xác thực](api-transactions.md#admin-auth-implementation) là nguồn triển khai. V4 bổ sung window/receipt cùng Entity/Repository, giữ khóa tài khoản dạng UUID trong Java và FK trong database. [Hợp đồng, giao dịch và kiểm chứng](api-transactions.md#admin-command-implementation) là nguồn chính. Nền job/marker có bằng chứng ở mục 7.3; worker/WAV/READY ở mục 7.4. Provider thật, dọn metadata/file và các bảng vận hành khác vẫn chờ triển khai/kiểm chứng.
+V3 tạo bảng tài khoản quản trị, không sinh tài khoản hoặc secret. V4 quản lý window/receipt, V6–V7 hàng đợi/WAV, V9 audio/cặp, V10–V14 quyền đọc/lifecycle/kết quả local/vùng/gate. Bảng phiên bản mục 7 và DDL là nguồn cấu trúc thực; không dùng số mục của các phụ lục triển khai cũ làm trạng thái hiện hành.
 
 retry_of_job_id trong hình là **liên kết logic**, không FK bắt giữ chuỗi job vô hạn; id cũ dùng đối chiếu nếu còn dữ liệu. Trường target_text FK và audio→job FK tổ hợp vẫn phải kiểm thật. Receipt/window chỉ dành Admin; guest dùng vé ký 24 giờ/ledger session, không sao chép dữ liệu khách vào receipt Admin hoặc thêm bảng context.
 
@@ -321,191 +317,46 @@ Ngoài PK/UK/FK đã nêu, đề xuất index theo truy vấn: session(started_a
 | WINDOW/RECEIPT/JOB/FILE | A04/A07/UI-04/TECH-05/DATA-01–03; API-A01–A31/TX-* | Replay/unknown/khóa/worker restart; dọn file không race với đọc/backup. |
 | Backup metadata | DATA-02–04; operations-design BKP-P02/REC-P01 | Snapshot DB–file/restore/lọc mốc gốc, quyền/chỗ trống/thời gian thực. |
 
-LIFE-P02/P03/REC-P01 và hướng BKP-P02 **đã được duyệt đúng phạm vi ngày 04/11**. DATA-05 chốt LIFE-P01 vé ký 24 giờ, bỏ generation/context/10 phút. V1/phiên khách và V2/địa điểm-vùng có bằng chứng kiểm thử riêng. Các phần mô hình/API còn lại tiếp tục cần triển khai và kiểm chứng, TECH-05/DATA-03 giữ phạm vi đã chốt.
+LIFE-P02/P03/REC-P01 và BKP-P02 giữ phạm vi đã duyệt; LIFE-P01 dùng vé ký 24 giờ theo DATA-05. Mã và DDL V1–V14 đã có; báo cáo kiểm thử phân biệt kiểm tự động, diễn tập riêng và phần chưa nghiệm thu. Chưa coi toàn bộ ERD/ràng buộc đồng thời và môi trường phục vụ đã được nghiệm thu theo gói.
 
 
 <a id="model-implementation"></a>
 
-## 7. Sản phẩm dữ liệu và bằng chứng kiểm chứng
+## 7. Cấu trúc thực thi và migrations
 
-Bằng chứng theo từng mốc được đặt sau mô hình, ràng buộc và truy vết. V3/V4 được dẫn tới nguồn kiểm chứng quản trị; không coi các bảng chưa triển khai đã tồn tại.
+DDL hiện hành được quản lý bằng Flyway V1–V14. Các biểu đồ phía trên mô tả quan hệ nghiệp vụ; ràng buộc vật lý được đối chiếu với DDL và kiểm MySQL. Việc sửa tài liệu không tự thay đổi checksum migration hoặc xác nhận đã nâng database đang phục vụ.
+
+| Phiên bản | Nội dung |
+|---|---|
+| V1 | Phiên tham quan |
+| V2 | Địa điểm và revision vùng |
+| V3 | Tài khoản Admin |
+| V4 | Cửa sổ lệnh và receipt |
+| V5 | Slot nội dung, revision văn bản và tham chiếu hồ sơ |
+| V6 | Hàng đợi TTS |
+| V7 | Đăng ký WAV của TTS |
+| V8 | Lịch sử lượt xem |
+| V9 | Audio revision và cặp nội dung |
+| V10 | Opening, grant và claim đọc file |
+| V11 | Owner runtime, task và trạng thái dọn |
+| V12 | Kết quả xử lý audio cục bộ |
+| V13 | Giữ nguyên độ chính xác tọa độ vùng |
+| V14 | Gate bảo trì và admission lease |
+
+V14 bổ sung `ops_guard` (trạng thái RUNNING/QUIESCING/FROZEN và owner bảo trì) cùng `ops_activity` (lease của hoạt động đang thực thi). Admission và chuyển gate dùng giao dịch ngắn; lease không được xóa chỉ dựa trên tuổi. V13 lưu nguyên JSON tọa độ vùng trong LONGTEXT có CHECK JSON_VALID để Hash đọc lại không lệch. V12 tách marker chuyển đổi local khỏi lần dispatch provider, cho phép Retry dùng lại WAV hợp lệ.
+
+Phạm vi triển khai và nghiệm thu được tổng hợp tại [hiện trạng bàn giao](../01-tong-quan/handoff.md); kết quả thực thi tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
 
 <a id="model-place-region-result"></a>
-
-### 7.1. Nền dữ liệu địa điểm và vùng — T02
-
-Hòa phụ trách cấu trúc/mapping theo G02. Phần này bổ sung nền dữ liệu cho T05, API và các quy tắc nghiệp vụ quản trị được triển khai tiếp theo phụ thuộc.
-
-| Sản phẩm | Phạm vi đã triển khai |
-| --- | --- |
-| [V2__create_place_and_region_revision.sql](../../backend/src/main/resources/db/migration/V2__create_place_and_region_revision.sql) | Tạo place, region_revision, khóa ngoại RESTRICT và khóa tổ hợp bảo đảm active_region_revision_id thuộc chính địa điểm. V1 được giữ nguyên |
-| [Place](../../backend/src/main/java/vn/hueqr/backend/entity/Place.java) và [PlaceRepository](../../backend/src/main/java/vn/hueqr/backend/repository/PlaceRepository.java) | UUID độc lập tên, mặc định ẩn và chưa có vùng áp dụng, tên trùng được lưu riêng. @Version phát hiện cập nhật từ phiên bản cũ |
-| [RegionRevision](../../backend/src/main/java/vn/hueqr/backend/entity/RegionRevision.java) và [RegionRevisionRepository](../../backend/src/main/java/vn/hueqr/backend/repository/RegionRevisionRepository.java) | JSON hình vùng, mã không gian nền, mã Hash 32 byte và mốc lưu UTC. Các trường của bản đã lưu không có setter và dùng updatable=false trong JPA; đã bổ sung truy vấn theo cả revision.id và place.id để phục vụ A13/A14 |
-| [PlaceRegionSchemaTests](../../backend/src/test/java/vn/hueqr/backend/schema/PlaceRegionSchemaTests.java) và [PlaceRegionRepositoryTests](../../backend/src/test/java/vn/hueqr/backend/repository/PlaceRegionRepositoryTests.java) | Ràng buộc MySQL, mapping, con trỏ, phiên bản và bảo toàn dữ liệu cũ khi nâng migration |
-
-Lựa chọn mapping giữ con trỏ bản vùng trong Place dưới dạng UUID, database kiểm quan hệ bằng khóa ngoại tổ hợp. RegionRevision giữ Entity Place bằng ManyToOne lazy, database lưu place_id. Không cấu hình cascade xóa, việc tháo con trỏ và xóa từng đối tượng thuộc giao dịch nghiệp vụ T05. Lưu bản vùng không tự áp dụng hoặc bật hiện địa điểm.
-
-Cột JSON kiểm cú pháp JSON tại database. Service/API đã kiểm đa giác kín đơn giản, không gian tọa độ, tính lại mã Hash và đổi con trỏ vùng theo [A12–A14](api-transactions.md#admin-region-implementation), [bằng chứng 204 test](api-transactions.md#admin-region-test-result); V1–V4 và Entity không đổi trong bước này. Frontend/xem xét ranh giới thực tế, gate cặp vi khi bật hiện, nội dung/cặp/hồ sơ, seeds năm điểm/bốn ngôn ngữ và xóa phối hợp toàn schema chưa hoàn tất. Các fixture chỉ dùng tên/vùng thử trong database tạm, không cung cấp vùng hay nội dung chưa duyệt cho khách.
-
-Khóa tham chiếu tổ hợp dùng UNIQUE(id, place_id) của region_revision. JSON được ánh xạ bằng JdbcTypeCode JSON. Đây là lựa chọn kỹ thuật cho mapping đã kiểm, giữ nghiệp vụ PRD. [MySQL 8.4 về khóa ngoại](https://dev.mysql.com/doc/refman/8.4/en/create-table-foreign-keys.html), [Hibernate về JSON](https://docs.hibernate.org/stable/orm/userguide/html_single/#basic-mapping-json)
-
 <a id="place-region-test-result"></a>
-
-#### Bằng chứng kiểm thử ngày 08/11/2026
-
-Chạy trên bản sao backend tại `C:\Users\khait\AppData\Local\Temp\hueqr-place-region-cd1e1cbd21b04ecf89bc1198d734d31f\backend`, Java 21.0.12.1, Maven Wrapper 3.9.12, Spring Boot 4.1.2, Docker Linux Engine 29.8.1 và MySQL 8.4.13 Testcontainers. Database và fixture được tạo tạm, tách môi trường phục vụ. Lệnh hồi quy trên bản sao là `mvnw.cmd -o test`.
-
-Lần cuối kết thúc 17:02:17 +07, đạt **104 test**, 0 failures/errors/skipped, **BUILD SUCCESS, exit 0**. Đã đối chiếu đủ 13 báo cáo XML Surefire, gồm 88 ca hồi quy trước và 16 ca mới trong PlaceRegionSchemaTests/PlaceRegionRepositoryTests. Ca nâng V1 có dữ liệu lên V2 giữ phiên khách, mốc bắt đầu và checksum V1, tạo hai bảng mới rỗng. Log bộ cuối ở `..\full-tests.log`, báo cáo XML/TXT tại `target/surefire-reports` của bản sao. Lần đầu 103 test đạt lúc 16:59:32 +07 được giữ ở `..\full-tests-103.log`. Tệp sinh và thư mục tạm không thuộc nhóm commit.
-
-Kiểm tra ở tầng dữ liệu và JPA. API/UI quản trị, xác thực Admin, kiểm hình học/ranh giới thật, triển khai trên database phục vụ và toàn T02 còn cần kiểm chứng. Checklist giữ nguyên 89 ô/18 dấu tích.
-
 <a id="model-text-result"></a>
-
-### 7.2. Nền dữ liệu văn bản nháp và tham chiếu hồ sơ — T02
-
-Theo G02, Hòa phụ trách cấu trúc/mapping và test schema; Thành phụ trách nghiệp vụ/HTTP quản trị. [V5](../../backend/src/main/resources/db/migration/V5__create_content_slot_and_text_revision.sql) chỉ bổ sung ba bảng dưới đây, giữ nguyên V1–V4. ERD mục 2 tiếp tục là thiết kế đầy đủ; các con trỏ active_pair/active_tts_job và bảng audio/job/cặp chưa được tạo trong V5.
-
-| Sản phẩm | Mapping và ràng buộc đã có |
-| --- | --- |
-| [ContentSlot](../../backend/src/main/java/vn/hueqr/backend/entity/ContentSlot.java) | UUID BINARY(16), Entity Place lazy/database lưu place_id; UNIQUE(place_id,language), CHECK vi/en/fr/ru phân biệt hoa thường, @Version. draft_text_id là UUID nullable với FK tổ hợp (draft_text_id,id) → text_revision(id,slot_id), không thể trỏ nháp của tiếng hoặc địa điểm khác |
-| [TextRevision](../../backend/src/main/java/vn/hueqr/backend/entity/TextRevision.java) | Entity ContentSlot lazy/database lưu slot_id, body LONGTEXT, content_hash BINARY(32), saved_at DATETIME(6). Các trường nội dung/định danh/mã Hash/mốc lưu updatable=false, không có setter; Service tạo bản mới, không sửa body bản cũ. Hai con trỏ job được bổ sung riêng tại mục 7.3. Mã Hash trùng không đồng nhất Id |
-| [TextReviewReference](../../backend/src/main/java/vn/hueqr/backend/entity/TextReviewReference.java) | text_revision_id PK/FK, một tham chiếu mỗi văn bản đã lưu; locator, limitations nullable, recorded_by FK Admin, recorded_at DATETIME(6), @Version riêng. Gắn đúng văn bản bất biến/hash; không sao chép tham chiếu khi lưu bản mới và không lưu người/ngày duyệt tự suy đoán |
-
-Các Repository tương ứng được bổ sung. FK đều RESTRICT, không cascade hoặc dọn tự động; xóa phối hợp toàn schema vẫn là phần nghiệp vụ cần triển khai. Lưu nháp tạo ngăn khi cần, tạo revision rồi đổi con trỏ và ghi receipt trong cùng giao dịch. Ghi hồ sơ không đổi slot version; hai thao tác giữ Place version/visible/vùng áp dụng. [Hợp đồng và khóa giao dịch](api-transactions.md#api-text-contract) là nguồn chi tiết; có tham chiếu hồ sơ không chứng minh bản đã được phê duyệt.
-
-[ContentSchemaTests](../../backend/src/test/java/vn/hueqr/backend/schema/ContentSchemaTests.java) kiểm bốn tiếng/UNIQUE/FK cùng ngăn/RESTRICT, nâng V4 có dữ liệu lên V5 giữ checksum V1–V4 và dữ liệu địa điểm/vùng/tài khoản/window/receipt, ba bảng mới rỗng. [Hồi quy 240 test](api-transactions.md#admin-content-test-result) kiểm cả mapping qua API, thời gian micro giây, đồng thời và rollback receipt. Chưa áp V5 lên database phục vụ; không có seeds nội dung/ranh giới hoặc dữ liệu đã duyệt từ fixture này.
-
-
 <a id="model-tts-queue-result"></a>
-
-### 7.3. Nền dữ liệu hàng đợi TTS — T02
-
-[V6](../../backend/src/main/resources/db/migration/V6__create_tts_job_queue.sql) bổ sung tts_job và hai con trỏ active_tts_job_id/latest_tts_job_key trong text_revision; V1–V5 giữ nguyên. [TtsJob](../../backend/src/main/java/vn/hueqr/backend/entity/TtsJob.java) lưu khóa văn bản sống dạng UUID nullable với FK, snapshot Id địa điểm/văn bản/tiếng/mã Hash/model/giọng, khóa tiếp nhận logic, mốc UTC micro giây, phase/@Version và owner/token của marker. Không sao chép body hoặc prompt vào bảng job. Khóa tổ hợp active job chỉ trỏ job thuộc chính văn bản; latest key là liên kết logic. FK RESTRICT, không cascade xóa; phần xóa/phục hồi/dọn worker chưa được suy thành đã có từ ràng buộc này.
-
-Khóa tài khoản/window/operation ở job là snapshot với UNIQUE bộ ba, không FK giữ window sống theo job. Service vẫn phải kiểm quyền/window khi tạo lệnh; snapshot không phải quyền truy cập. Đích mất có thể tháo FK và giữ snapshot, không tạo lại bản ghi theo tên hoặc Id cũ. Job active/unknown chưa có terminal/dọn trong V6.
-
-Schema hiện chỉ hỗ trợ QUEUED/DISPATCHING/UNCERTAIN; CHECK yêu cầu owner/token/dispatched_at trước hai chặng sau và không có marker ở QUEUED. Bản đầy đủ của ERD/state machine vẫn là thiết kế: source WAV/file, audio, các chặng kết quả/terminal, retry và dọn cần bổ sung cùng module tương ứng. Nội dung, định danh, mã Hash và saved_at của TextRevision tiếp tục bất biến ở JPA/Service; chỉ các con trỏ job được cập nhật.
-
-[TtsJobSchemaTests](../../backend/src/test/java/vn/hueqr/backend/schema/TtsJobSchemaTests.java) kiểm FK đúng text, UNIQUE/CHECK/RESTRICT và nâng V5→V6 giữ văn bản/hồ sơ/nháp/checksum. [Bằng chứng 267 test](api-transactions.md#admin-tts-queue-test-result) gồm các ca API/concurrent/rollback/marker; database đều tạm, chưa migration môi trường phục vụ hoặc chứng minh toàn T02/T07.
-
-
 <a id="model-worker-report-result"></a>
-
-### 7.4. WAV của job và lịch sử lượt xem — V7/V8
-
-V7 thêm [FileAsset](../../backend/src/main/java/vn/hueqr/backend/entity/FileAsset.java)/Repository và bảng file_asset cho WAV READY: storage key UNIQUE do server cấp, checksum BINARY(32), số byte/thời lượng dương và ready_at micro giây. Mốc ever_applied/last_unapplied/orphan giữ để nối vòng đời, chưa có cleaner tự thay đổi các mốc này. Job thêm FK source_wav_file_id RESTRICT, result_staged_at, terminal_at, failure_code và retry_of logical. CHECK phân biệt RESULT_STAGED có file/mốc với các phase chưa có file, terminal chỉ dành FAILED/DISCARDED. Text content/hash vẫn bất biến; active pointer được tháo khi lỗi xác định, latest key giữ kết quả để không ngầm tạo lại provider bằng nút Tạo.
-
-V8 thêm [PlaceView](../../backend/src/main/java/vn/hueqr/backend/entity/PlaceView.java)/Repository và bảng place_view theo phần PLACE_VIEW của ERD mục 3. UNIQUE(session_id,opening_key) chống ghi hai lượt cho cùng opening; session FK RESTRICT, live_place FK SET NULL, snapshot Id/tên/ngôn ngữ/mốc không bị xóa theo địa điểm. Không FK opening/grant/text/audio, nên lịch sử không bắt giữ dữ liệu kỹ thuật hoặc file. Thêm index theo thời gian/địa điểm/ngôn ngữ và theo phiên; guest_session có index started_at/id. Nền bảng đã có, luồng khách opening/grant/ACK chưa nối ghi lượt thật.
-
-[TtsWavSchemaTests](../../backend/src/test/java/vn/hueqr/backend/schema/TtsWavSchemaTests.java) kiểm CHECK/FK WAV, nâng V6→V7 giữ job/marker/owner/version/checksum; [PlaceViewSchemaTests](../../backend/src/test/java/vn/hueqr/backend/schema/PlaceViewSchemaTests.java) kiểm UNIQUE/FK/xóa điểm giữ snapshot và xóa phiên phải dọn lượt trước. V1–V6 giữ nguyên byte; database kiểm thử tách biệt. [Bằng chứng 318 test](api-transactions.md#worker-report-test-result) là nguồn kết quả, chưa toàn schema/grant/audio/retention/backup. Chặn đọc quá hạn D08 không thay cho job xóa vật lý.
-
-
 <a id="model-audio-pair-result"></a>
-
-### 7.5. Nền dữ liệu audio/cặp và khởi tạo năm điểm — V9
-
-Theo G02, schema, mapping, dữ liệu khởi tạo và kiểm thử dữ liệu thuộc T02/Hòa. Phần này triển khai nền để T05 kiểm hồ sơ/áp dụng cặp và T07 đăng ký kết quả MP3; không khẳng định hai luồng nghiệp vụ đó đã chạy.
-
-| Sản phẩm | Ràng buộc và phạm vi đã triển khai |
-| --- | --- |
-| [V9](../../backend/src/main/resources/db/migration/V9__create_audio_revision_and_content_pair.sql) | Thêm audio_revision, audio_review_ref, content_pair và content_slot.active_pair_id nullable; không sửa V1–V8 hoặc tự tạo audio/cặp/áp dụng |
-| [AudioRevision](../../backend/src/main/java/vn/hueqr/backend/entity/AudioRevision.java)/Repository | Entity TextRevision lazy trong Java, database lưu text_revision_id. Job duy nhất cho mỗi audio; FK (job_id,text_revision_id,wav_file_id) khớp cả đích văn bản và WAV nguồn của job. Bản đã lưu không có setter và dùng updatable=false |
-| [AudioReviewReference](../../backend/src/main/java/vn/hueqr/backend/entity/AudioReviewReference.java)/Repository | Một tham chiếu riêng mỗi audio, locator/limitations và tài khoản/mốc ghi/version; không sao chép hồ sơ của bản khác, không tự suy người/ngày duyệt. Có tham chiếu không chứng minh đã được duyệt |
-| [ContentPair](../../backend/src/main/java/vn/hueqr/backend/entity/ContentPair.java)/Repository | FK text cùng slot, audio đúng text; UNIQUE(slot,text,audio), UNIQUE(id,slot). Tạo một cặp không tự đổi active_pair hoặc nháp, không tự bật hiện địa điểm |
-| [ContentSlot](../../backend/src/main/java/vn/hueqr/backend/entity/ContentSlot.java) | Hai UUID draft_text_id/active_pair_id riêng. FK active_pair đúng ngăn, @Version phát hiện thay đổi đồng thời; lưu nháp mới không làm mất cặp cũ |
-| [FileAsset](../../backend/src/main/java/vn/hueqr/backend/entity/FileAsset.java) | Mở định dạng WAV/MP3, giữ READY/metadata dương/mã Hash và storage key không trùng. Khóa (id,format) chặn tráo định dạng; hai file của audio khác Id. Job.source_wav vẫn chỉ nhận WAV. Nhiều audio được cùng tham chiếu file, FK chặn xóa file còn dùng |
-
-Hai cột wav_format/mp3_format trong audio và source_wav_format trong job là giá trị cố định do DEFAULT/CHECK trong schema; không phải ngôn ngữ, lựa chọn từ client hoặc trường thay đổi theo job. Các FK mới dùng RESTRICT, không CASCADE hoặc xóa ngầm qua JPA. Audio giữ tham chiếu job/đích/WAV trong suốt thời gian bản audio còn tồn tại; khi xóa phải bỏ cặp/hồ sơ/audio trước khi tháo đích job hoặc dọn job/file. Đây là phần ràng buộc dữ liệu; xử lý xóa, quyền và khóa giao dịch vẫn cần Service T05.
-
-Database kiểm quan hệ và metadata, không kiểm bytes MP3 hoặc nội dung hồ sơ bên ngoài. Service áp dụng phải kiểm lại đúng text/audio, hồ sơ/version, file sẵn sàng và điều kiện nghiệp vụ trong cùng giao dịch; chỉ có các Repository hoặc gọi setter không chứng minh đã áp dụng hợp lệ. V9 không thêm phase SUCCEEDED, không chuyển RESULT_STAGED thành thành công, không nối FFmpeg hoặc phát file cho khách.
-
-#### Dữ liệu khởi tạo tách khỏi migration tự động
-
-[five-places.sql](../../backend/src/main/resources/db/seed/five-places.sql) là script chạy riêng trong một giao dịch, không nằm trong db/migration và không được Spring tự chạy. Script tạo năm địa điểm D06 ở trạng thái ẩn: Cổng Ngọ Môn, Điện Thái Hòa, Tử Cấm Thành, Cửu Đỉnh và Cung Diên Thọ; mỗi điểm có bốn ngăn vi/en/fr/ru trống. Không có tọa độ/vùng, bài thuyết minh, audio, tài khoản, secret, hồ sơ duyệt hoặc cặp đang áp dụng được sinh từ script.
-
-UUID khởi tạo cố định, lưu ngay trong script và độc lập tên. Chạy lại chỉ bổ sung Id điểm/ngăn ngôn ngữ còn thiếu, không đặt lại tên/version/thời điểm/con trỏ đã được sửa. Điểm có tên trùng nhưng Id khác được giữ riêng; ngăn cùng điểm/ngôn ngữ đã có được dùng nguyên Id. Không chạy script này để reset dữ liệu; việc áp migration/seed lên database phục vụ do người vận hành thực hiện sau khi đối chiếu hiện trạng và quy trình backup.
-
 <a id="audio-pair-data-test-result"></a>
-
-#### Bằng chứng kiểm thử ngày 09/11/2026
-
-Chạy `mvnw.cmd --offline test` trên bản sao `C:\Users\khait\AppData\Local\Temp\hueqr-audio-data-ft4lchr0\backend`, Java 21.0.12.1/Maven Wrapper 3.9.12/Boot 4.1.2/Security 7.1.2 và MySQL 8.4.13 Testcontainers/Docker Linux Engine 29.8.1. Kết thúc **13:27:28 +07 ngày 09/11/2026**, **336 test đạt, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**, đối chiếu 36 báo cáo XML Surefire. Nguồn chính có 167 file/150 Java, thêm 12 file và sửa 4 file so với mốc 318 test; SHA-256 khớp bản đã kiểm. V1–V8/pom.xml/Wrapper/cấu hình đang dùng được giữ nguyên.
-
-- [AudioPairSchemaTests](../../backend/src/test/java/vn/hueqr/backend/schema/AudioPairSchemaTests.java): chống sai text/job/WAV/định dạng/ngăn/cặp, UNIQUE, active pointer, FK RESTRICT và file dùng chung; xóa theo thứ tự chỉ bỏ dữ liệu riêng, còn metadata file cho cleaner sau. Nâng V8 có WAV/job/nháp/hồ sơ lên V9 giữ dữ liệu/mốc/marker/checksum, không tạo audio/cặp/duyệt giả.
-- [AudioPairRepositoryTests](../../backend/src/test/java/vn/hueqr/backend/repository/AudioPairRepositoryTests.java): mapping/Unicode/UTC micro giây, UUID đúng quan hệ, mã Hash không dùng chung mảng mutable, hồ sơ có version và không ghi đè bản mới, nháp mới giữ cặp đang áp dụng.
-- [InitialPlaceDataTests](../../backend/src/test/java/vn/hueqr/backend/schema/InitialPlaceDataTests.java): migration không tự seed; chạy script riêng có 5 điểm/20 ngăn trống, chạy lại không ghi đè; điểm trùng tên và ngăn ngôn ngữ có sẵn giữ định danh. Script chỉ chạy trong database tạm ở bộ kiểm này.
-- Hồi quy toàn bộ bộ kiểm trước đó. PlaceRegionSchemaTests kiểm đủ V1–V9; TtsWavSchemaTests tiếp tục chặn định dạng ngoài phạm vi bằng FLAC, còn MP3 nay được V9 cho phép; con trỏ WAV được kiểm riêng vẫn từ chối MP3. Không giảm assertion về checksum hoặc bảo toàn dữ liệu cũ.
-
-Log `..\full-tests.log`, XML tại `target/surefire-reports`, baseline.json/tested-source-hashes.json/verification.json ở thư mục tạm cha. Các lần kiểm chưa đạt được giữ trong log audio-data-tests*.log để truy vết; kết quả ở trên chỉ ghi bộ cuối sau sửa. Fixture chỉ dựng metadata/file giả lập, không chứng minh chuyển MP3, nghe duyệt hoặc quyền phục vụ audio.
-
-**Điểm tiếp tục:** T05 triển khai hồ sơ audio, áp dụng cặp và điều kiện bật hiện; T07 bổ sung chuyển MP3/đăng ký audio rồi terminal job khi môi trường sẵn sàng. T03 còn opening/grant/ACK và luồng nội dung khách; D08, file claims/cleaner, backup/restore và bộ nội dung thực tế chưa hoàn tất. Không tích toàn T02 hoặc thay dấu tích chỉ từ kết quả schema.
-
-
 <a id="model-pair-application-result"></a>
-
-### 7.6. Sử dụng cặp và vòng đời file trong nghiệp vụ Admin
-
-Không thay schema V1–V9 hoặc seed sau mốc 7.5. Place thêm thao tác đổi visible/mốc cập nhật; FileAsset thêm markApplied/markUnapplied theo mốc tham chiếu áp dụng cuối. Repository bổ sung locking read SLOT/FILE, projection chủ audio, tìm/reuse cặp và đếm tham chiếu file qua mọi active_pair. Truy vấn đếm dùng Id file, không tên/storage key hoặc số điểm cố định.
-
-[Hợp đồng API 9.13](api-transactions.md#api-pair-visibility-contract) giữ thứ tự khóa, quyền và kiểm file; [kết quả 366 test](api-transactions.md#admin-pair-visibility-test-result) kiểm cả rollback và file dùng chung. Các phương thức Entity/Repository không tự là quyền duyệt/áp dụng. Dọn file/claims, xóa điểm và thu hồi liên kết phục vụ vẫn cần nghiệp vụ riêng, không suy metadata last_unapplied_at thành file đã bị xóa.
-
-
 <a id="model-guest-content-result"></a>
-
-### 7.7. V10 — lần mở, grant, kết quả lựa chọn và claim đọc
-
-[V10](../../backend/src/main/resources/db/migration/V10__create_guest_opening_grant_and_file_claim.sql) mở rộng guest_session với current_language/document_nonce/selection_seq/current_opening_id và thêm guest_open_intent, guest_content_grant, guest_request_result, file_claim. Không sửa migration V1–V9 hoặc seed. Nâng V9 có dữ liệu lên V10 đã kiểm giữ bản ghi/mốc/credential hash/checksum cũ; chỉ điền current_language=initial_language cho phiên chưa ended, không tạo opening/grant/lượt giả.
-
-- current_opening FK tổ hợp kiểm cùng session. Opening giữ snapshot điểm/tên, live_place FK SET NULL và trạng thái OPEN/CLOSED/version/mốc tạo-đóng. ACK không đóng opening.
-- Grant kiểm FK opening cùng session, source/RESTORE không viewEligible, deadline sau lúc cấp; text/pair/audio là khóa logical, MP3 file FK RESTRICT. Runtime kiểm file đúng MP3/READY dưới khóa FILE, không coi FK đơn này thay kiểm format/quyền.
-- guest_request_result dùng PK(session_id,request_key) và UK(session_id,document_nonce,selection_seq), fingerprint/action và khóa kết quả; không body text hoặc lịch sử nghe. Mô hình logic mục 3 không là bản DDL: id/result_code không cần cột riêng; action giữ SELECT/LANGUAGE/LEAVE, selection_kind/opening_version/language/available_languages đủ tái tạo kết quả. counted_view_key không lưu dư trong opening; UNIQUE của PLACE_VIEW là nguồn xác định lượt.
-- file_claim có file FK RESTRICT, owner_key logical là grant, kind READ và created_at. Claim không tự hết hạn theo thời gian; xóa khi stream thực đóng. Không giữ FK session khiến claim cũ hồi sinh quyền hoặc chặn D08; cleaner vẫn phải xét claim, không chỉ đếm FK grant.
-
-[Bằng chứng và giới hạn](api-transactions.md#guest-content-test-result) ghi 26 ca API/5 ca schema mới cùng hồi quy; snapshot/claim độc lập dữ liệu phục vụ. Quyền hết hạn bị chặn ngay nhưng metadata/grant pin hiện còn tới khi dọn được triển khai. Thu hồi khi end đã có, purge kỹ thuật/D08/claim sau crash và backup/restore chưa có; không coi toàn schema/vòng đời hoàn tất.
-
 <a id="model-guest-retention-result"></a>
-
-### 7.8. Dọn context và D08 ngày 10/11/2026
-
-Không thêm hoặc sửa migration. GuestRetentionRepository dùng các quan hệ V1/V8/V10, tháo current_opening_id trước xóa request-result/grant/opening; tới hạn D08 mới xóa PLACE_VIEW rồi GUEST_SESSION. READ claim còn giữ grant chặn dọn; FILE_ASSET/bytes không bị xóa. Một TX/phiên giữ các lần tháo/xóa cùng rollback, không ON DELETE CASCADE hoặc tombstone mới. UTC đọc/ghi đồng nhất JPA và DATETIME(6).
-
-[Operations 6.2](operations-design.md#ops-guest-retention-result) giữ thuật toán, 24 ca mới, hồi quy toàn cây và giới hạn scheduler/claim rò. Repository thuộc T02; policy/Service/runner và test thuộc T05. Chưa đủ toàn mô hình/vòng đời hoặc tiêu chí nghiệm thu retention vận hành.
-
-
 <a id="model-lifecycle-cleanup-result"></a>
-
-### 7.9. V11 — owner runtime và trạng thái dọn
-
-Migration V11 nối tiếp V1–V10, không sửa lịch sử migration: thêm `runtime_instance` (node/root/PID/start OS/trạng thái), `runtime_task` (scope tác vụ), `workspace_file` (nguồn gốc file trước khi ghi), `file_claim.owner_instance` có thể null cho dữ liệu cũ và `tts_job.local_finished_at`. Marker kết thúc cục bộ không chứng minh kết quả provider; job không rõ vẫn không tự được gửi lại.
-
-`file_asset` giữ metadata sau unlink với trạng thái READY → DELETING → DELETED, token/owner/mốc dọn và lỗi chờ retry. Các tham chiếu mới chỉ được dùng file READY dưới khóa; việc unlink nằm ngoài giao dịch DB. V11 cho phép QUEUED bị DISCARDED khi đích bị xóa mà không bịa worker/dispatch marker. Không thêm CASCADE phá dữ liệu lịch sử. Quy tắc, kết quả và giới hạn kiểm thực tế tại [operations 6.3](operations-design.md#ops-lifecycle-cleanup-result).
-
 <a id="model-local-audio-result"></a>
-
-### 7.10. V12 — kết quả chuyển đổi local và audio
-
-V12 thêm marker conversion_instance/task/token/file trên tts_job, FK instance đến runtime_instance và CHECK cho CONVERTING/SUCCEEDED; FAILED giữ WAV chỉ khi có failure_code LOCAL_ và mốc stage. SUCCEEDED/FAILED/DISCARDED có terminalAt, trạng thái đang xử lý không có terminal giả. workspace_file nhận thêm MP3. Không sửa checksum V1–V11 hoặc seed; nâng V11 có dữ liệu đã được kiểm trong bộ mới.
-
-Audio tiếp tục dùng V9: UNIQUE(job), cùng text/WAV của job và đúng định dạng hai file; không tạo bảng/audio nháp mới ngoài hợp đồng. Giữ source_wav_file_id khi audio còn tham chiếu FK tổ hợp, không tháo để vi phạm toàn vẹn. Token local không thay worker_token/snapshot provider. Retry local dùng lại job/WAV; token/file mới được cấp khi nhận lại, các file cũ giữ quy tắc dọn riêng. Kết quả/giới hạn tại [API 11.13](api-transactions.md#local-audio-implementation-result), phân công ở commit-plan 4.18; không tự tích toàn T02/T07.
-
 <a id="model-region-precision"></a>
-
-### 7.11. V13 — giữ nguyên tọa độ vùng
-
-Cột `region_revision.polygon` lưu chuỗi JSON chuẩn trong LONGTEXT với CHECK `JSON_VALID(polygon)`. JSON nhị phân của MySQL có thể đổi chữ số cuối của tọa độ khi đọc lại, làm sai Hash đã dùng trong A12/A14/gate hiển thị. Entity đọc/ghi chuỗi nguyên dạng; API vẫn nhận/trả GeoJSON, giữ cùng quy tắc chuẩn hóa, Hash và kiểm hình học, không làm tròn hoặc dùng dung sai để chấp nhận bản khác.
-
-V13 chỉ chuyển kiểu cột và giữ dữ liệu/Hash/con trỏ cũ, không sửa migration V1–V12. Không thể suy ngược các chữ số đã mất trong bản JSON cũ. Bản cũ đọc lại sai Hash tiếp tục bị chặn; cần lưu revision mới từ hình gốc đã duyệt và áp dụng qua API, giữ lịch sử cũ. V13 phải được kiểm nâng từ V12 và kiểm hồi quy đọc/lưu/áp dụng/bật điểm trước triển khai. Các mô tả mapping JSON tại mốc A12–A14 bên trên là lịch sử trước V13.
-
-### 7.12. Gate vận hành V14 — 13/11/2026
-
-V14 bổ sung `ops_guard` một hàng id=1: mode RUNNING/QUIESCING/FROZEN, owner_token và changed_at UTC. CHECK yêu cầu RUNNING không có owner, các mode đóng có owner. `ops_activity` lưu id/instance_id UUID, kind HTTP/TTS_QUEUE/LOCAL_AUDIO/CLEANUP/RETENTION và started_at; không có hạn tự xóa hoặc suy hoàn tất theo tuổi.
-
-Các token điều phối nội bộ lưu CHAR(36) ASCII để CLI đối chiếu trực tiếp, không có quan hệ FK tới định danh nghiệp vụ; giữ nguyên mapping BINARY(16) của các định danh nghiệp vụ hiện hành.
-
-Admission khóa chia sẻ hàng guard trong giao dịch ngắn, chỉ ghi activity khi RUNNING; chuyển QUIESCING phải chờ cùng khóa hàng. Activity được tháo khi công việc thực kết thúc trong giao dịch riêng. Khởi động lại không thay mode/owner hoặc xóa activity. Trạng thái FROZEN còn yêu cầu bằng chứng drain và app đã dừng từ công cụ vận hành; CHECK database đơn lẻ không chứng minh tiến trình/file writer đã dừng.
-
-[Hồ sơ V14](../06-kiem-thu/operations-guard-20261113/README.md) và [hướng dẫn](../07-van-hanh/bao-tri-va-sao-luu.md) tách bộ kiểm riêng với bản Ngọ Môn V13 chưa cập nhật. Các migration V1–V13 giữ nguyên.
-
-### Nhật ký biên tập
-
-Nhật ký theo thời điểm được giữ nguyên trong [hồ sơ biên tập](../99-luu-tru/document-history.md#official-20261107-03-ky-thuat-data-model-journal). Phần hiện hành không thay thế kết quả hoặc căn cứ lịch sử.

@@ -1,5 +1,26 @@
 # Diễn tập đóng gói và backup/restore tách biệt
 
+## Snapshot V13 và cập nhật ảnh V14
+
+`deploy/offline-v13-backup.mjs` nhận nguồn V13 có app/worker đã dừng, MySQL đang chạy, không task/claim chưa đối chiếu hoặc writer/container dùng chung volume. Nó không tạo gate V14 giả. `deploy/restore-backup.mjs` nhận đúng loại snapshot và đúng ID ảnh nguồn, tạo database/audio/khóa/epoch mới ngoài nguồn, không chuyển đường phục vụ.
+
+```powershell
+node deploy/offline-v13-backup.mjs '<runtime-V13>' '<backup-moi>'
+node deploy/restore-backup.mjs '<backup-moi>' '<restore-moi>' '<anh-V13>'
+node backend/src/test/fixtures/operations/upgrade-v13-rehearsal.mjs '<restore-V13-rieng>' '<anh-V14>'
+node --test backend/src/test/fixtures/operations/operations-backup.test.mjs backend/src/test/fixtures/operations/runtime-env.test.mjs
+```
+
+`upgrade-v13-rehearsal.mjs` chỉ nhận project restore riêng, kiểm inventory/vùng/file, giữ khóa/epoch qua cập nhật thường và phiên khách cũ, tải MP3 thật đúng Hash rồi kiểm gate close/freeze/resume. Nó không là phép kiểm phát audio trên thiết bị thật. Khi lỗi sau migration, giữ bản thử dừng; không tự chạy V13 trên schema V14.
+
+`deploy/update-image.mjs` cập nhật ảnh V14 cùng schema, yêu cầu label nguồn đúng SHA, backup trước, giữ volume/khóa/epoch và kiểm gate/health. Nhánh lỗi chỉ quay ảnh cũ khi schema không đổi và đúng owner. Kiểm nhánh này trên restore riêng bằng:
+
+```powershell
+node backend/src/test/fixtures/operations/image-rollback-rehearsal.mjs '<restore-V14-rieng>' '<thu-muc-kiem-moi>'
+```
+
+Ca kiểm tạo ảnh có tùy chọn Java sai để gây lỗi khởi động thật; kết quả đạt là ảnh mới bị từ chối và ảnh cũ được phục hồi, không coi ảnh gây lỗi là phát hành thành công. Nó dừng đúng project thử và gỡ đúng tag lỗi đã tạo; không dùng nguồn phục vụ, không gọi provider. Cấu hình thực phải có ACL, thư mục ngoài repository/runtime; xem [quy trình vận hành](../../../../../docs/07-van-hanh/bao-tri-va-sao-luu.md).
+
 ## Bộ kiểm gate V14
 
 `maintenance-rehearsal.mjs` chỉ nhận bản mới do `deploy/prepare-rehearsal.mjs` tạo từ bộ provider đã dừng, dùng ảnh có V14, năm điểm ẩn/20 slot và một audio thật. Không dùng bản Ngọ Môn đã áp dụng/hiển thị. Chạy từ repo:
@@ -65,3 +86,13 @@ Kiểm media chạy container không có mạng, tài khoản không phải root
 Tại `frontend`, đặt `HUEQR_PACKAGED_RUNTIME` tới thư mục restore, `HUEQR_E2E_URL=http://localhost:18081`, `HUEQR_E2E_OUTPUT` tới thư mục kết quả mới; chạy `npm run test:e2e -- packaged.spec.mjs`. Chrome dùng bản cài sẵn theo cấu hình Playwright. Không đặt `HUEQR_E2E_RUNTIME` của suite tạo dữ liệu nếu chỉ chạy ca packaged.
 
 Sau kiểm, đọc `browser-runtime.json` để xác định đúng hai container thử rồi dừng chúng bằng tên đã đối chiếu; giữ kết quả và dữ liệu để rà. Không chạy lệnh dọn toàn Docker. Nếu khởi động ứng dụng lỗi, container thử được giữ để kiểm log và cần dừng trước chạy lại. Không chép `browser-runtime.json`, `private-runtime.json` hoặc `database.sql` vào hồ sơ chung.
+
+## Kiểm retention, log Docker và smoke sau CD
+
+```powershell
+node --test backend/src/test/fixtures/operations/operations-retention.test.mjs
+node backend/src/test/fixtures/operations/docker-log-rotation.mjs '<anh-local-da-co>' '<bao-cao-JSON-moi-ngoai-repo>'
+node backend/src/test/fixtures/operations/post-deploy-check.mjs '<runtime-rieng-da-ra>' '<bao-cao-JSON-moi-ngoai-repo>'
+```
+
+Retention dùng clock truyền vào fixture, kiểm hạn/Hash/junction và chỉ dọn thư mục tạm do chính suite tạo. Phép thử Docker sinh 45.000 dòng trên container không mạng/volume, kiểm buffer xoay trong 10 MB × 3 file rồi xóa đúng container thử; không kiểm TTL theo tuổi. Smoke API đọc tài khoản từ runtime riêng, không in credential; tạo một phiên/lượt kiểm rồi kết thúc phiên, kiểm Admin/vùng/cặp/văn bản/MP3 và lỗi quyền/Range/sau kết thúc. Không thay văn bản/vùng/cặp hoặc nghe duyệt trên điện thoại. Chỉ chạy trên môi trường và thời điểm đã được phép, lưu báo cáo ngoài repository.

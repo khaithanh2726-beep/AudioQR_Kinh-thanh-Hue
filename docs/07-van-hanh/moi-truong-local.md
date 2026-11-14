@@ -1,23 +1,34 @@
-# Môi trường chạy thử Windows
+# Môi trường phát triển và chạy thử
 
-Các công cụ được cài ở cấp tài khoản trong `%LOCALAPPDATA%\Programs\AudioQR-Tools`. PATH của tài khoản chứa thư mục Node và thư mục bin của FFmpeg. Mở terminal mới sau khi cài để nhận PATH.
+Môi trường chuẩn là Windows/PowerShell với Docker Desktop chạy Linux containers. Phiên bản phần mềm của dự án tại [bảng công nghệ](../01-tong-quan/technical-inputs.md); không tự nâng dependency khi chuẩn bị máy.
 
-| Công cụ | Phiên bản | Kết quả kiểm |
-| --- | --- | --- |
-| Node.js | 24.22.2 LTS | `node --version` đạt |
-| npm | 11.19.1, đi kèm Node | `npm.cmd --version` đạt |
-| FFmpeg | 9.0.2 Essentials, Windows x64 | Mã hóa MP3 bằng libmp3lame đạt |
-| ffprobe | 9.0.2 Essentials, Windows x64 | Đọc codec MP3, mono, 24 kHz, thời lượng 1 giây đạt |
+| Công cụ | Vai trò |
+|---|---|
+| Node.js 24.22.2 / npm 11.19.1 | Kiểm logic và build Vue; trên PowerShell dùng npm.cmd khi npm.ps1 bị policy chặn. |
+| Java 21 / Maven Wrapper | Build và kiểm Spring Boot; wrapper nằm trong backend. |
+| Docker Desktop / Compose | MySQL/Testcontainers và môi trường ứng dụng tách biệt. |
+| FFmpeg/ffprobe 9.0.2 | Kiểm/mã hóa audio; ảnh Linux có công cụ riêng, không dùng kết quả Windows để thay kiểm container. |
+| Ngrok | Cấp HTTPS diễn tập tới cổng loopback của ứng dụng đã rà. Không là CD hoặc hosting độc lập. |
 
-Gói Node lấy từ nguồn phát hành Node.js. Gói FFmpeg lấy từ Gyan, nhà cung cấp bản Windows được trang FFmpeg dẫn tới. [Node.js 24.22.2](https://nodejs.org/en/download/archive/v24.22.2) · [FFmpeg](https://ffmpeg.org/download.html) · [Gyan release builds](https://www.gyan.dev/ffmpeg/builds/)
+## Kiểm điều kiện máy
 
-Đã đối chiếu SHA-256 của hai gói trước khi giải nén.
+Mở terminal mới sau khi thay PATH. Từ repository, các lệnh dưới đây chỉ kiểm phiên bản, chưa khởi động dịch vụ:
 
-| Gói | SHA-256 |
-| --- | --- |
-| node-v24.22.2-win-x64.zip | ca1bff5d8ead13c9f2ea404a176db46bd430704d5b5113734049fa365e7799e2 |
-| ffmpeg-9.0.2-essentials_build.7z | 4705843ccaaf54257c16ad90f3e952ece33c17df964ecf7bfdbb0f49c7171077 |
+```powershell
+node --version
+npm.cmd --version
+java -version
+docker version
+docker compose version
+ffmpeg -version
+ffprobe -version
+ngrok version
+```
 
-Lượt kiểm công cụ đã tạo WAV PCM 16-bit mono 24 kHz từ tín hiệu sine một giây, mã hóa thành MP3, đọc bằng ffprobe và giải mã toàn tệp thành công. Kết quả phục vụ xác nhận công cụ local. Chuyển đổi trong Linux container và nghe duyệt nội dung còn chờ kiểm riêng.
+Docker cần engine Linux hoạt động để chạy Testcontainers/Compose. Kiểm Java/Node theo cấu hình dự án; thiếu công cụ hoặc không đủ quyền phải ghi phép kiểm bị chặn. Không lấy một lần kiểm trên máy cũ làm bằng chứng máy mới đã sẵn sàng.
 
-`npm.cmd test` trong frontend đã chạy bằng Node thật, đạt 54 ca, không có ca lỗi hoặc bỏ qua. Resolve dependency, build Vue và kiểm trình duyệt là các bước tiếp theo của [luồng chạy thử](chay-thu/README.md).
+## Kiểm phần mềm và môi trường
+
+Lệnh frontend tại [frontend README](../../frontend/README.md), đóng gói/CI tại [hướng dẫn đóng gói](dong-goi-va-ci.md), database và kho audio riêng tại [chạy thử](chay-thu/README.md). Khóa runtime, tài khoản và cấu hình provider phải ở ngoài repository. Không nối database đang phục vụ để chạy fixture.
+
+Kết quả đã có: 530/530 backend, 71/71 logic frontend, build Vue/JAR/ảnh Linux và kiểm media thực. Đây là bằng chứng các lượt được ghi trong [báo cáo kiểm thử](../06-kiem-thu/README.md), không là kết quả vừa chạy lại ở phiên biên tập tài liệu.

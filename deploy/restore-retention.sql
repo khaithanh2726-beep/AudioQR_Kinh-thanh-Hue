@@ -1,4 +1,5 @@
--- Chỉ chạy trên database đích mới, ứng dụng chưa khởi động và gate FROZEN.
+-- Chỉ chạy trên database đích mới, ứng dụng chưa khởi động: gate FROZEN ở V14,
+-- hoặc bản restore V13 offline riêng chưa mở đường phục vụ.
 -- Giữ anchor gốc, không gán ended_at hoặc thay tuổi dữ liệu bằng mốc restore.
 SET time_zone = '+00:00';
 START TRANSACTION;

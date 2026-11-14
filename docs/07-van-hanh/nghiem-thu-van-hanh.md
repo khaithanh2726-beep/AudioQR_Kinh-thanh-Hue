@@ -1,33 +1,27 @@
-# Điều kiện nghiệm thu môi trường demo
+# Điều kiện nghiệm thu và bàn giao môi trường
 
-Tài liệu này hướng dẫn hoàn tất các phép kiểm còn mở. Quy tắc vòng đời, backup và restore giữ tại [thiết kế vận hành](../03-ky-thuat/operations-design.md); không thay hợp đồng bằng cấu hình chạy thử. Kết quả thực chạy lưu ở `docs/06-kiem-thu`, không đánh dấu đạt từ việc có cấu hình.
+## 1. Nội dung phục vụ
 
-## 1. Dữ liệu phục vụ
+Bản phục vụ V14 đã hiển thị năm điểm, đủ 20 cặp vi/en/fr/ru. Ngọ Môn vi giữ hồ sơ cũ; 19 cặp mới có [chấp thuận dùng học phần](../05-noi-dung/duyet-19-cap-v02-20261114.json), revision/Hash cụ thể và giới hạn chuyên gia/phát âm. Không dùng thành công TTS/ASR thay bằng chứng người đã nghe trọn. Thay văn bản/audio phải rà và duyệt lại phần bị ảnh hưởng theo D09. API Khách trên bản sao và bản phục vụ đều đạt 20/20 văn bản/MP3 khớp Hash.
 
-Nhóm duyệt vùng/nền bản đồ và từng bản trong [ma trận 20 cặp](../05-noi-dung/doi-chieu-van-ban-audio.md). Mỗi audio phải đọc đúng revision, nghe trọn, ghi tham chiếu và giới hạn. Bản dịch nháp chỉ dùng để rà ngôn ngữ/lịch sử; tạo audio sau khi chốt bản văn nhằm tránh tiêu hao quota khi sửa. Audio nháp ngoài repository phải được bảo quản cùng manifest Hash.
+## 2. Ứng dụng và thiết bị
 
-Áp dụng từng cặp trong Admin, kiểm danh sách mức đầy đủ cho đúng năm điểm chuẩn, rồi bật hiển thị theo gate hiện hành. Không dùng các địa điểm/phiên và tham chiếu kiểm thử để chứng minh đã duyệt dữ liệu phục vụ.
+CI đã kiểm build từ nguồn/lockfile, 530 backend, 71 logic frontend, 33 ca vận hành. Vue/API cùng origin, MySQL/Flyway và kho audio riêng. Chrome riêng đạt 11/11 ca tab/reload/mạng/lỗi/Q2/clock/crash với phạm vi fixture được ghi rõ. Android/iPhone từng dùng Ngọ Môn cơ bản; ma trận mẫu máy/OS/browser của bộ cập nhật được thực hiện ở lượt cuối, gồm QR/bản đồ/đọc-nghe/đổi tiếng/reload/hai tab. Không thay phép thử thiết bị bằng API.
 
-## 2. Đóng gói và HTTPS
+## 3. Vận hành và phục hồi
 
-Chuẩn bị cấu hình riêng theo [đóng gói và CI](dong-goi-va-ci.md). Build ảnh Linux, kiểm FFmpeg/ffprobe trong ảnh và đường dẫn audio Unicode, khởi động trên database/volume riêng rồi kiểm cùng origin cho frontend/API. HTTPS phải giữ cookie Secure/HttpOnly/SameSite và CSRF; không sửa thuộc tính cookie để bỏ qua lỗi môi trường.
+[Quy trình bảo trì](bao-tri-va-sao-luu.md) yêu cầu đúng owner, quiesce/drain/freeze, snapshot database/audio cùng checkpoint, Hash và hạn nguồn; restore sang schema/volume mới, lọc retention theo anchor gốc và cấp epoch mới. Không tự xóa claim theo tuổi hoặc mở gate sau lỗi.
 
-Khi có URL HTTPS thật, cấu hình `HUEQR_PUBLIC_START_URL`, build lại ảnh và đối chiếu URL hiển thị trên trang QR. Tải/in PNG rồi quét trên Android/Chrome và iPhone/Safari từ mạng ngoài laptop. Kiểm QR mở form, chưa tự tạo phiên; bắt đầu phiên, chọn vùng, đọc/nghe, đổi tiếng, lỗi mạng/thử lại, reload/nhân bản tab, BFCache/background và hết hạn theo ma trận UI. Viewport giả lập trên Chrome không thay hai lượt thiết bị thật.
+Trigger một lần tự chạy lúc 20:18:59 ngày 14/11 đạt LastTaskResult=0, backup đủ 40 tệp và mở lại HTTP. Khoảng đóng gate đo được 293.391 giây, không phải cam kết RTO. Trigger thử đã gỡ, lịch 23:00 giữ nguyên; chưa gọi đây là đã quan sát lượt 23:00. Chính backup này được restore sang project/schema/volume riêng: 40/40 Hash tại đích, 20 cặp đang áp dụng, năm điểm hiển thị, epoch mới, retention theo mốc gốc, gate FROZEN; hai container thử đã dừng.
 
-## 3. Backup và diễn tập restore
+Báo cáo chạy lịch giữ bảy ngày, chỉ dọn backup quá hạn đã đối chiếu sau khi có bản mới hợp lệ. Docker local 10 MB × 3 tệp/container đã kiểm xoay; đây là giới hạn dung lượng, không phải TTL theo tuổi của mọi log hạ tầng. Lịch không cam kết chạy khi laptop tắt/đăng xuất; tiếp tục theo dõi review và lease/claim bất thường.
 
-Trước khi viết/chạy công cụ backup trên môi trường phục vụ, xác định tài khoản thực thi, thư mục ngoài repository, quyền truy cập, dung lượng và lịch giữ 7 ngày theo thiết kế. Mật khẩu/khóa runtime không được chèn vào command line hoặc hồ sơ kiểm công khai.
+## 4. CI/CD và nguồn chạy
 
-Một bộ backup phải ghi cùng mốc database và kho audio. Ngăn tiếp nhận thao tác mới, chờ các luồng ghi/worker/READ đang chạy kết thúc hoặc đối chiếu bằng chứng tiến trình theo thiết kế; không xóa claim theo timeout. Giữ hệ thống ở trạng thái không ghi trong suốt dump và sao chép audio. Ghi schema/Flyway, phiên bản nguồn/ảnh, thời điểm UTC, manifest kích thước/Hash và kết quả từng bước. Không coi dump database đơn lẻ là backup đầy đủ khi thiếu tệp audio tương ứng.
+[CD thật nguồn 134ac0d](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664) đã đạt qua Tailscale/OpenSSH/receiver, ảnh/volume/khóa/epoch được đối chiếu. Không có thay đổi Java/Vue/dependency so với ảnh đó trong mốc bổ sung công cụ/dữ liệu này. Push/PR chỉ kiểm, không tự chuyển bản phục vụ. Update/rollback giữ dữ liệu và phải tương thích schema; không hạ V14 về V13.
 
-Diễn tập restore trên schema, volume và kho audio **mới**, không ghi đè môi trường đang dùng. Kiểm Hash trước nhập, nạp database và audio đúng bộ, dùng epoch mới và thực hiện lọc dữ liệu theo anchor gốc/retention trước mở phục vụ. Không kéo dài tuổi dữ liệu bằng thời điểm restore. Kiểm tham chiếu audio, cặp đang áp dụng, quản trị/khách, thống kê, quyền file và các tình huống thiếu/hỏng tệp. Chỉ xóa bộ backup hết hạn sau khi xác minh bộ mới đầy đủ; không xóa đệ quy theo đường dẫn chưa kiểm.
+## 5. Hồ sơ bàn giao
 
-Đã có [diễn tập offline ngày 11/11](../06-kiem-thu/packaging-20261111/README.md): phục hồi DB/audio riêng, kiểm Hash, lọc retention và chạy ứng dụng với epoch mới. Chưa có OPS_GUARD/drain live hoặc reconcile job/claim đang xử lý; không coi lượt offline là backup môi trường đang phục vụ hoặc bật vận hành dựa riêng vào hướng dẫn này.
+Bộ chấm gồm yêu cầu/thiết kế, hồ sơ duyệt, báo cáo kiểm, tra chức năng và hướng dẫn chạy/sử dụng/backup/restore. Log/dump/audio/khóa giữ riêng đúng loại; Git không thay backup dữ liệu. Người nhận cần thực hiện lại hướng dẫn và ghi kết quả thực tế; không suy đã bàn giao độc lập từ kiểm của công cụ. Checklist giữ 62/89, chỉ đề xuất tích khi đủ từng ô nhiều vế.
 
-Bổ sung 13/11: [bộ V14](../06-kiem-thu/operations-guard-20261113/README.md) triển khai gate bền và đã kiểm CLI freeze/backup/resume, phục hồi riêng và phát MP3 qua Admin. [Công cụ/hướng dẫn](bao-tri-va-sao-luu.md) chỉ nhận môi trường được nhận diện, giữ FROZEN khi chưa rõ. Chưa áp lên bản tập dượt V13; còn đối chiếu claim/lease do crash, lịch backup/dọn bản hết hạn và mốc cập nhật phục vụ. Kết quả này không mở rộng lượt offline cũ thành backup live.
-
-## 4. CI/CD và tài khoản
-
-Đã push chín nhánh theo G02 và chạy [CI Linux thật ngày 12/11](../06-kiem-thu/release-readiness-20261112/README.md): 520/520 backend, 65/65 frontend, 5/5 manifest và build đạt. Compose riêng đã kiểm giữ dữ liệu qua restart/update/rollback giữa hai ảnh tương thích schema; chưa thay cho kiểm môi trường phục vụ hoặc đường CD. CD cần Tailscale riêng, OpenSSH Windows, SSH host key/khóa đăng nhập, quyền Docker của tài khoản đích và thư mục triển khai. Chưa cấu hình các đầu vào này thì chưa chạy triển khai.
-
-Sau khi cấu hình, kiểm triển khai lặp lại, giữ volume qua thay ảnh, khởi động lại, rollback phiên bản tương thích schema và truy cập HTTPS từ thiết bị ngoài mạng. Phân biệt kết quả CI, đóng gói local, CD và nghiệm thu dữ liệu/thiết bị. Commit/push, PR, checklist và Project chỉ cập nhật đúng quyền đã giao và sau mốc rà.
+[Báo cáo kiểm](../06-kiem-thu/README.md), [hiện trạng](../01-tong-quan/handoff.md) và [roadmap](../01-tong-quan/roadmap.md) là nguồn kết quả/giới hạn.

@@ -1,10 +1,6 @@
-# DFD — Luồng dữ liệu của hệ thống
+# Sơ đồ luồng dữ liệu (DFD)
 
-**Phiên bản nội dung:** 0.3; biên tập 05/11/2026. **Trạng thái:** dự thảo, chưa duyệt từng sơ đồ hoặc kiểm chứng bằng phần mềm.
-**Mục đích:** một vị trí chính cho mức 0 ngữ cảnh, mức 1 và ba phân rã mức 2; giữ LIFE-P01 vé ký 24 giờ. DFD bổ sung cho ERD/sequence/trạng thái/API, không thay các mô hình đó.
-**Nguồn:** [Business Flow](../02-nghiep-vu/business-flow.md), [PRD](../02-nghiep-vu/PRD.md), [decisions](../02-nghiep-vu/decisions.md), [model](data-model.md), [API](api-transactions.md). Mermaid và SVG là nguồn sơ đồ hiện hành; giới hạn hiển thị ở mục 8.3.
-
-**Mục lục:** [1. Quy ước](#dfd-conventions) · [2. Mức 0](#dfd-context) · [3. Kho dữ liệu](#dfd-stores) · [4. Mức 1](#dfd-level1) · [5. Bắt đầu phiên](#dfd-start) · [6. TTS](#dfd-tts) · [7. Áp dụng cặp](#dfd-pair) · [8. Truy vết và rà soát](#dfd-trace).
+Các mức DFD và bảng cân bằng dùng cùng phạm vi nghiệp vụ của PRD/Business Flow; ký hiệu kho lặp chỉ phục vụ bố cục, không tạo kho dữ liệu mới.
 
 <a id="dfd-conventions"></a>
 
@@ -541,38 +537,8 @@ Không có F1 hoặc Gemini trong phân rã này: nó sử dụng metadata/claim
 
 <a id="dfd-trace"></a>
 
-## 8. Truy vết, giới hạn và rà soát tài liệu
-
-### 8.1. Nguồn đối chiếu
-
-| DFD | Nguồn nghiệp vụ / yêu cầu | Thiết kế chi tiết bổ sung cho DFD |
-| --- | --- | --- |
-| Mức 0; 1.0/2.0 | [Business Flow khách](../02-nghiep-vu/business-flow.md#bf-3); PRD FR-K01–K10, UC-K01–K05; [DATA-05/LIFE-P01](../02-nghiep-vu/decisions.md#data-05) | [Model phiên](data-model.md#model-guest), [API khách](api-transactions.md#api-guest), [protocol vé](operations-design.md#ops-start-simple), [ma trận V-START](operations-design.md#ops-start-checks), TDD 9–10 |
-| 3.0 | [Business Flow Admin](../02-nghiep-vu/business-flow.md#bf-admin-main); Q1–Q3/UI-03/UI-04/UI-05; FR-A01–A04/A07/A08/A10–A12, UC-A01/A02/A03/A05–A08 | [API Admin](api-transactions.md#api-admin), model nội dung/metadata, UI hiện hành; danh sách/thống kê chỉ đọc, một QR |
-| 4.0 | A04.1–A04.4/D09/TTS-01/UI-AP07; FR-A05/FR-A06, UC-A04; AC-A08–A13/A18 | [Model nội dung](data-model.md#model-content), [DTO TTS](api-transactions.md#api-dto), [state/worker/file](operations-design.md#ops-jobs) |
-| 5.0 | D09/A07/[UI-04](../02-nghiep-vu/decisions.md#ui-admin-confirmed-02); FR-A07/A12, UC-A05, AC-A14/A15/A26 | Model CONTENT_PAIR/refs/file; API-A24/TX-A02, [ca áp dụng cặp](../02-nghiep-vu/PRD.md#ac-pair-apply) |
-| 6.0 | D08/A02.1–A02.3; DATA-01–DATA-04; FR-A09/FR-D01, UC-A06/UC-D01, AC-A19–A21/AC-D01/D02 | [Operations lifecycle/backup/restore](operations-design.md), model 5 và TX-D01/TX-F01. LIFE-P02/P03/REC-P01/BKP-P02 không thay đổi |
-| T1 | P03/P06/Q2/UI-AP05/TECH-04; FR-K05/K07, FR-A01/A03/A04/A07; DR-09 | [TDD tab](TDD.md#tdd-tab-session)/[audio](TDD.md#tdd-full-audio), [mô hình — quy ước](data-model.md#model-conventions); không metadata audio thao tác gửi lên DB |
-
-### 8.2. Các phân biệt phải giữ khi dùng sơ đồ hướng dẫn
-
-- Backend chỉ nhận DTO cần thiết: dữ liệu pending/quyền gửi cho Bắt đầu, lựa chọn và ACK cần thiết; mốc nghe/Blob/hình đang dở/soạn chưa lưu được T1 giữ theo nguồn. Không “tự giữ tạm” thành API Lưu.
-- P06/audio/tua tại tab không tạo session/view/nhật ký nghe. Cảnh báo năm phút và ngoại lệ nghe hết đúng bài đang phát là xử lý frontend dựa mốc server; không API tải audio sau hết hạn, không gia hạn vì nghe tiếp.
-- Hết phiên Admin dừng nghe thử, không dùng ngoại lệ khách. Tác vụ đã accepted là dữ liệu bền D3 nên không mất chỉ vì tab đóng/phiên hết hạn.
-- D1 giữ snapshot điểm đã xóa để thống kê đúng hạn D08, không gộp điểm mới trùng tên. P3 xóa DB khác P6 dọn F1, hồ sơ tài liệu vẫn giữ.
-- Bộ chuẩn năm điểm × bốn ngôn ngữ = 20 văn bản và 20 audio; không trần số điểm, không đồng nghĩa các bản đã được cung cấp/duyệt.
-- F2 giữ bảy ngày theo từng bản; phục hồi tách môi trường/lọc theo mốc gốc rồi thu hồi quyền cũ, không tái chạy lệnh/TTS hoặc ghi endedAt giả. Không đổi REC-P01 thành thu hồi mỗi restart.
-
-### 8.3. Kết quả đối chiếu và trạng thái
-
-Đã đối chiếu G01–G08, từng quan hệ nguồn–đích–chiều mức 1 theo từ điển 4.2 và ba bảng cân bằng mức 2 sau chuẩn hóa ký hiệu kho lặp. Giữ nội dung và xử lý của ba phân rã; không cần mở gói có đầu mút ở khung DBS. Chưa phát hiện mâu thuẫn thực chất hoặc quyết định nghiệp vụ mới cần người dùng chọn để thêm DFD này. Việc lặp ký hiệu kho và bố trí cụm chỉ phục vụ cách nhìn luồng dữ liệu, không thay model/API/nguồn.
-
-Bản mức 1 được render bằng Mermaid 11.12.1/ELK 0.1.7 trên Chrome cục bộ để xem toàn hình và từng cụm; SVG xuất lại từ cùng nguồn, thay bản 0.2. Không dùng giảm số cạnh làm bằng chứng dễ đọc. Các sơ đồ mức 0/2 giữ nguyên dữ liệu và cấu trúc. Đã xem toàn hình và các cụm trên bản render cục bộ, kiểm nhãn/đầu mút/đường nối. Đây chưa là kiểm bố cục in thực tế: toàn hình dạng dọc dài, không khẳng định thu nhỏ nguyên hình vào một trang A4 hoặc A3 vẫn đọc rõ. Khi đưa vào báo cáo cần phóng to hoặc trình bày phần cắt theo các cụm từ cùng SVG, giữ mã/ký hiệu lặp và luồng; không vẽ lại thành mô hình khác. Phần cắt chỉ minh họa chi tiết, phải kèm hình tổng hoặc chú thích tiếp nối khi đầu mút/nhãn nằm ngoài phần cắt; không coi nó là một DFD độc lập. Chưa chốt khổ giấy hoặc cam kết bố cục giống nhau trên mọi trình đọc Mermaid; kiểm cú pháp không thay kiểm trực quan. Công cụ render chỉ phục vụ tài liệu, không thêm dependency ứng dụng hoặc đổi TECH-01. Lượt dựng sơ đồ không chạy phần mềm dự án; bằng chứng backend hiện tại theo [handoff](../01-tong-quan/handoff.md#next-step). Các sơ đồ là dự thảo cần nhóm rà soát; không bằng chứng UNIQUE/TX, quyền tab, khóa runtime, Blob/expiry, provider, SSH/Docker hoặc backup/restore đã đáp ứng. Các ca kiểm đã chuẩn bị tiếp tục đọc ở operations; không tích checklist toàn TDD từ việc thêm sơ đồ.
-
-**Điểm dừng thực hành:** [mục 3.1](practice-01-start-session.md#practice-stop) đã ghi kết quả môi trường và bộ khung backend. Lượt chuẩn hóa không hướng dẫn thực hành mới; DFD không chứng minh ứng dụng đã chạy.
-
-### 8.4. Nhật ký
 
 
+## 8. Cách sử dụng sơ đồ
 
-Nhật ký theo thời điểm được giữ nguyên trong [hồ sơ biên tập](../99-luu-tru/document-history.md#official-20261107-03-ky-thuat-dfd-journal). Phần hiện hành không thay thế kết quả hoặc căn cứ lịch sử.
+DFD mô tả luồng dữ liệu nghiệp vụ và quan hệ giữa các tiến trình/kho. Sơ đồ không thay ERD, hợp đồng API hoặc bằng chứng chương trình chạy. Khi trình bày hình mức 1 dài, dùng hình tổng cùng phần phóng to theo cụm; không lược cạnh làm thay đổi mô hình. Các sơ đồ giữ nguyên nội dung trong đợt biên tập.

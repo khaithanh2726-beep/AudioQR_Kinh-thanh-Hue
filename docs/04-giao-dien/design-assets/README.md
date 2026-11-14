@@ -33,12 +33,9 @@ Các khoảng 12/14/22 m chỉ mô tả cách tạo **bản đề xuất**, khô
 - [Cục Di sản văn hóa — Quần thể kiến trúc Cố đô Huế](https://dsvh.gov.vn/di-tich-lich-su-va-kien-truc-nghe-thuat-quan-the-kien-truc-co-do-hue-2944): nguồn bối cảnh phân khu/di tích, không chứng thực năm đa giác đề xuất. Không lấy bài này làm bản đo ranh giới.
 - Chưa khảo sát thực địa, chưa có bản đo hoặc xác nhận chính thức về ranh giới năm đối tượng. OSM có thể thiếu/sai/chậm cập nhật; footprint mang tên Diên Thọ là mốc công trình, không toàn khu. Vùng Tử Cấm Thành là lựa chọn UX tổng quan, không toàn ranh lịch sử đã xác minh.
 - Đã đọc ảnh sau dựng để kiểm tra nền/nhãn và đối chiếu hình học năm đa giác trong bản vẽ, chưa thấy chồng lấn nội bộ. Đây không là kiểm thử ứng dụng hoặc bảo đảm trên mọi kích thước/mọi bản sửa; P08 hỏi ứng viên vẫn áp dụng khi khớp nhiều vùng.
-- Chạm toàn bộ bên trong vùng là hành vi ứng dụng cần thực hiện sau; PNG/SVG ở đây là ảnh thiết kế tĩnh, không triển khai chạm/audio thật. Không ghim vị trí khách, không GPS/quyền vị trí/chỉ đường, không thêm điểm con Tử Cấm Thành.
+- Chạm toàn bộ bên trong vùng là hành vi ứng dụng; PNG/SVG ở đây là ảnh thiết kế tĩnh, không triển khai chạm/audio thật. Không ghim vị trí khách, không GPS/quyền vị trí/chỉ đường, không thêm điểm con Tử Cấm Thành.
 - Chưa duyệt bản dịch, thuyết minh hay audio nào qua bản vẽ; năm điểm là bộ chuẩn không trần số điểm. Chỉ hình nền và nguồn vị trí được sử dụng, không sao chép code/dữ liệu/nội dung từ repo tham khảo.
 
-## Nhật ký
+## Phạm vi sử dụng
 
-| Ngày | Thay đổi | Trạng thái |
-| --- | --- | --- |
-| 31/10/2026 | Lấy bản trích OSM có lọc; dựng năm vùng có mã/nguồn/phương pháp; xuất SVG/PNG bản đồ và ảnh bố cục. | Toàn bộ nền/vị trí/ranh giới là đề xuất chờ xem xét, không chọn công nghệ hoặc chứng minh phần mềm/nội dung đã đáp ứng. |
-| 01/11/2026 | Đối chiếu nguồn lưu: way/285990343 không có trong bản trích; giữ như tham chiếu bên ngoài và ghi rõ trong README/metadata MAP-Z03. Di chuyển cả design-assets theo khung mới. | Không tải bổ sung, không thay hình học/ảnh hoặc thời điểm snapshot; không xác minh/duyệt ranh giới. |
+Bộ tài nguyên là thiết kế tĩnh từ bản trích OSM, phục vụ truy vết nguồn và ý tưởng bố cục. Giao diện chạy hiện hành dùng Leaflet/OSM theo [thiết kế UI](../ui-design.md); các ảnh này không thay dữ liệu vùng đã áp dụng hoặc bằng chứng kiểm ứng dụng.

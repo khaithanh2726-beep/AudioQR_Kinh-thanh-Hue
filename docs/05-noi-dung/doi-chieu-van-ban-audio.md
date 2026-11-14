@@ -1,32 +1,32 @@
-# Đối chiếu 20 văn bản với audio
+# Ma trận văn bản và audio
 
-Phạm vi theo dõi gồm năm địa điểm và bốn ngôn ngữ. Các ô trống chờ ghi mã bản văn, audio và bằng chứng tương ứng.
+Đối chiếu ngày 14/11/2026: đã có **20 văn bản và 20 audio kỹ thuật**, gồm Ngọ Môn vi đã dùng cùng 19 audio mới. Năm ru đã tạo thành công, probe/giải mã MP3 đầy đủ. Bộ nội dung có 20 revision văn bản, 20 revision audio, 40 WAV/MP3. Chủ đồ án duyệt 19 cặp mới cho học phần; cả 20 cặp đã áp dụng trên bản phục vụ, giữ nguyên cặp Ngọ Môn vi. API Khách kiểm đủ 20/20 văn bản/MP3 và Hash.
 
-Ngày 11/11 có bốn audio tiếng Việt nháp (Ngọ Môn, Thái Hòa, Tử Cấm Thành, Cửu Đỉnh), chưa nghe duyệt. Danh mục [audio-vi-v01.json](audio-vi-v01.json) ghi Hash WAV/MP3 và Hash bản văn; tệp thật ở `%LOCALAPPDATA%\AudioQR-Media-Drafts\vi-v01`, ngoài repository. Bài Diên Thọ chưa tạo thành công do provider trả HTTP 503. Các bản en/fr/ru chờ duyệt trước khi tạo audio.
+| Địa điểm | Tiếng | Audio kỹ thuật | Hồ sơ/điều kiện trước dùng |
+|---|---|---|---|
+| Cổng Ngọ Môn | vi | Đã có, hồ sơ riêng | Đã chấp thuận dùng tập dượt Ngọ Môn vi |
+| Điện Thái Hòa | vi | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Tử Cấm Thành | vi | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cửu Đỉnh | vi | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cung Diên Thọ | vi | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cổng Ngọ Môn | en | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Điện Thái Hòa | en | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Tử Cấm Thành | en | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cửu Đỉnh | en | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cung Diên Thọ | en | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cổng Ngọ Môn | fr | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Điện Thái Hòa | fr | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần; giữ ghi chú thuật ngữ kiến trúc |
+| Tử Cấm Thành | fr | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cửu Đỉnh | fr | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cung Diên Thọ | fr | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cổng Ngọ Môn | ru | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Điện Thái Hòa | ru | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Tử Cấm Thành | ru | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cửu Đỉnh | ru | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
+| Cung Diên Thọ | ru | Đã tạo/giải mã/Hash khớp | Đã duyệt dùng học phần theo hồ sơ 19 cặp |
 
-Ghi đường dẫn hoặc mã bản văn đã lưu vào cột Văn bản. Khi có audio, ghi tên tệp, mã Hash hoặc mã revision và bản văn mà audio đọc. Nghe trọn, đối chiếu lời với bản văn, rồi ghi người và ngày duyệt kèm tham chiếu hồ sơ. Cập nhật kết quả áp dụng sau khi Admin áp dụng thành công. Nếu sửa văn bản, theo dõi audio cũ dưới mã bản cũ và ghi nhận phần cần thu lại.
+## Phạm vi duyệt và kiểm chứng
 
-| STT | Địa điểm | Ngôn ngữ | Văn bản và phiên bản | Audio và phiên bản văn bản tương ứng | Nghe và duyệt | Áp dụng |
-| --- | --- | --- | --- | --- | --- | --- |
-| 01 | Cổng Ngọ Môn | vi | [Bản tiếp nhận 01](thuyet-minh-vi-v01.md#ngo-mon) | — | — | — |
-| 02 | Cổng Ngọ Môn | en | [Nháp 01, chờ duyệt](thuyet-minh-en-v01.md#ngo-mon) | — | — | — |
-| 03 | Cổng Ngọ Môn | fr | [Nháp 01, chờ duyệt](thuyet-minh-fr-v01.md#ngo-mon) | — | — | — |
-| 04 | Cổng Ngọ Môn | ru | [Nháp 01, chờ duyệt](thuyet-minh-ru-v01.md#ngo-mon) | — | — | — |
-| 05 | Điện Thái Hòa | vi | [Bản tiếp nhận 01](thuyet-minh-vi-v01.md#thai-hoa) | — | — | — |
-| 06 | Điện Thái Hòa | en | [Nháp 01, chờ duyệt](thuyet-minh-en-v01.md#thai-hoa) | — | — | — |
-| 07 | Điện Thái Hòa | fr | [Nháp 01, chờ duyệt](thuyet-minh-fr-v01.md#thai-hoa) | — | — | — |
-| 08 | Điện Thái Hòa | ru | [Nháp 01, chờ duyệt](thuyet-minh-ru-v01.md#thai-hoa) | — | — | — |
-| 09 | Tử Cấm Thành | vi | [Bản tiếp nhận 01](thuyet-minh-vi-v01.md#tu-cam-thanh) | — | — | — |
-| 10 | Tử Cấm Thành | en | [Nháp 01, chờ duyệt](thuyet-minh-en-v01.md#tu-cam-thanh) | — | — | — |
-| 11 | Tử Cấm Thành | fr | [Nháp 01, chờ duyệt](thuyet-minh-fr-v01.md#tu-cam-thanh) | — | — | — |
-| 12 | Tử Cấm Thành | ru | [Nháp 01, chờ duyệt](thuyet-minh-ru-v01.md#tu-cam-thanh) | — | — | — |
-| 13 | Cửu Đỉnh | vi | [Bản tiếp nhận 01](thuyet-minh-vi-v01.md#cuu-dinh) | — | — | — |
-| 14 | Cửu Đỉnh | en | [Nháp 01, chờ duyệt](thuyet-minh-en-v01.md#cuu-dinh) | — | — | — |
-| 15 | Cửu Đỉnh | fr | [Nháp 01, chờ duyệt](thuyet-minh-fr-v01.md#cuu-dinh) | — | — | — |
-| 16 | Cửu Đỉnh | ru | [Nháp 01, chờ duyệt](thuyet-minh-ru-v01.md#cuu-dinh) | — | — | — |
-| 17 | Cung Diên Thọ | vi | [Bản tiếp nhận 01](thuyet-minh-vi-v01.md#dien-tho) | — | — | — |
-| 18 | Cung Diên Thọ | en | [Nháp 01, chờ duyệt](thuyet-minh-en-v01.md#dien-tho) | — | — | — |
-| 19 | Cung Diên Thọ | fr | [Nháp 01, chờ duyệt](thuyet-minh-fr-v01.md#dien-tho) | — | — | — |
-| 20 | Cung Diên Thọ | ru | [Nháp 01, chờ duyệt](thuyet-minh-ru-v01.md#dien-tho) | — | — | — |
+[Hồ sơ duyệt 19 cặp](duyet-19-cap-v02-20261114.json) khóa đúng revision/Hash/ngôn ngữ đã chấp thuận ngày 14/11. Không ghi thao tác tự động thành bằng chứng người đã nghe trọn. D09 tiếp tục yêu cầu rà phần bị ảnh hưởng khi thay nội dung/audio. Các bản dịch chưa được người đủ năng lực rà chỉ dùng demo khi được duyệt rõ cùng giới hạn. TTS thành công hoặc ASR khớp không tự đáp ứng các điều kiện đó. Giữ đúng [hồ sơ Ngọ Môn](duyet-ngo-mon-tap-duot-20261112.md); không gắn audio sang revision khác hoặc tạo hồ sơ nghe giả để vượt gate.
 
-Chọn một dòng tiếng Việt cho [lần chạy thử đầu tiên](../07-van-hanh/chay-thu/README.md). Dùng bằng chứng của chính dòng đó khi ghi hai hồ sơ duyệt trong Admin.
+Đã đối chiếu 18 audio mới bằng transcript; Thái Hòa fr vẫn cần nghe thuật ngữ. Lượt dùng model thứ hai ngày 14/11 trả 503, không được ghi là xác nhận đạt. Với ru, ASR có chuẩn hóa số và cách phiên âm tên Việt; không thay chứng nhận phát âm của người bản ngữ. File, transcript và Hash chi tiết giữ ở kho nội dung/hồ sơ nội bộ, không đưa audio hoặc khóa vào Git.

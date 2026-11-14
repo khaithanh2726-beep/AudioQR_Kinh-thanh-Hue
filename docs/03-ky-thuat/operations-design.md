@@ -1,12 +1,6 @@
-# TDD — Vòng đời dữ liệu, backup và kế hoạch kiểm chứng
+# Vòng đời dữ liệu, bảo trì và sao lưu/phục hồi
 
-**Bổ sung 13/11:** [gate và công cụ V14](#ops-guard-v14) đã có kiểm thực trên môi trường riêng. Các đoạn trạng thái 04–11/11 bên dưới giữ bằng chứng theo thời điểm; không dùng chúng thay kết quả mới hoặc coi bộ thử đã được áp lên bản phục vụ.
-
-**Phiên bản nội dung:** 0.3; biên tập 11/11/2026. **Trạng thái:** dự thảo cơ chế và cách kiểm; phần backend Bắt đầu có bằng chứng riêng, chưa kiểm toàn bộ vòng đời/vận hành.
-**Mục đích:** giải thích tạo/giữ/vô hiệu/dọn quyền và metadata, tác vụ TTS/file, backup tạm ngừng phục vụ, restore và ma trận kiểm. LIFE-P01 vé ký 24 giờ, LIFE-P02/P03/REC/BKP-P02 đã chốt đúng phần.
-**Nguồn:** [decisions](../02-nghiep-vu/decisions.md), [model](data-model.md), [API](api-transactions.md), [TDD](TDD.md). Hướng đã chọn khác với cơ chế đã kiểm chứng; [điểm dừng thực tế](practice-01-start-session.md#practice-stop) được ghi riêng.
-
-Mục lục: [1. Vòng đời](#ops-lifecycle) · [2. Job/file](#ops-jobs) · [3. Backup](#ops-backup) · [4. Restore](#ops-restore) · [5. Kiểm chứng](#ops-verification) · [6. Điểm cần quyết định](#ops-open).
+Quy định mốc quyền truy cập, hạn lưu, xử lý tác vụ/file và quy trình bảo trì nhất quán. Hạn quyền khác thời điểm dọn vật lý; kết quả kiểm trên môi trường riêng được báo cáo tách với trạng thái phục vụ.
 
 <a id="ops-lifecycle"></a>
 
@@ -33,7 +27,7 @@ Receipt đã dọn không biến key cũ thành lệnh mới: window cũ hết h
 
 ### 1.1. LIFE-P01 — Vé Bắt đầu ký, 24 giờ từ cấp — ĐÃ DUYỆT
 
-**Xác nhận 04/11/2026 tại [DATA-05](../02-nghiep-vu/decisions.md#data-05).** Bỏ bảng start context/hạn 10 phút và start_generation phối hợp purge. Service epoch cho REC-P01 vẫn giữ; xác thực Admin vẫn session/cookie. Những chi tiết ký/DTO/transaction dưới đây là thiết kế hiện hành **dự thảo, chưa duyệt toàn TDD**. K11/K01/K02 và các nhánh Service/TX/API đã có [64 test hồi quy đạt](practice-01-start-session.md#practice-start-api-result) trên database tạm; chưa toàn V-START01, browser hoặc vận hành thật.
+**Xác nhận 04/11/2026 tại [DATA-05](../02-nghiep-vu/decisions.md#data-05).** Bỏ bảng start context/hạn 10 phút và start_generation phối hợp purge. Service epoch cho REC-P01 vẫn giữ; xác thực Admin vẫn session/cookie. Những chi tiết ký/DTO/transaction dưới đây là thiết kế hiện hành **dự thảo, chưa duyệt toàn TDD**. K11/K01/K02 và các nhánh Service/TX/API đã có [64 test hồi quy đạt](TDD.md#tdd-layers) trên database tạm; chưa toàn V-START01, browser hoặc vận hành thật.
 
 **Vé:** API-K11 cấp ở nền một chuỗi có chữ ký, chứa requestId ngẫu nhiên, credentialHash ràng buộc quyền tab, serviceEpoch, issuedAt, ticketExpiresAt=issuedAt+24 giờ, version nhận dạng định dạng. Không lưu vé vào bảng riêng; không tên/IP/ngôn ngữ trong vé. Client giữ nguyên chuỗi vé và credential trong cùng tab, không sửa payload, không đưa vào URL/log/ảnh báo cáo. Không thêm bước/màn hình/đồng hồ cho khách.
 
@@ -43,7 +37,7 @@ Receipt đã dọn không biến key cũ thành lệnh mới: window cũ hết h
 
 #### Định dạng vé v1 — lựa chọn triển khai, 14 unit test codec đã đạt
 
-Ngày 05/11/2026, triển khai StartTicketCodec theo phần payload/encoding do server định nghĩa ở trên; không thay LIFE-P01 hoặc hợp đồng API. Bộ ký HMAC riêng có 9 unit test đạt; **14 ca codec đạt BUILD SUCCESS lúc 14:32:52+07:00**, [bằng chứng thực hành A.13](practice-01-start-session.md#practice-ticket-codec-result). Sau branch thành công, lớp xác minh kết hợp và K11/K01/K02 đã kiểm trong [64 test lúc 16:15:34+07:00](practice-01-start-session.md#practice-start-api-result); không dùng các test này để kết luận cấu hình môi trường thật/restart/restore đã đạt. Điểm dừng tại [handoff](../01-tong-quan/handoff.md#next-step).
+Ngày 05/11/2026, triển khai StartTicketCodec theo phần payload/encoding do server định nghĩa ở trên; không thay LIFE-P01 hoặc hợp đồng API. Bộ ký HMAC riêng có 9 unit test đạt; **14 ca codec đạt BUILD SUCCESS lúc 14:32:52+07:00**, [bằng chứng thực hành A.13](TDD.md#tdd-layers). Sau branch thành công, lớp xác minh kết hợp và K11/K01/K02 đã kiểm trong [64 test lúc 16:15:34+07:00](TDD.md#tdd-layers); không dùng các test này để kết luận cấu hình môi trường thật/restart/restore đã đạt. Điểm dừng tại [handoff](../01-tong-quan/handoff.md).
 
 - Chuỗi vé gồm **hai phần** `base64url(payloadBytes).base64url(hmacBytes)`, dùng bảng chữ URL-safe, không padding `=`, không khoảng trắng/newline trong chuỗi vé. HMAC-SHA256 ký đúng payloadBytes UTF-8, tag đủ 32 byte; không chọn thuật toán theo field client.
 - Payload UTF-8 có đúng **6 dòng**, phân cách bằng LF (`\n`), không LF cuối: `hueqr-start-v1`, requestId UUID chuẩn chữ thường, credentialHash hex chữ thường 64 ký tự, serviceEpoch UUID chuẩn chữ thường, issuedAt và ticketExpiresAt theo Instant.toString() UTC. Hai mốc chính xác tới tối đa microsecond để khớp DATETIME(6). Nhãn đầu vừa nhận dạng mục đích Bắt đầu vừa chứa version, được ký cùng các trường.
@@ -123,19 +117,13 @@ stateDiagram-v2
     DISCARDED --> [*]
 ```
 
-**Chưa tạo** là không có job phù hợp; QUEUED/DISPATCHING/RESULT_STAGED/CONVERTING hiển thị đang tạo. UNCERTAIN hiển thị chưa xác định kết quả và hướng kiểm tra, không gán thành lỗi xác định để mở nút gửi lại. Một lần Retry tạo job/attempt mới, không reset job cũ hoặc tráo text T1 thành T2.
-
-**Phần đã triển khai ngày 09/11/2026:** nền job/receipt và marker QUEUED → DISPATCHING → UNCERTAIN có [hợp đồng](api-transactions.md#api-tts-queue-contract) và [267 test hồi quy](api-transactions.md#admin-tts-queue-test-result). Marker commit trước khi Service trả lease; token/version bảo vệ callback cũ, unknown tiếp tục chặn job/dispatch mới cho cùng text. Chưa nối scheduler/provider, phục hồi sau restart thật, WAV/file/convert, terminal hoặc check/retry. Các bước và state machine đầy đủ dưới đây tiếp tục là thiết kế cho phần còn lại, không phải kết quả pipeline đã chạy.
-
-
-**Cập nhật phần thực thi:** worker unary, lưu WAV/manifest, đăng ký file READY, A20 kiểm bằng chứng local và A21 retry lỗi xác định có [hợp đồng 9.11](api-transactions.md#api-tts-worker-contract), [bằng chứng 318 test](api-transactions.md#worker-report-test-result). Mặc định không tạo scheduler/provider; chỉ cấu hình bật riêng mới xử lý job thật. Adapter đã kiểm với HTTP localhost, không dùng khóa thật. WAV tổng hợp không phải thuyết minh được duyệt. FFmpeg/ffprobe-Linux/MP3, local retry sau convert, crash recovery có bằng chứng dừng tiến trình, claims/cleaner/backup vẫn chưa được kiểm hoặc triển khai đầy đủ. Các chặng còn lại dưới đây giữ thiết kế hiện hành.
-
+**Chưa tạo** là không có job phù hợp; QUEUED/DISPATCHING/RESULT_STAGED/CONVERTING hiển thị đang tạo. UNCERTAIN hiển thị chưa xác định kết quả và hướng kiểm tra, không gán thành lỗi xác định để mở nút gửi lại. Retry lỗi provider xác định tạo attempt mới; Retry lỗi local có WAV hợp lệ xử lý lại cùng job. Cả hai giữ snapshot văn bản/ngôn ngữ và không tráo text T1 thành T2.
 
 1. **Accept:** Service khóa text/active job và operation window; persist snapshot + job + receipt 202. Marker chưa commit không được dispatch.
 2. **Dispatch:** worker giành owner_token/phase_version, ghi DISPATCHING trước gọi. Crash sau marker nhưng không rõ đã gửi hay chưa → UNCERTAIN, không tự gửi Gemini lần hai. QUEUED chắc chưa dispatch có thể xử lý lần đầu theo tác vụ đã tiếp nhận, không phải retry provider.
 3. **Stage:** WAV hoàn chỉnh có manifest kỹ thuật jobId/hash/checksum; không prompt/key. Khi WAV đã kiểm đủ, đăng ký FILE_ASSET READY và TTS_JOB.source_wav_file_id trong TX trước convert; FK này giữ WAV cho local retry/backup, không để chỉ một path trong RAM. Có bằng chứng kết quả gốc thì tiếp tục convert local, không gọi TTS lại. Nếu chỉ còn bytes không đủ đối chiếu thì cách ly/kiểm, không tự gắn audio.
 4. **Convert/finalize:** FFmpeg/ffprobe ngoài TX; tạo file key mới bất biến, hoàn tất bytes trước metadata READY/AUDIO_REVISION. Khi AUDIO_REVISION đã giữ WAV/MP3 thì tháo source_wav_file_id của job nếu không còn cần; lỗi local giữ đúng WAV để retry, target xóa tháo khi worker thật đã dừng. Trong TX kiểm lại owner token, target_valid/text/hash/ngôn ngữ; target đã xóa không insert PLACE/TEXT lại.
-5. **Lỗi local sau WAV thành công:** job nêu failureStage và retryAction=REPROCESS_LOCAL nếu WAV còn hợp lệ; Retry chủ động có thể xử lý lại local, không tạo chi phí provider mới. Lỗi xác định trước kết quả có retryAction=CREATE_PROVIDER_ATTEMPT. Chưa rõ chỉ INSPECT_ONLY; thiếu căn cứ provider không hứa tra lại được.
+5. **Lỗi local sau WAV thành công:** job phân loại lỗi qua failureCode và retryAction=REPROCESS_LOCAL nếu WAV còn hợp lệ; Retry chủ động có thể xử lý lại local, không tạo chi phí provider mới. Lỗi xác định trước kết quả có retryAction=CREATE_PROVIDER_ATTEMPT. Chưa rõ chỉ INSPECT_ONLY; thiếu căn cứ provider không hứa tra lại được.
 6. **Xóa điểm/đóng trang/hết phiên:** job đã nhận không phụ thuộc HttpSession. Xóa làm target_invalid và kết quả muộn DISCARDED; nếu còn cuộc gọi/worker chưa rõ thì vẫn giữ cờ uncertain/claim, không dọn chỉ vì target mất.
 7. **Dọn:** bản đầy đủ WAV/MP3 đã kiểm nhưng không dùng thuộc file hoàn chỉnh chưa áp dụng, áp DATA-01 24 giờ đủ điều kiện. Chunk/đầu ra dở trong workspace mới theo 1 giờ khi terminal/không worker/an toàn. Không đổi tên một WAV hoàn chỉnh thành “file tạm” để xóa sau 1 giờ. Bản nháp còn tham chiếu giữ.
 
@@ -149,7 +137,6 @@ Server không tự thẩm định hồ sơ D09: success → nghe thử/nghe tr�
 
 A24 đã cập nhật ever_applied của WAV/MP3 khi áp dụng và last_unapplied_at khi bỏ tham chiếu áp dụng cuối, không đặt mốc khi file còn dùng chung hoặc chỉ ẩn điểm. Khóa FILE theo Id tăng dần giữ xuyên kiểm READY/stat/đổi pointer/receipt; lỗi rollback giữ cả cặp/mốc. [Hợp đồng](api-transactions.md#api-pair-visibility-contract) và [bằng chứng 366 test](api-transactions.md#admin-pair-visibility-test-result) là nguồn chi tiết.
 
-Phần này chưa có cleaner/unlink hoặc read-claim tự chạy; các chặng DELETING/DELETED/claim trong thiết kế vẫn phải triển khai cùng protocol trước cho dọn file thật. Chưa kiểm codec MP3 hoặc bytes thay thủ công ngoài protocol. Mốc thời gian được giữ theo nguồn, không biến trạng thái chờ dọn thành đã xóa.
 
 ## 3. BKP-P02 — Backup lúc tạm ngừng phục vụ — HƯỚNG ĐÃ CHỌN
 
@@ -220,7 +207,7 @@ Snapshot B có thể được tạo **trước** một thao tác kết thúc phi
 
 ## 5. Kế hoạch kiểm chứng và trạng thái bằng chứng
 
-Ma trận dưới đây là kế hoạch kiểm. Các ca backend đã thực hiện ghi tại [thực hành A.14](practice-01-start-session.md#practice-start-api-result) và [A.15 K04](practice-01-start-session.md#practice-end-session-result), các phần chưa chạy giữ giới hạn riêng. Window/receipt, xác thực và phần tạo/đọc/sửa tên địa điểm có [bằng chứng backend riêng](api-transactions.md#admin-place-test-result), chưa thay kiểm UI/vòng đời/restore. Quyền test/database tạm theo [handoff mục 7](../01-tong-quan/handoff.md#guidance-protocol), không áp dụng lên database đang dùng. Mỗi phép kiểm cần dữ liệu tách biệt, ghi app/schema/thiết bị/browser/timezone/network/thời gian và kết quả thực phù hợp. Dùng clock fixture, không endpoint đổi giờ public hoặc giảm 8 giờ production. Screenshot giao diện không thay truy vấn DB/network/âm thanh cần quan sát.
+Ma trận dưới đây quy định cách kiểm, không tự xác nhận mọi hàng đã đạt. Kết quả thực chạy tại [báo cáo kiểm thử](../06-kiem-thu/README.md). Mỗi lượt cần môi trường/dữ liệu tách biệt và ghi app/schema/thiết bị/browser/timezone/mạng/thời gian. Dùng clock fixture cho ca thời gian, không thêm endpoint đổi giờ công khai hoặc giảm 8 giờ runtime; screenshot không thay quan sát DB/network/âm thanh.
 
 | Mã / nguồn | Chuẩn bị và thao tác sau này | Kết quả cần thấy / bằng chứng |
 | --- | --- | --- |
@@ -236,7 +223,7 @@ Ma trận dưới đây là kế hoạch kiểm. Các ca backend đã thực hi�
 | V-BKP01 — DATA-03/04, BKP-P02 | Dataset đủ refs; drain với QUEUED/DISPATCHING/local convert/UNCERTAIN, stop app/worker/cleaner nhưng MySQL còn chạy; dump/catalog/copy/kiểm/mở lại | Không writer giữa dump/catalog/copy, không MySQL tạm để lấy catalog. Đủ hash/file đúng snapshot, job/receipt/phiên còn và mốc gốc, không provider retry; đo downtime/disk. Không đủ checkpoint thì FAILED/hoãn, không COMPLETE giả |
 | V-REC01 — DATA-01–04/REC-P01 | B hai ngày nhưng S đã 31 ngày, còn phiên khác chưa hết hạn và window cũ; restore riêng/lọc/đổi epoch trước phục vụ | Lọc quá hạn/mốc gốc; quyền/window cũ đều vô hiệu dù phiên còn hạn, khách xác nhận Bắt đầu mới, Admin login/đối chiếu; không endedAt giả/provider retry hoặc xóa Blob tức thì. Restart/backup thường không đổi epoch |
 | V-CD01 — TECH-05 | Sau người dùng thiết lập dịch vụ theo hướng dẫn: từ mạng riêng SSH vào **đúng account triển khai Windows**, kiểm PowerShell, PATH và Docker CLI/context/engine | Ghi danh tính, shell thật, context và quyền truy cập daemon; không suy SSH thành công là Docker được. Không mở Docker TCP public hoặc tắt quyền để né lỗi |
-| V-CD02 — TECH-05 | Khi V-CD01 đạt, kiểm từ workflow trong mạng riêng bằng tác vụ chỉ đọc trước; sau đó mới thử deploy có backup trên dữ liệu test | Runner đúng account/context, Docker Desktop hoạt động khi tài khoản/session thực tế; DB/audio vẫn giữ, lỗi có đường quay lại phù hợp schema. Chưa có bằng chứng workflow/CI/CD được tạo hoặc chạy |
+| V-CD02 — TECH-05 | Khi V-CD01 đạt, kiểm từ workflow trong mạng riêng bằng tác vụ chỉ đọc trước; sau đó mới thử deploy có backup trên dữ liệu test | Runner đúng account/context, Docker Desktop hoạt động khi tài khoản/session thực tế; DB/audio vẫn giữ, lỗi có đường quay lại phù hợp schema. Workflow CD thật đã đạt; xem báo cáo kiểm thử để tách lượt thực chạy khỏi kế hoạch kiểm |
 
 **Cổng kỹ thuật bắt buộc:** V-TAB02, V-AUDIO01/02 và V-CD01 không thể kết luận chỉ qua ERD/DTO. Nếu thiếu Web Locks/owner hoặc browser không chứng minh trạng thái tại expiry, ghi phần chưa đạt và thiết kế tiếp; không đổi nghiệp vụ cho khớp kết quả. Các ngưỡng tải/hiệu năng/độ trễ dọn chưa chốt không tự được đặt thành con số pass/fail.
 
@@ -265,114 +252,18 @@ Phép kiểm chưa thể kết luận từ bảng: MySQL thật UNIQUE/rollback/
 
 <a id="ops-open"></a>
 
-## 6. Trạng thái hiện hành và việc còn cần giải quyết
+## 6. Phạm vi đã kiểm và phần còn thiếu
 
-| Mã / trạng thái | Nội dung | Việc tiếp theo |
-| --- | --- | --- |
-| LIFE-P01 — **đã duyệt vé ký 24 giờ** | DATA-05: kiểm signature/quyền/epoch/yêu cầu; ledger có trả gốc kể cả expiry vé, ledger không có chỉ tạo bằng vé còn hạn; bỏ start_generation | Cụ thể hóa Service/Repository/khóa ký/clock và kiểm V-START01.01–10; không hỏi duyệt lại hạn hoặc giữ context cũ |
-| LIFE-P02 — **đã duyệt** | Window 24 giờ từ cấp, không gia hạn qua login hoặc chạy lại sau hạn | Mapping receipt/window và kiểm replay/expiry; không hỏi duyệt lại |
-| LIFE-P03 — **đã duyệt** | Job cũ terminal rõ, không ref/use/current sau bảy ngày; unknown/active giữ | Tách job metadata với text/audio/file và kiểm cleanup |
-| REC-P01 — **đã duyệt** | Restore thật thu hồi quyền/window cũ, giữ lịch sử/timestamp, không endedAt giả; không restart thường | Thực hiện epoch/đối chiếu/kiểm restore trước public |
-| BKP-P02 — **hướng đã chọn**, chi tiết còn dự thảo | Dừng phục vụ/ghi/dọn có kiểm soát ngoài demo, giữ MySQL, dump/catalog/copy cùng trạng thái đứng yên | Kiểm drain/TTS/file/checkpoint/downtime, không hứa thời lượng hoặc hồi phục provider response chưa có |
-| Cổng bắt buộc thực tế | Hai tab/owner, audio expiry/Blob, UNIQUE/FK/locks, worker/backup, SSH/account Docker | Một phần backend V-START01 có bằng chứng; các cổng browser/worker/backup/CD chưa kiểm, không kết luận từ file thiết kế |
+Gate V14, drain, mutex, snapshot nhất quán, kiểm Hash, restore trên volume/schema riêng và thu hồi quyền cũ đã có bằng chứng. Bản Ngọ Môn đã chuyển V14 và CD thật đã đạt. Scheduler cleanup/retention đã được kiểm riêng rồi bật trên bản phục vụ: giữ file được bảo vệ và xóa dữ liệu/file đủ hạn.
 
-Hiện chưa phát hiện trở ngại cần đổi hành vi LIFE-P01 đã chốt; phép chứng minh hạn vé/ledger ở 1.1 và ma trận kiểm đã chuẩn bị. Chi tiết HMAC/DTO/TX/runtime key còn phải triển khai và kiểm thật, không toàn TDD được duyệt. Nếu thực tế buộc đổi hành vi/phạm vi/chi phí/tiêu chí phải nêu bằng chứng và trình riêng. Các phần nội dung/ranh giới/giới hạn nghiệm thu đã ghi mở tiếp tục được theo dõi; không tự đóng R06.
+Công cụ lịch backup/dọn đã đăng ký 23:00, có lượt Task Scheduler chạy thật và restore riêng đạt; báo cáo vận hành giữ bảy ngày, buffer Docker giới hạn 10 MB × 3 tệp/container. Giới hạn dung lượng Docker không chứng minh TTL theo tuổi cho mọi log hạ tầng. Quyền, lệnh, xử lý lỗi và lịch bỏ lỡ tại [hướng dẫn bảo trì](../07-van-hanh/bao-tri-va-sao-luu.md#backup-theo-lịch-và-quản-lý-log).
 
-TDD/ERD/API còn dự thảo, chưa đủ toàn checklist T01/T02/T07/T10. Trạng thái issue phải được đối chiếu trước khi ghi nhận hoàn thành; không tích theo snapshot cũ.
+Còn hoàn thiện xử lý claim/lease sau crash thiếu căn cứ owner, theo dõi trigger hằng ngày, xử lý mục review của retention và nghiệm thu dữ liệu/thiết bị cuối. Không tự thu hồi lease theo timeout hoặc tự mở gate sau lỗi để vượt các điều kiện này.
 
-
+Phạm vi triển khai và nghiệm thu được tổng hợp tại [hiện trạng bàn giao](../01-tong-quan/handoff.md); kết quả thực thi tại [báo cáo kiểm thử](../06-kiem-thu/README.md).
 
 <a id="ops-guest-grant-read-result"></a>
-
-### 6.1. Phạm vi grant/claim đã triển khai và phần còn mở ngày 09/11
-
-V10 và K03/K05–K10 có [bằng chứng riêng](api-transactions.md#guest-content-test-result). End thu hồi grant/đóng opening/xóa current pointer cùng giao dịch; expiry chặn quyền theo đồng hồ server, không chờ worker. K09 ghi READ claim dưới khóa FILE, commit trước truyền bytes và chỉ release khi stream đóng. Không tự dùng TTL/thiếu heartbeat để nhả claim; cleaner sau này phải kiểm claim dưới cùng protocol.
-
-Chưa có purge opening/grant/request-result tới end/expiry hoặc D08 vật lý, file cleaner, xử lý claim rò sau process chết và backup/restore. File còn pin sau hạn không là quyền tải, nhưng cần hoàn thiện tháo pin/dọn metadata theo chính sách, không giữ vô hạn như sản phẩm cuối. Source frontend có owner/Blob/memento và kiểm logic tách biệt, chưa chứng minh vòng đời browser/clock/background hoặc hệ thống phục vụ.
-
 <a id="ops-guest-retention-result"></a>
-
-### 6.2. Dọn metadata và phiên/lượt D08 — kết quả ngày 10/11/2026
-
-Phạm vi thực thi gồm một Repository T02 và policy/Service/runner/hai lớp test T05. Không đổi V1–V10, cấu hình JPA, API hoặc mốc nghiệp vụ. Các kết luận “chưa purge” ở mục 6.1 giữ mốc ngày 09/11; mục này là kết quả triển khai tiếp theo.
-
-- Khi tới endedAt hợp lệ hoặc expiresAt gốc, bỏ request-result/grant/opening và current pointer/nonce/sequence/currentLanguage; giữ start ledger, ngôn ngữ ban đầu và các lượt snapshot tới D08
-- Khi anchor gốc + đúng 30 ngày đã đến hạn, xóa lượt và phiên cùng các bản ghi phụ thuộc trong một giao dịch. endedAt trước startedAt, sau expiresAt hoặc còn ở tương lai không thay anchor expiresAt gốc; không tạo endedAt giả, TTL mới hoặc tombstone PII
-- Mỗi phiên dùng giao dịch REQUIRES_NEW/READ_COMMITTED, khóa phiên cùng thứ tự với K09, rồi kiểm lại đồng hồ và READ claim. Claim còn tồn tại chặn dọn phiên đó; bộ chọn ứng viên bỏ qua phiên đang có claim để không chặn các phiên khác trong batch nhỏ
-- Tháo current_opening_id trước xóa con; lỗi ở cuối hoàn tác cả con trỏ, grant/file pin, opening, lượt và ledger. Không xóa FILE_ASSET hoặc unlink bytes; dọn quyền tham chiếu không đồng nghĩa dọn file
-- JDBC đọc DATETIME(6) qua LocalDateTime và gán UTC rõ ràng, bind tham số cũng UTC như cấu hình JPA. Clock cắt micro giây để so deadline; không dựa múi giờ mặc định JVM
-
-**Scheduler có điều kiện:** chỉ tạo GuestRetentionRunner khi `hueqr.retention.enabled=true`. `hueqr.retention.batch-size` mặc định 100; `hueqr.retention.poll-delay-ms` mặc định 60000, dùng cho initial delay và fixed delay giữa các lượt. Đây là cấu hình kỹ thuật, không thay thời hạn quyền/30 ngày và không cam kết độ trễ xử lý toàn backlog. Mặc định chưa bật để việc nhận nguồn không tự chạy xóa trên database vận hành; người vận hành đối chiếu backup/môi trường và bật khi sẵn sàng. Không thêm endpoint HTTP xóa dữ liệu hoặc bật trong cấu hình dùng chung.
-
-**Bằng chứng:** 24/24 ca mới đạt (7 policy, 17 tích hợp). Hồi quy toàn backend: **421 test, 0 failures/errors/skipped, BUILD SUCCESS, exit 0**, hoàn tất 2026-11-10T00:32:58+07:00 trên MySQL 8.4.13 Testcontainers, Java 21.0.12.1/Maven 3.9.12/Boot 4.1.2. Backend có 200 file nguồn, 182 Java; sáu Java mới, không sửa nguồn cũ. Mã Hash cây bàn giao được đối chiếu với bản kiểm tách biệt.
-
-| Nhóm phép kiểm | Kết quả đã quan sát |
-| --- | --- |
-| Trước/đúng expiry, kết thúc sớm | Phiên còn hiệu lực giữ metadata; đến mốc chỉ bỏ context, không xóa lượt/ledger/file hoặc sửa timestamp gốc |
-| Trước deadline D08 một micro giây/đúng deadline | Không xóa sớm; tới hạn xóa thực các bản ghi phiên/lượt, chạy lại không tạo kết quả mới |
-| endedAt lỗi, kết thúc sớm, qua tháng | Không dùng mốc lỗi để xóa sớm/kéo hạn; tính đủ 720 giờ từ anchor gốc |
-| Phiên do JPA tạo và đọc qua JDBC | Giữ phiên ngay trước expiry, dọn context đúng expiry; cùng UTC, không lệch 7 giờ |
-| READ claim và tranh chấp giao dịch tải | Không dùng tuổi claim làm TTL; cleaner chờ khóa và thấy claim đã commit, release rồi mới dọn; phiên bị giữ không làm batch bỏ đói phiên khác |
-| Rollback và hai cleaner đồng thời | Lỗi sau DELETE thật cuối cùng khôi phục toàn bộ dữ liệu trong TX; hai cleaner chỉ một lần purge, lần còn lại nhận NOT_FOUND |
-| Start ledger sau purge/thống kê | Vé cũ không tạo lại phiên đã purge; thống kê loại dữ liệu đến hạn và giữ kết quả đúng sau xóa vật lý |
-| Runner | Mặc định không tạo bean; gọi tick xử lý batch thật; từ chối batch không dương |
-
-Lần kiểm đầu 22 ca có một failure do fixture thời gian JDBC lệch UTC và một error do MySQL tạm không cho tạo trigger. Lần thứ hai 16 ca còn một failure, xác định lệch +7 giờ khi JPA đọc fixture JDBC. Đã đổi cách gây lỗi rollback thành lỗi sau DELETE thật qua spy, sửa UTC của Repository mới/fixture và giữ các assertion; không sửa cấu hình database đang dùng hoặc nới tiêu chí. Các XML/log thất bại được giữ trong thư mục kiểm cùng kết quả sau sửa.
-
-**Giới hạn:** chưa bật/đo scheduler trên môi trường vận hành, chưa kiểm tải lớn/độ trễ hoặc restore thật. Claim rò sau process chết phải được đối chiếu owner trước khi giải phóng; hiện có thể giữ lại phiên/lượt đang có claim, không coi đây là quyền gia hạn D08 hoặc là cơ chế retention đã nghiệm thu đầy đủ. Chưa dọn window/receipt/job/file, chưa unlink hoặc xử lý backup/restore. Chưa đủ toàn ô tự động xóa/nghiệm thu T05, không tích thêm checklist.
-
-Bằng chứng kỹ thuật nằm trong thư mục kiểm `hueqr-retention-3nr6bkvi`: baseline, mã Hash nguồn đã kiểm, XML/log từng lần và kết quả bàn giao; không chứa dữ liệu database đang phục vụ.
-
 <a id="ops-lifecycle-cleanup-result"></a>
-
-### 6.3. Xóa địa điểm và dọn vòng đời — ngày 10/11/2026
-
-**Sản phẩm:** A11 xóa địa điểm trong cùng giao dịch với receipt; V11 bổ sung định danh tiến trình, tác vụ đang sử dụng file, registry workspace và trạng thái dọn file. Mốc này nối tiếp D08 tại mục 6.2, không thay các hạn đã duyệt hoặc kết quả lịch sử.
-
-| Thành phần | Cách xử lý đã triển khai |
-| --- | --- |
-| Xóa địa điểm | Khóa địa điểm và file liên quan; kiểm If-Match và khóa chống lặp; tháo bản riêng/vùng/nội dung/cặp trong một TX. Giữ phiên, lượt và snapshot; chỉ bỏ liên kết live. Receipt trả `databaseState=DELETED`, `historyPreserved=true`, `fileCleanup.state=PENDING`, không unlink trong giao dịch xóa địa điểm |
-| Kết quả TTS đến muộn | QUEUED bị loại bỏ mà không tạo marker dispatch giả. Tác vụ đã gửi giữ marker; kết quả muộn không tạo lại địa điểm hoặc gắn vào bản đã xóa. Chỉ tháo WAV của job đã mất đích sau khi công việc cục bộ đã kết thúc hoặc có bằng chứng owner dừng; không kết luận kết quả provider từ marker này |
-| Window/receipt | Khóa window, đối chiếu hạn 24 giờ rồi xóa receipt/window cùng TX; chờ lệnh đang giữ khóa kết thúc. Key của window đã mất vẫn bị từ chối, không trở thành lệnh mới |
-| Job cũ | Chỉ xóa FAILED/DISCARDED từ terminalAt +7 ngày khi không còn active/latest/audio/retry/workspace hoặc tác vụ sử dụng. Không tính từ acceptedAt; unknown/active giữ và không tự gửi lại provider |
-| Owner/claim rò | Ghi UUID instance, node/root, PID và thời điểm khởi động OS; ghi scope cho READ/TTS/RECOVER/DELETE/TEMP. Owner cùng node/root chỉ được thu hồi khi OS xác nhận tiến trình gốc vắng/đã thay hoặc instance đã kết thúc có kiểm soát sau khi hết scope. Không dùng TTL, heartbeat thiếu hoặc tuổi claim để suy owner chết |
-| File từng áp dụng | Chỉ xét sau 8 giờ từ lần bỏ tham chiếu áp dụng cuối, đồng thời hết mọi tham chiếu và sử dụng. Xóa bản cũ không khởi động lại mốc bảo vệ; file chia sẻ còn được áp dụng giữ nguyên |
-| File chưa từng áp dụng | Bắt đầu mốc 24 giờ tại lần xác nhận đủ điều kiện không còn tham chiếu/sử dụng, không lấy readyAt/mtime. Tham chiếu mới đặt lại điều kiện; không xóa sớm từ tuổi file |
-| Workspace/file tạm | Chỉ registry có nguồn gốc do server ghi trước CREATE_NEW được xét. Chỉ job terminal hoặc WAV đã stage có marker kết thúc cục bộ, đồng thời không còn writer/Check, mới bắt đầu mốc một giờ. WAV hoàn chỉnh chưa đăng ký do crash được đưa vào file_asset và hạn 24 giờ; WAV dở/manifest/file tạm đủ điều kiện mới unlink. File lạ, job thiếu hoặc owner chưa rõ được giữ |
-| Unlink | Chốt DELETING dưới khóa FILE trước khi ra ngoài TX; chỉ dùng tên phẳng do server cấp trong audio root. Không theo symlink, không xóa directory. Chỉ xác nhận vắng bằng NoSuchFileException rồi mới DELETED; lỗi quyền/I/O giữ chờ retry, có thể tiếp tục sau crash giữa unlink và cập nhật DB |
-
-Scheduler dọn vòng đời **mặc định tắt**. Chỉ môi trường đã được người vận hành chuẩn bị mới đặt `hueqr.cleanup.enabled=true`; batch mặc định 100 và nhịp/độ trễ đầu 60000 ms là cấu hình kỹ thuật, không thay các hạn nghiệp vụ. D08 dùng cấu hình `hueqr.retention.enabled` riêng. Chưa bật hai cơ chế này trên database đang phục vụ.
-
-**Kiểm chứng:** 459 test, 0 failure/error/skipped; 43 XML, BUILD SUCCESS/exit 0 lúc 2026-11-10T02:19:06+07:00. Trong đó 7 ca A11 và 31 ca vòng đời mới, cùng hồi quy API nội dung khách, worker/check, schema và D08. MySQL 8.4.13 Testcontainers, file và tiến trình con chỉ thuộc môi trường tạm; không gọi provider thật. Cây backend có 212 file/193 Java, được đối chiếu mã Hash với bản kiểm.
-
-Đã kiểm các deadline ngay trước một micro giây/đúng mốc, cutoff trước hạn một nano giây không bị JDBC làm tròn lên, receipt đang có giao dịch, xóa đồng bộ/rollback, snapshot và file chia sẻ, claim của tiến trình con còn sống rồi thực sự dừng, owner ngoài node/claim cũ chưa có định danh, lỗi unlink/retry, workspace còn writer, WAV dở/hoàn chỉnh sau crash và kết quả TTS muộn. Bằng chứng XML/log từng lần và mã Hash nguồn được giữ trong thư mục kiểm `hueqr-lifecycle-0_vj5foc`; các lần thất bại/bị ngắt không được dùng làm kết quả đạt. SHA-256 của manifest đường dẫn/mã Hash bytes của cây nguồn đã kiểm: `21b9397b410e5211d414bda8c8237eff20811a9f33f51f40ce33fc718a03b12f`.
-
-**Giới hạn:** chưa đo scheduler/tải lớn/độ trễ trên môi trường phục vụ, chưa kiểm dừng đột ngột toàn máy/restore/backup. Claim hoặc file từ phiên bản cũ thiếu registry không tự bị thu hồi; cần đối chiếu vận hành trước khi xử lý riêng. Kiểm owner chỉ có hiệu lực trên cùng node/root được nhận diện; không suy sang host khác. Kiểm filesystem không thay quyền bảo vệ audio root khỏi thao tác ngoài quy trình. Provider thật/quota, FFmpeg/MP3 thật, frontend/browser và nội dung nghe duyệt tiếp tục được theo dõi riêng. Không tích thêm checklist hoặc đóng issue từ kết quả này.
-
 <a id="ops-local-audio-result"></a>
-
-### 6.4. Bước local audio và phối hợp dọn — 11/11/2026
-
-[API 11.13](api-transactions.md#local-audio-implementation-result) giữ triển khai CONVERTING/SUCCEEDED, Check/Retry local và cấu hình mặc định tắt. [V12](data-model.md#model-local-audio-result) nối registry owner/task trước xử lý. Không bật provider hoặc scheduler phục vụ từ việc chạy test.
-
-Runtime scope bao phủ xử lý và tiến trình con; đầu ra tool qua pipe để Java ghi file, không để tool ghi trực tiếp tên MP3 đích. Marker local tách provider, chỉ nhận CONVERTING bị gián đoạn sau khi task cũ không còn. Metadata READY của WAV/MP3 hoàn chỉnh được giữ dù finalization lỗi. Workspace thành công được dọn theo hạn một giờ, file hoàn chỉnh theo tham chiếu/hạn gốc. MP3 không đủ bằng chứng codec/manifest được giữ; chưa tuyên bố xử lý mọi đầu ra mồ côi hoặc phục hồi toàn máy.
-
-Bộ full có 518/519 ca đạt; ca lỗi fixture đã sửa và chạy lại đạt. Sau siết gợi ý xử lý trên DISCARDED và thêm một ca, nhóm local/TTS 60 ca đạt lúc 2026-11-11T00:44:53+07:00. Ledger đối chiếu 520 ca độc lập từ 49 XML full và 3 XML nhóm cuối, không ghi full exit 1 thành pass hoặc cộng ca lặp. Bộ tích hợp dùng encoder giả/bytes tổng hợp, tiến trình con chỉ là Java fixture; chưa FFmpeg/ffprobe/provider/MP3 nghe thực. Bằng chứng tại API 11.13 và handoff 2.31. Giữ riêng 459 ca ở 6.3 theo thời điểm. V12 chỉ áp trên MySQL tạm, chưa migration/bật cleaner hoặc local runner trên database đang dùng, chưa backup/restore thực.
-
 <a id="ops-guard-v14"></a>
-
-### 6.5. Gate, checkpoint và công cụ V14 — 13/11/2026
-
-`ops_guard` giữ mode/owner bền; API và bốn scheduler nhận activity trong giao dịch có khóa chia sẻ cùng hàng mà lệnh QUIESCING cập nhật. Lượt đã nhận giữ lease tới khi kết thúc; không mở gate khi restart hoặc xóa activity theo tuổi. API dùng mã chung đã có `503 SERVICE_UNAVAILABLE`, không thêm endpoint vận hành. Gate không thay chính sách hết phiên, Q2/Q3 hoặc marker TTS.
-
-CLI quiesce/freeze/backup/resume có owner và mutex tại container DB để ngăn lệnh chồng, kể cả cùng token. Freeze kiểm hoạt động/task/claim/unlink trước stop và xác nhận app đã dừng; backup giữ MySQL, kiểm kết nối/container dùng chung volume, catalog/dump/Hash cùng checkpoint và dung lượng trước copy. COMPLETE được tách với kết quả restore, hạn bảy ngày giữ theo thời điểm tạo; bình thường giữ khóa/epoch. Restore kiểm đúng bộ/ảnh, vào project/volume/schema mới, lọc retention theo mốc gốc, đổi epoch/khóa, khởi động dưới FROZEN và dừng để rà trước phục vụ.
-
-[Hồ sơ kiểm](../06-kiem-thu/operations-guard-20261113/README.md) ghi lượt full cuối sau sửa URL đạt 530/530, nhóm 36 ca sơ bộ, gate cuối 8, manifest 8 và các lượt CLI/Chrome với audio thật. Filter nhận diện servletPath đã giải mã, không chỉ URI thô; HTTP thường/mã hóa đều bị chặn khi đóng gate và hoạt động lại khi mở. Cleanup/retention đã kiểm scheduler trên restore riêng với fixture, chặn quét lúc đóng và xử lý đúng khi mở, giữ audio có tham chiếu và file còn hạn bảo vệ. Không cộng nhóm vào full hoặc suy sang CI Linux mới. [Hướng dẫn](../07-van-hanh/bao-tri-va-sao-luu.md) ghi câu lệnh, đường dẫn và giới hạn.
-
-Chưa áp V14 lên bản Ngọ Môn V13; chưa tự phục hồi mọi lease/claim thiếu căn cứ owner, chưa kiểm provider đang chạy thật khi quiesce, lịch backup/dọn backup hoặc CD-L01. Mutex/gate không fence người có quyền SQL/DDL/Docker đi ngoài quy trình. Từ chối checkpoint chưa rõ tiếp tục là hành vi bắt buộc; không tự sửa phase/claim hoặc xóa khóa theo thời gian để đạt phép kiểm. Provider/local TTS luôn tắt; chỉ bật cleanup/retention trong lượt scheduler của bản sao, sau đó trả về cờ ban đầu. Không gọi TTS hoặc mở tunnel.
-
-### Nhật ký biên tập
-
-
-
-Nhật ký theo thời điểm được giữ nguyên trong [hồ sơ biên tập](../99-luu-tru/document-history.md#official-20261107-03-ky-thuat-operations-design-journal). Phần hiện hành không thay thế kết quả hoặc căn cứ lịch sử.

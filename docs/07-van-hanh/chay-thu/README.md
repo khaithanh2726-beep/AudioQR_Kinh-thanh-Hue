@@ -4,7 +4,7 @@ Mốc này kiểm Admin lưu và áp dụng vùng, nghe thử MP3, ghi hồ sơ,
 
 ## Chuẩn bị môi trường riêng
 
-Chạy các lệnh trên máy thử. Cần Java 21, Docker Desktop đang hoạt động, Node/npm theo [bộ phiên bản đã chốt](../../01-tong-quan/technical-inputs.md#version-proposal), và FFmpeg/ffprobe cho bước chuyển WAV. Kiểm cổng 33316, 8080 và 5173 đang rảnh trước khi khởi động.
+Chạy các lệnh trên máy thử. Cần Java 21, Docker Desktop đang hoạt động, Node/npm theo [bộ phiên bản đã chốt](../../01-tong-quan/technical-inputs.md), và FFmpeg/ffprobe cho bước chuyển WAV. Kiểm cổng 33316, 8080 và 5173 đang rảnh trước khi khởi động.
 
 Tại thư mục dự án, đặt mật khẩu MySQL riêng cho phiên terminal. Ví dụ này dùng image MySQL 8.4.13 như bộ test và chỉ mở cổng trên loopback. Tên container và volume dành riêng cho lần chạy thử.
 
@@ -94,4 +94,4 @@ $size = (Get-Item -LiteralPath $wav).Length
 
 Ghi thời điểm, phiên bản tool, kết quả `npm test`/build, mã place/region/text/audio/job và ảnh hoặc log phù hợp của từng ca. Ghi trạng thái chưa chạy khi còn thiếu điều kiện. Dùng [bảng đối chiếu 20 bản](../../05-noi-dung/doi-chieu-van-ban-audio.md) cho lần mở rộng tiếp theo.
 
-[Bằng chứng chuẩn bị nguồn](../../06-kiem-thu/chay-thu-mot-dia-diem.json) ghi 54 ca logic và kiểm cú pháp tại mốc trước. [Hồ sơ chạy local ngày 11/11](../../06-kiem-thu/local-20261111/README.md) ghi lượt npm/build/Chrome với API và MP3 thật, có thao tác tương ứng SM-01 đến SM-05. Đọc phạm vi assertion trong hồ sơ; không coi hai kịch bản tự động là nghiệm thu toàn bộ ma trận hoặc bộ 20 cặp. Thiết bị thật vẫn cần bổ sung bằng chứng.
+[Bằng chứng chuẩn bị nguồn](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/chay-thu-mot-dia-diem.json) ghi 54 ca logic và kiểm cú pháp tại mốc trước. [Hồ sơ chạy local ngày 11/11](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/local-20261111/README.md) ghi lượt npm/build/Chrome với API và MP3 thật, có thao tác tương ứng SM-01 đến SM-05. Đọc phạm vi assertion trong hồ sơ; không coi hai kịch bản tự động là nghiệm thu toàn bộ ma trận hoặc bộ 20 cặp. Thiết bị thật vẫn cần bổ sung bằng chứng.

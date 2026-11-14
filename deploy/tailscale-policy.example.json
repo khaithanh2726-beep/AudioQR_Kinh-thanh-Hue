@@ -1,0 +1,9 @@
+{
+  "tagOwners": {
+    "tag:hueqr-ci": ["autogroup:admin"]
+  },
+  "acls": [
+    { "action": "accept", "src": ["autogroup:member"], "dst": ["*:*" ] },
+    { "action": "accept", "src": ["tag:hueqr-ci"], "dst": ["100.103.99.51:22"] }
+  ]
+}
