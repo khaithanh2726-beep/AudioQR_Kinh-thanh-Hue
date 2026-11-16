@@ -6,7 +6,7 @@ Bộ tài liệu mô tả yêu cầu, thiết kế, dữ liệu, giao diện, c�
 
 1. [Tổng quan và hiện trạng](01-tong-quan/handoff.md), [phân công/checklist](01-tong-quan/roadmap.md).
 2. [Quy trình nghiệp vụ](02-nghiep-vu/business-flow.md), [PRD](02-nghiep-vu/PRD.md), [quy tắc](02-nghiep-vu/decisions.md).
-3. [Kiến trúc](03-ky-thuat/TDD.md), [mô hình dữ liệu](03-ky-thuat/data-model.md), [API/giao dịch](03-ky-thuat/api-transactions.md), [vòng đời/backup](03-ky-thuat/operations-design.md), [DFD](03-ky-thuat/dfd.md).
+3. [Kiến trúc](03-ky-thuat/TDD.md), [mô hình dữ liệu](03-ky-thuat/data-model.md), [ERD vật lý đủ 25 bảng](03-ky-thuat/erd-vat-ly.md), [API/giao dịch](03-ky-thuat/api-transactions.md), [vòng đời/backup](03-ky-thuat/operations-design.md), [DFD](03-ky-thuat/dfd.md).
 4. [Thiết kế giao diện](04-giao-dien/ui-design.md) và [bộ nội dung](05-noi-dung/README.md).
 5. [Tra chức năng và mã nguồn](07-van-hanh/tra-cuu-chuc-nang.md), [ma trận FR/UC/AC/NFR](06-kiem-thu/ma-tran-truy-vet.md).
 6. [Kết quả kiểm thử](06-kiem-thu/README.md), [cài đặt/đóng gói](07-van-hanh/dong-goi-va-ci.md), [sử dụng/trình diễn](07-van-hanh/tap-duot.md), [bảo trì/restore](07-van-hanh/bao-tri-va-sao-luu.md).
@@ -23,6 +23,8 @@ Bộ tài liệu mô tả yêu cầu, thiết kế, dữ liệu, giao diện, c�
 | 06-kiem-thu | Báo cáo tổng hợp, phạm vi bằng chứng và điều kiện chưa đạt |
 | 07-van-hanh | Chuẩn bị môi trường, chạy, thao tác sử dụng và backup/restore |
 | 99-luu-tru | Một bản lịch sử ngắn theo mốc, không lặp lại đặc tả |
+
+Tài liệu chuẩn bị nội bộ được giữ tại [bộ ôn vấn đáp và thực hành](99-luu-tru/on-tap-van-dap.md); vị trí sáu file lịch sử nguyên bản tra ở [chỉ mục history](99-luu-tru/chi-muc-history.md). Nhóm 99 hỗ trợ ôn tập/truy vết, không thay nguồn nghiệp vụ và kết quả kiểm ở các nhóm chính.
 
 ## Phạm vi hiện tại
 

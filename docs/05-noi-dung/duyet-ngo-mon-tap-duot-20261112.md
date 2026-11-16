@@ -15,7 +15,7 @@ Ngày ghi nhận: 12/11/2026. Trạng thái: chấp thuận sử dụng bộ Ng�
 | Vùng | Vùng Ngọ Môn của [bộ đề xuất](../04-giao-dien/design-assets/hue-touch-regions-proposal.geojson), không gian `WGS84_LON_LAT`, 12 đỉnh |
 | Hash vùng theo hợp đồng API | `c27488be06174231be29ab2f158f9125d4ad215fbbcb6edbfa134f33ca8570a0` |
 
-Audio có nguồn từ job Gemini thật `42a9ed2b-9017-4b85-ad86-b36aaadd6a26`, model `gemini-3.8-flash-tts`, voice `Charon`; [bằng chứng kỹ thuật](../06-kiem-thu/release-readiness-20261112/README.md) và [bảo quản sang bản tập dượt](../06-kiem-thu/rehearsal-20261112/README.md) ghi Hash, probe/giải mã và thử phát. Tệp thật giữ trong kho riêng ngoài repository.
+Audio có nguồn từ job Gemini thật `42a9ed2b-9017-4b85-ad86-b36aaadd6a26`, model `gemini-3.8-flash-tts`, voice `Charon`; [bằng chứng kỹ thuật](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/release-readiness-20261112/README.md) và [bảo quản sang bản tập dượt](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/rehearsal-20261112/README.md) ghi Hash, probe/giải mã và thử phát. Tệp thật giữ trong kho riêng ngoài repository.
 
 ## Ghi nhận trên ứng dụng
 

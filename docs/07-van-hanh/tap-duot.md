@@ -2,6 +2,36 @@
 
 ## 1. Chuẩn bị buổi trình diễn
 
+### Khởi động nhanh bộ đã lưu trên laptop
+
+Mở Docker Desktop, chờ Linux Engine. Trong PowerShell tại thư mục repository:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\deploy\Khoi-dong.ps1 -MoTrang
+```
+
+Script đọc runtimeDirectory từ `%USERPROFILE%\AudioQR-CD\config.json`, kiểm đúng project/container/volume và chỉ khởi động tài nguyên đã tồn tại; không build/pull, cài công cụ, tạo database hoặc cấp khóa mới. Có thể truyền `-RuntimeDirectory '<runtime-chinh>'` khi cần chỉ định rõ. Tùy chọn `-MoTrang` mở Khách/Admin sau HTTP/CSRF sẵn sàng; không tự đăng nhập hoặc mở tunnel công khai.
+
+Mở PowerShell khác để dùng điện thoại:
+
+```powershell
+ngrok http 18083 --inspect=false
+```
+
+Giữ cửa sổ ngrok và đối chiếu Forwarding với QR. Nếu chỉ dùng trên laptop, mở `http://localhost:18083` và `http://localhost:18083/admin.html`. Không cần chạy npm/Maven riêng cho image đã đóng gói.
+
+Khi kết thúc, xử lý bản Admin chưa lưu, cho các phiên trình diễn kết thúc, dừng ngrok bằng Ctrl+C và chạy:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\deploy\Dung.ps1
+```
+
+Script dừng dùng quiesce → drain → freeze rồi dừng database; giữ nguyên image/volume/khóa. Receipt riêng trong runtime chỉ cho lần khởi động sau mở gate FROZEN do chính script đã đóng thành công. Gate của owner khác hoặc lượt dừng chưa rõ kết quả không được tự mở. Gặp lỗi, giữ trạng thái và đối chiếu `quick-run-state.json` với gate; không xóa receipt/claim hoặc chạy lệnh resume bằng token mới để ép qua kiểm. Thiếu container/volume sau dọn phải restore theo hướng dẫn, không tự tạo lại tài nguyên rỗng.
+
+Script không tự tắt Windows, không bảo đảm chạy khi Docker chưa sẵn sàng hoặc máy mất điện. Phép thử dừng/khởi động container khác với tắt/bật máy thật. Sau thử ở ứng dụng, dừng bằng script, tắt Windows bình thường, bật lại, chạy script khởi động và kiểm QR/đọc/nghe trên thiết bị trước buổi chấm. Bật máy trước 20–30 phút là khoảng chuẩn bị đề nghị, không phải thời gian khởi động đã cam kết. Backup vẫn giữ hạn bảy ngày; mở máy lại sau thời gian dài cần kiểm và backup mới, không chỉnh hạn manifest.
+
+### Lịch bảo trì và thao tác thủ công
+
 Kiểm task backup trước buổi diễn theo [hướng dẫn bảo trì](bao-tri-va-sao-luu.md#backup-theo-lịch-và-quản-lý-log). Lịch Ngọ Môn là 23:00; nếu buổi diễn đi qua giờ này, Disable-ScheduledTask để chặn lượt mới rồi bật lại sau buổi diễn. Không dừng cưỡng bức lượt backup đang chạy; chờ hoàn tất và gate RUNNING. Nếu bỏ lỡ lịch, chạy bù ngoài thời gian sử dụng.
 
 Mở Docker Desktop và đúng môi trường đã cấu hình, dùng database/kho audio/tài khoản riêng. Bản tập dượt được ghi nhận ở cổng loopback 18083, đã bật năm điểm và 20 cặp vi/en/fr/ru. Không dùng preview hoặc dữ liệu E2E làm nội dung đã duyệt. Cấu hình, mật khẩu, epoch và khóa ký giữ ngoài Git.

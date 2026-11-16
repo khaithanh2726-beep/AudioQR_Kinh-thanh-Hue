@@ -105,7 +105,7 @@ QR mở trang bắt đầu, không tự tạo phiên. URL readonly do cấu hìn
 
 Các hướng UI-01–UI-05 và UI-AP01, UI-AP02, UI-AP03, UI-AP04, UI-AP05, UI-AP06, UI-AP07, UI-AP08, UI-AP09, UI-AP10 được giữ theo nguồn quy tắc. Hành vi không nêu không được tự suy rộng, ví dụ cách đóng box chồng lấn bằng Esc/chạm ngoài hoặc chức năng bản đồ nâng cao.
 
-Năm vùng đã có hồ sơ chọn chạm dùng demo, không phải ranh giới di tích được khảo sát. Bản phục vụ mới Ngọ Môn vi; bốn vùng khác áp dụng trên bản riêng. Android/iPhone có xác nhận cơ bản, chưa đủ OS/browser/mạng và ma trận lỗi/time/tab. Tile/API fixture chỉ chứng minh phần tương ứng, không thay phép kiểm nền thật hoặc 20 cặp. [Báo cáo kiểm](../06-kiem-thu/README.md) và [hiện trạng](../01-tong-quan/handoff.md) ghi kết quả thực tế.
+Năm vùng đã có hồ sơ chọn chạm dùng demo, không phải ranh giới di tích được khảo sát. Bộ hiện hành đã áp dụng năm vùng và 20 cặp được chấp thuận dùng học phần; trạng thái tiến trình phục vụ cần kiểm tại lúc chạy. Android/iPhone có xác nhận cơ bản, chưa đủ OS/browser/mạng và ma trận lỗi/time/tab. Tile/API fixture chỉ chứng minh phần tương ứng, không thay phép kiểm nền thật hoặc 20 cặp. [Báo cáo kiểm](../06-kiem-thu/README.md) và [hiện trạng](../01-tong-quan/handoff.md) ghi kết quả thực tế.
 
 
 <a id="ui-flow"></a>

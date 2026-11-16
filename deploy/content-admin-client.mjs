@@ -3,7 +3,7 @@ import {randomUUID} from 'node:crypto'
 
 // Client vận hành chỉ vào origin loopback đã chỉ định; không in cookie, password hoặc CSRF.
 export async function contentAdmin(runtime) {
- assert.match(runtime.project,/^hueqr-(ops-check|rehearsal)-[a-f0-9]{8}$/)
+ assert.match(runtime.project,/^(audioqr-hue|hueqr-(ops-check|rehearsal)-[a-f0-9]{8})$/)
  const origin=new URL(runtime.url)
  assert(origin.protocol==='http:'&&['localhost','127.0.0.1'].includes(origin.hostname))
  assert(runtime.adminLogin&&runtime.adminPassword)

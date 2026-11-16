@@ -12,7 +12,7 @@ assert(runtimePath && actions.has(action), 'Usage: maintenance.mjs runtime statu
 if (action !== 'status') assert.match(token || '', /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)))
 const runtime = JSON.parse((await readFile(join(runtimePath, 'runtime.json'), 'utf8')).replace(/^\uFEFF/, ''))
-assert.match(runtime.project, /^hueqr-(ops-check|rehearsal)-[a-z0-9]+$/)
+assert.match(runtime.project, /^(audioqr-hue|hueqr-(ops-check|rehearsal)-[a-z0-9]+)$/)
 assert.equal(runtime.application, `${runtime.project}-application-1`)
 assert.equal(runtime.database, `${runtime.project}-database-1`)
 const docker = (args, input, encoding = 'utf8') => execFileSync('docker', args, {

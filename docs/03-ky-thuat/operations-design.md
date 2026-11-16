@@ -105,13 +105,17 @@ stateDiagram-v2
     DISPATCHING --> RESULT_STAGED: nhan WAV day du
     DISPATCHING --> UNCERTAIN: mat ket qua hoac worker
     DISPATCHING --> FAILED: loi xac dinh
+    DISPATCHING --> DISCARDED: WAV da ve nhung target da xoa
+    QUEUED --> DISCARDED: target bi xoa truoc dispatch
     RESULT_STAGED --> CONVERTING: chuyen doi local
     CONVERTING --> SUCCEEDED: commit audio va file hop le
     CONVERTING --> FAILED: loi local co can cu
     RESULT_STAGED --> DISCARDED: target da xoa
+    RESULT_STAGED --> FAILED: WAV nguon khong hop le
     CONVERTING --> DISCARDED: target da xoa
     UNCERTAIN --> RESULT_STAGED: tim lai ket qua co can cu
     UNCERTAIN --> FAILED: co bang chung loi
+    FAILED --> RESULT_STAGED: retry local WAV hop le cung job
     SUCCEEDED --> [*]
     FAILED --> [*]
     DISCARDED --> [*]
@@ -163,7 +167,7 @@ Cách này đơn giản hóa việc chứng minh DB–audio khớp: không có w
 | QUEUED đã commit, chưa dispatch | Khóa nhận/dispatch mới; giữ job, snapshot/active pointer và receipt. Không chuyển FAILED chỉ để dừng app | Tiếp tục **lần xử lý đầu** của việc đã tiếp nhận sau bỏ gate; không cần Admin bấm tạo lại, không coi là retry provider |
 | DISPATCHING còn worker/HTTP thật đang chạy | Khuyến nghị chờ cuộc gọi hoàn tất và persist kết quả/marker trước dừng. Không dùng stop container để hứa provider bị hủy; nếu không thể dừng sạch có chứng cứ thì hoãn/hủy backup, báo trạng thái | Không gửi lại Gemini chỉ vì restart; kết quả đã lưu kiểm đúng bản/hash rồi tiếp tục |
 | RESULT_STAGED/CONVERTING hoặc local file write | Drain tới checkpoint: WAV hoàn chỉnh đã đăng ký source_wav_file_id/manifest; hoàn tất hoặc dừng local task có kiểm soát, xác nhận không writer. Giữ workspace bền qua stop thường, không coi stop là điều kiện dọn rác | Tiếp tục local từ WAV đúng job/hash khi có căn cứ; không gọi provider lại. Kết quả muộn/target xóa vẫn xử lý A04 |
-| UNCERTAIN nhưng đã xác nhận không còn worker/file writer cục bộ | Giữ job/outcome_uncertain/target snapshot và file/claim cần thiết, chụp metadata đúng trạng thái; không chờ provider vô hạn mới backup nếu cục bộ thật đã đứng yên | Kiểm yêu cầu cũ, không tự đổi sang FAILED/SUCCEEDED hoặc phát provider mới. Nếu không có cách truy hồi thì tiếp tục hiển thị chưa rõ, không hứa lấy lại được audio |
+| UNCERTAIN nhưng đã xác nhận không còn worker/file writer cục bộ | Giữ job có phase=UNCERTAIN, target snapshot và file/claim cần thiết, chụp metadata đúng trạng thái; không có cột outcome_uncertain riêng. Không chờ provider vô hạn mới backup nếu cục bộ thật đã đứng yên | Kiểm yêu cầu cũ, không tự đổi sang FAILED/SUCCEEDED hoặc phát provider mới. Nếu không có cách truy hồi thì tiếp tục hiển thị chưa rõ, không hứa lấy lại được audio |
 | Trạng thái chưa rõ **và chưa chứng minh writer đã dừng** | Chưa đủ checkpoint; không hoàn tất backup. Xác minh owner/process hoặc hoãn, không giải phóng claim chỉ vì quá một khoảng chờ tùy ý | Chưa tự chạy cleaner/worker tranh chấp; không lấy snapshot thiếu file rồi tuyên bố đầy đủ |
 | SUCCEEDED / FAILED / DISCARDED rõ | Kết quả/refs đã commit và bytes hoàn tất, không active worker thì chụp đúng bộ còn được tham chiếu | LIFE-P03 chỉ dọn job cũ đủ bảy ngày và không còn dùng/liên kết/current result; file theo DATA-01/A02.3 riêng |
 

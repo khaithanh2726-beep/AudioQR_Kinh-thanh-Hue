@@ -7,7 +7,7 @@ Mô tả kiến trúc, phân lớp, giao tiếp và các cơ chế kỹ thuật 
 ## 1. Đầu vào đã chốt và phạm vi thiết kế
 
 - Một repo, frontend Vue 3/JavaScript/CSS, Vite/npm/Node chỉ cho công cụ; Backend một ứng dụng Java 21/Spring Boot/Maven Wrapper chia module nghiệp vụ. MySQL/JPA/Flyway; Spring Security session/cookie, OpenAPI, Spring Boot tests/Testcontainers, Compose và GitHub Actions.
-- Bộ phiên bản **đã được chọn làm mốc** theo TECH-03/IN-P01 và bảng ở technical-inputs mục 4. Chưa kiểm khả dụng/resolve/build/tương thích; không tự đổi patch/BOM khi gặp lỗi, phải nêu bằng chứng và ảnh hưởng.
+- Bộ phiên bản **đã được chọn làm mốc** theo TECH-03/IN-P01 và [bảng phiên bản hiện hành](../01-tong-quan/technical-inputs.md). Kết quả resolve/build và phạm vi tương thích theo báo cáo kiểm; không tự đổi patch/BOM khi gặp lỗi, phải nêu bằng chứng và ảnh hưởng.
 - Bản đồ Leaflet/OSM, mỗi điểm một đa giác kín đơn giản; Admin vẽ/sửa/xem trước/Lưu/Áp dụng. Mã sửa vùng riêng trên Leaflet; Geoman là lựa chọn khảo sát, không là dependency hiện hành. Không GPS/vùng tròn/Haversine.
 - Khách Android/Chrome và iPhone/Safari; Admin Windows/Chrome, máy tính/laptop với chuột/bàn phím. Đã có hai loại điện thoại, chưa ghi model/OS/build thật. Không dùng mốc minh họa Chrome 142/iOS 18.6 trước đây thành yêu cầu; không hứa mọi thiết bị.
 - Gemini gemini-3.8-flash-tts/Charon; WAV nguồn còn tham chiếu, MP3 phục vụ khách, FFmpeg/ffprobe Linux container. Nghe trọn/duyệt từng bài theo D09; kiểm codec/duration không duyệt thay.
@@ -27,13 +27,13 @@ Frontend là nơi khách/Admin thao tác. Backend quyết định quyền, phiê
 flowchart TD
     Guest["Android Chrome / iPhone Safari"]
     Admin["Windows Chrome - Admin"]
-    Edge["ngrok Free HTTPS - CHỌN THỬ<br/>trang trung gian, quota"]
+    Edge["ngrok HTTPS - môi trường học phần<br/>trang trung gian, quota"]
     Web["Điểm vào web của ứng dụng<br/>Vue đã build và API cùng origin"]
     Auth["Spring Security<br/>Admin session-cookie / kiểm quyền"]
     Controller["Controller - nhận HTTP, DTO"]
     Service["Service - nghiệp vụ và điều phối"]
     Repo["Repository - JPA, truy cập dữ liệu"]
-    DB[("MySQL - dữ liệu và trạng thái tác vụ")]
+    DB[("MySQL - 25 bảng<br/>24 ứng dụng + 1 Flyway")]
     Worker["Bộ xử lý nền trong cùng Backend"]
     Gemini["Gemini API<br/>3.8 Flash TTS / Charon"]
     FF["FFmpeg / ffprobe<br/>Linux container"]
@@ -42,11 +42,12 @@ flowchart TD
     Admin --> Edge
     Edge --> Web --> Auth --> Controller --> Service --> Repo --> DB
     Service --> Files
-    Service --> Worker
-    Worker --> DB
+    Background["Service nền: TTS / audio / vòng đời"]
+    Worker --> Background --> Repo
     Worker --> Gemini
     Gemini --> Worker
-    Worker --> FF --> Files
+    Background --> FF --> Files
+    Worker --> Files
 ```
 
 Sơ đồ thể hiện trách nhiệm logic, không tạo thêm dịch vụ mạng cho từng ô. Worker thao tác dữ liệu qua Service/Repository tương ứng, không bỏ qua quy tắc do vẽ mũi tên DB. Gemini chỉ được gọi từ Backend, key không vào trình duyệt. Ngrok không là lớp đăng nhập Admin và không lưu MySQL/audio thay laptop.
@@ -77,116 +78,27 @@ Mỗi nhóm trách nhiệm Backend có Controller/Service/Repository theo nhu c�
 
 <a id="tdd-packages"></a>
 
-### 3.1. Package chia theo lớp trước — lựa chọn hiện hành
+### 3.1. Package chia theo lớp
 
-Package gốc là `vn.hueqr.backend`, BackendApplication ở gốc. Các thực thể/nghiệp vụ đặt trong package controller/service/repository/entity/dto tương ứng, không tạo package guestsession/place bao ngoài.
-
-**Mã nguồn hiện có**, tính từ `backend/src/main/java/vn/hueqr/backend`:
+Cấu trúc dưới đây là nhóm thư mục, không liệt kê toàn bộ lớp hoặc bảng. Danh mục vật lý đầy đủ tại [ERD 25 bảng](erd-vat-ly.md); không đếm số Entity trong một ví dụ để suy số bảng. Các bảng kỹ thuật dùng JDBC không nhất thiết có một lớp JPA Entity riêng.
 
 ```text
-BackendApplication.java
-config/
-├── AdminSecurityConfiguration.java
-├── AdminSecurityErrorHandler.java
-├── AdminSessionFilter.java
-└── GuestRuntimeConfiguration.java
-controller/
-├── AdminAuthController.java
-├── AdminCommandController.java
-├── AdminErrorHandler.java
-├── AdminPlaceController.java
-├── GuestSessionController.java
-└── GuestSessionErrorHandler.java
-dto/
-├── AdminActivityRequest.java
-├── AdminCommandWindowResponse.java
-├── AdminCsrfResponse.java
-├── AdminErrorResponse.java
-├── AdminLoginRequest.java
-├── AdminOperationLookupResponse.java
-├── AdminOperationResponse.java
-├── AdminPlaceResponse.java
-├── AdminSessionResponse.java
-├── CreatePlaceRequest.java
-├── GuestErrorResponse.java
-├── SessionResponse.java
-├── StartRequest.java
-├── StartTicketResponse.java
-└── UpdatePlaceRequest.java
-entity/
-├── AdminAccount.java
-├── AdminCommandWindow.java
-├── GuestSession.java
-├── OperationReceipt.java
-├── Place.java
-└── RegionRevision.java
-repository/
-├── AdminAccountRepository.java
-├── AdminCommandWindowRepository.java
-├── GuestSessionRepository.java
-├── OperationReceiptRepository.java
-├── PlaceRepository.java
-└── RegionRevisionRepository.java
-service/
-├── AdminAccountDetailsService.java
-├── AdminAuthService.java
-├── AdminCommandException.java
-├── AdminCommandService.java
-├── AdminPlaceService.java
-├── AdminSessionException.java
-├── AdminSessionService.java
-├── DisplayNamePolicy.java
-├── GuestInputPolicy.java
-├── GuestSessionException.java
-├── GuestSessionService.java
-├── StartTicketCodec.java
-├── StartTicketService.java
-├── StartTicketSigner.java
-└── StartTicketTimePolicy.java
+backend/src/main/java/vn/hueqr/backend/
+├── BackendApplication.java
+├── config/        Security, phiên/filter, Clock, runtime và provider
+├── controller/    HTTP Khách/Admin, DTO vào/ra và xử lý lỗi
+├── dto/           Hợp đồng request/response
+├── entity/        Ánh xạ JPA cho các thực thể được dùng qua JPA
+├── repository/    Truy cập JPA/JDBC, khóa và truy vấn
+└── service/       Nghiệp vụ, giao dịch, worker, audio và vòng đời
+backend/src/main/resources/db/migration/  Flyway V1–V14
+backend/src/test/java/vn/hueqr/backend/   Ca kiểm theo lớp và hỗ trợ test
+backend/src/test/fixtures/               Bộ kiểm CLI/browser/vận hành
 ```
 
-**Kiểm thử hiện có**, tính từ `backend/src/test/java/vn/hueqr/backend`:
+Ví dụ đường đi: GuestSessionController → GuestSessionService → GuestSessionRepository; AdminPairController → AdminPairService → Repository tương ứng. Worker/scheduler gọi Service/Repository, không cần Controller giả cho tác vụ nền. DTO/Entity hỗ trợ ba lớp, không tạo thêm tầng nghiệp vụ mạng.
 
-```text
-BackendApplicationTests.java
-TestBackendApplication.java
-config/
-└── GuestRuntimeConfigurationTests.java
-controller/
-├── AdminAuthApiTests.java
-├── AdminAuthHttpTests.java
-├── AdminCommandApiTests.java
-├── AdminPlaceApiTests.java
-├── GuestSessionApiTests.java
-└── GuestSessionEndApiTests.java
-support/
-├── GuestSessionTestClock.java
-└── TestcontainersConfiguration.java
-repository/
-├── GuestSessionRepositoryTests.java
-└── PlaceRegionRepositoryTests.java
-schema/
-├── AdminCommandSchemaTests.java
-├── GuestSessionSchemaTests.java
-└── PlaceRegionSchemaTests.java
-service/
-├── AdminCommandTransactionTests.java
-├── GuestInputPolicyTests.java
-├── GuestSessionEndTests.java
-├── StartTicketCodecTests.java
-├── StartTicketSignerTests.java
-└── StartTicketTimePolicyTests.java
-```
-
-`entity` ánh xạ bảng; `repository` truy cập dữ liệu. Test repository kiểm ánh xạ/đọc lại qua JPA, test schema kiểm ràng buộc bằng JDBC. `support` chứa cấu hình test dùng chung: TestcontainersConfiguration là **public** để các test ở package con và TestBackendApplication import được; phương thức `@Bean` giữ nguyên phạm vi vì không được gọi trực tiếp từ các package đó. BackendApplication và annotation khởi động giữ nguyên; chưa thêm cấu hình scan riêng.
-
-**Hiện có trong service.** Nhóm StartTicket/GuestSession giữ vé/binding/lookup/expiry/replay/K04 và tách giao dịch UNIQUE như các mốc thực hành. AdminAccountDetailsService đọc tài khoản qua Repository, AdminAuthService điều phối xác thực/session/CSRF, AdminSessionService giữ Q3 và mốc server. AdminCommandService điều phối window/receipt trong giao dịch mới. AdminPlaceService đọc thông tin cơ bản, tạo điểm ẩn và sửa tên theo Q1/If-Match qua giao dịch receipt; sửa tên khóa WINDOW → PLACE rồi kiểm version. DisplayNamePolicy dùng chung cho tên khách và tên điểm với hai giới hạn riêng. [Hợp đồng phần địa điểm](api-transactions.md#admin-place-implementation)
-
-**Các package đã có:** `controller/` nhận HTTP/gọi Service; `dto/` chứa hợp đồng JSON; `config/` nhận Clock, khóa ký và epoch từ cấu hình ngoài repo, không tự sinh mỗi boot. `support/` chỉ là hỗ trợ test với fixture key/epoch và clock, không cấu hình triển khai. AdminPlaceController/AdminPlaceService có tạo điểm ẩn, đọc dữ liệu cơ bản và sửa tên. Tổng hợp điều kiện bật hiện, bật hiện/xóa, vùng/cặp và các nhóm dữ liệu/nội dung khác chỉ bổ sung khi tới việc tương ứng; cùng nằm trong controller/service theo lớp, không package place bao ngoài hoặc lớp rỗng. Test Service/Controller theo service/controller; test nhiều thực thể nhóm theo mục đích kiểm thử.
-
-Luồng trách nhiệm vẫn **Controller → Service → Repository**; Entity và DTO là thành phần hỗ trợ, không phải lớp thứ tư/thứ năm của luồng này. Cây package giúp tìm file, không tự chứng minh đã cài đủ ba lớp.
-
-**Kiểm chứng:** bộ 7 sau sắp xếp giữ tại [mục A.10](TDD.md#tdd-layers); về sau các ca đó vẫn đạt trong [64 test clean test](TDD.md#tdd-layers) trong lần hồi quy đã ghi nhận. Test support public dùng được qua package; DynamicPropertyRegistrar chỉ cấp fixture cho context import nó. V1/mapping/test nền giữ nguyên. Chưa kiểm lại HTTP test-run/đóng gói JAR hoặc áp dụng cấu hình runtime thật. Lệnh hồi quy khi có thay đổi là `.\mvnw.cmd clean test` tại backend, không yêu cầu chạy lại chỉ để lặp bằng chứng.
+BackendApplication giữ điểm khởi động; config lấy khóa/epoch từ môi trường được bảo vệ, không tự thay mỗi boot. Hỗ trợ Testcontainers/Clock nằm trong nguồn test và chỉ cấp fixture cho môi trường kiểm. Kết quả build/HTTP/đóng gói hiện tại đọc tại [báo cáo kiểm](../06-kiem-thu/README.md), không suy từ cây thư mục hoặc một mốc test cũ.
 
 <a id="tdd-layers"></a>
 
@@ -212,7 +124,7 @@ sequenceDiagram
     actor A as Admin
     participant V as Vue Admin
     participant C as Controller
-    participant S as ContentPairService
+    participant S as AdminPairService
     participant R as Repository
     participant D as MySQL
     A->>V: Áp dụng đúng cặp đã lưu/duyệt

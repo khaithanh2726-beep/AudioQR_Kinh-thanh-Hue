@@ -1,6 +1,6 @@
 ﻿# Hiện trạng sản phẩm và điều kiện bàn giao
 
-Phạm vi ghi nhận: 14/11/2026. Tài liệu ghi trạng thái sản phẩm và điều kiện nghiệm thu; lịch sử chỉ giữ tại [bảng mốc](../99-luu-tru/README.md).
+Phạm vi ghi nhận sản phẩm: 15/11/2026; trạng thái chạy/tắt phải kiểm tại thời điểm vận hành. Tài liệu ghi trạng thái sản phẩm và điều kiện nghiệm thu; lịch sử chỉ giữ tại [bảng mốc](../99-luu-tru/README.md).
 
 ## 1. Sản phẩm và nguồn phục vụ
 
@@ -9,7 +9,7 @@ Phạm vi ghi nhận: 14/11/2026. Tài liệu ghi trạng thái sản phẩm và
 - Admin quản lý địa điểm/vùng/văn bản/hồ sơ/cặp; TTS/Check/Retry/nghe thử, thống kê và QR chung. Có Q2/Q3, ETag, command window và receipt khi chưa rõ kết quả.
 - Vận hành có gate quiesce/drain/freeze, backup/restore, CD qua Tailscale/OpenSSH, lịch backup và giới hạn log.
 
-Ảnh đang phục vụ được build từ `134ac0d`, có [CD thật đạt](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664). Không có thay đổi Java/Vue/dependency so với ảnh này trong mốc bổ sung; phần mới là công cụ vận hành, kiểm thử, hồ sơ và dữ liệu đã duyệt. Mã nguồn tổng hợp trên T11, lịch sử tác giả được giữ theo G02; trạng thái tích hợp được tra trên [main](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/tree/main), không suy từ tên nhánh hoặc image tag.
+Ảnh đang phục vụ được build từ `134ac0d`, có [CD thật đạt](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/actions/runs/43486032664). Không có thay đổi Java/Vue/dependency so với ảnh này trong mốc bổ sung; phần mới là công cụ vận hành, kiểm thử, hồ sơ và dữ liệu đã duyệt. Nguồn tổng hợp đã tích hợp vào main tại `45a41a0` qua [PR #16](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/pull/16), giữ lịch sử G02. CI main run 43626995965 đạt 530 backend, 71 frontend, 33 vận hành và Vue build; deploy skipped. Các chỉnh sửa tài liệu/sơ đồ/ôn tập sau mốc này còn ở working tree, chưa commit. Không suy bản ứng dụng đang chạy từ tên nhánh hoặc image tag.
 
 ## 2. Dữ liệu đang phục vụ
 

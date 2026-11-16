@@ -1,8 +1,44 @@
-# Tra cứu chức năng và vị trí mã nguồn
+# Tra cứu chức năng, mã nguồn và sơ đồ
 
 Bảng dùng khi trình bày hoặc rà mã. Liên kết dẫn tới tệp và dòng tại mốc 14/11/2026; trong VS Code có thể mở tệp rồi Ctrl+G tới số dòng. Khi mã thay đổi cần rà lại vị trí. Mã lớp/chức năng không tự chứng minh đã nghiệm thu toàn bộ. [Ma trận yêu cầu và bằng chứng](../06-kiem-thu/ma-tran-truy-vet.md) ghi giới hạn từng nhóm.
 
 Luồng dữ liệu chính: Vue → Controller → Service → Repository → MySQL. Controller nhận HTTP/DTO, Service điều phối nghiệp vụ/giao dịch, Repository truy cập dữ liệu. QR được tạo phía frontend từ URL cấu hình; worker/scheduler/CLI có điểm vào riêng, không tạo Controller giả.
+
+Tra nhanh: [sơ đồ theo câu hỏi](#tra-cuu-so-do), [chức năng → mã nguồn](#tra-cuu-ma-nguon), [điểm vào bổ sung](#diem-vao-bo-sung), [nguồn ca kiểm](#nguon-ca-kiem). Bộ ôn tập riêng tại [99-luu-tru](../99-luu-tru/on-tap-van-dap.md).
+
+<a id="tra-cuu-so-do"></a>
+
+## Sơ đồ theo câu hỏi vấn đáp
+
+Liên kết “mục nguồn” mở đúng phần có sơ đồ và giải thích. SVG dùng xem/phóng to; Mermaid hoặc draw.io là nguồn chỉnh sửa. Bảng chỉ dẫn tới nguồn chính, không sao chép hình để tránh lệch phiên bản.
+
+| Khi được hỏi | Sơ đồ / mục nguồn | Hình hoặc nguồn chỉnh sửa | Điểm cần giải thích |
+|---|---|---|---|
+| Hệ thống có ai dùng, làm được gì? | [Use Case tổng quan — PRD mục 5](../02-nghiep-vu/PRD.md#use-case-overview) | [SVG](../02-nghiep-vu/use-case-overview.svg), [draw.io](../02-nghiep-vu/use-case-overview.drawio) | 14 UC: 5 Khách, 8 Admin, 1 dọn dữ liệu; không phải 14 bảng SQL |
+| Kiến trúc ba lớp và các thành phần chạy ở đâu? | [Kiến trúc tổng thể — TDD mục 2](../03-ky-thuat/TDD.md#tdd-overview) | Mermaid trong mục nguồn | Vue cùng origin với API; Controller → Service → Repository → MySQL; worker và file có vai trò riêng |
+| Một thao tác Admin đi qua ba lớp thế nào? | [Tuần tự áp dụng cặp — TDD mục 4](../03-ky-thuat/TDD.md#tdd-layers) | Mermaid trong mục nguồn | AdminPairService điều phối, Repository truy cập dữ liệu; chỉ trả thành công sau giao dịch |
+| Database có bao nhiêu bảng, quan hệ nào là FK? | [ERD vật lý đầy đủ](../03-ky-thuat/erd-vat-ly.md) | [SVG đầy đủ](../03-ky-thuat/erd-vat-ly.svg), Mermaid trong mục nguồn | 25 bảng = 24 ứng dụng + Flyway; 36 FK; phân biệt FK tổ hợp, pointer và snapshot logic |
+| Địa điểm/vùng/văn bản/audio đang dùng liên kết ra sao? | [ERD nhóm nội dung — mô hình mục 2](../03-ky-thuat/data-model.md#model-content) | Mermaid trong mục nguồn | Place → slot theo ngôn ngữ → cặp; văn bản/audio phải đúng revision; nháp khác áp dụng |
+| Phiên, lần mở, quyền tải và lượt xem khác nhau thế nào? | [ERD nhóm Khách — mô hình mục 3](../03-ky-thuat/data-model.md#model-guest) | Mermaid trong mục nguồn | Session/opening/grant/view khác đơn vị; ACK chống đếm lặp, snapshot giữ lịch sử |
+| Window, receipt, job và file/claim dùng làm gì? | [ERD nhóm lệnh/TTS/file — mô hình mục 4](../03-ky-thuat/data-model.md#model-operations) | Mermaid trong mục nguồn | Receipt gắn thao tác; file claim bảo vệ lúc sử dụng; cạnh retry logic không phải FK SQL |
+| Dữ liệu vào/ra toàn hệ thống gồm gì? | [DFD mức 0 — ngữ cảnh](../03-ky-thuat/dfd.md#dfd-context) | Mermaid trong mục nguồn | Khách/Admin/Gemini và biên hệ thống; mũi tên mang dữ liệu, không phải thứ tự thực hiện |
+| Các xử lý chính trao đổi với kho nào? | [DFD mức 1](../03-ky-thuat/dfd.md#dfd-level1) | [SVG mức 1](../03-ky-thuat/dfd-level1.svg) | 6 tiến trình chính, 68 luồng; ký hiệu kho lặp chỉ giúp bố trí |
+| Vì sao DFD có ít kho hơn số bảng ERD? | [Kho DFD và bảng ánh xạ](../03-ky-thuat/dfd.md#dfd-stores), [danh mục vật lý](../03-ky-thuat/erd-vat-ly.md) | Bảng trong hai mục nguồn | D1–D5 gộp 24 bảng ứng dụng; F1/F2 là file, T1 là tab, không cộng thành bảng |
+| Bắt đầu phiên và chống tạo trùng xử lý thế nào? | [DFD mức 2 — Bắt đầu](../03-ky-thuat/dfd.md#dfd-start) | Mermaid trong mục nguồn | Xác minh vé/quyền → đối chiếu ledger → ghi phiên; vé 24 giờ khác phiên 8 giờ |
+| Yêu cầu tạo audio đi từ Admin tới Gemini và kho file thế nào? | [DFD mức 2 — TTS](../03-ky-thuat/dfd.md#dfd-tts) | Mermaid trong mục nguồn | Snapshot bản đã lưu, job/receipt, gọi ngoài giao dịch dài, kết quả kỹ thuật không tự áp dụng |
+| Một cặp được áp dụng nhất quán thế nào? | [DFD mức 2 — áp dụng cặp](../03-ky-thuat/dfd.md#dfd-pair) | Mermaid trong mục nguồn | Đúng quyền/version/revision/Hash/hồ sơ; cặp + receipt + mốc file trong giao dịch |
+| Mất phản hồi sau Apply thì làm sao biết đã lưu chưa? | [Sequence mất response — API mục 6.3](../03-ky-thuat/api-transactions.md#api-pair-sequence) | Mermaid trong mục nguồn | Chưa rõ kết quả khác thất bại; giữ key, tra receipt trước thử lại |
+| Các trạng thái TTS và Check/Retry chuyển thế nào? | [State machine TTS — vận hành mục 2](../03-ky-thuat/operations-design.md#ops-jobs) | Mermaid trong mục nguồn | UNCERTAIN không tự gọi provider lại; Retry local dùng WAV hợp lệ/cùng job, khác attempt provider mới |
+| Từ văn bản tới MP3 và nội dung Khách có những bước nào? | [Pipeline audio — TDD mục 11](../03-ky-thuat/TDD.md#tdd-audio) | Mermaid trong mục nguồn | WAV → kiểm/chuyển MP3 → nghe/duyệt → áp dụng nguyên cặp; không tạo audio theo mỗi lượt khách |
+| CI/CD triển khai tới laptop ra sao? | [Sơ đồ CI/CD — TDD mục 14](../03-ky-thuat/TDD.md#tdd-cicd) | Mermaid trong mục nguồn | CI kiểm/build; CD chủ động chọn SHA; push/main không tự đồng nghĩa đã chuyển bản phục vụ |
+
+Khi trình bày một chức năng: mở sơ đồ để giải thích luồng, dùng bảng mã nguồn bên dưới chỉ Controller/Service/Repository, rồi mở nguồn ca kiểm tương ứng. Với backup/restore, Q2/Q3 hoặc thao tác bản đồ, đọc [quy trình bảo trì](bao-tri-va-sao-luu.md), [TDD](../03-ky-thuat/TDD.md) và [UI](../04-giao-dien/ui-design.md); không gọi bảng quy trình hoặc hình bố cục là ERD/sequence nếu tài liệu chưa có loại hình đó.
+
+ERD đầy đủ cần phóng to; trình bày từng nhóm khi cần đọc chi tiết, không yêu cầu mọi hình chứa đủ 25 bảng. Các sơ đồ lịch sử không thay sơ đồ hiện hành; tra [chỉ mục history](../99-luu-tru/chi-muc-history.md) khi cần giải thích phương án cũ.
+
+<a id="tra-cuu-ma-nguon"></a>
+
+## Chức năng và vị trí mã nguồn
 
 | Mã/chức năng | Vue | Controller | Service | Repository |
 |---|---|---|---|---|
@@ -30,6 +66,8 @@ Luồng dữ liệu chính: Vue → Controller → Service → Repository → My
 | FR-A12 — Mức đầy đủ 5 × 4; phân biệt đã tạo/áp dụng | [CompletenessPanel.vue](../../frontend/src/admin/CompletenessPanel.vue#L1) | [AdminContentController.java](../../backend/src/main/java/vn/hueqr/backend/controller/AdminContentController.java#L26) | [AdminContentService.java](../../backend/src/main/java/vn/hueqr/backend/service/AdminContentService.java#L35) | [ContentSlotRepository.java](../../backend/src/main/java/vn/hueqr/backend/repository/ContentSlotRepository.java#L13) |
 | FR-D01 — Dọn phiên/lượt theo hạn gốc 30 ngày | [ReportsPanel.vue](../../frontend/src/admin/ReportsPanel.vue#L1) | Không có HTTP riêng | [GuestRetentionService.java](../../backend/src/main/java/vn/hueqr/backend/service/GuestRetentionService.java#L15) | [GuestRetentionRepository.java](../../backend/src/main/java/vn/hueqr/backend/repository/GuestRetentionRepository.java#L17) |
 
+<a id="diem-vao-bo-sung"></a>
+
 ## Điểm vào bổ sung
 
 | Phần việc | Điểm vào | Phần phối hợp |
@@ -44,6 +82,8 @@ Luồng dữ liệu chính: Vue → Controller → Service → Repository → My
 | Nền bản đồ thực OSM và fallback | [basemap.js](../../frontend/src/map/basemap.js#L1) | [local-basemap.js](../../frontend/src/map/local-basemap.js#L1) |
 | Backup/restore/lịch | [scheduled-operations.mjs](../../deploy/scheduled-operations.mjs#L1) | [restore-backup.mjs](../../deploy/restore-backup.mjs#L1) |
 | CD từ GitHub tới máy Windows | [ci.yml](../../.github/workflows/ci.yml#L1) | [cd-receive.mjs](../../deploy/cd-receive.mjs#L1) |
+
+<a id="nguon-ca-kiem"></a>
 
 ## Từ màn hình đến phép kiểm
 
@@ -65,7 +105,7 @@ Luồng dữ liệu chính: Vue → Controller → Service → Repository → My
 | FR-A04 | [AdminContentApiTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminContentApiTests.java#L69); admin-q2-reload; admin-401-q2 |
 | FR-A05 | [AdminTtsApiTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminTtsApiTests.java#L72); provider thật và ledger nội dung |
 | FR-A06 | [TtsWorkerIntegrationTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/TtsWorkerIntegrationTests.java#L84); provider thật và ledger nội dung |
-| FR-A07 | [AdminPairApiTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminPairApiTests.java#L73); bộ Ngọ Môn đã áp dụng; bộ mới chờ D09 |
+| FR-A07 | [AdminPairApiTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminPairApiTests.java#L73); 20 cặp đã được duyệt dùng học phần và áp dụng qua API; giữ giới hạn hồ sơ nội dung |
 | FR-A08 | [AdminPlaceDeletionTests.java](../../backend/src/test/java/vn/hueqr/backend/controller/AdminPlaceDeletionTests.java#L48); backend controller tests |
 | FR-A09 | [LifecycleCleanupTests.java](../../backend/src/test/java/vn/hueqr/backend/service/LifecycleCleanupTests.java#L42); scheduler riêng; không thay bằng xóa DB |
 | FR-A10 | [QR/HTTPS](../../frontend/tests/e2e/public-rehearsal.spec.mjs); frontend/tests/e2e/public-rehearsal.spec.mjs |

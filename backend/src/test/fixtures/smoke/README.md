@@ -22,3 +22,5 @@ node backend/src/test/fixtures/smoke/verify-published-content.mjs '<runtime-loop
 ```
 
 Dùng trên bản sao trước khi thực hiện trên bản phục vụ đã được phép kiểm. Bộ kiểm tạo/kết thúc bốn phiên, chọn năm điểm theo từng ngôn ngữ, đối chiếu văn bản/MP3 theo SHA256 và thử replay cùng key. Không gửi view-ack vì không hiển thị văn bản. Không ghi đây là nghe thử trên thiết bị; kết quả API/bytes thật và phép kiểm điện thoại được lưu riêng.
+
+Cấu hình fixture tại [application-smoke.properties](application-smoke.properties); [kịch bản một điểm nội bộ](../../../../../docs/99-luu-tru/chay-thu-mot-diem.md) chỉ dùng schema riêng, không thay cấu hình bản phục vụ.

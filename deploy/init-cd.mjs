@@ -11,7 +11,7 @@ assert(runtimeArg && host, 'Usage: init-cd.mjs runtime-directory tailscale-ipv4'
 assert(isIP(host) === 4 && host.split('.')[0] === '100' && +host.split('.')[1] >= 64 && +host.split('.')[1] <= 127)
 const runtimeDirectory = await realpath(runtimeArg)
 const runtime = JSON.parse((await readFile(join(runtimeDirectory, 'runtime.json'), 'utf8')).replace(/^\uFEFF/, ''))
-assert.match(runtime.project, /^hueqr-(rehearsal|ops-check)-[a-f0-9]{8}$/)
+assert.match(runtime.project, /^(audioqr-hue|hueqr-(rehearsal|ops-check)-[a-f0-9]{8})$/)
 const publicUrl = new URL(runtime.publicStartUrl)
 assert(publicUrl.protocol === 'https:' && !publicUrl.username && !publicUrl.password && !publicUrl.search && !publicUrl.hash)
 const directory = join(process.env.USERPROFILE, 'AudioQR-CD')

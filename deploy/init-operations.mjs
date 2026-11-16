@@ -13,7 +13,7 @@ const runtimeDirectory = await plainDirectory(runtimeArg), output = resolve(outp
 await plainDirectory(dirname(output))
 disjoint(repository, output); disjoint(runtimeDirectory, output)
 const runtime = JSON.parse((await readFile(join(runtimeDirectory, 'runtime.json'), 'utf8')).replace(/^\uFEFF/, ''))
-assert.match(runtime.project, /^hueqr-(rehearsal|ops-check)-[a-f0-9]{8}$/)
+assert.match(runtime.project, /^(audioqr-hue|hueqr-(rehearsal|ops-check)-[a-f0-9]{8})$/)
 let backupRoot
 if (backupRootArg) {
   backupRoot = await plainDirectory(backupRootArg)

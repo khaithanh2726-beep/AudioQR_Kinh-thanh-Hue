@@ -75,6 +75,21 @@ QR in trên giấy dẫn vào URL trang bắt đầu; DFD không sinh một sự
 
 Lưu/khôi phục T1 do phần frontend của tiến trình tương ứng thực hiện. Các đoạn T1 của khách và Admin được tách quyền/công việc; tài khoản Admin khác không được thấy bản tạm cũ. Dữ liệu đã Lưu mới thành bản ở D2/D3; việc ghi T1 không được đổi active pointer.
 
+
+### 3.1. Ánh xạ kho logic sang bảng vật lý
+
+Một kho DFD có thể chứa nhiều bảng; F1/F2 là file và T1 là trạng thái tab. Không thêm bảng giả để số ký hiệu DFD bằng số bảng ERD. Tổng phần SQL là 24 bảng ứng dụng; flyway_schema_history là bảng hạ tầng migration riêng. Danh mục và FK chuẩn tại [ERD vật lý đầy đủ](erd-vat-ly.md).
+
+| Kho | Bảng hiện hành | Số bảng |
+|---|---|---:|
+| D1 | `guest_session`, `guest_open_intent`, `guest_content_grant`, `guest_request_result`, `place_view` | 5 |
+| D2 | `place`, `region_revision` | 2 |
+| D3 | `content_slot`, `text_revision`, `text_review_ref`, `audio_revision`, `audio_review_ref`, `content_pair`, `tts_job` | 7 |
+| D4 | `admin_account`, `admin_command_window`, `operation_receipt`, `ops_guard`, `ops_activity` | 5 |
+| D5 | `file_asset`, `file_claim`, `runtime_instance`, `runtime_task`, `workspace_file` | 5 |
+
+Các ký hiệu D1_1/D1_2… trên hình mức 1 là cách lặp một kho để bố trí, không tạo bản sao hoặc bảng mới. D4 có metadata gate/lease phục vụ bảo trì ngoài phần quyền/lệnh; D5 có owner/task/workspace ngoài file/claim. Hình SVG và Mermaid tiếp tục dùng cùng D1–D5 nên không cần thêm đầu mút dữ liệu cho từng bảng.
+
 <a id="dfd-level1"></a>
 
 ## 4. DFD mức 1 — Các xử lý chính

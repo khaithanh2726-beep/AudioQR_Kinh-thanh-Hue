@@ -1,5 +1,13 @@
 # Các mốc phát triển chính
 
+## Tra cứu và chuẩn bị nội bộ
+
+- [Ôn tập vấn đáp và thực hành](on-tap-van-dap.md): kịch bản trình diễn, 32 câu hỏi theo mã nguồn, bài thực hành và cách luyện; không phải kết quả nghiệm thu mới.
+- [Chỉ mục sáu file history nguyên bản](chi-muc-history.md): vị trí trong kho cạnh dự án, liên kết Git cố định và SHA256 đối chiếu.
+- [Tra chức năng → file/dòng](../07-van-hanh/tra-cuu-chuc-nang.md): bảng tra dùng chung đã có, tiếp tục dùng khi mở mã tại buổi vấn đáp.
+
+## Mốc phát triển
+
 Lịch sử được rút gọn để trình bày tiến trình; trạng thái hiện tại đọc tại [bàn giao](../01-tong-quan/handoff.md), không ghép các kết quả của nhiều mốc thành một lượt nghiệm thu.
 
 | Mốc | Kết quả chính |
@@ -24,3 +32,5 @@ Bản tập dượt Ngọ Môn không phải nghiệm thu đủ 20 cặp. Bản 
 Toàn bộ nguyên bản tài liệu, lịch sử dài, mốc commit/bàn giao, log/JSON/XML/ảnh kiểm được giữ trong hồ sơ nội bộ riêng cạnh dự án. Mỗi tệp có Hash đối chiếu trước biên tập; không xóa nguồn gốc hoặc viết lại lịch sử Git. Bộ tài liệu chấm chỉ giữ bản mô tả hiện hành, bảng mốc này và báo cáo kết quả tổng hợp.
 
 Mốc xuất bản đủ bộ ngày 14/11: chủ đồ án duyệt 19 cặp mới; bản phục vụ áp dụng năm điểm/20 cặp, API Hash 20/20. Backup tự trigger một lần đạt 40 tệp và restore riêng đủ 20 cặp; lịch 23:00 giữ nguyên. Kiểm thiết bị bộ cập nhật và người nhận nằm ở lượt cuối; checklist không tự đổi.
+
+[Kịch bản thử một điểm](chay-thu-mot-diem.md) được chuyển từ nhóm vận hành sang lưu trữ; cấu hình fixture nằm trong backend/src/test/fixtures/smoke. Bộ chấm dùng hướng dẫn đóng gói/sử dụng hiện hành.

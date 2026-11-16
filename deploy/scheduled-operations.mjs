@@ -22,7 +22,7 @@ for (const path of [runtimeDirectory, backupRoot, logRoot]) { disjoint(repositor
 disjoint(runtimeDirectory, backupRoot); disjoint(runtimeDirectory, logRoot); disjoint(backupRoot, logRoot)
 const runtime = JSON.parse((await readFile(join(runtimeDirectory, 'runtime.json'), 'utf8')).replace(/^\uFEFF/, ''))
 assert.equal(runtime.project, config.project, 'Schedule must target the reviewed project')
-assert.match(runtime.project, /^hueqr-(rehearsal|ops-check)-[a-f0-9]{8}$/)
+assert.match(runtime.project, /^(audioqr-hue|hueqr-(rehearsal|ops-check)-[a-f0-9]{8})$/)
 const child = (file, args) => execFileSync(process.execPath, [join(repository, 'deploy', file), ...args], {
   cwd: repository, encoding: 'utf8', windowsHide: true, timeout: 600000,
   stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 4 * 1024 * 1024,

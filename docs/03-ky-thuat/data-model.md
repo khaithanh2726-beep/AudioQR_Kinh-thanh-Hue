@@ -1,6 +1,6 @@
 # Mô hình dữ liệu và ràng buộc
 
-Mô hình logic cho địa điểm/vùng, nội dung/audio/cặp, phiên/lượt xem, hàng đợi và tài nguyên file. Bản triển khai dùng UUID, thời gian UTC, JPA/JDBC và migrations V1–V14; việc rà/duyệt toàn ERD vẫn được theo dõi trong checklist.
+Mô hình logic cho địa điểm/vùng, nội dung/audio/cặp, phiên/lượt xem, hàng đợi và tài nguyên file. [ERD vật lý đầy đủ](erd-vat-ly.md) là bảng tra thống nhất khi đếm bảng/FK; hình trong tài liệu này là các phần trích theo nghiệp vụ. Bản triển khai dùng UUID, thời gian UTC, JPA/JDBC và migrations V1–V14; việc rà/duyệt toàn ERD vẫn được theo dõi trong checklist.
 
 <a id="model-conventions"></a>
 
@@ -15,6 +15,8 @@ Mô hình logic cho địa điểm/vùng, nội dung/audio/cặp, phiên/lượt
 <a id="model-content"></a>
 
 ## 2. Địa điểm, vùng, văn bản/audio và cặp
+
+ERD phần trích nhóm nội dung; có node ngữ cảnh dùng chung. Danh mục đầy đủ 25 bảng và 36 FK tại [ERD vật lý](erd-vat-ly.md); các hình nhóm không được hiểu là toàn bộ database.
 
 ```mermaid
 erDiagram
@@ -83,7 +85,7 @@ erDiagram
 | Bảng | Trường và khóa chính ngoài ERD | Ý nghĩa / kiểm Service |
 | --- | --- | --- |
 | PLACE | display_name theo Q1; visible mặc định false; created_at/updated_at | Lưu ẩn dù chưa có vùng/nội dung. Bật hiện chỉ thông tin hợp lệ + vùng đã xem xét/áp dụng + ít nhất cặp vi đã duyệt/áp dụng. Không tự bật khi Apply. |
-| REGION_REVISION | geometry_hash do server tính lại; saved_at; UK(id,place_id) | Một đa giác kín đơn giản, cùng không gian nền; hình dở chỉ Q2. Bản đã xem không đổi sau Lưu thì không bắt xem lại. Ranh giới thật vẫn chờ xem xét, hash không chứng minh duyệt. |
+| REGION_REVISION | geometry_hash do server tính lại; saved_at; UK(id,place_id) | Một đa giác kín đơn giản, cùng không gian nền; hình dở chỉ Q2. Bản đã xem không đổi sau Lưu thì không bắt xem lại. Hồ sơ vùng dùng học phần giữ riêng; Hash không tự chứng minh đã duyệt hoặc là ranh giới khảo sát/pháp lý. |
 | CONTENT_SLOT | UK(place_id,language), UK(id,place_id,language) | Một ngăn như Ngọ Môn/vi; một active_pair, không chờ đủ bốn tiếng mới áp dụng. |
 | TEXT_REVISION | UK(id,slot_id), saved_at | Mỗi Lưu rõ ràng tạo bản bất biến mới và đổi draft pointer, không sửa bản đang dùng hoặc tự tạo TTS. Hash không thay id. |
 | TEXT_REVIEW_REF | text_revision_id PK/FK, locator, limitations nullable, recorded_by FK, recorded_at, version | Gắn đúng bản đã lưu/hash. Không nhập lại ngày/người duyệt nếu đã có trong tài liệu; không tự thẩm định hoặc áp dụng. |
@@ -96,6 +98,8 @@ Phiên bản nội dung bất biến không làm hồ sơ bất biến: sửa th
 <a id="model-guest"></a>
 
 ## 3. Phiên theo tab, lần mở, quyền tải và lượt xem
+
+ERD phần trích nhóm Khách, không liệt kê toàn bộ database. Các trường snapshot/key logic không tự tạo thêm bảng hoặc FK.
 
 ```mermaid
 erDiagram
@@ -136,7 +140,6 @@ erDiagram
         string place_name_snapshot
         string current_language
         string state
-        uuid counted_view_key
         long version
     }
     GUEST_CONTENT_GRANT {
@@ -158,16 +161,18 @@ erDiagram
         datetime revoked_at
     }
     GUEST_REQUEST_RESULT {
-        uuid id PK
-        uuid session_id FK
-        uuid request_key
+        uuid session_id PK,FK
+        uuid request_key PK
         uuid document_nonce
         long selection_seq
         string fingerprint
-        string operation_type
+        string action
         uuid opening_key
+        long opening_version
         uuid grant_key
-        string result_code
+        string selection_kind
+        string language
+        string available_languages
     }
     PLACE_VIEW {
         uuid id PK
@@ -181,13 +186,13 @@ erDiagram
     }
 ```
 
-| Bảng / con trỏ | Ràng buộc hiện hành đề xuất | Vòng đời và giới hạn |
+| Bảng / con trỏ | Ràng buộc triển khai và liên kết logic | Vòng đời và giới hạn |
 | --- | --- | --- |
 | Vé Bắt đầu (không bảng riêng) | Payload ký: requestId/credentialHash/serviceEpoch/issuedAt/ticketExpiresAt=issued+24 giờ/version; không dữ liệu tên/ngôn ngữ trong vé | Cấp nền; chỉ tạo lần đầu bằng vé còn hạn. Có ledger thì kiểm signature/quyền/epoch/fingerprint và trả gốc dù expiry vé đã qua; không JWT Admin hoặc đồng hồ khách |
 | GUEST_SESSION | UK(start_request_key), credential_hash UK; start_fingerprint + start_ticket_issued_at/expires_at/digest để đối chiếu; service_epoch; current language/nonce/seq dọn theo end/expiry; current_opening FK tổ hợp | Lưu ID/key/quyền/fingerprint cùng TX. Session 8 giờ/ledger anchor+30 ngày giữ nguyên; purge không phối hợp thế hệ. Vé hết hạn mà ledger còn chỉ tra gốc, không tạo/gia hạn/đổi thông tin |
-| GUEST_OPEN_INTENT | Giữ tên bảng 0.2 để truy vết, nghĩa hiện hành là **opening**; UK(id,session_id); created_at/closed_at; counted_view_key logical, không FK ngược tới view | Sau ACK vẫn giữ current opening để P06/đổi tiếng/reload không thêm lượt. Chọn điểm khác hoặc chủ động quay bản đồ đóng opening; opening/grant kỹ thuật giữ tối đa tới kết thúc/hết hạn rồi dọn an toàn, không lịch sử thất bại 30 ngày. |
+| GUEST_OPEN_INTENT | Giữ tên bảng 0.2 để truy vết, nghĩa hiện hành là **opening**; UK(id,session_id); created_at/closed_at; tra lượt đã tính qua PLACE_VIEW theo opening_key, không có cột counted_view_key hoặc FK ngược tới view | Sau ACK vẫn giữ current opening để P06/đổi tiếng/reload không thêm lượt. Chọn điểm khác hoặc chủ động quay bản đồ đóng opening; opening/grant kỹ thuật giữ tối đa tới kết thúc/hết hạn rồi dọn an toàn, không lịch sử thất bại 30 ngày. |
 | GUEST_CONTENT_GRANT | FK tổ hợp (opening_id,session_id); file FK RESTRICT nullable; text/pair/audio/điểm cũ là id snapshot logical, không FK cản xóa nội dung | Một grant gắn đúng text/tiếng/MP3 của một response; server kiểm session+credential+grant owner. expiresAt không vượt hạn phiên, revoked khi kết thúc. Không phải URL public/token độc lập, không cấp lại audio sau hạn. |
-| GUEST_REQUEST_RESULT | UK(session_id,request_key), UK(session_id,document_nonce,selection_seq); fingerprint/action + opening/grant key logical + kết quả tối thiểu, không body text | Giữ kết quả K06/K07/K10 tới end/expiry để replay không đổi current selection hoặc tạo grant/lượt mới. Bản gốc mất thì báo không còn khả dụng, không thay bản khác âm thầm; không lịch sử nghe 30 ngày. |
+| GUEST_REQUEST_RESULT | UK(session_id,request_key), UK(session_id,document_nonce,selection_seq); PK(session_id,request_key); fingerprint/action + opening/grant key logical, opening_version/selection_kind/language/available_languages; không có id độc lập, operation_type hoặc result_code và không chứa body text | Giữ kết quả K06/K07/K10 tới end/expiry để replay không đổi current selection hoặc tạo grant/lượt mới. Bản gốc mất thì báo không còn khả dụng, không thay bản khác âm thầm; không lịch sử nghe 30 ngày. |
 | PLACE_VIEW | UK(session_id,opening_key); session FK, live_place nullable FK; **không FK tới opening/grant/text/audio** | ACK theo grant server và UNIQUE mới tạo một lượt; viewedAt server. Opening/grant được dọn sau hạn, view giữ D08. Không dùng tên gộp điểm/người. |
 | document_nonce/selection_seq | Nonce document mới khi resume thành công; seq tăng trong document, kiểm dưới khóa session; không là bằng chứng quyền | Cùng credential mà sai document/seq cũ không đổi lựa chọn mới. Web Locks/owner bên tab vẫn phải kiểm, không dùng cookie chung thay credential. |
 
@@ -203,11 +208,13 @@ Ticket issuedAt ≤ startedAt; thời điểm xóa ledger D08 sớm nhất là e
 
 ## 4. Chống thao tác lặp, job và tài nguyên file
 
+ERD phần trích nhóm lệnh/TTS/file. Cạnh chấm retry là liên kết logic, không phải FK SQL. Runtime/workspace/gate và toàn bộ FK được vẽ trong ERD vật lý đầy đủ.
+
 ```mermaid
 erDiagram
     ADMIN_ACCOUNT ||--o{ ADMIN_COMMAND_WINDOW : cua_so_lenh
     ADMIN_COMMAND_WINDOW ||--o{ OPERATION_RECEIPT : ket_qua
-    TTS_JOB o|--o{ TTS_JOB : thu_lai_co_chu_dich
+    TTS_JOB o|..o{ TTS_JOB : lien_ket_logic_retry
     FILE_ASSET ||--o{ FILE_CLAIM : dang_su_dung
     ADMIN_COMMAND_WINDOW {
         uuid id PK
@@ -239,14 +246,17 @@ erDiagram
         string voice
         string phase
         boolean target_valid
-        boolean outcome_uncertain
+        uuid worker_instance
         uuid worker_token
         uuid source_wav_file_id FK
-        string workspace_key
         long phase_version
-        string provider_request_id
         datetime accepted_at
         datetime terminal_at
+        string failure_code
+        uuid conversion_instance FK
+        uuid conversion_task
+        uuid conversion_token
+        uuid conversion_file_id
     }
     FILE_ASSET {
         uuid id PK
@@ -263,10 +273,10 @@ erDiagram
     FILE_CLAIM {
         uuid id PK
         uuid file_id FK
-        uuid owner_instance
+        uuid owner_key
+        uuid owner_instance FK
         string kind
-        string state
-        datetime opened_at
+        datetime created_at
     }
 ```
 
@@ -274,12 +284,16 @@ erDiagram
 | --- | --- | --- |
 | ADMIN_ACCOUNT | V3 đã có id BINARY(16), login_name UK phân biệt hoa thường/dấu, password_hash kèm tiền tố thuật toán, enabled | Một role cấp trước, bảng khởi tạo rỗng. Entity/Repository và xác thực/Q3 xem bằng chứng Admin, HttpSession tách guest |
 | ADMIN_COMMAND_WINDOW | V4 đã có account FK; issued/expires do server, service_epoch thuộc môi trường; mỗi lệnh dùng key=(windowId,randomId) | LIFE-P02 đã duyệt: 24 giờ từ cấp, không gia hạn qua login. Đăng nhập lại cùng tài khoản vẫn tra window cũ còn hạn; window thiếu/hết hạn không được nhận key cũ như lệnh mới. Không là phiên Admin mới, không gia hạn 30 phút. |
-| OPERATION_RECEIPT | V4 đã có UK(admin_account_id,window_id,operation_key); FK tổ hợp (window_id,admin_account_id) tới UK(id,admin_account_id) của window; fingerprint BINARY(32), http_status/result_code/operation_type, result_summary JSON tối thiểu, committed_at DATETIME(6) | Receipt và lệnh DB cùng TX, mã Hash gồm method/resource/canonical body/If-Match. Không lưu secret/text/tên khách hoặc payload đầy đủ, không FK target PLACE/TEXT đã xóa. Receipt tiếp nhận TTS đã trỏ job key theo nền A18/A19, không audio success; worker/WAV và Check/Retry đã bổ sung, provider thật/MP3/audio chưa được kiểm. |
+| OPERATION_RECEIPT | V4 đã có UK(admin_account_id,window_id,operation_key); FK tổ hợp (window_id,admin_account_id) tới UK(id,admin_account_id) của window; fingerprint BINARY(32), http_status/result_code/operation_type, result_summary JSON tối thiểu, committed_at DATETIME(6) | Receipt và lệnh DB cùng TX, mã Hash gồm method/resource/canonical body/If-Match. Không lưu secret/text/tên khách hoặc payload đầy đủ, không FK target PLACE/TEXT đã xóa. Receipt tiếp nhận TTS trỏ job key, không chứng minh audio thành công hoặc đã duyệt/áp dụng; kết quả provider/MP3 và hồ sơ hiện tại đọc tại bàn giao/ma trận nội dung. |
 | TTS_JOB | UK(admin_account_key,request_window_key,request_operation_key) là snapshot logical không FK bắt giữ window; target FK nullable + snapshot; worker_instance/token/phase_version; dispatched_at/result_staged_at/updated_at; retry_of logical nếu cần dọn job cũ | TEXT.active_tts_job_id cùng text ngăn hai job active/unknown; latest_tts_job_key logical giữ nhận biết kết quả mới nhất khi text còn sống. LIFE-P03 đã duyệt: job cũ terminal rõ chỉ dọn sau bảy ngày nếu không còn ref/use/current; audio/nháp còn liên kết và active/unknown giữ. Không tự biến TTL thành lỗi/provider retry. |
-| FILE_ASSET | key chỉ server tạo, checksum/size/duration/ready_at; cleanup_status/retry/cause | File bất biến, không ghi đè cùng key; không publish pointer trước bytes hoàn tất và kiểm. Metadata phải còn để báo dọn chờ/lỗi; trỏ WAV và MP3 riêng. |
-| FILE_CLAIM | FK file, owner_instance/task/download key, kind READ/WORKER; ACTIVE→RELEASED→xóa | Bảo vệ đọc/copy/worker đang thực dùng; không là tham chiếu nội dung giữ mãi. Không dọn chỉ vì thiếu heartbeat khi tiến trình còn sống/chưa rõ. |
+| FILE_ASSET | storage_key chỉ server tạo, checksum/byte_size/duration/ready_at; state, deletion_token/deletion_owner/deletion_task/deletion_started_at/deleted_at/cleanup_error | File bất biến, không ghi đè cùng key; không publish pointer trước bytes hoàn tất và kiểm. Metadata phải còn để báo dọn chờ/lỗi; trỏ WAV và MP3 riêng. |
+| FILE_CLAIM | FK file_id; owner_key, owner_instance FK nullable; kind chỉ READ; created_at. Claim tồn tại trong bảng khi đang giữ, giải phóng bằng xóa hàng; không có cột state/opened_at | Bảo vệ đọc/copy/worker đang thực dùng; không là tham chiếu nội dung giữ mãi. Không dọn chỉ vì thiếu heartbeat khi tiến trình còn sống/chưa rõ. |
+| RUNTIME_INSTANCE | id BINARY(16), node_key/root_key, process_id/process_started_at/registered_at/stopped_at, state RUNNING/STOPPED | Định danh process sở hữu tác vụ/claim; không tự suy stopped từ timeout. |
+| RUNTIME_TASK | id, instance_id FK, kind, owner_key, created_at | Theo dõi tác vụ READ/TTS/RECOVER/DELETE/TEMP đang giữ; không đồng nhất owner_key logic với một FK tới mọi bảng. |
+| WORKSPACE_FILE | storage_key PK, job_key/worker_token, owner_instance FK, file_key nullable, kind, created_at/eligible_since, cleanup_task nullable | Metadata đầu ra WAV/MP3/TEMP/MANIFEST; bytes ở F1. Job/file/task key là tương quan logic, không FK giả. |
+| OPS_ACTIVITY | id CHAR(36), instance_id CHAR(36), kind, started_at | Admission lease HTTP/TTS_QUEUE/LOCAL_AUDIO/CLEANUP/RETENTION; không FK tới runtime_instance BINARY(16), không dọn theo tuổi để ép freeze. |
 | OPS_GUARD | Hàng bền cho mode RUNNING/QUIESCING/FROZEN và owner_token theo V14; checkpoint/manifest thuộc quy trình vận hành | Chỉ điều phối backup/dispatch/cleaner như BKP-P02; **không start_generation hoặc khóa start/purge**. service_epoch vẫn quản lý riêng theo REC-P01, backup/restart thường không thu hồi quyền |
-| BACKUP_RUN (metadata vận hành cục bộ riêng kho phục vụ) | backupId,state,createdAt,expiresAt=created+7 ngày,owner/checkpoint,dump/catalog/file hashes,error | BKP-P02 stop app/worker/cleaner, MySQL còn hoạt động và không writer/DDL; dump/catalog/copy khớp. Không MySQL tạm mỗi lần backup; restore thử vẫn riêng |
+| Manifest backup — không có bảng SQL BACKUP_RUN | backupId,state,createdAt,expiresAt=created+7 ngày,owner/checkpoint,dump/catalog/file hashes,error | BKP-P02 stop app/worker/cleaner, MySQL còn hoạt động và không writer/DDL; dump/catalog/copy khớp. Không MySQL tạm mỗi lần backup; restore thử vẫn riêng |
 
 V3 tạo bảng tài khoản quản trị, không sinh tài khoản hoặc secret. V4 quản lý window/receipt, V6–V7 hàng đợi/WAV, V9 audio/cặp, V10–V14 quyền đọc/lifecycle/kết quả local/vùng/gate. Bảng phiên bản mục 7 và DDL là nguồn cấu trúc thực; không dùng số mục của các phụ lục triển khai cũ làm trạng thái hiện hành.
 
@@ -300,9 +314,9 @@ retry_of_job_id trong hình là **liên kết logic**, không FK bắt giữ chu
 
 **Ví dụ dễ hiểu:** khách chọn C1=(T1,A1) nhận opening O1 và grant G1 ghim A1. Admin áp dụng C2, lần chọn mới nhận C2; G1 không tự đổi sang A2. Sau hết hạn O1/G1 được vô hiệu/dọn, V1 vẫn còn tới D08. Admin xóa điểm, V1 vẫn nhận biết id cũ; key xóa cũ trả receipt, không xóa điểm mới trùng tên.
 
-### 5.1. Chỉ mục và lock cần mapping khi triển khai
+### 5.1. Chỉ mục và khóa: phân biệt DDL với đề xuất
 
-Ngoài PK/UK/FK đã nêu, đề xuất index theo truy vấn: session(started_at,id), session(expires_at), session(ended_at); view(viewed_at,place_key_snapshot,language), view(session_id,viewed_at); opening(session_id,state); grant(session_id,expires_at), grant(mp3_file_id); receipt(window_id,operation_key); guest_request_result(session_id,request_key); job(phase,updated_at), job(target_text_revision_id); file(state,last_unapplied_at), claim(file_id,state). Có thể dùng purge_due_at tính từ anchor để index dọn; không đổi timestamp gốc hoặc tin field client.
+Ngoài PK/UK/FK đã nêu, đề xuất index theo truy vấn: session(started_at,id), session(expires_at), session(ended_at); view(viewed_at,place_key_snapshot,language), view(session_id,viewed_at); opening(session_id,state); grant(session_id,expires_at), grant(mp3_file_id); receipt(window_id,operation_key); guest_request_result(session_id,request_key); job(phase,updated_at), job(target_text_revision_id); file(state,last_unapplied_at), claim(file_id,owner_instance). Có thể dùng purge_due_at tính từ anchor để index dọn; không đổi timestamp gốc hoặc tin field client.
 
 Độ chọn lọc/index thực phải đo trên MySQL và truy vấn JPA; không coi danh sách này là migration đã có. Không dùng partial index không được MySQL hỗ trợ để giả bảo đảm một active job; dùng pointer TEXT.active_tts_job_id dưới khóa. Lỗi lock/deadlock rollback DB thuần mới cân nhắc retry kỹ thuật, không provider retry.
 
@@ -323,6 +337,8 @@ LIFE-P02/P03/REC-P01 và BKP-P02 giữ phạm vi đã duyệt; LIFE-P01 dùng v�
 <a id="model-implementation"></a>
 
 ## 7. Cấu trúc thực thi và migrations
+
+**Danh mục chuẩn:** [ERD vật lý đầy đủ](erd-vat-ly.md) có 25 bảng (24 ứng dụng + 1 Flyway), 36 FK. Năm bảng runtime_instance/runtime_task/workspace_file/ops_guard/ops_activity được kê ở ERD đầy đủ, không còn bị bỏ khỏi phạm vi dữ liệu chỉ vì các hình 2–4 là phần trích. Các tên cột trong phần trích đã đối chiếu schema V14.
 
 DDL hiện hành được quản lý bằng Flyway V1–V14. Các biểu đồ phía trên mô tả quan hệ nghiệp vụ; ràng buộc vật lý được đối chiếu với DDL và kiểm MySQL. Việc sửa tài liệu không tự thay đổi checksum migration hoặc xác nhận đã nâng database đang phục vụ.
 

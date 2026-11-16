@@ -2,7 +2,7 @@
 
 ## Phạm vi
 
-Công cụ dành cho bộ Compose riêng có database `hueqr`, schema từ V14 và ảnh ứng dụng đã tích hợp gate. `deploy/maintenance.mjs` chỉ nhận runtime thuộc project `hueqr-rehearsal-*` hoặc `hueqr-ops-check-*`; đối chiếu nhãn hai container và MySQL không publish cổng. Không suy từ việc có công cụ thành đã nghiệm thu trên môi trường phục vụ. [Hồ sơ kiểm](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/operations-guard-20261113/README.md) ghi lượt thực chạy.
+Công cụ dành cho bộ Compose riêng có database `hueqr`, schema từ V14 và ảnh ứng dụng đã tích hợp gate. `deploy/maintenance.mjs` nhận project phục vụ `audioqr-hue` cùng các project kiểm tra `hueqr-rehearsal-*` và `hueqr-ops-check-*`; đối chiếu nhãn hai container và MySQL không publish cổng. Khi đổi tên project, các volume đang có vẫn giữ tên Docker cũ và được khai báo external trong cấu hình Compose; không xóa hoặc tạo lại volume. Không suy từ việc có công cụ thành đã nghiệm thu trên môi trường phục vụ. [Hồ sơ kiểm](https://github.com/khaithanh2726-beep/AudioQR_Kinh-thanh-Hue/blob/601c09acd34e45d3d0b17bf2b7dbe94daf6bdae1/docs/06-kiem-thu/operations-guard-20261113/README.md) ghi lượt thực chạy.
 
 V14 tạo `ops_guard` và `ops_activity`. API và bốn scheduler lấy lease trong giao dịch ngắn: khóa chia sẻ hàng gate → kiểm RUNNING → ghi lease → commit. Lệnh QUIESCING tranh chấp cùng hàng nên không có việc mới lọt qua sau khi đóng gate. Lease tồn tại tới khi request/stream hoặc toàn lượt scheduler kết thúc. Timeout, tuổi lease và restart không tự tháo lease. HTTP bị chặn dùng mã đã có `503 SERVICE_UNAVAILABLE`, no-store; không đổi phiên thành hết hạn hoặc tự gửi lại lệnh. Không thêm endpoint HTTP vận hành.
 
@@ -131,7 +131,7 @@ Hai lượt không chạy chồng; gặp gate của owner khác thì dừng. N�
 Chỉ dọn thư mục `backup-*` trực tiếp trong root đã cấu hình sau khi bản mới còn hạn và đủ Hash. Bản hết hạn phải có manifest COMPLETE loại quiesced-backup, hạn đúng bảy ngày, đúng tập database/audio/manifest và bytes khớp. Xóa từng tệp đã đối chiếu rồi xóa thư mục rỗng; không recursive delete hoặc đi vào link. Bản dở, hỏng, có tệp lạ hay loại V13 được ghi review và giữ để người vận hành xử lý; tuyệt đối không dùng chúng như backup còn hiệu lực. Cần theo dõi review để dọn dữ liệu quá hạn có kiểm soát, không âm thầm kéo hạn nguồn.
 
 ```powershell
-$taskName = 'AudioQR-Operations-hueqr-rehearsal-15d2f5c0'
+$taskName = 'AudioQR-Operations-audioqr-hue'
 Get-ScheduledTaskInfo -TaskName $taskName
 Start-ScheduledTask -TaskName $taskName # Ngoài trình diễn; có gián đoạn phục vụ.
 ```

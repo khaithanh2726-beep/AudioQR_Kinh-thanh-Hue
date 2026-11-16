@@ -7,7 +7,7 @@ import { createHash, randomBytes, randomUUID } from 'node:crypto'
 const [runtimeDirectory, output] = process.argv.slice(2)
 assert(runtimeDirectory && output, 'Usage: post-deploy-check.mjs private-runtime new-report.json')
 const runtime = JSON.parse((await readFile(join(runtimeDirectory, 'runtime.json'), 'utf8')).replace(/^\uFEFF/, ''))
-assert.match(runtime.project, /^hueqr-(rehearsal|ops-check)-[a-f0-9]{8}$/)
+assert.match(runtime.project, /^(audioqr-hue|hueqr-(rehearsal|ops-check)-[a-f0-9]{8})$/)
 const origin = new URL(runtime.url)
 assert(origin.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(origin.hostname))
 assert(runtime.adminLogin && runtime.adminPassword, 'Reviewed Admin credential required in private runtime')

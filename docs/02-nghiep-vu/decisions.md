@@ -27,7 +27,7 @@ Mục lục hiện hành tại [docs/README.md](../README.md). Tài liệu này 
 | G02 | [Phân công nhóm và người commit](#g02) | Đã chốt 02/11/2026; backlog 0.2 đã duyệt sau đó, nội dung hiện hành xem roadmap; tài khoản tại G02, lịch theo mục tiêu dự kiến |
 | TECH-01 | [Công nghệ và kiến trúc dự án chính](#tech-01) | Đã chốt nền; phiên bản theo TECH-03, kiến trúc/CD theo TECH-04/05; tương thích và vận hành còn kiểm |
 | TECH-02 | [Môn học, hướng dẫn, môi trường và mục tiêu](#tech-02) | Đã xác nhận đầu vào 03/11; nền tảng/trình duyệt theo TECH-03, ngrok chọn thử; giờ thực tế và ngân sách trả phí chưa chốt |
-| TTS-01 | [Gemini TTS/Charon](#tts-01) | Giữ model/giọng; pipeline đã chạy, chưa duyệt đủ 20 cặp. |
+| TTS-01 | [Gemini TTS/Charon](#tts-01) | Giữ model/giọng; việc duyệt từng cặp theo hồ sơ nội dung hiện hành, không suy từ việc chọn TTS. |
 | TECH-03 / IN-P01–IN-P04 | [Mốc phiên bản, nền tảng kiểm tra, audio và ngrok thử](#tech-03) | Đã chọn mốc/định dạng; ngrok chỉ chọn thử, chưa đạt tương thích/triển khai |
 | DATA-01 / IN-P05 / DATA-P01–P04 | [Dọn file/log/backup](#data-01) | Đã chốt điều kiện/hạn/restore; DATA-03 bổ sung phạm vi/nhịp backup, đã bổ sung path/quyền/công cụ/checkpoint và lịch; RPO/RTO còn mở |
 | G03 | [Ghi nhận checklist theo bằng chứng](#g03) | Đã chốt; đối chiếu đúng issue hiện hành, người vận hành trực tiếp cập nhật GitHub |

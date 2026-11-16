@@ -2,7 +2,7 @@
 
 Kết quả tạm của Playwright mặc định nằm tại `%TEMP%/hueqr-playwright/audioqr-kinh-thanh-hue`, không sinh thêm thư mục trong frontend. Đặt `HUEQR_E2E_OUTPUT` ngoài repository cho từng lượt cần giữ hoặc chạy song song. Mã ca kiểm vẫn ở `frontend/tests`; hồ sơ được chọn lọc và bỏ secret tại `docs/06-kiem-thu`.
 
-Hai kịch bản tạo dữ liệu thử thật, dùng SQL fixture chỉ chấp nhận schema/tài khoản `hueqr_smoke`. Chỉ chạy trong môi trường riêng theo [hướng dẫn chạy thử](../../../docs/07-van-hanh/chay-thu/README.md), không dùng database đang vận hành. Bộ kiểm không gọi Gemini; cần WAV tiếng Việt Ngọ Môn đã chuẩn bị, RIFF PCM 16-bit mono 24 kHz, khớp bài trong tài liệu.
+Hai kịch bản tạo dữ liệu thử thật, dùng SQL fixture chỉ chấp nhận schema/tài khoản `hueqr_smoke`. Chỉ chạy trong môi trường riêng theo [hướng dẫn chạy thử](../../../docs/99-luu-tru/chay-thu-mot-diem.md), không dùng database đang vận hành. Bộ kiểm không gọi Gemini; cần WAV tiếng Việt Ngọ Môn đã chuẩn bị, RIFF PCM 16-bit mono 24 kHz, khớp bài trong tài liệu.
 
 Backend cần local-audio worker bật và đọc được kho audio riêng. Khởi động Vite với `HUEQR_BACKEND_URL` trỏ backend thử và cổng 15173. Tạo Admin `smoke-admin`. Đặt `runtime.json` ngoài repository, UTF-8, gồm:
 

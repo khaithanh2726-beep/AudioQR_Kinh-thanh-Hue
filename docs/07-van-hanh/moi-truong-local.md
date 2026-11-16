@@ -29,6 +29,24 @@ Docker cần engine Linux hoạt động để chạy Testcontainers/Compose. Ki
 
 ## Kiểm phần mềm và môi trường
 
-Lệnh frontend tại [frontend README](../../frontend/README.md), đóng gói/CI tại [hướng dẫn đóng gói](dong-goi-va-ci.md), database và kho audio riêng tại [chạy thử](chay-thu/README.md). Khóa runtime, tài khoản và cấu hình provider phải ở ngoài repository. Không nối database đang phục vụ để chạy fixture.
+### Kết nối MySQL bản chính từ VS Code
+
+Database chính là `hueqr`, user `hueqr`; kết nối dev cũ `hue_qr_dev`/`hue_qr_app` không còn là bản phục vụ. MySQL vẫn nằm trong mạng Compose, không sửa volume hoặc publish cổng trực tiếp trên container database. Cầu TCP riêng chỉ publish loopback Windows, dùng image Java hiện có và không giữ mật khẩu:
+
+```powershell
+node deploy/database-access.mjs start
+```
+
+Trong Database Client: MySQL, host `127.0.0.1`, port `3307`, username `hueqr`, database `hueqr`, mật khẩu database từ runtime riêng (khác mật khẩu Admin web). Không chép mật khẩu vào `.vscode/settings.json` hoặc repository. Bước tạo cầu lần đầu cần javac 21 đã cài; không tải image hoặc cài dependency. Cầu không tạo database mới, không đổi xác thực MySQL và không biến kết nối thành tài khoản chỉ đọc; dùng để tra cứu, không tùy ý sửa dữ liệu đang phục vụ.
+
+Đóng kết nối Database Client trước backup/dừng; kết nối SQL còn mở có thể chặn freeze theo thiết kế. Khi không dùng:
+
+```powershell
+node deploy/database-access.mjs stop
+```
+
+Sau khởi động lại Docker, chạy `start` khi cần truy cập VS Code; web vẫn dùng kết nối nội bộ và không phụ thuộc cầu này. Cổng này chỉ cho laptop, không đưa qua ngrok. Không chia sẻ tệp runtime/config hoặc lưu password vào tài liệu.
+
+Lệnh frontend tại [frontend README](../../frontend/README.md), đóng gói/CI tại [hướng dẫn đóng gói](dong-goi-va-ci.md), database và kho audio riêng tại [kịch bản thử riêng](../99-luu-tru/chay-thu-mot-diem.md). Khóa runtime, tài khoản và cấu hình provider phải ở ngoài repository. Không nối database đang phục vụ để chạy fixture.
 
 Kết quả đã có: 530/530 backend, 71/71 logic frontend, build Vue/JAR/ảnh Linux và kiểm media thực. Đây là bằng chứng các lượt được ghi trong [báo cáo kiểm thử](../06-kiem-thu/README.md), không là kết quả vừa chạy lại ở phiên biên tập tài liệu.
